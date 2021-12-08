@@ -14,4 +14,9 @@ add(number1: number, number2: number){
   return number1 +  number2;
 }
 
+substract(number1: number, number2: number){
+  this.logger.log(number1 - number2);
+  return number1 - number2;
+}
+
 }
