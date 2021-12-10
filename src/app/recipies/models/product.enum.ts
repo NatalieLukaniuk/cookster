@@ -4,3 +4,10 @@ export enum ProductEnum {
   oliveOil = 3,
   salt = 4
 }
+
+export enum ProductText {
+  'помідори' = 1,
+  'картопля',
+  'оливкова олія',
+  'сіль'
+}

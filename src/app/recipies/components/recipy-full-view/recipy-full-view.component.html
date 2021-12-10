@@ -1,0 +1,48 @@
+<div class="full-recipy-wrapper">
+  <div class="recipy-body">
+    <div class="recipy-details">
+      <h1>{{ data.name }}</h1>
+      <div class="ingredients-wrapper">
+        <h3>
+          Інгридієнти на
+          <select
+            [(ngModel)]="portionsToServe"
+            (ngModelChange)="calculateIngredients($event)"
+          >
+            <option *ngFor="let option of portionsOptions">{{ option }}</option>
+          </select>
+          {{ portionsText }}
+        </h3>
+        <table class="ingredients-table">
+          <tr *ngFor="let ingredient of data.ingrediends; let i = index">
+            <td>{{getIngredientText(ingredient)}}</td>
+            <td>{{ingredient.amount}} <select><option>гр.</option></select></td>
+          </tr>
+        </table>
+      </div>
+      <div class="preparation-wrapper">
+        <h3>Приготування</h3>
+      </div>
+      <table class="steps-table">
+        <tr *ngFor="let step of data.steps; let i = index">
+          <td><p>{{step.id}}. {{step.description}}</p></td>
+          <td>{{getTotalStepTime(step)}} хв.</td>
+        </tr>
+      </table>
+    </div>
+    <div class="recipy-info"></div>
+  </div>
+</div>
+<div class="action-buttons-wrapper">
+  <div class="back-button-wrapper">
+    <button mat-flat-button class="action-button" (click)="goBack()">
+      <mat-icon svgIcon="close"></mat-icon>Повернутися
+    </button>
+  </div>
+  <div class="recipy-action-buttons-wrapper">
+    <button mat-flat-button class="action-button">Зберегти рецепт</button>
+    <button mat-flat-button class="action-button">Додати в меню</button>
+    <button mat-flat-button class="action-button">В список покупок</button>
+  </div>
+  <div></div>
+</div>

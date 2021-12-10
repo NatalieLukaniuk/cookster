@@ -1,3 +1,15 @@
-<p>
-  navigation works!
-</p>
+<section class="navigation-pane-wrapper">
+  <!-- <div class="search-wrapper">
+    <app-search></app-search>
+  </div> -->
+
+  <nav class="app-navigation">
+    <mat-nav-list>
+      <mat-list-item *ngFor="let route of navigation">
+        <a [routerLink]="route.path" routerLinkActive="active">{{
+          route.name
+        }}</a>
+      </mat-list-item>
+    </mat-nav-list>
+  </nav>
+</section>

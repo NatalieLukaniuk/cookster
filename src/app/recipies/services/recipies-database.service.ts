@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { Recipy } from '../models/recipy.interface';
 
 @Injectable({
@@ -8,12 +9,12 @@ export class RecipiesDatabaseService {
   recipies: Recipy[] = [
     {
       id: 1,
-      name: 'тест',
+      name: 'Ароматна запечена скумбрія',
       ingrediends: [{ product: 1, amount: 100 }],
       complexity: 1,
       steps: [],
       type: [1, 5],
-      photo: '',
+      photo: '/assets/images/recipies/1.jpg',
     },
     {
       id: 2,
@@ -54,7 +55,7 @@ export class RecipiesDatabaseService {
         },
       ],
       type: [1, 3, 12],
-      photo: '',
+      photo: '/assets/images/recipies/2.jpg',
     },
   ];
 }

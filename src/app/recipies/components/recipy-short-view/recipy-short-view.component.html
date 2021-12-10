@@ -1,0 +1,31 @@
+<div class="recipy-wrapper" (click)="goFullRecipy()">
+  <img class="recipy-photo" [src]="recipy.photo" />
+  <div class="recipy-info">
+    <div class="recipy-upper-part">
+      <p>Складний</p>
+      <p>50-60хв</p>
+    </div>
+    <div class="title-part">
+      <p>{{ recipy.name }}</p>
+    </div>
+    <div class="recipy-bottom-part">
+      <div class="likes-wrapper">
+        <mat-icon svgIcon="heart"></mat-icon>
+        <p>20</p>
+      </div>
+      <div class="author-wrapper">
+        <p>Наталя Фадєєва</p>
+        <img class="author-photo" src="/assets/images/user.jpg" />
+      </div>
+    </div>
+  </div>
+</div>
+<div class="recipy-menu">
+  <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-button">
+    <mat-icon svgIcon="menu"></mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Item 1</button>
+    <button mat-menu-item>Item 2</button>
+  </mat-menu>
+</div>
