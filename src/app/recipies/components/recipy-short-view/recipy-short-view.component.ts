@@ -19,7 +19,7 @@ export class RecipyShortViewComponent implements OnInit {
     const dialogRef = this.dialog.open(RecipyFullViewComponent, {
       width: '100%',
       maxWidth: '100%',
-      height: 'calc(100% - 73px)',
+      height: '100%',
       position: { bottom: '0' },
       hasBackdrop: false,
       panelClass: 'full-recipy-dialog',
@@ -27,8 +27,8 @@ export class RecipyShortViewComponent implements OnInit {
       data: this.recipy,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-    });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   console.log('The dialog was closed');
+    // });
   }
 }

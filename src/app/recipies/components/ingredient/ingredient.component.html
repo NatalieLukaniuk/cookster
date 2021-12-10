@@ -1,7 +1,7 @@
 <div class="ingredient-name">{{ getIngredientText(ingredient) }}</div>
 <div class="ingredient-amount">
   {{ amountToDisplay }}
-  <select (change)="onValueChange($event)">
+  <select (change)="onValueChange($event)"  class="inline-select">
     <option *ngFor="let unit of measurementUnits" [value]="unit" [selected]="unit === measuringUnit">{{ getUnitText(unit) }}</option>
   </select>
 </div>

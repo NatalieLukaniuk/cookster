@@ -28,5 +28,17 @@ export class AppComponent {
         '/assets/icons/heart.svg'
       )
     );
+    this.iconRegistry.addSvgIcon(
+      'add',
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        '/assets/icons/plus.svg'
+      )
+    );
+    this.iconRegistry.addSvgIcon(
+      'arrow-left',
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        '/assets/icons/arrow-left.svg'
+      )
+    );
   }
 }

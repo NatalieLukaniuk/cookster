@@ -1,20 +1,24 @@
+<app-header></app-header>
 <div class="full-recipy-wrapper">
+
   <div class="recipy-body">
     <div class="recipy-details">
       <h1>{{ data.name }}</h1>
       <div class="ingredients-wrapper">
         <h3>
           Інгридієнти на
-          <select
-            [(ngModel)]="portionsToServe"
-          >
+          <select class="inline-select" [(ngModel)]="portionsToServe">
             <option *ngFor="let option of portionsOptions">{{ option }}</option>
           </select>
           {{ portionsText }}
         </h3>
         <div class="ingredients-table">
           <div *ngFor="let ingredient of data.ingrediends; let i = index">
-            <app-ingredient [ingredient]="ingredient" [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"></app-ingredient>
+            <app-ingredient
+              [ingredient]="ingredient"
+              [savedPortionsToServe]="savedPortionsServed"
+              [actualPortionsToServe]="portionsToServe"
+            ></app-ingredient>
           </div>
         </div>
       </div>
@@ -23,24 +27,47 @@
       </div>
       <table class="steps-table">
         <tr *ngFor="let step of data.steps; let i = index">
-          <td><p>{{step.id}}. {{step.description}}</p></td>
-          <td>{{getTotalStepTime(step)}} хв.</td>
+          <td>
+            <p>{{ step.id }}. {{ step.description }}</p>
+          </td>
+          <td>{{ getTotalStepTime(step) }} хв.</td>
         </tr>
       </table>
     </div>
-    <div class="recipy-info"></div>
+    <div class="recipy-info">
+      <img class="recipy-photo" [src]="data.photo" />
+      <div class="recipy-complexity">
+        <span class="bold">Складність:</span> {{ complexity }}
+      </div>
+      <div class="recipy-time">
+        <div><span class="bold">Час приготування: </span></div>
+        <div>
+          <p>{{ activeTime + passiveTime }} хвилин</p>
+          <p>Активний: {{ activeTime }} хвилин</p>
+          <p>Пасивний: {{ passiveTime }} хвилин</p>
+        </div>
+      </div>
+      <div class="recipy-tags">
+        <div><span class="bold">Теги: </span></div>
+        <div>
+          <mat-chip-list>
+            <mat-chip>перші страви</mat-chip>
+            <mat-chip>гарячі закуски</mat-chip>
+            <mat-chip>соус</mat-chip>
+            <mat-chip class="add-tag"
+              ><mat-icon svgIcon="add"></mat-icon
+            ></mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div class="action-buttons-wrapper">
-  <div class="back-button-wrapper">
-    <button mat-flat-button class="action-button" (click)="goBack()">
-      <mat-icon svgIcon="close"></mat-icon>Повернутися
-    </button>
-  </div>
-  <div class="recipy-action-buttons-wrapper">
-    <button mat-flat-button class="action-button">Зберегти рецепт</button>
-    <button mat-flat-button class="action-button">Додати в меню</button>
-    <button mat-flat-button class="action-button">В список покупок</button>
-  </div>
-  <div></div>
+  <button mat-flat-button class="action-button back-button" (click)="goBack()">
+    <mat-icon svgIcon="arrow-left"></mat-icon>Повернутися
+  </button>
+  <button mat-flat-button class="action-button">Зберегти рецепт</button>
+  <button mat-flat-button class="action-button">Додати в меню</button>
+  <button mat-flat-button class="action-button">В список покупок</button>
 </div>

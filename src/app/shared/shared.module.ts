@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -22,7 +23,8 @@ import { HeaderComponent } from './containers/header/header.component';
     RouterModule,
     MatMenuModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatChipsModule
   ],
   declarations: [
     HeaderComponent,
@@ -40,7 +42,8 @@ import { HeaderComponent } from './containers/header/header.component';
     MatListModule,
     MatMenuModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatChipsModule
   ],
   providers: []
 })

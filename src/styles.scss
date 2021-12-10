@@ -64,13 +64,29 @@ h1 {
   margin: 0;
 }
 
-h3{
+h3 {
   font-size: 16px;
   margin: 0;
 }
 
-button.action-button{
+button.action-button {
   background-color: var(--secondary);
   color: var(--primary);
   font-family: "Montserrat", sans-serif;
+}
+
+select.inline-select {
+  background-color: var(--primary);
+  border: none;
+  color: var(--secondary);
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+}
+
+.mat-chip.mat-standard-chip{
+  border-radius: 4px;
+  min-height: 21px;
+  font-size: 10px;
+  background-color: var(--secondary);
+  color: var(--primary);
 }

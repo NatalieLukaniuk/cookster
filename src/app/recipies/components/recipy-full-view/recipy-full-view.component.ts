@@ -11,21 +11,18 @@ import { PreparationStep } from './../../models/preparationStep.interface';
   styleUrls: ['./recipy-full-view.component.scss'],
 })
 export class RecipyFullViewComponent implements OnInit {
-
   averagePortion: number = 250;
 
   portionsToServe: number;
 
   constructor(
     public dialogRef: MatDialogRef<RecipyFullViewComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Recipy,
+    @Inject(MAT_DIALOG_DATA) public data: Recipy
   ) {
     this.portionsToServe = this.savedPortionsServed;
   }
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 
   goBack(): void {
     this.dialogRef.close();
@@ -44,23 +41,39 @@ export class RecipyFullViewComponent implements OnInit {
     return portions;
   }
 
-  get portionsOptions(){
+  get portionsOptions() {
     let portionsArray = [];
-    for (let i = 1; i <= 10; i++){
+    for (let i = 1; i <= 10; i++) {
       portionsArray.push(i);
     }
     return portionsArray;
   }
 
-  get portionsText(): string{
-    if (this.portionsToServe == 1){
-      return 'порцію'
-    } else if (1 < this.portionsToServe && this.portionsToServe < 5){
-      return 'порції'
-    } else return 'порцій'
+  get portionsText(): string {
+    if (this.portionsToServe == 1) {
+      return 'порцію';
+    } else if (1 < this.portionsToServe && this.portionsToServe < 5) {
+      return 'порції';
+    } else return 'порцій';
   }
-  
-  getTotalStepTime(step: PreparationStep){
+
+  getTotalStepTime(step: PreparationStep) {
     return step.timeActive + step.timePassive;
+  }
+
+  get activeTime() {
+    let time = 0;
+    for (let step of this.data.steps) {
+      time = time + step.timeActive;
+    }
+    return time;
+  }
+
+  get passiveTime() {
+    let time = 0;
+    for (let step of this.data.steps) {
+      time = time + step.timePassive;
+    }
+    return time;
   }
 }
