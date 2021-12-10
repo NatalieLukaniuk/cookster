@@ -7,18 +7,16 @@
           Інгридієнти на
           <select
             [(ngModel)]="portionsToServe"
-            (ngModelChange)="calculateIngredients($event)"
           >
             <option *ngFor="let option of portionsOptions">{{ option }}</option>
           </select>
           {{ portionsText }}
         </h3>
-        <table class="ingredients-table">
-          <tr *ngFor="let ingredient of data.ingrediends; let i = index">
-            <td>{{getIngredientText(ingredient)}}</td>
-            <td>{{ingredient.amount}} <select><option>гр.</option></select></td>
-          </tr>
-        </table>
+        <div class="ingredients-table">
+          <div *ngFor="let ingredient of data.ingrediends; let i = index">
+            <app-ingredient [ingredient]="ingredient" [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"></app-ingredient>
+          </div>
+        </div>
       </div>
       <div class="preparation-wrapper">
         <h3>Приготування</h3>

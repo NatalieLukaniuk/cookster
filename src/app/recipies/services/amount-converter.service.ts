@@ -44,6 +44,19 @@ export class AmountConverterService {
     return amount / 1000;
   }
 
+
+  grToMl(amount: number, density: number){// density is in kg/m3
+    const l = this.grToLiter(amount, density);
+    const ml = this.literToMl(l);
+    return ml;
+  }
+
+  mlToGr(amount: number, density: number){
+    const l = this.mlToL(amount);
+    const gr = this.literToGr(l, density);
+    return gr;
+  }
+
   grToTableSpoons(amount: number, density: number){ // density is in kg/m3
     const l = this.grToLiter(amount, density);
     const ml = this.literToMl(l);

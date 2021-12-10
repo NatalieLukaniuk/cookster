@@ -1,0 +1,12 @@
+:host {
+  width: 100%;
+  display: flex;
+}
+.ingredient-name {
+  width: 70%;
+}
+
+.ingredient-amount {
+  text-align: end;
+  width: 30%;
+}

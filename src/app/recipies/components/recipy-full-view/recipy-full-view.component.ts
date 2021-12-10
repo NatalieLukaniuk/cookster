@@ -2,8 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
-import { Ingredient } from '../../models/ingredient.interface';
-import { ProductText } from '../../models/product.enum';
 import { Recipy } from '../../models/recipy.interface';
 import { PreparationStep } from './../../models/preparationStep.interface';
 
@@ -26,7 +24,7 @@ export class RecipyFullViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.portionsOptions);
+    
   }
 
   goBack(): void {
@@ -61,19 +59,7 @@ export class RecipyFullViewComponent implements OnInit {
       return 'порції'
     } else return 'порцій'
   }
-
-  calculateIngredients(ev: any){
-    console.log(this.portionsToServe)
-  }
-
-  get ingredientAmount(){
-    return ''
-  }
-
-  getIngredientText(ingr: Ingredient): string{
-    return ProductText[ingr.product]
-  }
-
+  
   getTotalStepTime(step: PreparationStep){
     return step.timeActive + step.timePassive;
   }

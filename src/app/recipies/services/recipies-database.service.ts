@@ -21,7 +21,7 @@ export class RecipiesDatabaseService {
       name: 'Запечена в духовці картопля в мундирі',
       ingrediends: [
         { product: 2, amount: 1850 },
-        { product: 3, amount: 0.0914 },
+        { product: 3, amount: 18 },
         { product: 4, amount: 3 },
       ],
       complexity: 1,

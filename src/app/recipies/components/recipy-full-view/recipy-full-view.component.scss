@@ -22,9 +22,10 @@
 .ingredients-table{
     margin-top: 23px;
     font-size: 16px;
-    line-height: 20px;    
-    td:first-child{
-        width: 70%;
+    line-height: 20px; 
+    width: 100%;   
+    &>div{
+        width: 100%;
     }
 }
 
