@@ -90,6 +90,8 @@ select.inline-select {
   font-size: 10px;
   background-color: var(--secondary);
   color: var(--primary);
+  height: auto;
+    padding: 2px 9px 4px;
 }
 
 // ----- Mat-menu --- //
