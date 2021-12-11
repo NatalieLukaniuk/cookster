@@ -45,7 +45,7 @@ export class RecipiesDatabaseService {
         { product: 3, amount: 18 },
         { product: 4, amount: 3 },
       ],
-      complexity: 1,
+      complexity: 2,
       steps: [
         {
           id: 1,
@@ -109,7 +109,7 @@ export class RecipiesDatabaseService {
       id: 3,
       name: 'куряче філе у фользі',
       ingrediends: [{ product: 1, amount: 100 }, { product: 2, amount: 1000 }, { product: 4, amount: 10 }],
-      complexity: 1,
+      complexity: 3,
       steps: [
         {
           id: 1,

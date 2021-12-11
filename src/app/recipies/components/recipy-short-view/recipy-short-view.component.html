@@ -2,8 +2,8 @@
   <img class="recipy-photo" [src]="recipy.photo" />
   <div class="recipy-info">
     <div class="recipy-upper-part">
-      <p>Складний</p>
-      <p>50-60хв</p>
+      <p>{{ complexity }}</p>
+      <p>{{ preparationTime }} хв</p>
     </div>
     <div class="title-part">
       <p>{{ recipy.name }}</p>
@@ -25,7 +25,7 @@
     <mat-icon svgIcon="menu"></mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>Зберегти рецепт</button>
+    <button mat-menu-item>Редагувати рецепт</button>
     <button mat-menu-item>Додати в меню</button>
     <button mat-menu-item>В список покупок</button>
   </mat-menu>

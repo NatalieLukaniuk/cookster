@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
+import { ComplexityDescription } from '../../models/complexity.enum';
 import { Recipy } from '../../models/recipy.interface';
 import { RecipyFullViewComponent } from './../recipy-full-view/recipy-full-view.component';
 
@@ -30,5 +31,17 @@ export class RecipyShortViewComponent implements OnInit {
     // dialogRef.afterClosed().subscribe((result) => {
     //   console.log('The dialog was closed');
     // });
+  }
+
+  get complexity() {
+    return ComplexityDescription[this.recipy.complexity];
+  }
+
+  get preparationTime() {
+    let time = 0;
+    for (let step of this.recipy.steps) {
+      time = time + step.timeActive + step.timePassive;
+    }
+    return time;
   }
 }
