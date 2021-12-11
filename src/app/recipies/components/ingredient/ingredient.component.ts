@@ -33,7 +33,6 @@ export class IngredientComponent implements OnInit {
 
   ngOnInit() {
     this.measuringUnit = this.getDefaultMeasuringUnit();
-    console.log(this.measuringUnit);
   }
 
   getIngredientText(ingr: Ingredient): string {
