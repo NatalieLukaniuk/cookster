@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { ProductText } from '../../models/product.enum';
 import { Ingredient } from './../../models/ingredient.interface';
 import {
   MeasuringUnit,
@@ -10,9 +9,8 @@ import {
   MeasuringUnitOptionsSpice,
   MeasuringUnitText,
 } from './../../models/measuring-units.enum';
-import { ProductType } from './../../models/product.interface';
 import { AmountConverterService } from './../../services/amount-converter.service';
-import { ProductsDatabaseService } from './../../services/products-database.service';
+import { ProductsDatabaseService, ProductType } from './../../services/products-database.service';
 
 @Component({
   selector: 'app-ingredient',
@@ -39,7 +37,13 @@ export class IngredientComponent implements OnInit {
   }
 
   getIngredientText(ingr: Ingredient): string {
-    return ProductText[ingr.product];
+    let productName = '';
+    for (let product of this.productsDb.products) {
+      if (product.id === this.ingredient.product) {
+        productName = product.name;
+      }
+    }
+    return productName;
   }
 
   getAmount(amount: number) {

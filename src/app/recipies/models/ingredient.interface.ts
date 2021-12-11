@@ -1,6 +1,4 @@
-import { ProductEnum } from "./product.enum";
-
 export interface Ingredient {
-    product: ProductEnum;
+    product: number;
     amount: number // gramm
 }
