@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { UserMenusComponent } from './user-menus.component';
+import { CalendarSelectorComponent } from './calendar-selector.component';
 
-describe('UserMenusComponent', () => {
-  let component: UserMenusComponent;
-  let fixture: ComponentFixture<UserMenusComponent>;
+describe('CalendarSelectorComponent', () => {
+  let component: CalendarSelectorComponent;
+  let fixture: ComponentFixture<CalendarSelectorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserMenusComponent ]
+      declarations: [ CalendarSelectorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserMenusComponent);
+    fixture = TestBed.createComponent(CalendarSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

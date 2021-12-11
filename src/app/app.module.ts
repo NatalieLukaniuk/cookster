@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutModule } from './layout/layout.module';
+import { MenusModule } from './menus/menus.module';
 import { RecipiesModule } from './recipies/recipies.module';
 import { SharedModule } from './shared/shared.module';
 
@@ -23,7 +24,8 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     LayoutModule,
     RecipiesModule,
-    HttpClientModule
+    HttpClientModule,
+    MenusModule
   ],
   providers: [],
   bootstrap: [AppComponent]
