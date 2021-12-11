@@ -44,7 +44,7 @@ export class ProductsDatabaseService {
     { id: 4, name: 'сіль', density: 2165, calories: 0, defaultUnit: MeasuringUnit.pinch, type: ProductType.spice },
     { id: 5, name: 'борошно', density: 650, calories: 364, defaultUnit: MeasuringUnit.gr, type: ProductType.spice },
     { id: 6, name: 'молоко', density: 1027, calories: 42.3, defaultUnit: MeasuringUnit.ml, type: ProductType.fluid },
-    { id: 7, name: 'соняшникова олія', density: 927, calories: 884.1, defaultUnit: MeasuringUnit.ml, type: ProductType.fluid },
+    { id: 7, name: 'соняшникова олія', density: 927, calories: 884.1, defaultUnit: MeasuringUnit.tableSpoon, type: ProductType.fluid },
     { id: 8, name: 'яйця', density: 1030, calories: 155.1, grInOneItem: 60, defaultUnit: MeasuringUnit.item, type: ProductType.hardItem },
     { id: 9, name: 'цукор', density: 720, calories: 386.7, defaultUnit: MeasuringUnit.teaSpoon, type: ProductType.spice },
     { id: 10, name: 'розпушувач для тіста', density: 720, calories: 79, defaultUnit: MeasuringUnit.teaSpoon, type: ProductType.spice },

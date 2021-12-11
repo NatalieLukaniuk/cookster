@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { MeasuringUnit } from '../models/measuring-units.enum';
 import { Recipy } from '../models/recipy.interface';
 
 @Injectable({
@@ -8,9 +9,13 @@ import { Recipy } from '../models/recipy.interface';
 export class RecipiesDatabaseService {
   recipies: Recipy[] = [
     {
-      id: 1,
+      id: '1',
       name: 'Тушковане філе курки з картоплею, часником і майонезом на сковороді',
-      ingrediends: [{ product: 1, amount: 100 }, { product: 2, amount: 1000 }, { product: 4, amount: 10 }],
+      ingrediends: [
+        { product: 1, amount: 100, defaultUnit: MeasuringUnit.tableSpoon },
+        { product: 2, amount: 1000, defaultUnit: MeasuringUnit.tableSpoon },
+        { product: 4, amount: 10, defaultUnit: MeasuringUnit.tableSpoon },
+      ],
       complexity: 1,
       steps: [
         {
@@ -22,7 +27,8 @@ export class RecipiesDatabaseService {
         },
         {
           id: 2,
-          description: 'Викладаємо курятину в розпечене на сковороді олію. Обсмаживши до зміни в кольорі (м’ясо повинно побіліти), додаємо півкільця цибулі, дрібненько порубаний часник і продовжуємо готувати.',
+          description:
+            'Викладаємо курятину в розпечене на сковороді олію. Обсмаживши до зміни в кольорі (м’ясо повинно побіліти), додаємо півкільця цибулі, дрібненько порубаний часник і продовжуємо готувати.',
           timeActive: 15,
           timePassive: 0,
         },
@@ -32,18 +38,18 @@ export class RecipiesDatabaseService {
             'Обсмаживши півтори хвилини, викладаємо тонкі брусочки картоплі. Кладемо майонез, злегка солимо, посипаємо сушеним кропом. Підливаємо 250 мл прохолодної води і, встановивши мінімальний нагрів, тушкуємо приблизно 35 хвилин, орієнтуючись по готовності картоплі.',
           timeActive: 15,
           timePassive: 30,
-        },        
+        },
       ],
       type: [1, 5],
       photo: '/assets/images/recipies/1.jpg',
     },
     {
-      id: 2,
+      id: '2',
       name: 'Запечена в духовці картопля в мундирі',
       ingrediends: [
-        { product: 2, amount: 1850 },
-        { product: 3, amount: 18 },
-        { product: 4, amount: 3 },
+        { product: 2, amount: 1850, defaultUnit: MeasuringUnit.tableSpoon },
+        { product: 3, amount: 18, defaultUnit: MeasuringUnit.gr },
+        { product: 4, amount: 3, defaultUnit: MeasuringUnit.gr },
       ],
       complexity: 2,
       steps: [
@@ -106,9 +112,13 @@ export class RecipiesDatabaseService {
       photo: '/assets/images/recipies/2.jpg',
     },
     {
-      id: 3,
+      id: '3',
       name: 'куряче філе у фользі',
-      ingrediends: [{ product: 1, amount: 100 }, { product: 2, amount: 1000 }, { product: 4, amount: 10 }],
+      ingrediends: [
+        { product: 1, amount: 100, defaultUnit: MeasuringUnit.gr },
+        { product: 2, amount: 1000, defaultUnit: MeasuringUnit.gr },
+        { product: 4, amount: 10, defaultUnit: MeasuringUnit.gr },
+      ],
       complexity: 3,
       steps: [
         {
@@ -120,7 +130,8 @@ export class RecipiesDatabaseService {
         },
         {
           id: 2,
-          description: 'Викладаємо курятину в розпечене на сковороді олію. Обсмаживши до зміни в кольорі (м’ясо повинно побіліти), додаємо півкільця цибулі, дрібненько порубаний часник і продовжуємо готувати.',
+          description:
+            'Викладаємо курятину в розпечене на сковороді олію. Обсмаживши до зміни в кольорі (м’ясо повинно побіліти), додаємо півкільця цибулі, дрібненько порубаний часник і продовжуємо готувати.',
           timeActive: 15,
           timePassive: 0,
         },
@@ -130,15 +141,19 @@ export class RecipiesDatabaseService {
             'Обсмаживши півтори хвилини, викладаємо тонкі брусочки картоплі. Кладемо майонез, злегка солимо, посипаємо сушеним кропом. Підливаємо 250 мл прохолодної води і, встановивши мінімальний нагрів, тушкуємо приблизно 35 хвилин, орієнтуючись по готовності картоплі.',
           timeActive: 15,
           timePassive: 30,
-        },        
+        },
       ],
-      type: [1, 5, 2, 6, 8, ],
+      type: [1, 5, 2, 6, 8],
       photo: '/assets/images/recipies/3.jpg',
     },
     {
-      id: 4,
+      id: '4',
       name: 'Пікантна закуска з кабачків',
-      ingrediends: [{ product: 1, amount: 100 }, { product: 2, amount: 1000 }, { product: 4, amount: 10 }],
+      ingrediends: [
+        { product: 1, amount: 100, defaultUnit: MeasuringUnit.gr },
+        { product: 2, amount: 1000, defaultUnit: MeasuringUnit.gr },
+        { product: 4, amount: 10, defaultUnit: MeasuringUnit.gr },
+      ],
       complexity: 1,
       steps: [
         {
@@ -150,7 +165,8 @@ export class RecipiesDatabaseService {
         },
         {
           id: 2,
-          description: 'Викладаємо курятину в розпечене на сковороді олію. Обсмаживши до зміни в кольорі (м’ясо повинно побіліти), додаємо півкільця цибулі, дрібненько порубаний часник і продовжуємо готувати.',
+          description:
+            'Викладаємо курятину в розпечене на сковороді олію. Обсмаживши до зміни в кольорі (м’ясо повинно побіліти), додаємо півкільця цибулі, дрібненько порубаний часник і продовжуємо готувати.',
           timeActive: 15,
           timePassive: 0,
         },
@@ -160,15 +176,19 @@ export class RecipiesDatabaseService {
             'Обсмаживши півтори хвилини, викладаємо тонкі брусочки картоплі. Кладемо майонез, злегка солимо, посипаємо сушеним кропом. Підливаємо 250 мл прохолодної води і, встановивши мінімальний нагрів, тушкуємо приблизно 35 хвилин, орієнтуючись по готовності картоплі.',
           timeActive: 15,
           timePassive: 30,
-        },        
+        },
       ],
       type: [1, 5],
       photo: '/assets/images/recipies/4.jpg',
     },
     {
-      id: 5,
+      id: '5',
       name: 'ЛОКШИНА З КУРКОЮ І ОВОЧАМИ ПО-АЗІЙСЬКИ',
-      ingrediends: [{ product: 1, amount: 100 }, { product: 2, amount: 1000 }, { product: 4, amount: 10 }],
+      ingrediends: [
+        { product: 1, amount: 100, defaultUnit: MeasuringUnit.gr },
+        { product: 2, amount: 1000, defaultUnit: MeasuringUnit.gr },
+        { product: 4, amount: 10, defaultUnit: MeasuringUnit.gr },
+      ],
       complexity: 1,
       steps: [
         {
@@ -180,7 +200,8 @@ export class RecipiesDatabaseService {
         },
         {
           id: 2,
-          description: 'Викладаємо курятину в розпечене на сковороді олію. Обсмаживши до зміни в кольорі (м’ясо повинно побіліти), додаємо півкільця цибулі, дрібненько порубаний часник і продовжуємо готувати.',
+          description:
+            'Викладаємо курятину в розпечене на сковороді олію. Обсмаживши до зміни в кольорі (м’ясо повинно побіліти), додаємо півкільця цибулі, дрібненько порубаний часник і продовжуємо готувати.',
           timeActive: 15,
           timePassive: 0,
         },
@@ -190,15 +211,19 @@ export class RecipiesDatabaseService {
             'Обсмаживши півтори хвилини, викладаємо тонкі брусочки картоплі. Кладемо майонез, злегка солимо, посипаємо сушеним кропом. Підливаємо 250 мл прохолодної води і, встановивши мінімальний нагрів, тушкуємо приблизно 35 хвилин, орієнтуючись по готовності картоплі.',
           timeActive: 15,
           timePassive: 30,
-        },        
+        },
       ],
       type: [1, 5],
       photo: '/assets/images/recipies/5.jpg',
     },
     {
-      id: 6,
+      id: '6',
       name: 'Нагетси з соусом з журавлини',
-      ingrediends: [{ product: 1, amount: 100 }, { product: 2, amount: 1000 }, { product: 4, amount: 10 }],
+      ingrediends: [
+        { product: 1, amount: 100, defaultUnit: MeasuringUnit.gr },
+        { product: 2, amount: 1000, defaultUnit: MeasuringUnit.gr },
+        { product: 4, amount: 10, defaultUnit: MeasuringUnit.gr },
+      ],
       complexity: 1,
       steps: [
         {
@@ -210,7 +235,8 @@ export class RecipiesDatabaseService {
         },
         {
           id: 2,
-          description: 'Викладаємо курятину в розпечене на сковороді олію. Обсмаживши до зміни в кольорі (м’ясо повинно побіліти), додаємо півкільця цибулі, дрібненько порубаний часник і продовжуємо готувати.',
+          description:
+            'Викладаємо курятину в розпечене на сковороді олію. Обсмаживши до зміни в кольорі (м’ясо повинно побіліти), додаємо півкільця цибулі, дрібненько порубаний часник і продовжуємо готувати.',
           timeActive: 15,
           timePassive: 0,
         },
@@ -220,7 +246,7 @@ export class RecipiesDatabaseService {
             'Обсмаживши півтори хвилини, викладаємо тонкі брусочки картоплі. Кладемо майонез, злегка солимо, посипаємо сушеним кропом. Підливаємо 250 мл прохолодної води і, встановивши мінімальний нагрів, тушкуємо приблизно 35 хвилин, орієнтуючись по готовності картоплі.',
           timeActive: 15,
           timePassive: 30,
-        },        
+        },
       ],
       type: [1, 5],
       photo: '/assets/images/recipies/6.jpg',

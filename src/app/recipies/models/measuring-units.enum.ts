@@ -53,6 +53,7 @@ export const MeasuringUnitOptionsFluid = [
   export const MeasuringUnitOptionsSpice = [
     MeasuringUnit.gr,
     MeasuringUnit.teaSpoon,
+    MeasuringUnit.tableSpoon,
     MeasuringUnit.coffeeSpoon,
     MeasuringUnit.pinch,
   ];

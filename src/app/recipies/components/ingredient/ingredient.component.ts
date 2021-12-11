@@ -56,13 +56,7 @@ export class IngredientComponent implements OnInit {
   }
 
   getDefaultMeasuringUnit() {
-    let defaultUnit = MeasuringUnit.gr;
-    for (let product of this.productsDb.products) {
-      if (product.id === this.ingredient.product) {
-        defaultUnit = product.defaultUnit;
-      }
-    }
-    return defaultUnit;
+    return this.ingredient.defaultUnit;
   }
 
   get productType(){
@@ -162,7 +156,7 @@ export class IngredientComponent implements OnInit {
     const convertedToSelectedUnit = this.actualAmount;
     let amountPerSelectedPortions = this.getAmount(convertedToSelectedUnit);
     if (amountPerSelectedPortions % 1){
-      amountPerSelectedPortions = +amountPerSelectedPortions.toFixed(3);
+      amountPerSelectedPortions = +amountPerSelectedPortions.toFixed(2);
     } 
     return amountPerSelectedPortions;
   }
