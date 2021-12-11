@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
+import { DishType } from '../../models/dishType.enum';
 import { Recipy } from '../../models/recipy.interface';
 import { PreparationStep } from './../../models/preparationStep.interface';
 
@@ -75,6 +76,14 @@ export class RecipyFullViewComponent implements OnInit {
       time = time + step.timePassive;
     }
     return time;
+  }
+
+  get tags(){
+    let tags: string[] = [];
+    this.data.type.forEach((tag: DishType) => {
+      tags.push(DishType[tag])
+    });
+    return tags;
   }
 }
 

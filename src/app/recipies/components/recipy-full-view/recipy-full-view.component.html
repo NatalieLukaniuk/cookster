@@ -1,6 +1,5 @@
 <app-header></app-header>
 <div class="full-recipy-wrapper">
-
   <div class="recipy-body">
     <div class="recipy-details">
       <h1>{{ data.name }}</h1>
@@ -51,9 +50,7 @@
         <div><span class="bold">Теги: </span></div>
         <div>
           <mat-chip-list>
-            <mat-chip>перші страви</mat-chip>
-            <mat-chip>гарячі закуски</mat-chip>
-            <mat-chip>соус</mat-chip>
+            <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
             <mat-chip class="add-tag"
               ><mat-icon svgIcon="add"></mat-icon
             ></mat-chip>

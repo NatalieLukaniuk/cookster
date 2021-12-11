@@ -97,6 +97,7 @@ select.inline-select {
 .mat-menu-panel{
   background-color: var(--secondary);
   border-radius: 2px;
+  min-height: 0 !important;
 }
 
 .mat-menu-content:not(:empty) {
@@ -110,6 +111,8 @@ button.mat-menu-item {
   width: 100%;
   color: var(--primary);
   font-family: "Montserrat", sans-serif;
+  height: 30px;
+  line-height: 20px;
 }
 
 // --- Scrollbar --- //

@@ -132,7 +132,7 @@ export class RecipiesDatabaseService {
           timePassive: 30,
         },        
       ],
-      type: [1, 5],
+      type: [1, 5, 2, 6, 8, ],
       photo: '/assets/images/recipies/3.jpg',
     },
     {
