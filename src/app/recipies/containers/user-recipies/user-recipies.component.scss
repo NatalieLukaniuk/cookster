@@ -2,8 +2,11 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 .recipy{
     width: 48%;
     position: relative;
+    min-width: 48%;
+    margin-bottom: 30px;
 }

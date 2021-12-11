@@ -39,6 +39,7 @@ $cookster-theme: mat.define-light-theme(
 html,
 body {
   height: 100%;
+  overflow-y: auto;
 }
 body {
   margin: 0;
@@ -134,4 +135,8 @@ button.mat-menu-item {
 {
 	background-color: var(--secondary);
 	border: 2px solid var(--secondary);
+}
+
+.cdk-global-scrollblock{
+  overflow-y: auto;
 }

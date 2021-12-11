@@ -1,8 +1,8 @@
 .full-recipy-wrapper {
   background-color: var(--primary);
   width: 100%;
-  height: calc(100% - 73px);
-  padding: 30px 60px 90px;
+  height: 100%;
+  padding: 130px 60px 90px;
   overflow-y: auto;
   box-sizing: border-box;
 }
@@ -54,6 +54,7 @@
   padding: 18px 33px 0;
   box-sizing: border-box;
   justify-content: flex-end;
+  z-index: 1000;
   button {
     margin-left: 12px;
   }

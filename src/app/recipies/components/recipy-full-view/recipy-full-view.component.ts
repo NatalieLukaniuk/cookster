@@ -79,3 +79,4 @@ export class RecipyFullViewComponent implements OnInit {
 }
 
 //TODO chips: figure out what should happen on click on tag chip
+//TODO: implement calculation for items measuring unit

@@ -5,7 +5,11 @@ header {
   height: 72px;
   align-items: center;
   border-bottom: 1px solid var(--secondary);
-  background-color: var(--primary)
+  background-color: var(--primary);
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  box-sizing: border-box;
 }
 .user-avatar {
   width: 50px;
@@ -16,7 +20,7 @@ header {
   }
 }
 
-h1{
-    cursor: pointer;
-    color: var(--secondary);
+h1 {
+  cursor: pointer;
+  color: var(--secondary);
 }
