@@ -90,3 +90,23 @@ select.inline-select {
   background-color: var(--secondary);
   color: var(--primary);
 }
+
+// ----- Mat-menu --- //
+
+.mat-menu-panel{
+  background-color: var(--secondary);
+  border-radius: 2px;
+}
+
+.mat-menu-content:not(:empty) {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  background-color: var(--secondary);
+  border-radius: 2px;
+}
+
+button.mat-menu-item {
+  width: 100%;
+  color: var(--primary);
+  font-family: "Montserrat", sans-serif;
+}

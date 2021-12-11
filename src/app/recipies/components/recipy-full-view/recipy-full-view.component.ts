@@ -77,3 +77,5 @@ export class RecipyFullViewComponent implements OnInit {
     return time;
   }
 }
+
+//TODO chips: figure out what should happen on click on tag chip

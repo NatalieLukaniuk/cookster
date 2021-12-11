@@ -2,7 +2,7 @@
   background-color: var(--primary);
   width: 100%;
   height: calc(100% - 73px);
-  padding: 30px 40px 90px;
+  padding: 30px 60px 90px;
   overflow-y: auto;
   box-sizing: border-box;
 }
@@ -13,7 +13,9 @@
 }
 
 .recipy-details {
-  width: 52%;
+  width: 56%;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .ingredients-wrapper,
@@ -45,16 +47,16 @@
 }
 
 .action-buttons-wrapper {
-    display: flex;
-    position: fixed;
-    top: 0;
-    width: 95%;
-    padding: 18px 33px 0;
-    box-sizing: border-box;
-    justify-content: flex-end;
-    button{
-        margin-left: 12px;
-    }
+  display: flex;
+  position: fixed;
+  top: 0;
+  width: 95%;
+  padding: 18px 33px 0;
+  box-sizing: border-box;
+  justify-content: flex-end;
+  button {
+    margin-left: 12px;
+  }
 }
 
 .back-button {
@@ -66,7 +68,8 @@
 }
 
 .recipy-info {
-  width: 33%;
+  width: 35%;
+  font-size: 14px;
   .bold {
     font-weight: 700;
   }
@@ -80,8 +83,8 @@
   object-fit: cover;
 }
 
-.recipy-complexity{
-    margin-top: 20px;
+.recipy-complexity {
+  margin-top: 20px;
 }
 
 .recipy-time,
