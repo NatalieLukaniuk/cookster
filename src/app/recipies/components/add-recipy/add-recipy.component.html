@@ -1,3 +1,91 @@
-<p>
-  add-recipy works!
-</p>
+<app-header></app-header>
+<form class="add-recipy-wrapper" [formGroup]="recipyForm" novalidate>
+  <h1>Новий рецепт</h1>
+
+  <mat-form-field appearance="outline" class="recipy-name">
+    <mat-label>Назва</mat-label>
+    <input
+      matInput
+      formControlName="name"
+      placeholder="Напр.: Картопляне пюре"
+      #name
+    />
+    <mat-icon
+      matSuffix
+      svgIcon="done"
+      *ngIf="recipyForm.controls.name.valid"
+    ></mat-icon>
+    <!-- <mat-hint>Hint</mat-hint> -->
+  </mat-form-field>
+
+  <div class="recipy-ingredients">
+    <div formArrayName="ingrediends">
+      <div
+        *ngFor="
+          let ingredient of getIngredientFormsControls()['controls'];
+          let i = index
+        "
+      >
+        <app-add-ingredients formControlName="{{ i }}"></app-add-ingredients>
+      </div>
+    </div>
+    <button mat-icon-button (click)="addIngredient()">
+      <mat-icon svgIcon="add"></mat-icon>Додати ще один інгридієнт
+    </button>
+  </div>
+
+  <div class="recipy-steps">
+    <div formArrayName="steps">
+      <div
+        *ngFor="
+          let ingredient of getStepsFormsControls()['controls'];
+          let i = index
+        "
+      >
+        <app-add-steps
+          formControlName="{{ i }}"
+          [index]="i"
+          (stepsFormValid)="onStepsFormChange($event)"
+        ></app-add-steps>
+      </div>
+    </div>
+    <button mat-icon-button (click)="addStep()">
+      <mat-icon svgIcon="add"></mat-icon>Додати ще один крок
+    </button>
+  </div>
+
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Складність</mat-label>
+      <mat-select formControlName="complexity">
+        <mat-option *ngFor="let unit of complexityOptions" [value]="unit">
+          {{ getComplexityOptionsText(unit) }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Теги</mat-label>
+      <mat-select formControlName="type" multiple="true">
+        <mat-option *ngFor="let tag of tags" [value]="tag">
+          {{ getTagsText(tag) }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
+<div class="action-buttons-wrapper">
+  <button mat-flat-button class="action-button back-button" (click)="goBack()">
+    <mat-icon svgIcon="arrow-left"></mat-icon>Скасувати
+  </button>
+  <button
+    [disabled]="recipyForm.invalid"
+    mat-flat-button
+    type="submit"
+    class="action-button"
+    (click)="submit()"
+  >
+    Зберегти рецепт
+  </button>
+  <!-- <button mat-flat-button class="action-button">Додати в меню</button>
+  <button mat-flat-button class="action-button">В список покупок</button> -->
+</div>

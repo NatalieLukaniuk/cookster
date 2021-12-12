@@ -40,5 +40,11 @@ export class AppComponent {
         '/assets/icons/arrow-left.svg'
       )
     );
+    this.iconRegistry.addSvgIcon(
+      'done',
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        '/assets/icons/checkmark.svg'
+      )
+    );
   }
 }

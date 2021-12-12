@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { RecipiesService } from '../../services/recipies.service';
 import { Ingredient } from './../../models/ingredient.interface';
 import {
   MeasuringUnit,
@@ -28,7 +29,8 @@ export class IngredientComponent implements OnInit {
   measuringUnit: MeasuringUnit = MeasuringUnit.gr;
   constructor(
     private productsDb: ProductsDatabaseService,
-    private converter: AmountConverterService
+    private converter: AmountConverterService,
+    private recipies: RecipiesService
   ) {}
 
   ngOnInit() {
@@ -59,7 +61,7 @@ export class IngredientComponent implements OnInit {
     return this.ingredient.defaultUnit;
   }
 
-  get productType(){
+  get productType() {
     let type: ProductType = ProductType.hardItem;
     for (let product of this.productsDb.products) {
       if (product.id === this.ingredient.product) {
@@ -70,14 +72,18 @@ export class IngredientComponent implements OnInit {
   }
   get measurementUnits() {
     let optionsArray: MeasuringUnit[] = [];
-    switch(this.productType){
-      case ProductType.fluid: optionsArray = MeasuringUnitOptionsFluid;
-      break;
-      case ProductType.hardItem: optionsArray = MeasuringUnitOptionsHardItems;
-      break;
-      case ProductType.herb: optionsArray = MeasuringUnitOptionsHerbs;
-      break;
-      case ProductType.spice: optionsArray = MeasuringUnitOptionsSpice;
+    switch (this.productType) {
+      case ProductType.fluid:
+        optionsArray = MeasuringUnitOptionsFluid;
+        break;
+      case ProductType.hardItem:
+        optionsArray = MeasuringUnitOptionsHardItems;
+        break;
+      case ProductType.herb:
+        optionsArray = MeasuringUnitOptionsHerbs;
+        break;
+      case ProductType.spice:
+        optionsArray = MeasuringUnitOptionsSpice;
     }
     return optionsArray;
   }
@@ -86,7 +92,7 @@ export class IngredientComponent implements OnInit {
     return MeasuringUnitText[unit];
   }
 
-  onValueChange(event: any) {    
+  onValueChange(event: any) {
     this.measuringUnit = +event.target.value;
   }
 
@@ -137,6 +143,12 @@ export class IngredientComponent implements OnInit {
           break;
         case MeasuringUnit.bunch:
           amount = this.converter.grToBunch(this.ingredient.amount);
+          break;
+        case MeasuringUnit.item:
+          amount = this.converter.grToItems(
+            this.ingredient.amount,
+            this.recipies.getGrPerItem(this.ingredient.product)
+          );
       }
       return amount;
     }
@@ -155,9 +167,9 @@ export class IngredientComponent implements OnInit {
   get amountToDisplay() {
     const convertedToSelectedUnit = this.actualAmount;
     let amountPerSelectedPortions = this.getAmount(convertedToSelectedUnit);
-    if (amountPerSelectedPortions % 1){
+    if (amountPerSelectedPortions % 1) {
       amountPerSelectedPortions = +amountPerSelectedPortions.toFixed(2);
-    } 
+    }
     return amountPerSelectedPortions;
   }
 }

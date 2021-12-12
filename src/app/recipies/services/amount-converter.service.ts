@@ -122,6 +122,14 @@ export class AmountConverterService {
     return gr;
   }
 
+  itemsToGr(amount: number, grInOneItem: number){
+    return amount * grInOneItem;
+  }
+
+  grToItems(amount: number, grInOneItem: number){
+    return amount / grInOneItem;
+  }
+
   
   
 }

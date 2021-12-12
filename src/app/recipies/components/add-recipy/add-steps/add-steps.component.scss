@@ -1,0 +1,13 @@
+mat-form-field {
+  &:first-child {
+    width: 60%;
+  }
+  &:not(:first-child) {
+    width: 18%;
+  }
+}
+
+form {
+  display: flex;
+  justify-content: space-between;
+}

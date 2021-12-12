@@ -4,11 +4,11 @@ import { Ingredient } from './ingredient.interface';
 import { PreparationStep } from './preparationStep.interface';
 
 export interface Recipy {
-  id: string;
+  id?: string;
   name: string;
   ingrediends: Ingredient[];
   complexity: Complexity;
   steps: PreparationStep[];
   type: DishType[];
-  photo: string;
+  photo?: string;
 }
