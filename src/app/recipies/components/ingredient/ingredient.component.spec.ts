@@ -1,28 +1,45 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
+import { AmountConverterService } from '../../services/amount-converter.service';
+import { RecipiesService } from '../../services/recipies.service';
 import { IngredientComponent } from './ingredient.component';
 
-describe('IngredientComponent', () => {
+fdescribe('IngredientComponent', () => {
+  let converterSpy: any, recipiesSpy: any;
   let component: IngredientComponent;
   let fixture: ComponentFixture<IngredientComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ IngredientComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      converterSpy = jasmine.createSpyObj('AmountConverterService', [
+        'grToKg',
+        'grToLiter',
+        'grToMl',
+        'grToTableSpoons',
+        'grToDessertSpoons',
+        'grToTeaSpoons',
+        'grToCoffeeSpoons',
+      ]);
+      recipiesSpy = jasmine.createSpyObj('RecipiesService', ['getGrPerItem']);
+      TestBed.configureTestingModule({
+        declarations: [IngredientComponent],
+        providers: [
+          { provide: AmountConverterService, useValue: converterSpy },
+          { provide: RecipiesService, useValue: recipiesSpy },
+        ],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(IngredientComponent);
+          component = fixture.componentInstance;
+        });
     })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(IngredientComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  );
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should display', () => {
+    const ingredient = { product: 1, amount: 1000, defaultUnit: 1 };
   });
 });

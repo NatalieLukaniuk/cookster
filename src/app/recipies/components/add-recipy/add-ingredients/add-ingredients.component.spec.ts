@@ -1,11 +1,9 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 import { AddIngredientsComponent } from './add-ingredients.component';
 
-describe('AddIngredientsComponent', () => {
+xdescribe('AddIngredientsComponent', () => {
   let component: AddIngredientsComponent;
   let fixture: ComponentFixture<AddIngredientsComponent>;
 
