@@ -8,6 +8,7 @@ import { UserRecipiesComponent } from './recipies/containers/user-recipies/user-
 import { ExtendedSearchComponent } from './shared/components/extended-search/extended-search.component';
 
 export const routes: Routes = [
+  {path: '', pathMatch: 'full', redirectTo: 'user-recipies'},
   {path: 'extended-search', component: ExtendedSearchComponent, },
   {path: 'user-recipies', component: UserRecipiesComponent},
   {path: 'friends-feed', component: FriendsFeedComponent},
