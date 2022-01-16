@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { PRODUCTS } from '../../models/products-database';
 import { RecipiesService } from '../../services/recipies.service';
 import { Ingredient } from './../../models/ingredient.interface';
 import {
@@ -11,7 +12,7 @@ import {
   MeasuringUnitText,
 } from './../../models/measuring-units.enum';
 import { AmountConverterService } from './../../services/amount-converter.service';
-import { ProductsDatabaseService, ProductType } from './../../services/products-database.service';
+import { ProductType } from './../../services/products-database.service';
 
 @Component({
   selector: 'app-ingredient',
@@ -28,7 +29,6 @@ export class IngredientComponent implements OnInit {
 
   measuringUnit: MeasuringUnit = MeasuringUnit.gr;
   constructor(
-    private productsDb: ProductsDatabaseService,
     private converter: AmountConverterService,
     private recipies: RecipiesService
   ) {}
@@ -39,7 +39,7 @@ export class IngredientComponent implements OnInit {
 
   getIngredientText(ingr: Ingredient): string {
     let productName = '';
-    for (let product of this.productsDb.products) {
+    for (let product of PRODUCTS) {
       if (product.id === this.ingredient.product) {
         productName = product.name;
       }
@@ -63,7 +63,7 @@ export class IngredientComponent implements OnInit {
 
   get productType() {
     let type: ProductType = ProductType.hardItem;
-    for (let product of this.productsDb.products) {
+    for (let product of PRODUCTS) {
       if (product.id === this.ingredient.product) {
         type = product.type;
       }
@@ -156,7 +156,7 @@ export class IngredientComponent implements OnInit {
 
   get density() {
     let density = 1;
-    for (let product of this.productsDb.products) {
+    for (let product of PRODUCTS) {
       if (product.id === this.ingredient.product) {
         density = product.density;
       }

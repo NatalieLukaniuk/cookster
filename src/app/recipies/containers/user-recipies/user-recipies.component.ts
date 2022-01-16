@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 
 import { RecipiesApiService } from '../../services/recipies-api.service';
-import { RecipiesDatabaseService } from '../../services/recipies-database.service';
 
 @Component({
   selector: 'app-user-recipies',
@@ -11,10 +10,9 @@ import { RecipiesDatabaseService } from '../../services/recipies-database.servic
 })
 export class UserRecipiesComponent implements OnInit {
 userRecipies: Recipy[] = [];
-  constructor(private mockRecipies: RecipiesDatabaseService, private apiService: RecipiesApiService) { }
+  constructor(private apiService: RecipiesApiService) { }
 
   ngOnInit() {
-    // this.userRecipies = this.mockRecipies.recipies;
     this.getRecipies()
   }
 
