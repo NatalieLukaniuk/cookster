@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { MeasuringUnit } from '../models/measuring-units.enum';
 import { PreparationStep } from '../models/preparationStep.interface';
@@ -12,6 +13,7 @@ import { RecipiesApiService } from './recipies-api.service';
   providedIn: 'root',
 })
 export class RecipiesService {
+  newRecipyAdded = new Subject();
   constructor(
     private productsDb: ProductsDatabaseService,
     private api: RecipiesApiService,
@@ -19,41 +21,43 @@ export class RecipiesService {
   ) {}
 
   processAddNewRecipy(newRecipy: Recipy) {
-    newRecipy.ingrediends = newRecipy.ingrediends.map((ingr: any) => {
-      let productId;
-      for (let product of this.productsDb.products) {
-        if (product.name === ingr.ingredient) {
-          productId = product.id;
-          console.log(productId);
+    if (newRecipy) {
+      newRecipy.ingrediends = newRecipy.ingrediends.map((ingr: any) => {
+        let productId;
+        for (let product of this.productsDb.products) {
+          if (product.name === ingr.ingredient) {
+            productId = product.id;
+            console.log(productId);
+          }
         }
-      }
-      ingr.product = productId;
-      
-      ingr.amount = this.transformToGr(ingr);
+        ingr.product = productId;
 
-      return {
-        product: ingr.product,
-        amount: ingr.amount,
-        defaultUnit: ingr.defaultUnit,
+        ingr.amount = this.transformToGr(ingr);
+
+        return {
+          product: ingr.product,
+          amount: ingr.amount,
+          defaultUnit: ingr.defaultUnit,
+        };
+      });
+      newRecipy.steps = newRecipy.steps.map((step: PreparationStep) => {
+        return {
+          id: step.id,
+          description: step.description,
+          timeActive: +step.timeActive,
+          timePassive: +step.timePassive,
+        };
+      });
+      let recipy = {
+        name: newRecipy.name,
+        complexity: newRecipy.complexity,
+        steps: newRecipy.steps,
+        type: newRecipy.type,
+        ingrediends: newRecipy.ingrediends,
+        photo: '/assets/images/recipies/2.jpg',
       };
-    });
-    newRecipy.steps = newRecipy.steps.map((step: PreparationStep) => {
-      return {
-        id: step.id,
-        description: step.description,
-        timeActive: +step.timeActive,
-        timePassive: +step.timePassive,
-      };
-    });
-    let recipy = {
-      name: newRecipy.name,
-      complexity: newRecipy.complexity,
-      steps: newRecipy.steps,
-      type: newRecipy.type,
-      ingrediends: newRecipy.ingrediends,
-      photo: '/assets/images/recipies/2.jpg',
-    };
-    this.api.addRecipy(recipy).subscribe((res) => console.log(res));
+      this.api.addRecipy(recipy).subscribe(() => this.newRecipyAdded.next());
+    }
   }
 
   transformToGr(ingr: Ingredient) {
@@ -93,8 +97,6 @@ export class RecipiesService {
         return this.converter.teaSpoonsToGr(amount, density);
       case MeasuringUnit.item:
         return this.converter.itemsToGr(amount, grInOneItem);
-      default:
-        return null;
     }
   }
 
@@ -116,5 +118,9 @@ export class RecipiesService {
       }
     }
     return grInOneItem;
+  }
+
+  getAllRecipies() {
+    return this.api.getRecipies();
   }
 }

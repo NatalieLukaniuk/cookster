@@ -1,34 +1,38 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 
-import { RecipiesApiService } from '../../services/recipies-api.service';
+import { RecipiesService } from '../../services/recipies.service';
 
 @Component({
   selector: 'app-user-recipies',
   templateUrl: './user-recipies.component.html',
-  styleUrls: ['./user-recipies.component.scss']
+  styleUrls: ['./user-recipies.component.scss'],
 })
 export class UserRecipiesComponent implements OnInit {
-userRecipies: Recipy[] = [];
-  constructor(private apiService: RecipiesApiService) { }
+  userRecipies: Recipy[] = [];
+  constructor(private recipies: RecipiesService) {}
 
   ngOnInit() {
-    this.getRecipies()
+    this.getRecipies();
+    this.recipies.newRecipyAdded.subscribe(() => this.getRecipies());
   }
 
-  getRecipies(){
-    this.apiService.getRecipies().subscribe(res => {
-      let array = Object.entries(res);
-      let recipies:any = [];
-      for (let entry of array){
-        let recipy: any = {
-          id: entry[0],
-          ...entry[1]          
+  getRecipies() {
+    this.recipies
+      .getAllRecipies()
+      .pipe(take(1))
+      .subscribe((res) => {
+        let array = Object.entries(res);
+        let recipies: any = [];
+        for (let entry of array) {
+          let recipy: any = {
+            id: entry[0],
+            ...entry[1],
+          };
+          recipies.push(recipy);
         }
-        recipies.push(recipy)
-      }
-      this.userRecipies = recipies;
-    })
+        this.userRecipies = recipies;
+      });
   }
-
 }

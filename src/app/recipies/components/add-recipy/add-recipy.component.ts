@@ -67,12 +67,12 @@ export class AddRecipyComponent implements OnInit {
     return DishType[tag];
   }
 
-  submit(){   
-    this.dialogRef.close(this.recipyForm.value)
+  submit() {
+    this.dialogRef.close(this.recipyForm.value);
   }
 
-  onStepsFormChange(event: boolean){
+  onStepsFormChange(event: boolean) {
     this.isStepsFormValid = event;
-    console.log(this.isStepsFormValid)
+    console.log(this.isStepsFormValid);
   }
 }
