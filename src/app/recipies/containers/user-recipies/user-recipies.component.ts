@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 
+import { ProductsService } from '../../services/products.service';
 import { RecipiesService } from '../../services/recipies.service';
 
 @Component({
@@ -11,10 +12,14 @@ import { RecipiesService } from '../../services/recipies.service';
 })
 export class UserRecipiesComponent implements OnInit {
   userRecipies: Recipy[] = [];
-  constructor(private recipies: RecipiesService) {}
+  constructor(
+    private recipies: RecipiesService,
+    private products: ProductsService
+  ) {}
 
   ngOnInit() {
     this.getRecipies();
+    this.getProducts();
     this.recipies.newRecipyAdded.subscribe(() => this.getRecipies());
   }
 
@@ -34,5 +39,9 @@ export class UserRecipiesComponent implements OnInit {
         }
         this.userRecipies = recipies;
       });
+  }
+
+  getProducts() {
+    this.products.getAllProducts();
   }
 }

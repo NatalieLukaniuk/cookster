@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
+import { AddProductComponent } from 'src/app/recipies/components/add-product/add-product.component';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
 import { AddRecipyComponent } from './../../../recipies/components/add-recipy/add-recipy.component';
+import { Product } from './../../../recipies/services/products-database.service';
+import { ProductsService } from './../../../recipies/services/products.service';
 
 @Component({
   selector: 'app-navigation',
@@ -22,7 +25,8 @@ export class NavigationComponent {
 
   constructor(
     public dialog: MatDialog,
-    private recipiesService: RecipiesService
+    private recipiesService: RecipiesService,
+    private productsService: ProductsService
   ) {}
 
   addRecipy() {
@@ -41,6 +45,24 @@ export class NavigationComponent {
       .pipe(take(1))
       .subscribe((result: Recipy) => {
         this.recipiesService.processAddNewRecipy(result);
+      });
+  }
+  addProduct(){
+    const dialogRef = this.dialog.open(AddProductComponent, {
+      width: '100%',
+      maxWidth: '100%',
+      height: '100%',
+      position: { bottom: '0' },
+      hasBackdrop: false,
+      panelClass: 'full-recipy-dialog',
+      autoFocus: false,
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((result: Product) => {
+        this.productsService.processAddNewProduct(result);
       });
   }
 }

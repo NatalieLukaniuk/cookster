@@ -10,6 +10,7 @@ import { IngredientComponent } from './components/ingredient/ingredient.componen
 import { RecipyFullViewComponent } from './components/recipy-full-view/recipy-full-view.component';
 import { RecipyShortViewComponent } from './components/recipy-short-view/recipy-short-view.component';
 import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.component';
+import { AddProductComponent } from './components/add-product/add-product.component';
 
 @NgModule({
   imports: [CommonModule, SharedModule, FormsModule, ReactiveFormsModule],
@@ -20,7 +21,8 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     IngredientComponent,
     AddRecipyComponent,
     AddStepsComponent,
-    AddIngredientsComponent
+    AddIngredientsComponent,
+    AddProductComponent
   ],
 })
 export class RecipiesModule {}

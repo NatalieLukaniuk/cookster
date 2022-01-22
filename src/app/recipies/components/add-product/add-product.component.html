@@ -1,0 +1,78 @@
+<app-header></app-header>
+<form [formGroup]="productForm" novalidate class="add-product-wrapper">
+    <h1>Новий продукт</h1>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Назва</mat-label>
+    <input
+      matInput
+      formControlName="name"
+      placeholder="Напр.: Картопля"
+      #name
+    />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Щільність в кг/дм3</mat-label>
+    <input
+      matInput
+      formControlName="density"
+      placeholder="Напр.: 600"
+      #density
+      type="number"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Грамів в одній штуці середньої величини</mat-label>
+    <input
+      matInput
+      formControlName="grInOneItem"
+      placeholder="Напр.: 600"
+      #density
+      type="number"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Ккал в 100гр</mat-label>
+    <input
+      matInput
+      formControlName="calories"
+      placeholder="Напр.: 600"
+      #density
+      type="number"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Переважно вимірюється в:</mat-label>
+    <mat-select formControlName="defaultUnit">
+      <mat-option *ngFor="let unit of measuringUnits" [value]="unit">
+        {{ getMeasuringUnitText(unit) }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Тип продукту:</mat-label>
+    <mat-select formControlName="defaultUnit">
+      <mat-option *ngFor="let type of productTypes" [value]="type">
+        {{ getProductTypeText(type) }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</form>
+
+<div class="action-buttons-wrapper">
+    <button mat-flat-button class="action-button back-button" type="button" (click)="goBack()">
+      <mat-icon svgIcon="arrow-left"></mat-icon>Скасувати
+    </button>
+    <button
+      [disabled]="productForm.invalid"
+      mat-flat-button
+      type="submit"
+      class="action-button"
+      (click)="submit()"
+    >
+      Зберегти
+    </button>
+    <!-- <button mat-flat-button class="action-button">Додати в меню</button>
+    <button mat-flat-button class="action-button">В список покупок</button> -->
+  </div>
