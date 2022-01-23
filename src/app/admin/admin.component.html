@@ -1,0 +1,21 @@
+<ng-container>
+<mat-drawer-container autosize class="container">
+  <mat-drawer class="navigation-pane" mode="side" opened>
+    <div>
+      <h2 style="margin-top: 4px;">Navigation</h2>
+  </div>
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding [class.active-path]="activePath == node.path">
+      <button mat-button (click)="activePath = node.path">{{node.name}}</button>
+    </mat-tree-node>
+  </mat-tree>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div>
+      <app-recipies-admin *ngIf="activePath === 'users'"></app-recipies-admin>
+      <app-products-admin *ngIf="activePath === 'logs'"></app-products-admin>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
+</ng-container>
+<!-- <mat-spinner *ngIf="!userRole"></mat-spinner> -->

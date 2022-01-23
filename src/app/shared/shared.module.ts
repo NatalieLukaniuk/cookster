@@ -11,6 +11,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 
 import { ExtendedSearchComponent } from './components/extended-search/extended-search.component';
@@ -32,7 +33,9 @@ import { HeaderComponent } from './containers/header/header.component';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSidenavModule,
+    MatTreeModule
   ],
   declarations: [
     HeaderComponent,
@@ -55,7 +58,9 @@ import { HeaderComponent } from './containers/header/header.component';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSidenavModule,
+    MatTreeModule
   ],
   providers: []
 })
