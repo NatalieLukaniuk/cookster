@@ -145,3 +145,99 @@ button.mat-menu-item {
 .cdk-global-scrollblock{
   overflow-y: auto;
 }
+
+// ---- Admin-panel
+
+.admin-panel{
+  .admin-header{
+    display: flex;
+    justify-content: space-between;
+  }
+  .mat-form-field {
+    width: 13rem;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.88rem;
+  }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0 0 0.44rem 0;
+    border-top: 0.69rem solid transparent;
+  }
+  
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: 0.38rem !important;
+    color: var(--dark-color);
+  }
+  
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    padding-bottom: 0.75rem;
+    margin: 0 !important;
+  }
+  
+  table {
+    width: 100%;
+    tr.mat-row,
+    tr.mat-header-row {
+      height: 2.88rem;
+    }
+    th {
+      color: #97999b;
+    }
+    td {
+      color: black;
+    }
+    th,
+    td {
+      font-size: 0.81rem;
+      line-height: 1.25rem;
+      font-family: "Montserrat", sans-serif;
+    }
+  
+    .table-actions,
+    .table-id {
+      width: 9%;
+    }
+  }
+  
+  button.mat-flat-button {
+    font-size: 0.75rem;
+    line-height: 0.94rem;
+    padding-inline: 0.5rem;
+    height: 30px;
+  }
+  
+  ::ng-deep .mat-paginator {
+    position: relative;
+  }
+  
+  ::ng-deep div.btn_custom-paging-container {
+    .mat-icon-button {
+      margin: 0.13rem 0.63rem 0;
+      font-size: 0.75rem;
+      &:last-of-type {
+        display: none;
+      }
+    }
+  }
+  
+  ::ng-deep .mat-paginator-range-actions {
+    position: absolute;
+    left: 1.5rem;
+    .mat-paginator-icon {
+      width: 1rem;
+    }
+  }
+  
+  ::ng-deep .cdk-overlay-pane {
+    max-width: 90vw !important;
+  }
+  
+  ::ng-deep .mat-progress-spinner {
+    position: absolute !important;
+    left: 47%;
+    top: 45%;
+    circle {
+      stroke: var(--primary-color);
+    }
+  }
+}

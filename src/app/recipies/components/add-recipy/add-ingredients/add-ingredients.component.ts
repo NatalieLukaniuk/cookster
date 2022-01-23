@@ -2,9 +2,9 @@ import { Component, forwardRef, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
+import { ProductsService } from 'src/app/recipies/services/products.service';
 
 import { MeasuringUnit, MeasuringUnitOptions, MeasuringUnitText } from './../../../models/measuring-units.enum';
-import { ProductsDatabaseService } from './../../../services/products-database.service';
 
 @Component({
   selector: 'app-add-ingredients',
@@ -45,7 +45,7 @@ export class AddIngredientsComponent implements OnInit, ControlValueAccessor {
     isDisabled ? this.ingredientsForm.disable() : this.ingredientsForm.enable();
   }
 
-  constructor(private productsDb: ProductsDatabaseService) {}
+  constructor(private productsService: ProductsService) {}
 
   ngOnInit() {
     this.filteredOptions = this.ingredientsForm.controls.ingredient.valueChanges.pipe(
@@ -77,7 +77,7 @@ export class AddIngredientsComponent implements OnInit, ControlValueAccessor {
 
   get availableProducts(){
     let products = [];
-    for (let product of this.productsDb.products) {
+    for (let product of this.productsService.products$.value) {
       products.push(product.name)
     }
     return products;
@@ -85,7 +85,7 @@ export class AddIngredientsComponent implements OnInit, ControlValueAccessor {
 
   getProductId(option: string){
     let productId;
-    for (let product of this.productsDb.products) {
+    for (let product of this.productsService.products$.value) {
       if (product.name === option) {
         productId = product.id;
       }

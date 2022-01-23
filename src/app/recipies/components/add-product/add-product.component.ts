@@ -38,7 +38,7 @@ export class AddProductComponent implements OnInit {
     return ProductTypeOptions;
   }
 
-  getProductTypeText(type: any) {
+  getProductTypeText(type: number) {
     return ProductTypeText[type];
   }
 

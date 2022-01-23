@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { PRODUCTS } from '../../models/products-database';
+import { ProductsService } from '../../services/products.service';
 import { RecipiesService } from '../../services/recipies.service';
 import { Ingredient } from './../../models/ingredient.interface';
 import {
@@ -30,7 +30,8 @@ export class IngredientComponent implements OnInit {
   measuringUnit: MeasuringUnit = MeasuringUnit.gr;
   constructor(
     private converter: AmountConverterService,
-    private recipies: RecipiesService
+    private recipies: RecipiesService,
+    private productsService: ProductsService
   ) {}
 
   ngOnInit() {
@@ -39,7 +40,7 @@ export class IngredientComponent implements OnInit {
 
   getIngredientText(ingr: Ingredient): string {
     let productName = '';
-    for (let product of PRODUCTS) {
+    for (let product of this.productsService.products$.value) {
       if (product.id === this.ingredient.product) {
         productName = product.name;
       }
@@ -63,7 +64,7 @@ export class IngredientComponent implements OnInit {
 
   get productType() {
     let type: ProductType = ProductType.hardItem;
-    for (let product of PRODUCTS) {
+    for (let product of this.productsService.products$.value) {
       if (product.id === this.ingredient.product) {
         type = product.type;
       }
@@ -156,7 +157,7 @@ export class IngredientComponent implements OnInit {
 
   get density() {
     let density = 1;
-    for (let product of PRODUCTS) {
+    for (let product of this.productsService.products$.value) {
       if (product.id === this.ingredient.product) {
         density = product.density;
       }

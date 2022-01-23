@@ -16,6 +16,10 @@ export class ProductsApiService {
     return this.http.post(`${this.url}.json`, product);
   }
 
+  deleteProduct(product: Product) {
+    return this.http.delete(`${this.url}/${product.id}.json` )
+  }
+
   getProducts(){
     return this.http.get(`${this.url}.json`);
   }

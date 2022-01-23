@@ -1,30 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { MeasuringUnit } from '../models/measuring-units.enum';
 import { PreparationStep } from '../models/preparationStep.interface';
 import { Ingredient } from './../models/ingredient.interface';
 import { Recipy } from './../models/recipy.interface';
 import { AmountConverterService } from './amount-converter.service';
-import { ProductsDatabaseService } from './products-database.service';
+import { ProductsService } from './products.service';
 import { RecipiesApiService } from './recipies-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipiesService {
+
   newRecipyAdded = new Subject();
+  userRecipies$ = new BehaviorSubject<Recipy[]>([]);
+
   constructor(
-    private productsDb: ProductsDatabaseService,
     private api: RecipiesApiService,
-    private converter: AmountConverterService
+    private converter: AmountConverterService,
+    private productsService: ProductsService
   ) {}
 
   processAddNewRecipy(newRecipy: Recipy) {
     if (newRecipy) {
       newRecipy.ingrediends = newRecipy.ingrediends.map((ingr: any) => {
         let productId;
-        for (let product of this.productsDb.products) {
+        for (let product of this.productsService.products$.value) {
           if (product.name === ingr.ingredient) {
             productId = product.id;
             console.log(productId);
@@ -100,20 +104,20 @@ export class RecipiesService {
     }
   }
 
-  getDensity(product: number) {
+  getDensity(productId: string) {
     let density = 0;
-    for (let item of this.productsDb.products) {
-      if (item.id === product) {
+    for (let item of this.productsService.products$.value) {
+      if (item.id === productId) {
         density = item.density;
       }
     }
     return density;
   }
 
-  getGrPerItem(product: number) {
+  getGrPerItem(productId: string) {
     let grInOneItem = 0;
-    for (let item of this.productsDb.products) {
-      if (item.id === product) {
+    for (let item of this.productsService.products$.value) {
+      if (item.id === productId) {
         grInOneItem = item.grInOneItem ? item.grInOneItem : 0;
       }
     }
@@ -122,5 +126,22 @@ export class RecipiesService {
 
   getAllRecipies() {
     return this.api.getRecipies();
+  }
+
+  getRecipies() {
+    this.api.getRecipies()
+      .pipe(take(1))
+      .subscribe((res) => {
+        let array = Object.entries(res);
+        let recipies: any = [];
+        for (let entry of array) {
+          let recipy: any = {
+            id: entry[0],
+            ...entry[1],
+          };
+          recipies.push(recipy);
+        }
+        this.userRecipies$.next(recipies)
+      });
   }
 }

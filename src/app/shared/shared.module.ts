@@ -9,8 +9,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 
@@ -35,7 +37,9 @@ import { HeaderComponent } from './containers/header/header.component';
     MatSelectModule,
     MatAutocompleteModule,
     MatSidenavModule,
-    MatTreeModule
+    MatTreeModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   declarations: [
     HeaderComponent,
@@ -60,7 +64,9 @@ import { HeaderComponent } from './containers/header/header.component';
     MatSelectModule,
     MatAutocompleteModule,
     MatSidenavModule,
-    MatTreeModule
+    MatTreeModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   providers: []
 })

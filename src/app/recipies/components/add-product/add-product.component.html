@@ -51,7 +51,7 @@
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Тип продукту:</mat-label>
-    <mat-select formControlName="defaultUnit">
+    <mat-select formControlName="type">
       <mat-option *ngFor="let type of productTypes" [value]="type">
         {{ getProductTypeText(type) }}
       </mat-option>

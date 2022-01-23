@@ -2,6 +2,10 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 
+import { Recipy } from '../recipies/models/recipy.interface';
+import { Product } from '../recipies/services/products-database.service';
+import { ProductsService } from '../recipies/services/products.service';
+import { RecipiesService } from '../recipies/services/recipies.service';
 
 interface NavigationNode {
   name: string;
@@ -28,7 +32,7 @@ function nodeTransformer(node: NavigationNode, level: number) {
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
   treeControl = new FlatTreeControl<ExampleFlatNode>(
@@ -44,7 +48,12 @@ export class AdminComponent implements OnInit {
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   activePath: string = 'recipies';
-  constructor() { 
+
+  recipies: Recipy[] = [];
+  products: Product[] = [];
+
+  constructor(private recipiesService: RecipiesService,
+    private productsService: ProductsService) {
     const TREE_DATA: NavigationNode[] = [
       { name: 'Recipies', path: `recipies` },
       { name: 'Products', path: 'products' },
@@ -54,6 +63,11 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.recipiesService.userRecipies$.subscribe((recipies: Recipy[]) => {
+      this.recipies = recipies;
+    })
+    this.productsService.products$.subscribe((products: Product[]) => {
+      this.products = products;
+    })
   }
-
 }
