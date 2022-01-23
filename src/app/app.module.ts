@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CooksterModule } from './cookster/cookster.module';
 import { LayoutModule } from './layout/layout.module';
 import { MenusModule } from './menus/menus.module';
 import { RecipiesModule } from './recipies/recipies.module';
@@ -27,7 +28,8 @@ import { SharedModule } from './shared/shared.module';
     RecipiesModule,
     HttpClientModule,
     MenusModule,
-    AdminModule
+    AdminModule,
+    CooksterModule
   ],
   providers: [],
   bootstrap: [AppComponent]

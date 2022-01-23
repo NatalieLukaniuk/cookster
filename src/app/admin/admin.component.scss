@@ -1,0 +1,31 @@
+.container {
+  min-height: calc(100% - 73px);
+  margin-top: 73px;
+  padding: 30px;
+  box-sizing: border-box;
+  background: var(--primary);
+}
+
+.mat-drawer-side {
+  padding: 20px;
+  background: var(--secondary);
+}
+
+.mat-tree{
+    background: var(--secondary);
+    
+}
+
+.mat-tree-node, .mat-nested-tree-node{
+    color: var(--primary);
+    .mat-button{
+        font-size: 16px;
+        font-family: "Montserrat", sans-serif;
+    }
+    &.active-path{
+        .mat-button{
+            font-weight: 700;
+            font-size: 17px;
+        }
+    }
+}

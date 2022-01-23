@@ -43,11 +43,11 @@ export class AdminComponent implements OnInit {
   );
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  activePath: string = 'users';
+  activePath: string = 'recipies';
   constructor() { 
     const TREE_DATA: NavigationNode[] = [
-      { name: 'Users', path: `users` },
-      { name: 'Logs', path: 'logs' },
+      { name: 'Recipies', path: `recipies` },
+      { name: 'Products', path: 'products' },
     ];
 
     this.dataSource.data = TREE_DATA;
