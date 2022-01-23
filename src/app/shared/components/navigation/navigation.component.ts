@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
-import { AddProductComponent } from 'src/app/recipies/components/add-product/add-product.component';
-import { Product } from 'src/app/recipies/models/products-database';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
@@ -45,24 +43,6 @@ export class NavigationComponent {
       .pipe(take(1))
       .subscribe((result: Recipy) => {
         this.recipiesService.processAddNewRecipy(result);
-      });
-  }
-  addProduct(){
-    const dialogRef = this.dialog.open(AddProductComponent, {
-      width: '100%',
-      maxWidth: '100%',
-      height: '100%',
-      position: { bottom: '0' },
-      hasBackdrop: false,
-      panelClass: 'full-recipy-dialog',
-      autoFocus: false,
-    });
-
-    dialogRef
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe((result: Product) => {
-        this.productsService.processAddNewProduct(result);
       });
   }
 }

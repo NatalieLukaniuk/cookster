@@ -12,6 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
@@ -20,6 +21,7 @@ import { ExtendedSearchComponent } from './components/extended-search/extended-s
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { SearchComponent } from './components/search/search.component';
 import { HeaderComponent } from './containers/header/header.component';
+
 
 @NgModule({
   imports: [
@@ -39,7 +41,8 @@ import { HeaderComponent } from './containers/header/header.component';
     MatSidenavModule,
     MatTreeModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSortModule
   ],
   declarations: [
     HeaderComponent,
@@ -66,7 +69,8 @@ import { HeaderComponent } from './containers/header/header.component';
     MatSidenavModule,
     MatTreeModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: []
 })
