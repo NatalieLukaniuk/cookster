@@ -102,3 +102,23 @@
     width: 13px;
   }
 }
+
+@media (max-width: 600px){
+  .full-recipy-wrapper{
+    padding-inline: 10px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  .recipy-body{
+    flex-direction: column;
+  }
+  .recipy-details, .recipy-info{
+    width: 100%;
+  }
+  .action-buttons-wrapper{
+    bottom: 10px;
+    top: auto;
+    justify-content: flex-start;
+    padding-inline: 0;
+  }
+}

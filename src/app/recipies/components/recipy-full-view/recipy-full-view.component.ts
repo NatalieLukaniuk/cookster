@@ -1,9 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
 import { Recipy } from '../../models/recipy.interface';
+import { LayoutService } from './../../../shared/services/layout.service';
 import { PreparationStep } from './../../models/preparationStep.interface';
 
 @Component({
@@ -11,19 +14,28 @@ import { PreparationStep } from './../../models/preparationStep.interface';
   templateUrl: './recipy-full-view.component.html',
   styleUrls: ['./recipy-full-view.component.scss'],
 })
-export class RecipyFullViewComponent implements OnInit {
+export class RecipyFullViewComponent implements OnInit, OnDestroy {
   averagePortion: number = 250;
 
   portionsToServe: number;
 
+  isMobile: boolean = false;
+  destroy$ = new Subject();
+
   constructor(
     public dialogRef: MatDialogRef<RecipyFullViewComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Recipy
+    @Inject(MAT_DIALOG_DATA) public data: Recipy,
+    private layoutService: LayoutService
   ) {
     this.portionsToServe = this.savedPortionsServed;
   }
+  ngOnDestroy(): void {
+    this.destroy$.next()
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.layoutService.isMobile$.pipe(takeUntil(this.destroy$)).subscribe(bool => this.isMobile = bool)
+  }
 
   goBack(): void {
     this.dialogRef.close();

@@ -14,3 +14,10 @@
     width: 16.5%;
     padding-top: 100px;
 }
+
+@media (max-width: 600px){
+    .content-pane{
+        width: 100%;
+        padding-inline: 0;
+    }
+}

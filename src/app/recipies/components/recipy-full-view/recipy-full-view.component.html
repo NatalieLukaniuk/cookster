@@ -62,7 +62,7 @@
 </div>
 <div class="action-buttons-wrapper">
   <button mat-flat-button class="action-button back-button" (click)="goBack()">
-    <mat-icon svgIcon="arrow-left"></mat-icon>Повернутися
+    <mat-icon svgIcon="arrow-left"></mat-icon><span *ngIf="!isMobile">Повернутися</span>
   </button>
   <!-- <button mat-flat-button class="action-button">Редагувати рецепт</button>
   <button mat-flat-button class="action-button">Додати в меню</button>

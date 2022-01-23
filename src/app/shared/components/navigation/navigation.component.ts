@@ -24,7 +24,8 @@ export class NavigationComponent {
   constructor(
     public dialog: MatDialog,
     private recipiesService: RecipiesService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    
   ) {}
 
   addRecipy() {
