@@ -1,13 +1,13 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
+import { PreparationStep } from '../../models/preparationStep.interface';
 import { Recipy } from '../../models/recipy.interface';
 import { LayoutService } from './../../../shared/services/layout.service';
-import { PreparationStep } from './../../models/preparationStep.interface';
+import { RecipiesService } from './../../services/recipies.service';
 
 @Component({
   selector: 'app-recipy-full-view',
@@ -15,6 +15,8 @@ import { PreparationStep } from './../../models/preparationStep.interface';
   styleUrls: ['./recipy-full-view.component.scss'],
 })
 export class RecipyFullViewComponent implements OnInit, OnDestroy {
+  recipyId!: string;
+  recipy: Recipy | undefined;
   averagePortion: number = 250;
 
   portionsToServe: number;
@@ -23,42 +25,62 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
   destroy$ = new Subject();
 
   constructor(
-    public dialogRef: MatDialogRef<RecipyFullViewComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Recipy,
-    private layoutService: LayoutService
+    // public dialogRef: MatDialogRef<RecipyFullViewComponent>,
+    // @Inject(MAT_DIALOG_DATA) public data: Recipy,
+    private layoutService: LayoutService,
+    private recipiesService: RecipiesService
   ) {
     this.portionsToServe = this.savedPortionsServed;
   }
   ngOnDestroy(): void {
-    this.destroy$.next()
+    this.destroy$.next();
   }
 
   ngOnInit() {
-    this.layoutService.isMobile$.pipe(takeUntil(this.destroy$)).subscribe(bool => this.isMobile = bool)
+    const path = window.location.pathname.split('/');
+    const recipyId = path[path.length - 1];
+    this.layoutService.isMobile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bool) => (this.isMobile = bool));
+    this.recipiesService
+      .getRecipyById(recipyId)
+      .pipe(take(1))
+      .subscribe((recipy) => {
+        this.recipy = recipy;
+      });
   }
 
   goBack(): void {
-    this.dialogRef.close();
+    // this.dialogRef.close();
   }
 
   get complexity() {
-    return ComplexityDescription[this.data.complexity];
+    if (this.recipy) {
+      return ComplexityDescription[this.recipy.complexity];
+    } else return '';
   }
 
   get savedPortionsServed() {
-    let amount = 0;
-    for (let ingr of this.data.ingrediends) {
-      amount = ingr.amount + amount;
+    let portions = 0;
+    if (this.recipy) {
+      let amount = 0;
+      for (let ingr of this.recipy.ingrediends) {
+        amount = ingr.amount + amount;
+      }
+      portions = Math.floor(amount / this.averagePortion);
     }
-    const portions = Math.floor(amount / this.averagePortion);
+
     return portions;
   }
 
   get portionsOptions() {
     let portionsArray = [];
-    for (let i = 1; i <= 10; i++) {
-      portionsArray.push(i);
+    if (this.recipy) {
+      for (let i = 1; i <= 10; i++) {
+        portionsArray.push(i);
+      }
     }
+
     return portionsArray;
   }
 
@@ -76,25 +98,34 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
 
   get activeTime() {
     let time = 0;
-    for (let step of this.data.steps) {
-      time = time + step.timeActive;
+    if (this.recipy) {
+      for (let step of this.recipy.steps) {
+        time = time + step.timeActive;
+      }
     }
+
     return time;
   }
 
   get passiveTime() {
     let time = 0;
-    for (let step of this.data.steps) {
-      time = time + step.timePassive;
+    if (this.recipy) {
+      for (let step of this.recipy.steps) {
+        time = time + step.timePassive;
+      }
     }
+
     return time;
   }
 
-  get tags(){
+  get tags() {
     let tags: string[] = [];
-    this.data.type.forEach((tag: DishType) => {
-      tags.push(DishType[tag])
-    });
+    if (this.recipy) {
+      this.recipy.type.forEach((tag: DishType) => {
+        tags.push(DishType[tag]);
+      });
+    }
+
     return tags;
   }
 }

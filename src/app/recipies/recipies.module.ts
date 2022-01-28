@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
 import { AddProductComponent } from './components/add-product/add-product.component';
@@ -13,7 +14,13 @@ import { RecipyShortViewComponent } from './components/recipy-short-view/recipy-
 import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.component';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+  ],
   declarations: [
     UserRecipiesComponent,
     RecipyShortViewComponent,
@@ -22,10 +29,8 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     AddRecipyComponent,
     AddStepsComponent,
     AddIngredientsComponent,
-    AddProductComponent
+    AddProductComponent,
   ],
-  exports: [
-    AddRecipyComponent
-  ]
+  exports: [AddRecipyComponent],
 })
 export class RecipiesModule {}

@@ -1,70 +1,83 @@
-<app-header></app-header>
-<div class="full-recipy-wrapper">
-  <div class="recipy-body">
-    <div class="recipy-details">
-      <h1>{{ data.name }}</h1>
-      <div class="ingredients-wrapper">
-        <h3>
-          Інгридієнти на
-          <select class="inline-select" [(ngModel)]="portionsToServe">
-            <option *ngFor="let option of portionsOptions">{{ option }}</option>
-          </select>
-          {{ portionsText }}
-        </h3>
-        <div class="ingredients-table">
-          <div *ngFor="let ingredient of data.ingrediends; let i = index">
-            <app-ingredient
-              [ingredient]="ingredient"
-              [savedPortionsToServe]="savedPortionsServed"
-              [actualPortionsToServe]="portionsToServe"
-            ></app-ingredient>
+<ng-container *ngIf="recipy && !isMobile">
+  <div class="full-recipy-wrapper">
+    <div class="recipy-body">
+      <div class="recipy-details">
+        <h1>{{ recipy.name }}</h1>
+        <div class="ingredients-wrapper">
+          <h3>
+            Інгридієнти на
+            <select class="inline-select" [(ngModel)]="portionsToServe">
+              <option *ngFor="let option of portionsOptions">
+                {{ option }}
+              </option>
+            </select>
+            {{ portionsText }}
+          </h3>
+          <div class="ingredients-table">
+            <div *ngFor="let ingredient of recipy.ingrediends; let i = index">
+              <app-ingredient
+                [ingredient]="ingredient"
+                [savedPortionsToServe]="savedPortionsServed"
+                [actualPortionsToServe]="portionsToServe"
+              ></app-ingredient>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="preparation-wrapper">
-        <h3>Приготування</h3>
-      </div>
-      <table class="steps-table">
-        <tr *ngFor="let step of data.steps; let i = index">
-          <td>
-            <p>{{ step.id }}. {{ step.description }}</p>
-          </td>
-          <td>{{ getTotalStepTime(step) }} хв.</td>
-        </tr>
-      </table>
-    </div>
-    <div class="recipy-info">
-      <img class="recipy-photo" [src]="data.photo" />
-      <div class="recipy-complexity">
-        <span class="bold">Складність:</span> {{ complexity }}
-      </div>
-      <div class="recipy-time">
-        <div><span class="bold">Час приготування: </span></div>
-        <div>
-          <p>{{ activeTime + passiveTime }} хвилин</p>
-          <p>Активний: {{ activeTime }} хвилин</p>
-          <p>Пасивний: {{ passiveTime }} хвилин</p>
+        <div class="preparation-wrapper">
+          <h3>Приготування</h3>
         </div>
+        <table class="steps-table">
+          <tr *ngFor="let step of recipy.steps; let i = index">
+            <td>
+              <p>{{ step.id }}. {{ step.description }}</p>
+            </td>
+            <td>{{ getTotalStepTime(step) }} хв.</td>
+          </tr>
+        </table>
       </div>
-      <div class="recipy-tags">
-        <div><span class="bold">Теги: </span></div>
-        <div>
-          <mat-chip-list>
-            <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
-            <!-- <mat-chip class="add-tag"
+      <div class="recipy-info">
+        <img class="recipy-photo" [src]="recipy.photo" />
+        <div class="recipy-complexity">
+          <span class="bold">Складність:</span> {{ complexity }}
+        </div>
+        <div class="recipy-time">
+          <div><span class="bold">Час приготування: </span></div>
+          <div>
+            <p>{{ activeTime + passiveTime }} хвилин</p>
+            <p>Активний: {{ activeTime }} хвилин</p>
+            <p>Пасивний: {{ passiveTime }} хвилин</p>
+          </div>
+        </div>
+        <div class="recipy-tags">
+          <div><span class="bold">Теги: </span></div>
+          <div>
+            <mat-chip-list>
+              <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
+              <!-- <mat-chip class="add-tag"
               ><mat-icon svgIcon="add"></mat-icon
             ></mat-chip> -->
-          </mat-chip-list>
+            </mat-chip-list>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<div class="action-buttons-wrapper">
-  <button mat-flat-button class="action-button back-button" (click)="goBack()">
-    <mat-icon svgIcon="arrow-left"></mat-icon><span *ngIf="!isMobile">Повернутися</span>
-  </button>
-  <!-- <button mat-flat-button class="action-button">Редагувати рецепт</button>
+  <div class="action-buttons-wrapper">
+    <button
+      mat-flat-button
+      class="action-button back-button"
+      (click)="goBack()"
+    >
+      <mat-icon svgIcon="arrow-left"></mat-icon
+      ><span *ngIf="!isMobile">Повернутися</span>
+    </button>
+    <!-- <button mat-flat-button class="action-button">Редагувати рецепт</button>
   <button mat-flat-button class="action-button">Додати в меню</button>
   <button mat-flat-button class="action-button">В список покупок</button> -->
-</div>
+  </div>
+</ng-container>
+<!-- <ng-container *ngIf="isMobile">
+  <header>
+    {{ recipy.name }}
+  </header>
+</ng-container> -->

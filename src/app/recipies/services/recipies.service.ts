@@ -144,4 +144,8 @@ export class RecipiesService {
         this.userRecipies$.next(recipies)
       });
   }
+
+  getRecipyById(id: string){
+    return this.api.getRecipyById(id)
+  }
 }

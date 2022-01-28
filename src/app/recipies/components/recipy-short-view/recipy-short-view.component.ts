@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { Recipy } from '../../models/recipy.interface';
-import { RecipyFullViewComponent } from './../recipy-full-view/recipy-full-view.component';
 
 @Component({
   selector: 'app-recipy-short-view',
@@ -13,24 +13,17 @@ import { RecipyFullViewComponent } from './../recipy-full-view/recipy-full-view.
 export class RecipyShortViewComponent implements OnInit {
   @Input()
   recipy!: Recipy;
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {}
-  goFullRecipy() {
-    const dialogRef = this.dialog.open(RecipyFullViewComponent, {
-      width: '100%',
-      maxWidth: '100%',
-      height: '100%',
-      position: { bottom: '0' },
-      hasBackdrop: false,
-      panelClass: 'full-recipy-dialog',
-      autoFocus: false,
-      data: this.recipy,
+  goFullRecipy(id: string | undefined) {
+    this.router.navigate(['full-recipy/', id], {
+      relativeTo: this.route.parent,
     });
-
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   console.log('The dialog was closed');
-    // });
   }
 
   get complexity() {
