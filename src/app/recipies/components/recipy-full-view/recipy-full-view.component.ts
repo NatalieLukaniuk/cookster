@@ -19,7 +19,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
   recipy: Recipy | undefined;
   averagePortion: number = 250;
 
-  portionsToServe: number;
+  portionsToServe: number | undefined;
 
   isMobile: boolean = false;
   destroy$ = new Subject();
@@ -30,7 +30,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private recipiesService: RecipiesService
   ) {
-    this.portionsToServe = this.savedPortionsServed;
+    
   }
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -47,6 +47,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((recipy) => {
         this.recipy = recipy;
+        this.portionsToServe = this.savedPortionsServed
       });
   }
 
@@ -85,11 +86,13 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
   }
 
   get portionsText(): string {
-    if (this.portionsToServe == 1) {
+    if (this.portionsToServe && this.portionsToServe == 1) {
       return 'порцію';
-    } else if (1 < this.portionsToServe && this.portionsToServe < 5) {
+    } else if (this.portionsToServe && 1 < this.portionsToServe && this.portionsToServe < 5) {
       return 'порції';
-    } else return 'порцій';
+    } else if (this.portionsToServe){
+      return 'порцій';
+    } else return ''
   }
 
   getTotalStepTime(step: PreparationStep) {

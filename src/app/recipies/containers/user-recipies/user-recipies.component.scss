@@ -1,14 +1,13 @@
 .user-recipies-wrapper{
     width: 100%;
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
 }
 .recipy{
-    width: 48%;
+    width: 30%;
     position: relative;
-    min-width: 48%;
-    margin-bottom: 30px;
+    min-width: 250px;
+    margin: 1vw;
 }
 
 @media (max-width: 600px){

@@ -3,7 +3,7 @@
     <div class="recipy-body">
       <div class="recipy-details">
         <h1>{{ recipy.name }}</h1>
-        <div class="ingredients-wrapper">
+        <div class="ingredients-wrapper"  *ngIf="portionsToServe">
           <h3>
             Інгридієнти на
             <select class="inline-select" [(ngModel)]="portionsToServe">
@@ -36,7 +36,7 @@
         </table>
       </div>
       <div class="recipy-info">
-        <img class="recipy-photo" [src]="recipy.photo" />
+        <!-- <img class="recipy-photo" [src]="recipy.photo" /> -->
         <div class="recipy-complexity">
           <span class="bold">Складність:</span> {{ complexity }}
         </div>
