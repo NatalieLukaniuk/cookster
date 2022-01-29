@@ -4,8 +4,8 @@ header {
   padding-inline: 24px;
   height: 72px;
   align-items: center;
-  border-bottom: 1px solid var(--secondary);
-  background-color: var(--primary);
+  border-bottom: 1px solid var(--text-color);
+  background-color: var(--background-color);
   position: fixed;
   z-index: 100;
   width: 100%;
@@ -22,5 +22,5 @@ header {
 
 h1 {
   cursor: pointer;
-  color: var(--secondary);
+  color: var(--text-color);
 }

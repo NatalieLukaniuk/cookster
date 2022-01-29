@@ -1,5 +1,5 @@
 .full-recipy-wrapper {
-  background-color: var(--primary);
+  background-color: var(--background-color);
   width: 100%;
   height: 100%;
   padding: 100px 60px 90px;
@@ -95,6 +95,10 @@
   & > div:first-child {
     margin-right: 5px;
   }
+}
+
+.recipy-tags{
+  align-items: center;
 }
 
 .add-tag {

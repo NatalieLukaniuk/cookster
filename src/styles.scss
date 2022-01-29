@@ -44,19 +44,28 @@ body {
 body {
   margin: 0;
   font-family: "Montserrat", sans-serif;
-  background-color: var(--primary);
-  color: var(--secondary);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 :root {
-  --primary: #e9f7f1;
-  --secondary: #7f534b;
+  --primary: hsla(57, 100%, 73%, 1);
+  --background-color: hsla(57, 100%, 98%, 1);
+  --text-color: hsla(57, 100%, 10%, 1);
+  --tint1: hsla(57, 100%, 93%, 1);
+  --tint2: hsla(57, 100%, 83%, 1);
+  --tint3: hsla(57, 100%, 63%, 1);
+  --tint4: hsla(57, 100%, 53%, 1);
+  --tint5: hsla(57, 100%, 43%, 1);
+  --tint6: hsla(57, 100%, 33%, 1);
+  --tint7: hsla(57, 100%, 23%, 1);
+  --tint7: hsla(57, 100%, 13%, 1);
 }
 
 .full-recipy-dialog {
   .mat-dialog-container {
     padding: 0;
-    color: var(--secondary);
+    color: var(--text-color);
   }
 }
 
@@ -71,15 +80,19 @@ h3 {
 }
 
 button.action-button {
-  background-color: var(--secondary);
-  color: var(--primary);
+  background-color: var(--primary);
+  color: var(--text-color);
   font-family: "Montserrat", sans-serif;
+  &:not(:disabled){
+      border: 1px solid var(--tint4);
+  }
+
 }
 
 select.inline-select {
-  background-color: var(--primary);
+  background-color: var(--background-color);
   border: none;
-  color: var(--secondary);
+  color: var(--text-color);
   font-weight: 700;
   font-family: "Montserrat", sans-serif;
 }
@@ -88,16 +101,17 @@ select.inline-select {
   border-radius: 4px;
   min-height: 21px;
   font-size: 10px;
-  background-color: var(--secondary);
-  color: var(--primary);
+  color: var(--text-color);
   height: auto;
-    padding: 2px 9px 4px;
+  padding: 5px 13px 7px;
+    background-color: var(--tint1);
+    border: 1px solid var(--tint2);
 }
 
 // ----- Mat-menu --- //
 
 .mat-menu-panel{
-  background-color: var(--secondary);
+  background-color: var(--background-color);
   border-radius: 2px;
   min-height: 0 !important;
 }
@@ -105,13 +119,13 @@ select.inline-select {
 .mat-menu-content:not(:empty) {
   padding-top: 4px !important;
   padding-bottom: 4px !important;
-  background-color: var(--secondary);
+  background-color: var(--background-color);
   border-radius: 2px;
 }
 
 button.mat-menu-item {
   width: 100%;
-  color: var(--primary);
+  color: var(--text-color);
   font-family: "Montserrat", sans-serif;
   height: 30px;
   line-height: 20px;
@@ -120,7 +134,7 @@ button.mat-menu-item {
 // --- Scrollbar --- //
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--secondary) #F5F5F5;
+  scrollbar-color: var(--text-color) #F5F5F5;
 }
 
 ::-webkit-scrollbar-track
@@ -138,8 +152,8 @@ button.mat-menu-item {
 
 ::-webkit-scrollbar-thumb
 {
-	background-color: var(--secondary);
-	border: 2px solid var(--secondary);
+  border: 2px solid var( --tint2);
+  background-color: var( --tint1);
 }
 
 .cdk-global-scrollblock{
@@ -166,7 +180,7 @@ button.mat-menu-item {
   
   ::ng-deep .mat-form-field-appearance-outline .mat-form-field-suffix {
     top: 0.38rem !important;
-    color: var(--dark-color);
+    color: var(--text-color);
   }
   
   ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
@@ -237,7 +251,7 @@ button.mat-menu-item {
     left: 47%;
     top: 45%;
     circle {
-      stroke: var(--primary-color);
+      stroke: var(--primary);
     }
   }
 }

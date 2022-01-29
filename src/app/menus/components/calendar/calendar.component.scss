@@ -10,7 +10,7 @@
 .calendar-day {
   width: 14%;
   text-align: center;
-  border: 1px solid var(--secondary);
+  border: 1px solid var(--text-color);
   padding: 5px;
   &.active {
       border-color: black;
