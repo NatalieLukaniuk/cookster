@@ -2,6 +2,12 @@
   width: 100%;
   display: flex;
 }
+
+.ingredient-wrapper{
+  display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
 .ingredient-name {
   width: 70%;
 }
@@ -13,4 +19,25 @@
 
 select{
   width: 72px;
+}
+
+.actions{
+  button{
+    height: 23px;
+    line-height: 23px;
+    width: 24px;
+    font-size: 5px;
+    margin-left: 5px;
+    .mat-icon{
+      height: 13px;
+    }
+  }
+}
+
+@media (max-width: 600px){
+  .ingredient-wrapper{
+    border-bottom: 1px solid var(--tint2);
+    padding: 10px;
+    align-items: center;
+  }
 }

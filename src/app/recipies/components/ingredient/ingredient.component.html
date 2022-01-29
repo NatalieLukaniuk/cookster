@@ -1,7 +1,26 @@
-<div class="ingredient-name">{{ getIngredientText(ingredient) }}</div>
-<div class="ingredient-amount">
-  {{ amountToDisplay }}
-  <select (change)="onValueChange($event)"  class="inline-select">
-    <option *ngFor="let unit of measurementUnits" [value]="unit" [selected]="unit === measuringUnit">{{ getUnitText(unit) }}</option>
-  </select>
+<div class="ingredient-wrapper">
+  <div class="ingredient-name">{{ getIngredientText(ingredient) }}</div>
+  <div class="ingredient-amount">
+    {{ amountToDisplay }}
+    <select
+      (change)="onValueChange($event)"
+      class="inline-select"
+      *ngIf="!isMobile"
+    >
+      <option
+        *ngFor="let unit of measurementUnits"
+        [value]="unit"
+        [selected]="unit === measuringUnit"
+      >
+        {{ getUnitText(unit) }}
+      </option>
+    </select>
+    <span *ngIf="isMobile">{{ getUnitText(measuringUnit) }}</span>
+  </div>
+  <div class="actions" *ngIf="isMobile">
+    <button mat-icon-button [matMenuTriggerFor]="unitMenu"><mat-icon svgIcon="edit"></mat-icon></button>
+    <mat-menu #unitMenu="matMenu">
+      <button mat-menu-item *ngFor="let unit of measurementUnits" [value]="unit" (click)="onValueChangeMatMenu(unit)">{{ getUnitText(unit) }}</button>
+    </mat-menu>
+  </div>
 </div>

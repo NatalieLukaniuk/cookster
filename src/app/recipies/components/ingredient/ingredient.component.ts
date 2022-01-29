@@ -26,6 +26,8 @@ export class IngredientComponent implements OnInit {
   savedPortionsToServe!: number;
   @Input()
   actualPortionsToServe!: number;
+  @Input()
+  isMobile!: boolean;
 
   measuringUnit: MeasuringUnit = MeasuringUnit.gr;
   constructor(
@@ -94,7 +96,11 @@ export class IngredientComponent implements OnInit {
   }
 
   onValueChange(event: any) {
-    this.measuringUnit = +event.target.value;
+    this.measuringUnit = +event.target.value; //TODO: needs refactoring
+  }
+
+  onValueChangeMatMenu(value: any) {
+    this.measuringUnit = value; //TODO: needs refactoring
   }
 
   get actualAmount() {

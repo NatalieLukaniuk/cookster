@@ -255,3 +255,9 @@ button.mat-menu-item {
     }
   }
 }
+
+@media (max-width: 600px){
+  html, body{
+    font-size: 14px;
+  }
+}

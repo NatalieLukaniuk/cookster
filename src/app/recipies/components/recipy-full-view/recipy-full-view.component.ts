@@ -24,14 +24,14 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
   isMobile: boolean = false;
   destroy$ = new Subject();
 
+  currentTab: string = 'ingredients';
+
   constructor(
     // public dialogRef: MatDialogRef<RecipyFullViewComponent>,
     // @Inject(MAT_DIALOG_DATA) public data: Recipy,
     private layoutService: LayoutService,
     private recipiesService: RecipiesService
-  ) {
-    
-  }
+  ) {}
   ngOnDestroy(): void {
     this.destroy$.next();
   }
@@ -47,7 +47,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((recipy) => {
         this.recipy = recipy;
-        this.portionsToServe = this.savedPortionsServed
+        this.portionsToServe = this.savedPortionsServed;
       });
   }
 
@@ -77,22 +77,25 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
   get portionsOptions() {
     let portionsArray = [];
     if (this.recipy) {
-      for (let i = 1; i <= 10; i++) {
+      for (let i = 1; i <= 20; i++) {
         portionsArray.push(i);
       }
     }
-
     return portionsArray;
   }
 
   get portionsText(): string {
     if (this.portionsToServe && this.portionsToServe == 1) {
       return 'порцію';
-    } else if (this.portionsToServe && 1 < this.portionsToServe && this.portionsToServe < 5) {
+    } else if (
+      this.portionsToServe &&
+      1 < this.portionsToServe &&
+      this.portionsToServe < 5
+    ) {
       return 'порції';
-    } else if (this.portionsToServe){
+    } else if (this.portionsToServe) {
       return 'порцій';
-    } else return ''
+    } else return '';
   }
 
   getTotalStepTime(step: PreparationStep) {
@@ -130,6 +133,13 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     }
 
     return tags;
+  }
+  onMatToggleChange(event: any) {
+    this.currentTab = event.value;
+  }
+
+  onPortionsChange(option: number) {
+    this.portionsToServe = option;
   }
 }
 

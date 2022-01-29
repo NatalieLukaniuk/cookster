@@ -61,6 +61,12 @@ export class AppComponent implements OnInit {
         '/assets/icons/search.svg'
       )
     );
+    this.iconRegistry.addSvgIcon(
+      'edit',
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        '/assets/icons/pencil.svg'
+      )
+    );
   }
   ngOnInit(): void {
     this.recipiesService.getRecipies();
