@@ -118,6 +118,19 @@
   position: fixed;
   bottom: 0;
   width: 100%;
+  height: 60px;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.mat-button-toggle {
+  height: 98%;
+  display: flex;
+  font-family: "Montserrat", sans-serif;
+  &.mat-button-toggle-checked {
+    background-color: var(--primary);
+    border-radius: 4px;
+  }
 }
 
 .edit-button {
@@ -137,7 +150,7 @@
   padding: 5px 10px 15px;
 }
 
-.mobile-details-wrapper{
+.mobile-details-wrapper {
   padding: 10px;
 }
 
@@ -175,10 +188,10 @@
       line-height: 150%;
     }
   }
-  .recipy-time{
+  .recipy-time {
     margin-top: 20px;
   }
-  .recipy-complexity{
+  .recipy-complexity {
     margin-top: 40px;
   }
 }

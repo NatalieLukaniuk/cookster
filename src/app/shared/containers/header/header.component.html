@@ -1,6 +1,10 @@
 <header>
   <h1 mat-button (click)="goHome()">Cookster</h1>
-  <button mat-icon-button class="user-avatar" alt="user avatar" (click)="goAdmin()">
+  <button *ngIf="!isMobile" mat-icon-button class="user-avatar" alt="user avatar" (click)="goAdmin()">
     <img src="../../../../assets/images/user.jpg">
   </button>
+  <button *ngIf="isMobile" mat-icon-button [mat-menu-trigger-for]="navMenu"><mat-icon svgIcon="menu"></mat-icon></button>
+  <mat-menu #navMenu="matMenu">
+    <app-navigation></app-navigation>
+  </mat-menu>
 </header>
