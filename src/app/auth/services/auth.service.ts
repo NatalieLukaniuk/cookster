@@ -59,12 +59,14 @@ export class AuthService {
   }
 
   checkIsLoggedIn() {
-    const auth = getAuth();
-    if (auth.currentUser) {
-      this.isLoggedIn.next(true);
-    } else {
-      this.isLoggedIn.next(false);
-    }
+    getAuth().onAuthStateChanged((user) => {
+      if (user) {
+        this.userAtFirebase = user;
+        this.isLoggedIn.next(true);
+      } else {
+        this.isLoggedIn.next(false);
+      }
+    });
   }
 
   updateUser() {

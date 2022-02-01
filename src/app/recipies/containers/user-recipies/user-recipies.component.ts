@@ -42,7 +42,6 @@ export class UserRecipiesComponent implements OnInit, OnDestroy {
             }
           }
         );
-        console.log(this.userRecipies)
       });
   }
 }
