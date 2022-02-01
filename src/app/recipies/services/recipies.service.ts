@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
+import * as fromAppActions from '../../store/actions/app.actions';
 import { MeasuringUnit } from '../models/measuring-units.enum';
 import { PreparationStep } from '../models/preparationStep.interface';
 import { Ingredient } from './../models/ingredient.interface';
@@ -21,7 +23,8 @@ export class RecipiesService {
   constructor(
     private api: RecipiesApiService,
     private converter: AmountConverterService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private store: Store
   ) {}
 
   processAddNewRecipy(newRecipy: Recipy) {
@@ -141,7 +144,8 @@ export class RecipiesService {
           };
           recipies.push(recipy);
         }
-        this.allRecipies$.next(recipies)
+        this.allRecipies$.next(recipies);
+        this.store.dispatch(new fromAppActions.recipiesLoaded())
       });
   }
 

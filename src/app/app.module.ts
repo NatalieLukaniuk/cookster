@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
 
 import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +13,9 @@ import { LayoutModule } from './layout/layout.module';
 import { MenusModule } from './menus/menus.module';
 import { RecipiesModule } from './recipies/recipies.module';
 import { SharedModule } from './shared/shared.module';
+import { reducers } from './store/reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
  
 
@@ -31,7 +35,9 @@ import { SharedModule } from './shared/shared.module';
     MenusModule,
     AdminModule,
     CooksterModule,
-    AuthModule
+    AuthModule,
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
