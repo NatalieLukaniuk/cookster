@@ -1,6 +1,6 @@
-<div *ngIf="allRecipies.length >= 1" class="user-recipies-wrapper">
-  <div class="recipy" *ngFor="let recipy of allRecipies">
+<div *ngIf="userRecipies.length >= 1" class="user-recipies-wrapper">
+  <div class="recipy" *ngFor="let recipy of userRecipies">
     <app-recipy-short-view [recipy]="recipy"></app-recipy-short-view>
   </div>
 </div>
-<div *ngIf="allRecipies.length < 1" class="no-recipies-message">There are no recipies in the database</div>
+<div *ngIf="userRecipies.length < 1" class="no-recipies-message">There are no recipies in the database</div>

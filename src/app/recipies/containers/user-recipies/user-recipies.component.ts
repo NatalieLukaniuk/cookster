@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 import { Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
@@ -12,23 +13,36 @@ import { LayoutService } from './../../../shared/services/layout.service';
   styleUrls: ['./user-recipies.component.scss'],
 })
 export class UserRecipiesComponent implements OnInit, OnDestroy {
-  allRecipies: Recipy[] = [];
+  userRecipies: Recipy[] = [];
   isMobile: boolean = false;
   destroy$ = new Subject();
   constructor(
     private recipies: RecipiesService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    private authService: AuthService
   ) {}
   ngOnDestroy(): void {
-    this.destroy$.next()
+    this.destroy$.next();
   }
 
   ngOnInit() {
     this.recipies.newRecipyAdded.subscribe(() => this.recipies.getRecipies());
-    this.recipies.userRecipies$.subscribe(recipies => {
-      this.allRecipies = recipies;
-    })
-    this.layoutService.isMobile$.pipe(takeUntil(this.destroy$)).subscribe(bool => this.isMobile = bool)
+    this.layoutService.isMobile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bool) => (this.isMobile = bool));
+    this.recipies.allRecipies$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((allrecipies) => {
+        this.authService.userDetailsFromMyDatabase.recipies.forEach(
+          (id: string) => {
+            for (let recipy of allrecipies) {
+              if (id === recipy.id) {
+                this.userRecipies.push(recipy);
+              }
+            }
+          }
+        );
+        console.log(this.userRecipies)
+      });
   }
-
 }

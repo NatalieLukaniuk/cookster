@@ -16,7 +16,7 @@ import { RecipiesApiService } from './recipies-api.service';
 export class RecipiesService {
 
   newRecipyAdded = new Subject();
-  userRecipies$ = new BehaviorSubject<Recipy[]>([]);
+  allRecipies$ = new BehaviorSubject<Recipy[]>([]);
 
   constructor(
     private api: RecipiesApiService,
@@ -141,7 +141,7 @@ export class RecipiesService {
           };
           recipies.push(recipy);
         }
-        this.userRecipies$.next(recipies)
+        this.allRecipies$.next(recipies)
       });
   }
 

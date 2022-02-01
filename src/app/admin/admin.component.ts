@@ -63,7 +63,7 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.recipiesService.userRecipies$.subscribe((recipies: Recipy[]) => {
+    this.recipiesService.allRecipies$.subscribe((recipies: Recipy[]) => {
       this.recipies = recipies;
     })
     this.productsService.products$.subscribe((products: Product[]) => {

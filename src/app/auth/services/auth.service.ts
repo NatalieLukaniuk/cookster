@@ -124,7 +124,7 @@ export class AuthService {
     }
   }
 
-  updateUserDetailsFromMyDatabase(){
-    this.authApiService.updateUser(this.userDetailsFromMyDatabase.id, {recipies: [1,2]}).pipe(take(1)).subscribe(res => console.log(res))
+  updateUserDetailsFromMyDatabase(newData: any){
+    this.authApiService.updateUser(this.userDetailsFromMyDatabase.id, newData).pipe(take(1)).subscribe(res => console.log(res))
   }
 }
