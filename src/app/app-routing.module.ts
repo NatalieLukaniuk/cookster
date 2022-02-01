@@ -2,11 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AdminComponent } from './admin/admin.component';
+import { LoginComponent } from './auth/components/login/login.component';
+import { RegistrationComponent } from './auth/components/registration/registration.component';
 import { CooksterComponent } from './cookster/cookster.component';
 import { FriendsFeedComponent } from './layout/containers/friends-feed/friends-feed.component';
 import { ShoppingListComponent } from './layout/containers/shopping-list/shopping-list.component';
 import { MenusComponent } from './menus/menus.component';
 import { RecipyFullViewComponent } from './recipies/components/recipy-full-view/recipy-full-view.component';
+import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
 import { UserRecipiesComponent } from './recipies/containers/user-recipies/user-recipies.component';
 import { ExtendedSearchComponent } from './shared/components/extended-search/extended-search.component';
 
@@ -16,7 +19,7 @@ export const routes: Routes = [
     path: 'cookster',
     component: CooksterComponent,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'recipies/user-recipies' },
+      { path: '', pathMatch: 'full', redirectTo: 'recipies/all-recipies' },
       { path: 'extended-search', component: ExtendedSearchComponent },
       {
         path: 'recipies',
@@ -27,6 +30,7 @@ export const routes: Routes = [
             component: RecipyFullViewComponent,
             pathMatch: 'full',
           },
+          {path: 'all-recipies', component: AllRecipiesComponent}
         ],
       },
       { path: 'friends-feed', component: FriendsFeedComponent },
@@ -36,6 +40,8 @@ export const routes: Routes = [
   },
 
   { path: 'admin-panel', component: AdminComponent },
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegistrationComponent}
 ];
 
 @NgModule({

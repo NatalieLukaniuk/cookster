@@ -1,0 +1,41 @@
+<div class="auth-form-wrapper">
+  <form [formGroup]="loginForm" novalidate>
+    <h1>Введіть свої дані</h1>
+    <mat-form-field appearance="outline">
+      <mat-label>Електронна пошта</mat-label>
+      <input
+        matInput
+        formControlName="username"
+      />
+      <mat-icon
+        matSuffix
+        svgIcon="done"
+        *ngIf="loginForm.controls.username.valid"
+      ></mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Пароль</mat-label>
+      <input
+        matInput
+        formControlName="password"
+      />
+      <mat-icon
+        matSuffix
+        svgIcon="done"
+        *ngIf="loginForm.controls.password.valid"
+      ></mat-icon>
+    </mat-form-field>
+    <div class="action-buttons-wrapper">
+      <button
+        [disabled]="loginForm.invalid"
+        mat-flat-button
+        type="submit"
+        class="action-button"
+        (click)="submit()"
+      >
+        Залогінитись
+      </button>    
+    </div>
+  </form>
+</div>

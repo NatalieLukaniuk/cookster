@@ -2,23 +2,71 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { initializeApp } from 'firebase/app';
 
+import { AuthService } from './auth/services/auth.service';
 import { ProductsService } from './recipies/services/products.service';
 import { RecipiesService } from './recipies/services/recipies.service';
 import { LayoutService } from './shared/services/layout.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  firebaseConfig = {
+    apiKey: "AIzaSyAYe2tCdCuYoEPi0grZ1PkHTHgScw19LpA",
+    authDomain: "cookster-12ac8.firebaseapp.com",
+    databaseURL: "https://cookster-12ac8-default-rtdb.firebaseio.com/",
+    projectId: "cookster-12ac8",
+    storageBucket: "cookster-12ac8PROJECT_ID.appspot.com",
+    messagingSenderId: "755799855022",
+    appId: "1:755799855022:web:506cb5221a72eff4cf023f",
+  };
+
   constructor(private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
     private recipiesService: RecipiesService,
     private productsService: ProductsService,
     public breakpointObserver: BreakpointObserver,
-    private layoutService: LayoutService) {
+    private layoutService: LayoutService,
+    private authService: AuthService,
+    private router: Router) {
+    this.addIcons();
+    const app = initializeApp(this.firebaseConfig);
+  }
+  ngOnInit(): void {
+    this.authService.checkIsLoggedIn();
+    this.recipiesService.getRecipies();
+    this.productsService.getAllProducts();
+    this.productsService.productsUpdated$.subscribe(() => this.productsService.getAllProducts())
+    this.breakpointObserver
+      .observe(['(min-width: 600px)'])
+      .subscribe((state: BreakpointState) => {
+        if (state.matches) {
+          this.layoutService.isMobile$.next(false)
+        } else {
+          this.layoutService.isMobile$.next(true)
+        }
+      });
+      this.authService.isLoggedIn.pipe(untilDestroyed(this)).subscribe(
+        isLoggedIn => {
+          if(isLoggedIn){
+            this.router.navigate(['']);   
+            this.authService.getCurrentUser();       
+          } else {
+            this.router.navigate(['login'])
+          }
+      })
+      this.authService.getAllUsers();
+      
+  }
+
+  addIcons(){
     this.iconRegistry.addSvgIcon(
       'close',
       this.sanitizer.bypassSecurityTrustResourceUrl(
@@ -67,19 +115,5 @@ export class AppComponent implements OnInit {
         '/assets/icons/pencil.svg'
       )
     );
-  }
-  ngOnInit(): void {
-    this.recipiesService.getRecipies();
-    this.productsService.getAllProducts();
-    this.productsService.productsUpdated$.subscribe(() => this.productsService.getAllProducts())
-    this.breakpointObserver
-      .observe(['(min-width: 600px)'])
-      .subscribe((state: BreakpointState) => {
-        if (state.matches) {
-          this.layoutService.isMobile$.next(false)
-        } else {
-          this.layoutService.isMobile$.next(true)
-        }
-      });
   }
 }

@@ -256,6 +256,51 @@ button.mat-menu-item {
   }
 }
 
+// -- Forms
+
+.mat-form-field{
+  font-family: "Montserrat", sans-serif;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-start {
+  border-radius: 2px 0 0 2px !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 0 2px 2px 0 !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  top: 0.75em !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.5em 0 1em 0;
+}
+
+// --- Auth-forms
+
+.auth-form-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 72px);
+  form{
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--tint2);
+      padding: 40px 70px 60px;
+      box-shadow: 0px 0px 4px 0px var(--tint4);
+      margin-bottom: 72px;
+      h1{
+          margin-bottom: 25px;
+      }
+      .action-button{
+          width: 100%;
+      }
+  }
+}
+
 @media (max-width: 600px){
   html, body{
     font-size: 14px;

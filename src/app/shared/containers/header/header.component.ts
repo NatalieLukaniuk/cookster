@@ -1,7 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 import { LayoutService } from '../../services/layout.service';
 
@@ -13,10 +14,13 @@ import { LayoutService } from '../../services/layout.service';
 export class HeaderComponent implements OnDestroy {
   isMobile: boolean = false;
   destroy$ = new Subject();
-  constructor(private router: Router, private layoutService: LayoutService) {
+  isLoggedIn$: Observable<boolean>;
+  constructor(private router: Router, private layoutService: LayoutService, private authService: AuthService) {
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => this.isMobile = bool);
+      this.isLoggedIn$ = this.authService.isLoggedIn;
+
   }
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -28,5 +32,9 @@ export class HeaderComponent implements OnDestroy {
 
   goAdmin() {
     this.router.navigate(['admin-panel']);
+  }
+
+  logout(){
+    this.authService.logoutUser()
   }
 }

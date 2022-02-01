@@ -1,0 +1,41 @@
+<div class="auth-form-wrapper">
+  <form [formGroup]="registrationForm" novalidate>
+    <h1>Реєстрація</h1>
+    <mat-form-field appearance="outline">
+      <mat-label>Електронна пошта</mat-label>
+      <input
+        matInput
+        formControlName="email"
+      />
+      <mat-icon
+        matSuffix
+        svgIcon="done"
+        *ngIf="registrationForm.controls.email.valid"
+      ></mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Пароль</mat-label>
+      <input
+        matInput
+        formControlName="password"
+      />
+      <mat-icon
+        matSuffix
+        svgIcon="done"
+        *ngIf="registrationForm.controls.password.valid"
+      ></mat-icon>
+    </mat-form-field>
+    <div class="action-buttons-wrapper">
+      <button
+        [disabled]="registrationForm.invalid"
+        mat-flat-button
+        type="submit"
+        class="action-button"
+        (click)="submit()"
+      >
+        Зареєструватись
+      </button>
+    </div>
+  </form>
+</div>

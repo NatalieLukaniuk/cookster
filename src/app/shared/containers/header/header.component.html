@@ -1,10 +1,18 @@
 <header>
   <h1 mat-button (click)="goHome()">Cookster</h1>
-  <button *ngIf="!isMobile" mat-icon-button class="user-avatar" alt="user avatar" (click)="goAdmin()">
+  <button *ngIf="!isMobile && (isLoggedIn$ | async)" mat-icon-button class="user-avatar" [mat-menu-trigger-for]="userMenu" alt="user avatar">
     <img src="../../../../assets/images/user.jpg">
   </button>
-  <button *ngIf="isMobile" mat-icon-button [mat-menu-trigger-for]="navMenu"><mat-icon svgIcon="menu"></mat-icon></button>
+  <button *ngIf="isMobile && (isLoggedIn$ | async)" mat-icon-button [mat-menu-trigger-for]="navMenu"><mat-icon svgIcon="menu"></mat-icon></button>
   <mat-menu #navMenu="matMenu">
     <app-navigation></app-navigation>
+  </mat-menu>
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item (click)="goAdmin()">
+      <span>Admin panel</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <span>Logout</span>
+    </button>
   </mat-menu>
 </header>

@@ -11,6 +11,7 @@ import { AddStepsComponent } from './components/add-recipy/add-steps/add-steps.c
 import { IngredientComponent } from './components/ingredient/ingredient.component';
 import { RecipyFullViewComponent } from './components/recipy-full-view/recipy-full-view.component';
 import { RecipyShortViewComponent } from './components/recipy-short-view/recipy-short-view.component';
+import { AllRecipiesComponent } from './containers/all-recipies/all-recipies.component';
 import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.component';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     AddStepsComponent,
     AddIngredientsComponent,
     AddProductComponent,
+    AllRecipiesComponent
   ],
   exports: [AddRecipyComponent],
 })

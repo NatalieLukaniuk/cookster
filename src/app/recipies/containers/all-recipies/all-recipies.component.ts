@@ -1,17 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LayoutService } from 'src/app/shared/services/layout.service';
 
 import { Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
-import { LayoutService } from './../../../shared/services/layout.service';
 
 @Component({
-  selector: 'app-user-recipies',
-  templateUrl: './user-recipies.component.html',
-  styleUrls: ['./user-recipies.component.scss'],
+  selector: 'app-all-recipies',
+  templateUrl: './all-recipies.component.html',
+  styleUrls: ['./all-recipies.component.scss']
 })
-export class UserRecipiesComponent implements OnInit, OnDestroy {
+export class AllRecipiesComponent implements OnInit {
+
   allRecipies: Recipy[] = [];
   isMobile: boolean = false;
   destroy$ = new Subject();
