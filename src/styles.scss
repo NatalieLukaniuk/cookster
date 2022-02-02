@@ -333,6 +333,12 @@ button.mat-menu-item {
   }
 }
 
+.tag-button{
+  position: absolute !important;
+  right: 0;
+  bottom: 0;  
+}
+
 @media (max-width: 600px){
   html, body{
     font-size: 14px;

@@ -171,7 +171,6 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(take(1))
       .subscribe((result: Recipy) => {
-        console.log(result)
         if(result.id){
           this.recipiesService.editRecipy(result.id, result);
         }        

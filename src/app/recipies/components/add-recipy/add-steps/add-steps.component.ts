@@ -25,11 +25,9 @@ export class AddStepsComponent implements OnInit, OnChanges, ControlValueAccesso
     val && this.stepsForm.setValue(val, { emitEvent: false });
   }
   registerOnChange(fn: any): void {
-    console.log('on change');
     this.stepsForm.valueChanges.subscribe(fn);
   }
   registerOnTouched(fn: any): void {
-    console.log('on blur');
     this.onTouched = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
@@ -37,7 +35,6 @@ export class AddStepsComponent implements OnInit, OnChanges, ControlValueAccesso
   }
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('change')
     if(this.stepsForm && this.stepsForm.valid){
       this.stepsFormValid.emit(true);
     } else {
@@ -46,7 +43,6 @@ export class AddStepsComponent implements OnInit, OnChanges, ControlValueAccesso
   }
 
   ngOnInit() {
-    console.log((this.index + 1).toString());
     this.stepsForm = new FormGroup({
       id: new FormControl(this.idValue),
       description: new FormControl('', Validators.required),

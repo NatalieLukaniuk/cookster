@@ -34,11 +34,9 @@ export class AddIngredientsComponent implements OnInit, ControlValueAccessor {
     val && this.ingredientsForm.setValue(val, { emitEvent: false });
   }
   registerOnChange(fn: any): void {
-    console.log("on change");
     this.ingredientsForm.valueChanges.subscribe(fn);
   }
   registerOnTouched(fn: any): void {
-    console.log("on blur");
     this.onTouched = fn;
   }
   setDisabledState?(isDisabled: boolean): void {

@@ -16,7 +16,6 @@ export class EditIngredientComponent implements OnInit {
   constructor(private recipiesService: RecipiesService) { }
 
   ngOnInit() {
-    console.log(this.ingredient)
   }
 
   get ingredientText(): string {

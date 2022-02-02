@@ -18,76 +18,71 @@ import { LayoutService } from './shared/services/layout.service';
 })
 export class AppComponent implements OnInit {
   firebaseConfig = {
-    apiKey: "AIzaSyAYe2tCdCuYoEPi0grZ1PkHTHgScw19LpA",
-    authDomain: "cookster-12ac8.firebaseapp.com",
-    databaseURL: "https://cookster-12ac8-default-rtdb.firebaseio.com/",
-    projectId: "cookster-12ac8",
-    storageBucket: "cookster-12ac8PROJECT_ID.appspot.com",
-    messagingSenderId: "755799855022",
-    appId: "1:755799855022:web:506cb5221a72eff4cf023f",
+    apiKey: 'AIzaSyAYe2tCdCuYoEPi0grZ1PkHTHgScw19LpA',
+    authDomain: 'cookster-12ac8.firebaseapp.com',
+    databaseURL: 'https://cookster-12ac8-default-rtdb.firebaseio.com/',
+    projectId: 'cookster-12ac8',
+    storageBucket: 'cookster-12ac8PROJECT_ID.appspot.com',
+    messagingSenderId: '755799855022',
+    appId: '1:755799855022:web:506cb5221a72eff4cf023f',
   };
 
-  constructor(private iconRegistry: MatIconRegistry,
+  constructor(
+    private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
     private recipiesService: RecipiesService,
     public breakpointObserver: BreakpointObserver,
     private layoutService: LayoutService,
     private authService: AuthService,
-    private router: Router) {
+    private router: Router
+  ) {
     this.addIcons();
     const app = initializeApp(this.firebaseConfig);
   }
   ngOnInit(): void {
     this.authService.checkIsLoggedIn();
-    this.recipiesService.getRecipies();
-    this.recipiesService.getAllProducts();
-    this.recipiesService.productsUpdated$.subscribe(() => this.recipiesService.getAllProducts())
+    this.recipiesService.productsUpdated$.subscribe(() =>
+      this.recipiesService.getAllProducts()
+    );
     this.breakpointObserver
       .observe(['(min-width: 600px)'])
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
-          this.layoutService.isMobile$.next(false)
+          this.layoutService.isMobile$.next(false);
         } else {
-          this.layoutService.isMobile$.next(true)
+          this.layoutService.isMobile$.next(true);
         }
       });
-      this.authService.isLoggedIn.pipe(untilDestroyed(this)).subscribe(
-        isLoggedIn => {
-          if(isLoggedIn){
-            this.router.navigate(['']);   
-            this.authService.getCurrentUser();       
-          } else {
-            this.router.navigate(['login'])
-          }
-      })
-      this.authService.getAllUsers();
-      
+    this.authService.isLoggedIn
+      .pipe(untilDestroyed(this))
+      .subscribe((isLoggedIn) => {
+        if (isLoggedIn) {
+          this.recipiesService.getRecipies();
+          this.recipiesService.getAllProducts();
+          this.authService.getAllUsers();
+          this.router.navigate(['']);
+        } else {
+          this.router.navigate(['login']);
+        }
+      });
   }
 
-  addIcons(){
+  addIcons() {
     this.iconRegistry.addSvgIcon(
       'close',
-      this.sanitizer.bypassSecurityTrustResourceUrl(
-        '/assets/icons/cross.svg'
-      )
+      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cross.svg')
     );
     this.iconRegistry.addSvgIcon(
       'menu',
-      this.sanitizer.bypassSecurityTrustResourceUrl(
-        '/assets/icons/dots-3.svg'
-      )
+      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/dots-3.svg')
     );
     this.iconRegistry.addSvgIcon(
       'heart',
-      this.sanitizer.bypassSecurityTrustResourceUrl(
-        '/assets/icons/heart.svg'
-      )
+      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/heart.svg')
     );
     this.iconRegistry.addSvgIcon(
       'add',
-      this.sanitizer.bypassSecurityTrustResourceUrl(
-        '/assets/icons/plus.svg'
-      )
+      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plus.svg')
     );
     this.iconRegistry.addSvgIcon(
       'arrow-left',
@@ -103,15 +98,15 @@ export class AppComponent implements OnInit {
     );
     this.iconRegistry.addSvgIcon(
       'search-small',
-      this.sanitizer.bypassSecurityTrustResourceUrl(
-        '/assets/icons/search.svg'
-      )
+      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/search.svg')
     );
     this.iconRegistry.addSvgIcon(
       'edit',
-      this.sanitizer.bypassSecurityTrustResourceUrl(
-        '/assets/icons/pencil.svg'
-      )
+      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/pencil.svg')
+    );
+    this.iconRegistry.addSvgIcon(
+      'tag',
+      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/tag.svg')
     );
   }
 }

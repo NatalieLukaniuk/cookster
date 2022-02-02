@@ -26,7 +26,6 @@ export class AddRecipyComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.data.recipy)
     if (this.data.mode === 'edit') {
       this.initEditForm();
       this.fillForm();
@@ -113,6 +112,5 @@ export class AddRecipyComponent implements OnInit {
 
   onStepsFormChange(event: boolean) {
     this.isStepsFormValid = event;
-    console.log(this.isStepsFormValid);
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 import { MeasuringUnit } from '../models/measuring-units.enum';
 import { PreparationStep } from '../models/preparationStep.interface';
@@ -20,11 +21,13 @@ export class RecipiesService {
   products$ = new BehaviorSubject<Product[]>([]);
   productsUpdated$ = new Subject<any>();
   recipyUpdated$ = new Subject();
+  userRecipiesUpdated$ = new Subject();
 
   constructor(
     private recipiesApi: RecipiesApiService,
     private converter: AmountConverterService,
-    private productsApi: ProductsApiService
+    private productsApi: ProductsApiService,
+    private authService: AuthService
   ) {}
 
   processAddNewRecipy(newRecipy: NewRecipy) {
@@ -34,7 +37,6 @@ export class RecipiesService {
         for (let product of this.products$.value) {
           if (product.name === ingr.ingredient) {
             productId = product.id;
-            console.log(productId);
           }
         }
         ingr.product = productId;
@@ -65,7 +67,10 @@ export class RecipiesService {
       };
       this.recipiesApi
         .addRecipy(recipy)
-        .subscribe(() => this.newRecipyAdded.next());
+        .subscribe((id: any) => {
+          this.addRecipyToUserRecipies(id.name)
+          this.newRecipyAdded.next();
+        });
     }
   }
 
@@ -262,5 +267,23 @@ export class RecipiesService {
       }
       return amount;
     }
+  }
+
+  addRecipyToUserRecipies(recipyId: string){
+    let recipies = [];
+    if(this.authService.userDetailsFromMyDatabase.recipies){
+      recipies = this.authService.userDetailsFromMyDatabase.recipies;
+    }
+    recipies.push(recipyId);
+    let updatedUserRecipies = {recipies: recipies}
+    this.authService.updateUserDetailsFromMyDatabase(updatedUserRecipies).pipe(take(1)).subscribe(res => this.getRecipies())
+  }
+
+  removeRecipyFromUserRecipies(recipyId: string){
+    let recipies = this.authService.userDetailsFromMyDatabase.recipies;
+    let index = recipies.indexOf(recipyId)
+    recipies.splice(index, 1);
+    let updatedUserRecipies = {recipies: recipies}
+    this.authService.updateUserDetailsFromMyDatabase(updatedUserRecipies).pipe(take(1)).subscribe(res => this.getRecipies())
   }
 }

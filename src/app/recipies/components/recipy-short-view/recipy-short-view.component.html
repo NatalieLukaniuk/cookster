@@ -20,13 +20,40 @@
     </div>
   </div>
 </div>
-<div class="recipy-menu">
-  <!-- <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-button">
+<ng-container *ngIf="isUserLoaded">
+  <button
+    mat-icon-button
+    class="tag-button"
+    *ngIf="!isUserRecipy && currentPath !== 'user-recipies'"
+    (click)="addToUserRecipies()"
+  >
+    <mat-icon svgIcon="tag"></mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    class="tag-button"
+    *ngIf="currentPath === 'user-recipies'"
+    (click)="removeFromUserRecipies()"
+  >
+    <mat-icon svgIcon="edit"></mat-icon>
+  </button>
+</ng-container>
+
+<div class="recipy-menu" style="display: none">
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
+    class="menu-button"
+    *ngIf="currentPath !== 'user-recipies'"
+  >
     <mat-icon svgIcon="menu"></mat-icon>
-  </button> -->
+  </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>Редагувати рецепт</button>
-    <button mat-menu-item>Додати в меню</button>
-    <button mat-menu-item>В список покупок</button>
+    <!-- <button mat-menu-item>Редагувати рецепт</button>
+          <button mat-menu-item>Додати в меню</button>
+          <button mat-menu-item>В список покупок</button> -->
+    <button mat-menu-item *ngIf="currentPath !== 'user-recipies'">
+      Додати в меню
+    </button>
   </mat-menu>
 </div>

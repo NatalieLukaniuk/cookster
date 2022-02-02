@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -11,16 +11,14 @@ import { AuthApiService } from './auth-api.service';
 export class AuthService {
   userAtFirebase: any;
   isLoggedIn = new BehaviorSubject<boolean>(false);
-  allUsers: any;
+  allUsers: any = [];
   userDetailsFromMyDatabase: any;
   constructor(private authApiService: AuthApiService) {}
 
   registerUser(email: string, password: string) {
     const auth = getAuth();
-    console.log(auth);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log(userCredential);
         this.userAtFirebase = userCredential.user;
         this.isLoggedIn.next(true);
         this.addUserToFirebase();
@@ -69,26 +67,8 @@ export class AuthService {
     });
   }
 
-  updateUser() {
-    const auth = getAuth();
-    if (auth.currentUser) {
-      updateProfile(auth.currentUser, {
-        displayName: 'Jane Q. User',
-        photoURL: 'https://example.com/jane-q-user/profile.jpg',
-      })
-        .then(() => {
-          console.log('updated');
-        })
-        .catch((error) => {
-          // An error occurred
-          // ...
-        });
-    }
-  }
-
   addUserToFirebase() {
     const auth = getAuth();
-    console.log(auth.currentUser);
     let user = {
       email: auth.currentUser?.email,
       recipies: [],
@@ -115,6 +95,7 @@ export class AuthService {
           users.push(user);
         }
         this.allUsers = users;
+        this.getCurrentUser()
       });
   }
 
@@ -127,6 +108,6 @@ export class AuthService {
   }
 
   updateUserDetailsFromMyDatabase(newData: any){
-    this.authApiService.updateUser(this.userDetailsFromMyDatabase.id, newData).pipe(take(1)).subscribe(res => console.log(res))
+    return this.authApiService.updateUser(this.userDetailsFromMyDatabase.id, newData)
   }
 }
