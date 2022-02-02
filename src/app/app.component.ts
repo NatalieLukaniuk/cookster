@@ -108,5 +108,9 @@ export class AppComponent implements OnInit {
       'tag',
       this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/tag.svg')
     );
+    this.iconRegistry.addSvgIcon(
+      'delete',
+      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/trash.svg')
+    );
   }
 }
