@@ -5,11 +5,21 @@
 
   <nav class="app-navigation">
     <mat-nav-list>
-      <mat-list-item *ngFor="let route of navigation">
+      <ng-container *ngIf="!isMobile">
+        <mat-list-item *ngFor="let route of navigation">
         <a [routerLink]="route.path" routerLinkActive="active">{{
           route.name
         }}</a>
       </mat-list-item>
+      </ng-container>
+      <ng-container *ngIf="isMobile">
+        <mat-list-item *ngFor="let route of mobileNavigation">
+        <a [routerLink]="route.path" routerLinkActive="active">{{
+          route.name
+        }}</a>
+      </mat-list-item>
+      </ng-container>
+      
       <mat-list-item>
         <button mat-flat-button class="action-button" (click)="addRecipy()">Додати рецепт</button>
       </mat-list-item>

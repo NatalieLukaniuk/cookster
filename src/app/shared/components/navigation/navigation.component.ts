@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
+import { LayoutService } from '../../services/layout.service';
 import { AddRecipyComponent } from './../../../recipies/components/add-recipy/add-recipy.component';
 
 
@@ -12,7 +14,7 @@ import { AddRecipyComponent } from './../../../recipies/components/add-recipy/ad
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnDestroy {
   navigation = [
     // { path: 'extended-search', name: 'Розширений пошук' },
     { path: 'recipies/user-recipies', name: 'Мої рецепти' },
@@ -21,11 +23,25 @@ export class NavigationComponent {
     // { path: 'user-menus', name: 'Мої меню' },
   ];
 
+  mobileNavigation = [
+    { path: 'cookster/recipies/user-recipies', name: 'Мої рецепти' },
+  ]
+
+  isMobile: boolean = false;
+  destroy$ = new Subject();
+
   constructor(
     public dialog: MatDialog,
     private recipiesService: RecipiesService,
-    
-  ) {}
+    private layoutService: LayoutService,
+  ) {
+    this.layoutService.isMobile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bool) => (this.isMobile = bool));
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next()
+  }
 
   addRecipy() {
     const dialogRef = this.dialog.open(AddRecipyComponent, {
