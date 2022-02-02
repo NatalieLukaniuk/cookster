@@ -1,3 +1,97 @@
-<p>
-  recipies-admin works!
-</p>
+<div class="admin-panel">
+  <div class="admin-header">
+    <h2>Recipies</h2>
+
+    <div class="search">
+      <mat-form-field appearance="outline">
+        <input
+          matInput
+          type="search"
+          placeholder="Search"
+          (keyup)="applyFilter($event)"
+          #search
+        />
+        <mat-icon matSuffix svgIcon="search-small"></mat-icon>
+      </mat-form-field>
+    </div>
+    <button mat-flat-button class="primary" (click)="addRecipy()">
+      Add recipy
+    </button>
+  </div>
+  <table *ngIf="recipies" mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let recipy">
+        {{ recipy.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="complexity">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>complexity</th>
+      <td mat-cell *matCellDef="let recipy">
+        {{ recipy.complexity }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>type</th>
+      <td mat-cell *matCellDef="let recipy">
+        {{ recipy.type }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="author">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>author</th>
+      <td mat-cell *matCellDef="let recipy">
+        {{ recipy.author }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="createdOn">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>createdOn</th>
+      <td mat-cell *matCellDef="let recipy">
+        {{ recipy.createdOn | date }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="editedBy">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>editedBy</th>
+      <td mat-cell *matCellDef="let recipy">
+        {{ recipy.editedBy }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastEdited">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>lastEdited</th>
+      <td mat-cell *matCellDef="let recipy">
+        {{ recipy.lastEdited | date }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="table-actions">Actions</th>
+      <td mat-cell *matCellDef="let recipy" class="table-actions">
+        <button mat-icon-button (click)="openRecipy(recipy)">
+          <mat-icon>pageview</mat-icon>
+        </button>
+        <button mat-icon-button (click)="editRecipy(recipy)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deleteRecipy(recipy)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">
+        No data matching the search key: "{{ search.value }}"
+      </td>
+    </tr>
+  </table>
+  <mat-paginator aria-label="Select page of users"></mat-paginator>
+  <!-- <mat-spinner *ngIf="!users"></mat-spinner> -->
+</div>

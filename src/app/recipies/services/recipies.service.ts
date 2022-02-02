@@ -16,12 +16,11 @@ import { RecipiesApiService } from './recipies-api.service';
   providedIn: 'root',
 })
 export class RecipiesService {
-  newRecipyAdded = new Subject();
   allRecipies$ = new BehaviorSubject<Recipy[]>([]);
   products$ = new BehaviorSubject<Product[]>([]);
   productsUpdated$ = new Subject<any>();
-  recipyUpdated$ = new Subject();
   userRecipiesUpdated$ = new Subject();
+  recipiesUpdated$ = new Subject();
 
   constructor(
     private recipiesApi: RecipiesApiService,
@@ -69,7 +68,7 @@ export class RecipiesService {
       };
       this.recipiesApi.addRecipy(recipy).subscribe((id: any) => {
         this.addRecipyToUserRecipies(id.name);
-        this.newRecipyAdded.next();
+        this.recipiesUpdated$.next()
       });
     }
   }
@@ -79,7 +78,7 @@ export class RecipiesService {
       .updateRecipy(recipyId, changes)
       .pipe(take(1))
       .subscribe((res) => {
-        this.recipyUpdated$.next();
+        this.recipiesUpdated$.next()
       });
   }
 
@@ -143,9 +142,6 @@ export class RecipiesService {
     return grInOneItem;
   }
 
-  getAllRecipies() {
-    return this.recipiesApi.getRecipies();
-  }
 
   getRecipies() {
     this.recipiesApi
@@ -293,5 +289,12 @@ export class RecipiesService {
       .updateUserDetailsFromMyDatabase(updatedUserRecipies)
       .pipe(take(1))
       .subscribe((res) => this.getRecipies());
+  }
+
+  deleteRecipy(recipy: Recipy) {
+    this.recipiesApi
+      .deleteRecipy(recipy.id)
+      .pipe(take(1))
+      .subscribe((res) => this.recipiesUpdated$.next());
   }
 }

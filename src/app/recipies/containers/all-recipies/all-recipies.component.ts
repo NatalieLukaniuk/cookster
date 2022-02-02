@@ -25,7 +25,6 @@ export class AllRecipiesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.recipies.newRecipyAdded.subscribe(() => this.recipies.getRecipies());
     this.recipies.allRecipies$.subscribe(recipies => {
       this.allRecipies = recipies;
     })

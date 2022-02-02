@@ -26,7 +26,6 @@ export class UserRecipiesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.recipies.newRecipyAdded.subscribe(() => this.recipies.getRecipies());
     this.recipies.userRecipiesUpdated$.subscribe(() => this.recipies.getRecipies())
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))

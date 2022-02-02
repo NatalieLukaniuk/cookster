@@ -44,6 +44,7 @@ export class AppComponent implements OnInit {
     this.recipiesService.productsUpdated$.subscribe(() =>
       this.recipiesService.getAllProducts()
     );
+    this.recipiesService.recipiesUpdated$.subscribe(() => this.recipiesService.getRecipies())
     this.breakpointObserver
       .observe(['(min-width: 600px)'])
       .subscribe((state: BreakpointState) => {

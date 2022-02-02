@@ -12,7 +12,7 @@
   </mat-drawer>
   <mat-drawer-content>
     <div>
-      <app-recipies-admin *ngIf="activePath === 'recipies'"></app-recipies-admin>
+      <app-recipies-admin *ngIf="activePath === 'recipies'" [recipies]="recipies"></app-recipies-admin>
       <app-products-admin *ngIf="activePath === 'products'" [products]="products"></app-products-admin>
     </div>
   </mat-drawer-content>

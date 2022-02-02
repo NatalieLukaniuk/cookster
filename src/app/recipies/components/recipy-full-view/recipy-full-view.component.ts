@@ -47,7 +47,6 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
     this.getRecipy(this.recipyId);
-    this.recipiesService.recipyUpdated$.pipe(takeUntil(this.destroy$)).subscribe(() => this.getRecipy(this.recipyId))
   }
 
   getRecipy(recipyId: string){
@@ -171,7 +170,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(take(1))
       .subscribe((result: Recipy) => {
-        if(result.id){
+        if(result?.id){
           this.recipiesService.editRecipy(result.id, result);
         }        
       });
@@ -179,4 +178,3 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
 }
 
 //TODO chips: figure out what should happen on click on tag chip
-//TODO: implement calculation for items measuring unit

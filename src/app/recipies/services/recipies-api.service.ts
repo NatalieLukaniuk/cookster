@@ -26,4 +26,8 @@ export class RecipiesApiService {
   getRecipyById(id: string) {
     return this.http.get<Recipy>(`${this.url}/${id}.json`);
   }
+
+  deleteRecipy(id: string) {
+    return this.http.delete<Recipy>(`${this.url}/${id}.json`);
+  }
 }
