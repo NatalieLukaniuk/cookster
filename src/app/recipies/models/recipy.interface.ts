@@ -11,6 +11,10 @@ export interface Recipy {
   steps: PreparationStep[];
   type: DishType[];
   photo?: string;
+  author: string;
+  createdOn: number;
+  editedBy?: string;
+  lastEdited?: number
 }
 
 export interface NewRecipy {
@@ -20,4 +24,6 @@ export interface NewRecipy {
   steps: PreparationStep[];
   type: DishType[];
   photo?: string;
+  author: string;
+  createdOn: number;
 }
