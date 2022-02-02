@@ -7,7 +7,7 @@ export interface Product {
     grInOneItem?: number;
     calories: number; //kKal,
     defaultUnit: MeasuringUnit;
-    type: ProductType
+    type: ProductType;
   }
   
   export enum ProductType {
@@ -16,10 +16,22 @@ export interface Product {
     herb,
     hardItem,
   }
-
+  
   export enum ProductTypeText {
     'рідкий продукт' = 1,
     'подрібнена спеція',
     'трава',
     'твердий продукт',
   }
+  
+  export const ProductTypeOptions = [
+    ProductType.fluid,
+    ProductType.spice,
+    ProductType.herb,
+    ProductType.hardItem,
+  ];
+
+
+  
+
+

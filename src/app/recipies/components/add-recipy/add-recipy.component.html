@@ -1,6 +1,7 @@
 <app-header></app-header>
 <form class="add-recipy-wrapper" [formGroup]="recipyForm" novalidate>
-  <h1>Новий рецепт</h1>
+  <h1 *ngIf="data.mode === 'create'">Новий рецепт</h1>
+  <h1 *ngIf="data.mode === 'edit'">Редагувати рецепт</h1>
 
   <mat-form-field appearance="outline" class="recipy-name">
     <mat-label>Назва</mat-label>
@@ -18,7 +19,7 @@
     <!-- <mat-hint>Hint</mat-hint> -->
   </mat-form-field>
 
-  <div class="recipy-ingredients">
+  <div class="recipy-ingredients" *ngIf="data.mode === 'create'">
     <div formArrayName="ingrediends">
       <div
         *ngFor="
@@ -33,8 +34,14 @@
       <mat-icon svgIcon="add"></mat-icon>Додати ще один інгридієнт
     </button>
   </div>
+  <div class="recipy-ingredients" *ngIf="data.mode === 'edit'">
+    <app-edit-ingredient
+      *ngFor="let ingredient of data.recipy?.ingrediends; let i = index"
+      [ingredient]="ingredient"
+    ></app-edit-ingredient>
+  </div>
 
-  <div class="recipy-steps">
+  <div class="recipy-steps" *ngIf="data.mode === 'create'">
     <div formArrayName="steps">
       <div
         *ngFor="
@@ -74,10 +81,15 @@
   </div>
 </form>
 <div class="action-buttons-wrapper">
-  <button mat-flat-button class="action-button back-button" type="button" (click)="goBack()">
+  <button
+    mat-flat-button
+    class="action-button back-button"
+    type="button"
+    (click)="goBack()"
+  >
     <mat-icon svgIcon="arrow-left"></mat-icon>Скасувати
   </button>
-  <button
+  <button 
     [disabled]="recipyForm.invalid"
     mat-flat-button
     type="submit"

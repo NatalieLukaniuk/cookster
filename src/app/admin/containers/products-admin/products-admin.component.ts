@@ -6,8 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { take } from 'rxjs/operators';
 import { AddProductComponent } from 'src/app/recipies/components/add-product/add-product.component';
 import { MeasuringUnitText } from 'src/app/recipies/models/measuring-units.enum';
-import { Product, ProductTypeText } from 'src/app/recipies/services/products-database.service';
-import { ProductsService } from 'src/app/recipies/services/products.service';
+import { Product, ProductTypeText } from 'src/app/recipies/models/products.interface';
+import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
 @Component({
   selector: 'app-products-admin',
@@ -34,7 +34,7 @@ export class ProductsAdminComponent implements OnInit, OnChanges {
   @ViewChild(MatSort)
   sort!: MatSort;
 
-  constructor(public dialog: MatDialog, private productsService: ProductsService) {}
+  constructor(public dialog: MatDialog, private recipiesService: RecipiesService) {}
   ngOnChanges(changes: SimpleChanges): void {
     this.initTable();
   }
@@ -78,7 +78,7 @@ export class ProductsAdminComponent implements OnInit, OnChanges {
       .pipe(take(1))
       .subscribe((result: Product) => {
         if(result){
-          this.productsService.processAddNewProduct(result);
+          this.recipiesService.processAddNewProduct(result);
         }
         
       });
@@ -89,7 +89,7 @@ export class ProductsAdminComponent implements OnInit, OnChanges {
   }
 
   deleteProduct(product: Product){
-    this.productsService.deleteProduct(product)
+    this.recipiesService.deleteProduct(product)
   }
 
   getProductTypeText(type: string) {

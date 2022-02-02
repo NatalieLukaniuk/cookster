@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Recipy } from './../models/recipy.interface';
+import { NewRecipy, Recipy } from './../models/recipy.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -11,12 +11,12 @@ export class RecipiesApiService {
 
   constructor(private http: HttpClient) {}
 
-  addRecipy(recipy: Recipy) {
+  addRecipy(recipy: NewRecipy) {
     return this.http.post(`${this.url}.json`, recipy);
   }
 
   updateRecipy(id: string, data: any){
-
+    return this.http.patch<Recipy>(`${this.url}/${id}.json`, data);
   }
 
   getRecipies() {

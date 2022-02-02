@@ -2,9 +2,8 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 
+import { Product } from '../recipies/models/products.interface';
 import { Recipy } from '../recipies/models/recipy.interface';
-import { Product } from '../recipies/services/products-database.service';
-import { ProductsService } from '../recipies/services/products.service';
 import { RecipiesService } from '../recipies/services/recipies.service';
 
 interface NavigationNode {
@@ -52,8 +51,7 @@ export class AdminComponent implements OnInit {
   recipies: Recipy[] = [];
   products: Product[] = [];
 
-  constructor(private recipiesService: RecipiesService,
-    private productsService: ProductsService) {
+  constructor(private recipiesService: RecipiesService) {
     const TREE_DATA: NavigationNode[] = [
       { name: 'Recipies', path: `recipies` },
       { name: 'Products', path: 'products' },
@@ -66,7 +64,7 @@ export class AdminComponent implements OnInit {
     this.recipiesService.allRecipies$.subscribe((recipies: Recipy[]) => {
       this.recipies = recipies;
     })
-    this.productsService.products$.subscribe((products: Product[]) => {
+    this.recipiesService.products$.subscribe((products: Product[]) => {
       this.products = products;
     })
   }

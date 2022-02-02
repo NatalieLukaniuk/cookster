@@ -8,6 +8,7 @@ import { AddProductComponent } from './components/add-product/add-product.compon
 import { AddIngredientsComponent } from './components/add-recipy/add-ingredients/add-ingredients.component';
 import { AddRecipyComponent } from './components/add-recipy/add-recipy.component';
 import { AddStepsComponent } from './components/add-recipy/add-steps/add-steps.component';
+import { EditIngredientComponent } from './components/add-recipy/edit-ingredient/edit-ingredient.component';
 import { IngredientComponent } from './components/ingredient/ingredient.component';
 import { RecipyFullViewComponent } from './components/recipy-full-view/recipy-full-view.component';
 import { RecipyShortViewComponent } from './components/recipy-short-view/recipy-short-view.component';
@@ -31,7 +32,8 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     AddStepsComponent,
     AddIngredientsComponent,
     AddProductComponent,
-    AllRecipiesComponent
+    AllRecipiesComponent,
+    EditIngredientComponent
   ],
   exports: [AddRecipyComponent],
 })

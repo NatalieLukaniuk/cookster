@@ -7,7 +7,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { initializeApp } from 'firebase/app';
 
 import { AuthService } from './auth/services/auth.service';
-import { ProductsService } from './recipies/services/products.service';
 import { RecipiesService } from './recipies/services/recipies.service';
 import { LayoutService } from './shared/services/layout.service';
 
@@ -31,7 +30,6 @@ export class AppComponent implements OnInit {
   constructor(private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
     private recipiesService: RecipiesService,
-    private productsService: ProductsService,
     public breakpointObserver: BreakpointObserver,
     private layoutService: LayoutService,
     private authService: AuthService,
@@ -42,8 +40,8 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.authService.checkIsLoggedIn();
     this.recipiesService.getRecipies();
-    this.productsService.getAllProducts();
-    this.productsService.productsUpdated$.subscribe(() => this.productsService.getAllProducts())
+    this.recipiesService.getAllProducts();
+    this.recipiesService.productsUpdated$.subscribe(() => this.recipiesService.getAllProducts())
     this.breakpointObserver
       .observe(['(min-width: 600px)'])
       .subscribe((state: BreakpointState) => {

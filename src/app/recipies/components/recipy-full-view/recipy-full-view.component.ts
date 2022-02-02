@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
@@ -6,6 +7,7 @@ import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { Recipy } from '../../models/recipy.interface';
+import { AddRecipyComponent } from '../add-recipy/add-recipy.component';
 import { LayoutService } from './../../../shared/services/layout.service';
 import { RecipiesService } from './../../services/recipies.service';
 
@@ -30,25 +32,33 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     // public dialogRef: MatDialogRef<RecipyFullViewComponent>,
     // @Inject(MAT_DIALOG_DATA) public data: Recipy,
     private layoutService: LayoutService,
-    private recipiesService: RecipiesService
-  ) {}
+    private recipiesService: RecipiesService,
+    public dialog: MatDialog,
+  ) {
+    const path = window.location.pathname.split('/');
+    this.recipyId = path[path.length - 1];
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
   }
 
-  ngOnInit() {
-    const path = window.location.pathname.split('/');
-    const recipyId = path[path.length - 1];
+  ngOnInit() {    
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
+    this.getRecipy(this.recipyId);
+    this.recipiesService.recipyUpdated$.pipe(takeUntil(this.destroy$)).subscribe(() => this.getRecipy(this.recipyId))
+  }
+
+  getRecipy(recipyId: string){
     this.recipiesService
-      .getRecipyById(recipyId)
-      .pipe(take(1))
-      .subscribe((recipy) => {
-        this.recipy = recipy;
-        this.portionsToServe = this.savedPortionsServed;
-      });
+    .getRecipyById(recipyId)
+    .pipe(take(1))
+    .subscribe((recipy) => {
+      this.recipy = recipy;
+      recipy.id = recipyId;
+      this.portionsToServe = this.savedPortionsServed;
+    });
   }
 
   goBack(): void {
@@ -140,6 +150,32 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
 
   onPortionsChange(option: number) {
     this.portionsToServe = option;
+  }
+
+  editRecipy(){
+    const dialogRef = this.dialog.open(AddRecipyComponent, {
+      width: '100%',
+      maxWidth: '100%',
+      height: '100%',
+      position: { bottom: '0' },
+      hasBackdrop: false,
+      panelClass: 'full-recipy-dialog',
+      autoFocus: false,
+      data: {
+        mode: 'edit',
+        recipy: this.recipy
+      }
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((result: Recipy) => {
+        console.log(result)
+        if(result.id){
+          this.recipiesService.editRecipy(result.id, result);
+        }        
+      });
   }
 }
 

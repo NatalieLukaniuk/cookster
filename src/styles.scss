@@ -301,6 +301,38 @@ button.mat-menu-item {
   }
 }
 
+
+// ---- Ingredients
+
+.ingredient-wrapper{
+  display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.ingredient-name {
+  width: 70%;
+}
+
+.ingredient-amount {
+  text-align: end;
+  width: 30%;
+}
+
+// --- Buttons
+
+.edit-button {
+  height: 23px;
+  line-height: 23px;
+  width: 24px;
+  font-size: 5px;
+  margin-left: 5px;
+  .mat-icon {
+    height: 13px;
+  }
+}
+
 @media (max-width: 600px){
   html, body{
     font-size: 14px;

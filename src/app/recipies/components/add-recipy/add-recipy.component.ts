@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { Complexity } from './../../models/complexity.enum';
 import { DishType } from './../../models/dishType.enum';
+import { Recipy } from './../../models/recipy.interface';
+
+interface AddEditRecipyData {
+  mode: 'create' | 'edit';
+  recipy?: Recipy;
+}
 
 @Component({
   selector: 'app-add-recipy',
@@ -14,9 +20,22 @@ import { DishType } from './../../models/dishType.enum';
 export class AddRecipyComponent implements OnInit {
   recipyForm!: FormGroup;
   isStepsFormValid: boolean = false;
-  constructor(public dialogRef: MatDialogRef<AddRecipyComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<AddRecipyComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: AddEditRecipyData
+  ) {}
 
   ngOnInit() {
+    console.log(this.data.recipy)
+    if (this.data.mode === 'edit') {
+      this.initEditForm();
+      this.fillForm();
+    } else {
+      this.initAddForm();
+    }
+  }
+
+  initAddForm() {
     this.recipyForm = new FormGroup({
       name: new FormControl('', Validators.required),
       ingrediends: new FormArray([new FormControl('', Validators.required)]),
@@ -25,6 +44,23 @@ export class AddRecipyComponent implements OnInit {
       type: new FormControl(''),
     });
   }
+
+  initEditForm() {
+    this.recipyForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      complexity: new FormControl(''),
+      type: new FormControl(''),
+    });
+  }
+
+  fillForm() {
+    this.recipyForm.patchValue({
+      name: this.data.recipy?.name,
+      complexity: this.data.recipy?.complexity,
+      type: this.data.recipy?.type,
+    });
+  }
+
   goBack(): void {
     this.dialogRef.close();
   }
@@ -68,6 +104,10 @@ export class AddRecipyComponent implements OnInit {
   }
 
   submit() {
+    let recipy = this.recipyForm.value;
+    if(this.data.mode === 'edit'){
+      recipy.id = this.data.recipy?.id;
+    }
     this.dialogRef.close(this.recipyForm.value);
   }
 

@@ -5,7 +5,7 @@ import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
 import { AddRecipyComponent } from './../../../recipies/components/add-recipy/add-recipy.component';
-import { ProductsService } from './../../../recipies/services/products.service';
+
 
 @Component({
   selector: 'app-navigation',
@@ -24,7 +24,6 @@ export class NavigationComponent {
   constructor(
     public dialog: MatDialog,
     private recipiesService: RecipiesService,
-    private productsService: ProductsService,
     
   ) {}
 
@@ -37,6 +36,9 @@ export class NavigationComponent {
       hasBackdrop: false,
       panelClass: 'full-recipy-dialog',
       autoFocus: false,
+      data: {
+        mode: 'create'
+      }
     });
 
     dialogRef

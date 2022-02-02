@@ -3,9 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { MeasuringUnit, MeasuringUnitOptions } from '../../models/measuring-units.enum';
-import { ProductsService } from '../../services/products.service';
+import { ProductTypeOptions, ProductTypeText } from '../../models/products.interface';
 import { MeasuringUnitText } from './../../models/measuring-units.enum';
-import { ProductTypeOptions, ProductTypeText } from './../../services/products-database.service';
 
 @Component({
   selector: 'app-add-product',
@@ -14,7 +13,7 @@ import { ProductTypeOptions, ProductTypeText } from './../../services/products-d
 })
 export class AddProductComponent implements OnInit {
   productForm!: FormGroup;
-  constructor(public dialogRef: MatDialogRef<AddProductComponent>, private productsService: ProductsService) {}
+  constructor(public dialogRef: MatDialogRef<AddProductComponent>) {}
 
   ngOnInit(): void {
     this.productForm = new FormGroup({
