@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from 'src/app/auth/services/auth.service';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
+import { UserService } from './../../../auth/services/user.service';
 import { Complexity } from './../../models/complexity.enum';
 import { DishType } from './../../models/dishType.enum';
 import { Recipy } from './../../models/recipy.interface';
@@ -24,7 +24,7 @@ export class AddRecipyComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AddRecipyComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddEditRecipyData,
-    private authService: AuthService
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -108,7 +108,7 @@ export class AddRecipyComponent implements OnInit {
     let recipy = this.recipyForm.value;
     if(this.data.mode === 'edit'){
       recipy.id = this.data.recipy?.id;
-      recipy.editedBy = this.authService.userDetailsFromMyDatabase.email;
+      recipy.editedBy = this.userService.currentUser.email;
       recipy.lastEdited = Date.now()
     }
     this.dialogRef.close(recipy);

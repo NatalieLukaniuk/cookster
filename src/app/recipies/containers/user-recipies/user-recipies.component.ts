@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AuthService } from 'src/app/auth/services/auth.service';
 
 import { Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
+import { UserService } from './../../../auth/services/user.service';
 import { LayoutService } from './../../../shared/services/layout.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class UserRecipiesComponent implements OnInit, OnDestroy {
   constructor(
     private recipies: RecipiesService,
     private layoutService: LayoutService,
-    private authService: AuthService
+    private userService: UserService
   ) {}
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -34,7 +34,7 @@ export class UserRecipiesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((allrecipies) => {
         this.userRecipies = [];
-        this.authService.userDetailsFromMyDatabase.recipies?.forEach(
+        this.userService.currentUser.recipies?.forEach(
           (id: string) => {
             for (let recipy of allrecipies) {
               if (id === recipy.id) {

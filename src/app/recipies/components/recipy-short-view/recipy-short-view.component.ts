@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/services/auth.service';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
+import { UserService } from './../../../auth/services/user.service';
 
 @Component({
   selector: 'app-recipy-short-view',
@@ -21,15 +21,15 @@ export class RecipyShortViewComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService,
-    private recipiesService: RecipiesService
+    private recipiesService: RecipiesService,
+    private userService: UserService
   ) {
     const path = window.location.pathname.split('/');
     this.currentPath = path[path.length - 1];
   }
 
   ngOnInit() {
-    if(this.authService.userDetailsFromMyDatabase){
+    if(this.userService.currentUser){
       this.isUserLoaded = true;
     }
   }
@@ -52,8 +52,8 @@ export class RecipyShortViewComponent implements OnInit {
   }
 
   get isUserRecipy(){
-    if(this.authService.userDetailsFromMyDatabase.recipies){
-      return this.authService.userDetailsFromMyDatabase.recipies.includes(this.recipy.id)
+    if(this.userService.currentUser.recipies){
+      return this.userService.currentUser.recipies.includes(this.recipy.id)
     } else return false    
   }
 

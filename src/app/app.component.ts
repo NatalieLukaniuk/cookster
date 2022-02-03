@@ -7,6 +7,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { initializeApp } from 'firebase/app';
 
 import { AuthService } from './auth/services/auth.service';
+import { UserService } from './auth/services/user.service';
 import { RecipiesService } from './recipies/services/recipies.service';
 import { LayoutService } from './shared/services/layout.service';
 
@@ -34,7 +35,8 @@ export class AppComponent implements OnInit {
     public breakpointObserver: BreakpointObserver,
     private layoutService: LayoutService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {
     this.addIcons();
     const app = initializeApp(this.firebaseConfig);
@@ -60,7 +62,7 @@ export class AppComponent implements OnInit {
         if (isLoggedIn) {
           this.recipiesService.getRecipies();
           this.recipiesService.getAllProducts();
-          this.authService.getAllUsers();
+          this.userService.getAllUsers();
           this.router.navigate(['']);
         } else {
           this.router.navigate(['login']);

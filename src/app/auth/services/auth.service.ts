@@ -1,27 +1,24 @@
 import { Injectable } from '@angular/core';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
 
-import { AuthApiService } from './auth-api.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  userAtFirebase: any;
   isLoggedIn = new BehaviorSubject<boolean>(false);
-  allUsers: any = [];
-  userDetailsFromMyDatabase: any;
-  constructor(private authApiService: AuthApiService) {}
+
+  constructor(private userService: UserService) {}
 
   registerUser(email: string, password: string) {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        this.userAtFirebase = userCredential.user;
+        this.userService.userAtFirebaseAuth = userCredential.user;
         this.isLoggedIn.next(true);
-        this.addUserToFirebase();
+        this.userService.addUser(auth);
         // ...
       })
       .catch((error) => {
@@ -36,7 +33,7 @@ export class AuthService {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
-        this.userAtFirebase = userCredential.user;
+        this.userService.userAtFirebaseAuth = userCredential.user;
         this.isLoggedIn.next(true);
       })
       .catch((error) => {
@@ -59,7 +56,7 @@ export class AuthService {
   checkIsLoggedIn() {
     getAuth().onAuthStateChanged((user) => {
       if (user) {
-        this.userAtFirebase = user;
+        this.userService.userAtFirebaseAuth = user;
         this.isLoggedIn.next(true);
       } else {
         this.isLoggedIn.next(false);
@@ -67,47 +64,7 @@ export class AuthService {
     });
   }
 
-  addUserToFirebase() {
-    const auth = getAuth();
-    let user = {
-      email: auth.currentUser?.email,
-      recipies: [],
-      uid: auth.currentUser?.uid,
-    };
-    this.authApiService
-      .addUser(user)
-      .pipe(take(1))
-      .subscribe((res) => console.log(res));
-  }
 
-  getAllUsers() {
-    this.authApiService
-      .getUsers()
-      .pipe(take(1))
-      .subscribe((res) => {
-        let array = Object.entries(res);
-        let users: any = [];
-        for (let entry of array) {
-          let user: any = {
-            id: entry[0],
-            ...entry[1],
-          };
-          users.push(user);
-        }
-        this.allUsers = users;
-        this.getCurrentUser()
-      });
-  }
 
-  getCurrentUser() {
-    for (let user of this.allUsers){
-      if(this.userAtFirebase.email === user.email){
-        this.userDetailsFromMyDatabase = user;
-      }
-    }
-  }
 
-  updateUserDetailsFromMyDatabase(newData: any){
-    return this.authApiService.updateUser(this.userDetailsFromMyDatabase.id, newData)
-  }
 }
