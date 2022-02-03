@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
+import { UserService } from 'src/app/auth/services/user.service';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
@@ -34,6 +35,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private recipiesService: RecipiesService,
     public dialog: MatDialog,
+    private userService: UserService
   ) {
     const path = window.location.pathname.split('/');
     this.recipyId = path[path.length - 1];
@@ -42,22 +44,22 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     this.destroy$.next();
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
     this.getRecipy(this.recipyId);
   }
 
-  getRecipy(recipyId: string){
+  getRecipy(recipyId: string) {
     this.recipiesService
-    .getRecipyById(recipyId)
-    .pipe(take(1))
-    .subscribe((recipy) => {
-      this.recipy = recipy;
-      recipy.id = recipyId;
-      this.portionsToServe = this.savedPortionsServed;
-    });
+      .getRecipyById(recipyId)
+      .pipe(take(1))
+      .subscribe((recipy) => {
+        this.recipy = recipy;
+        recipy.id = recipyId;
+        this.portionsToServe = this.savedPortionsServed;
+      });
   }
 
   goBack(): void {
@@ -151,7 +153,22 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     this.portionsToServe = option;
   }
 
-  editRecipy(){
+  getMode() {
+    let mode: string = '';
+    if (this.userService.currentUser.email === this.recipy?.author) {
+      mode = 'edit';
+    } else if (this.recipy?.clonedBy) {
+      if (this.userService.currentUser.email === this.recipy.clonedBy) {
+        mode = 'edit';
+      }
+    } else {
+      mode = 'clone';
+    }
+    return mode;
+  }
+
+  editRecipy() {
+    let mode = this.getMode();
     const dialogRef = this.dialog.open(AddRecipyComponent, {
       width: '100%',
       maxWidth: '100%',
@@ -161,18 +178,24 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       panelClass: 'full-recipy-dialog',
       autoFocus: false,
       data: {
-        mode: 'edit',
-        recipy: this.recipy
-      }
+        mode,
+        recipy: this.recipy,
+      },
     });
 
     dialogRef
       .afterClosed()
       .pipe(take(1))
-      .subscribe((result: Recipy) => {
-        if(result?.id){
-          this.recipiesService.editRecipy(result.id, result);
-        }        
+      .subscribe((result: any) => {
+        if (result?.recipy.id) {
+          if(mode === 'edit'){
+            this.recipiesService.editRecipy(result.recipy.id, result.recipy);
+          } else {
+            result.originalRecipy = result.recipy.id;
+            this.recipiesService.processAddNewRecipy(result.recipy, 'clone')
+          }
+          // 
+        }
       });
   }
 }

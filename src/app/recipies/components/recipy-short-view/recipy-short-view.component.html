@@ -9,35 +9,38 @@
       <p>{{ recipy.name }}</p>
     </div>
     <div class="recipy-bottom-part">
-      <div class="likes-wrapper" style="display: none;">
+      <div class="likes-wrapper" style="display: none">
         <mat-icon svgIcon="heart"></mat-icon>
         <p>20</p>
       </div>
       <div class="author-wrapper">
-        <p>{{recipy.author}}</p>
-        <img class="author-photo" style="display: none;" src="/assets/images/user.jpg" />
+        <p>{{ author }}</p>
+        <img
+          class="author-photo"
+          style="display: none"
+          src="/assets/images/user.jpg"
+        />
       </div>
     </div>
   </div>
 </div>
-<ng-container *ngIf="isUserLoaded">
-  <button
-    mat-icon-button
-    class="tag-button"
-    *ngIf="!isUserRecipy && currentPath !== 'user-recipies'"
-    (click)="addToUserRecipies()"
-  >
-    <mat-icon svgIcon="tag"></mat-icon>
-  </button>
-  <button
-    mat-icon-button
-    class="tag-button"
-    *ngIf="currentPath === 'user-recipies'"
-    (click)="removeFromUserRecipies()"
-  >
-    <mat-icon svgIcon="delete"></mat-icon>
-  </button>
-</ng-container>
+
+<button
+  mat-icon-button
+  class="tag-button"
+  *ngIf="!isUserRecipy && currentPath !== 'user-recipies'"
+  (click)="addToUserRecipies()"
+>
+  <mat-icon svgIcon="tag"></mat-icon>
+</button>
+<button
+  mat-icon-button
+  class="tag-button"
+  *ngIf="currentPath === 'user-recipies'"
+  (click)="removeFromUserRecipies()"
+>
+  <mat-icon svgIcon="delete"></mat-icon>
+</button>
 
 <div class="recipy-menu" style="display: none">
   <button

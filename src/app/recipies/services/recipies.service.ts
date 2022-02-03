@@ -29,46 +29,53 @@ export class RecipiesService {
     private userService: UserService
   ) {}
 
-  processAddNewRecipy(newRecipy: NewRecipy) {
+  processAddNewRecipy(newRecipy: NewRecipy, mode: string) {
     if (newRecipy) {
-      newRecipy.ingrediends = newRecipy.ingrediends.map((ingr: any) => {
-        let productId;
-        for (let product of this.products$.value) {
-          if (product.name === ingr.ingredient) {
-            productId = product.id;
+      if (mode === 'create') {
+        newRecipy.ingrediends = newRecipy.ingrediends.map((ingr: any) => {
+          let productId;
+          for (let product of this.products$.value) {
+            if (product.name === ingr.ingredient) {
+              productId = product.id;
+            }
           }
-        }
-        ingr.product = productId;
+          ingr.product = productId;
 
-        ingr.amount = this.transformToGr(ingr);
+          ingr.amount = this.transformToGr(ingr);
 
-        return {
-          product: ingr.product,
-          amount: ingr.amount,
-          defaultUnit: ingr.defaultUnit,
-        };
-      });
-      newRecipy.steps = newRecipy.steps.map((step: PreparationStep) => {
-        return {
-          id: step.id,
-          description: step.description,
-          timeActive: +step.timeActive,
-          timePassive: +step.timePassive,
-        };
-      });
-      let recipy = {
+          return {
+            product: ingr.product,
+            amount: ingr.amount,
+            defaultUnit: ingr.defaultUnit,
+          };
+        });
+        newRecipy.steps = newRecipy.steps.map((step: PreparationStep) => {
+          return {
+            id: step.id,
+            description: step.description,
+            timeActive: +step.timeActive,
+            timePassive: +step.timePassive,
+          };
+        });
+      }
+      let recipy: NewRecipy = {
         name: newRecipy.name,
         complexity: newRecipy.complexity,
         steps: newRecipy.steps,
         type: newRecipy.type,
         ingrediends: newRecipy.ingrediends,
         // photo: '/assets/images/recipies/2.jpg',
-        author: this.userService.currentUser.email,
-        createdOn: Date.now(),
+        author: newRecipy.author,
+        createdOn: newRecipy.createdOn,
       };
+      if (newRecipy.clonedBy) {
+        recipy.clonedBy = newRecipy.clonedBy;
+        recipy.clonedOn = newRecipy.clonedOn;
+        recipy.originalRecipy = newRecipy.originalRecipy;
+      }
       this.recipiesApi.addRecipy(recipy).subscribe((id: any) => {
         this.addRecipyToUserRecipies(id.name);
-        this.recipiesUpdated$.next()
+        this.recipiesUpdated$.next();
       });
     }
   }
@@ -78,7 +85,7 @@ export class RecipiesService {
       .updateRecipy(recipyId, changes)
       .pipe(take(1))
       .subscribe((res) => {
-        this.recipiesUpdated$.next()
+        this.recipiesUpdated$.next();
       });
   }
 
@@ -141,7 +148,6 @@ export class RecipiesService {
     }
     return grInOneItem;
   }
-
 
   getRecipies() {
     this.recipiesApi
@@ -296,5 +302,25 @@ export class RecipiesService {
       .deleteRecipy(recipy.id)
       .pipe(take(1))
       .subscribe((res) => this.recipiesUpdated$.next());
+  }
+
+  getRecipyBelongsTo(recipy: Recipy) {
+    if (recipy.clonedBy) {
+      return recipy.clonedBy;
+    } else {
+      return recipy.author;
+    }
+  }
+
+  getRecipyCreatedOn(recipy: Recipy) {
+    if (recipy.clonedOn) {
+      return recipy.clonedOn;
+    } else return recipy.createdOn;
+  }
+
+  getIsUserRecipy(recipy: Recipy){
+    if(this.userService.currentUser.recipies){
+      return this.userService.currentUser.recipies.includes(recipy.id)
+    } else return false
   }
 }

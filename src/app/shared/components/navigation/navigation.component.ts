@@ -2,7 +2,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
 import { LayoutService } from '../../services/layout.service';
@@ -60,8 +59,8 @@ export class NavigationComponent implements OnDestroy {
     dialogRef
       .afterClosed()
       .pipe(take(1))
-      .subscribe((result: Recipy) => {
-        this.recipiesService.processAddNewRecipy(result);
+      .subscribe((result: any) => {
+        this.recipiesService.processAddNewRecipy(result.recipy, result.mode);
       });
   }
 }

@@ -9,7 +9,7 @@ import { DishType } from './../../models/dishType.enum';
 import { Recipy } from './../../models/recipy.interface';
 
 interface AddEditRecipyData {
-  mode: 'create' | 'edit';
+  mode: 'create' | 'edit' | 'clone';
   recipy?: Recipy;
 }
 
@@ -28,7 +28,7 @@ export class AddRecipyComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.data.mode === 'edit') {
+    if (this.data.mode === 'edit' || this.data.mode === 'clone') {
       this.initEditForm();
       this.fillForm();
     } else {
@@ -106,12 +106,27 @@ export class AddRecipyComponent implements OnInit {
 
   submit() {
     let recipy = this.recipyForm.value;
-    if(this.data.mode === 'edit'){
+    if (
+      this.data.mode === 'edit'
+    ) {
       recipy.id = this.data.recipy?.id;
       recipy.editedBy = this.userService.currentUser.email;
-      recipy.lastEdited = Date.now()
+      recipy.lastEdited = Date.now();
+    } else if (
+      this.data.mode === 'clone'
+    ) {
+      recipy.id = this.data.recipy?.id;
+      recipy.clonedBy = this.userService.currentUser.email;
+      recipy.clonedOn = Date.now();
+      recipy.ingrediends = this.data.recipy?.ingrediends;
+      recipy.steps = this.data.recipy?.steps;
+      recipy.author = this.data.recipy?.author;
+      recipy.createdOn = this.data.recipy?.createdOn
+    } else {
+      recipy.author = this.userService.currentUser.email;
+      recipy.createdOn = Date.now();
     }
-    this.dialogRef.close(recipy);
+    this.dialogRef.close({recipy, mode: this.data.mode});
   }
 
   onStepsFormChange(event: boolean) {

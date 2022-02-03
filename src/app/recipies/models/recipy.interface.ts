@@ -14,7 +14,10 @@ export interface Recipy {
   author: string;
   createdOn: number;
   editedBy?: string;
-  lastEdited?: number
+  lastEdited?: number;
+  clonedBy?: string;
+  clonedOn?: number;
+  originalRecipy?: string
 }
 
 export interface NewRecipy {
@@ -26,4 +29,7 @@ export interface NewRecipy {
   photo?: string;
   author: string;
   createdOn: number;
+  clonedBy?: string;
+  clonedOn?: number;
+  originalRecipy?: string
 }

@@ -52,9 +52,7 @@ export class RecipyShortViewComponent implements OnInit {
   }
 
   get isUserRecipy(){
-    if(this.userService.currentUser.recipies){
-      return this.userService.currentUser.recipies.includes(this.recipy.id)
-    } else return false    
+    return this.recipiesService.getIsUserRecipy(this.recipy)    
   }
 
   addToUserRecipies(){
@@ -63,5 +61,13 @@ export class RecipyShortViewComponent implements OnInit {
 
   removeFromUserRecipies(){
     this.recipiesService.removeRecipyFromUserRecipies(this.recipy.id)
+  }
+
+  get author(){
+    return this.recipiesService.getRecipyBelongsTo(this.recipy)
+  }
+
+  get createdOn(){
+    return this.recipiesService.getRecipyCreatedOn(this.recipy)
   }
 }

@@ -12,7 +12,7 @@ import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 @Component({
   selector: 'app-recipies-admin',
   templateUrl: './recipies-admin.component.html',
-  styleUrls: ['./recipies-admin.component.scss']
+  styleUrls: ['./recipies-admin.component.scss'],
 })
 export class RecipiesAdminComponent implements OnInit {
   @Input()
@@ -26,9 +26,9 @@ export class RecipiesAdminComponent implements OnInit {
     'createdOn',
     'editedBy',
     'lastEdited',
-    'actions'
+    'isClone',
+    'actions',
   ];
-
 
   dataSource!: MatTableDataSource<Recipy>;
 
@@ -37,7 +37,12 @@ export class RecipiesAdminComponent implements OnInit {
   @ViewChild(MatSort)
   sort!: MatSort;
 
-  constructor(public dialog: MatDialog, private recipiesService: RecipiesService, private router: Router, private route: ActivatedRoute,) {}
+  constructor(
+    public dialog: MatDialog,
+    private recipiesService: RecipiesService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
   ngOnChanges(changes: SimpleChanges): void {
     this.initTable();
   }
@@ -65,7 +70,7 @@ export class RecipiesAdminComponent implements OnInit {
     }
   }
 
-  addRecipy(){
+  addRecipy() {
     const dialogRef = this.dialog.open(AddRecipyComponent, {
       width: '100%',
       maxWidth: '100%',
@@ -75,25 +80,27 @@ export class RecipiesAdminComponent implements OnInit {
       panelClass: 'full-recipy-dialog',
       autoFocus: false,
       data: {
-        mode: 'create'
-      }
+        mode: 'create',
+      },
     });
 
     dialogRef
       .afterClosed()
       .pipe(take(1))
-      .subscribe((result: Recipy) => {
-        this.recipiesService.processAddNewRecipy(result);
+      .subscribe((result: any) => {
+        if (result) {
+          this.recipiesService.processAddNewRecipy(result.recipy, result.mode);
+        }
       });
   }
 
-  openRecipy(recipy: Recipy){
+  openRecipy(recipy: Recipy) {
     this.router.navigate(['cookster/recipies/full-recipy/', recipy.id], {
       relativeTo: this.route.parent,
     });
   }
 
-  editRecipy(recipy: Recipy){
+  editRecipy(recipy: Recipy) {
     const dialogRef = this.dialog.open(AddRecipyComponent, {
       width: '100%',
       maxWidth: '100%',
@@ -104,22 +111,33 @@ export class RecipiesAdminComponent implements OnInit {
       autoFocus: false,
       data: {
         mode: 'edit',
-        recipy: recipy
-      }
+        recipy: recipy,
+      },
     });
 
     dialogRef
       .afterClosed()
       .pipe(take(1))
-      .subscribe((result: Recipy) => {
-        if(result?.id){
-          this.recipiesService.editRecipy(result.id, result);
-        }        
+      .subscribe((result: any) => {
+        if (result?.recipy.id) {
+          this.recipiesService.editRecipy(result.recipy.id, result.mode);
+        }
       });
   }
 
-  deleteRecipy(recipy: Recipy){
-    this.recipiesService.deleteRecipy(recipy)
+  deleteRecipy(recipy: Recipy) {
+    this.recipiesService.deleteRecipy(recipy);
   }
 
+  getAuthor(recipy: Recipy){
+    return this.recipiesService.getRecipyBelongsTo(recipy)
+  }
+
+  getCreatedOn(recipy: Recipy){
+    return this.recipiesService.getRecipyCreatedOn(recipy)
+  }
+
+  getIsClone(recipy: Recipy): boolean{
+    return Boolean(recipy.clonedBy)
+  }
 }

@@ -41,7 +41,9 @@ export class UserService {
     this.authApiService
       .addUser(user)
       .pipe(take(1))
-      .subscribe((res) => console.log(res));
+      .subscribe((res) => {
+        this.getAllUsers()
+      });
   }
 
   getCurrentUser(userAtFirebaseAuth: any) {
@@ -50,7 +52,6 @@ export class UserService {
         this.currentUser = user;
       }
     }
-    console.log(this.currentUser);
   }
 
   updateUserDetailsFromMyDatabase(newData: any) {
