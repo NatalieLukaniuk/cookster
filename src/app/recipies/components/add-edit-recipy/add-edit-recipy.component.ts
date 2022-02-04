@@ -295,4 +295,8 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
       this.updateRecipy()
     } else this.addClonedRecipy()
   }
+
+  close(){
+    this.dialogRef.close()
+  }
 }

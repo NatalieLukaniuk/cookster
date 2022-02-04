@@ -59,7 +59,9 @@ export class NavigationComponent implements OnDestroy {
       .afterClosed()
       .pipe(take(1))
       .subscribe((result: any) => {
-        this.recipiesService.addRecipy(result.recipy);
+        if(result){
+          this.recipiesService.addRecipy(result.recipy);
+        }        
       });
   }
 }

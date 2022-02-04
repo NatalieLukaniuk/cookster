@@ -117,8 +117,8 @@
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
+    <ng-template matStepLabel>Зберегти</ng-template>
+    <p>Тут буде прев'ю</p>
     <div>
       <button mat-flat-button class="secondary-button" matStepperPrevious>
         Назад
@@ -126,9 +126,9 @@
       <button
         mat-flat-button
         class="secondary-button"
-        (click)="stepper.reset()"
+        (click)="close()"
       >
-        Reset
+        Скасувати
       </button>
       <button
         mat-flat-button
