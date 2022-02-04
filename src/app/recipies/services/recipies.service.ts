@@ -28,33 +28,16 @@ export class RecipiesService {
     private userService: UserService
   ) {}
 
-  processAddNewRecipy(newRecipy: NewRecipy, mode: string) { // TODO: to be refactored and deleted
-    if (newRecipy) {
-      let recipy: NewRecipy = {
-        name: newRecipy.name,
-        complexity: newRecipy.complexity,
-        steps: newRecipy.steps,
-        type: newRecipy.type,
-        ingrediends: newRecipy.ingrediends,
-        // photo: '/assets/images/recipies/2.jpg',
-        author: newRecipy.author,
-        createdOn: newRecipy.createdOn,
-      };
-      if (newRecipy.clonedBy) {
-        recipy.clonedBy = newRecipy.clonedBy;
-        recipy.clonedOn = newRecipy.clonedOn;
-        recipy.originalRecipy = newRecipy.originalRecipy;
-      }
-      this.recipiesApi.addRecipy(recipy).subscribe((id: any) => {
-        this.addRecipyToUserRecipies(id.name);
-        this.recipiesUpdated$.next();
-      });
-    }
-  }
-
   addRecipy(recipy: NewRecipy){
     this.recipiesApi.addRecipy(recipy).subscribe((id: any) => {
       this.addRecipyToUserRecipies(id.name);
+      this.recipiesUpdated$.next();
+    });
+  }
+
+  updateRecipy(recipy: Recipy){
+    this.recipiesApi.updateRecipy(recipy.id, recipy).pipe(take(1))
+    .subscribe(() => {
       this.recipiesUpdated$.next();
     });
   }
@@ -67,15 +50,6 @@ export class RecipiesService {
       }
     }
     return productId;
-  }
-
-  editRecipy(recipyId: string, changes: any) {
-    this.recipiesApi
-      .updateRecipy(recipyId, changes)
-      .pipe(take(1))
-      .subscribe((res) => {
-        this.recipiesUpdated$.next();
-      });
   }
 
   transformToGr(ingr: Ingredient) {

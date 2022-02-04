@@ -67,7 +67,66 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
   addFields() {}
 
   fillForms() {
+    this.detailsFormGroup.patchValue({
+      name: this.data.recipy?.name,
+      complexity: this.data.recipy?.complexity,
+      type: this.data.recipy?.type,
+    });
+    this.fillIngredientsForm();
+    this.fillStepsForm();
+  }
 
+  fillIngredientsForm() {
+    if (this.data.recipy?.ingrediends) {
+      let ingredientsNumber = this.data.recipy?.ingrediends.length;
+      let i = 1;
+      while (i < ingredientsNumber) {
+        this.addIngredient();
+        i++;
+      }
+      let ingredientFormControls = this.getIngredientFormsControls();
+      let ingredients = this.data.recipy.ingrediends.map((ingr) => {
+        return {
+          ingredient: this.recipiesService.getIngredientText(ingr),
+          amount: this.recipiesService.convertAmountToSelectedUnit(
+            ingr.defaultUnit,
+            ingr
+          ),
+          defaultUnit: ingr.defaultUnit,
+        };
+      });
+      let j = 0;
+      while (j < ingredientsNumber) {
+        ingredientFormControls.controls[j].patchValue(ingredients[j]);
+        j++;
+      }
+    }
+  }
+
+  fillStepsForm() {
+    if (this.data.recipy?.steps) {
+      let stepsNumber = this.data.recipy.steps.length;
+      let i = 1;
+      while (i < stepsNumber) {
+        this.addStep();
+        i++;
+      }
+      let stepsFormControls = this.getStepsFormsControls();
+      let steps = this.data.recipy.steps.map((step) => {
+        return {
+          id: step.id,
+          description: step.description,
+          timeActive: step.timeActive.toString(),
+          timePassive: step.timePassive.toString(),
+        };
+      });
+
+      let j = 0;
+      while (j < stepsNumber) {
+        stepsFormControls.controls[j].patchValue(steps[j]);
+        j++;
+      }
+    }
   }
 
   getIngredientFormsControls(): FormArray {
@@ -191,11 +250,49 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
       author: this.userService.currentUser.email,
       createdOn: Date.now(),
     };
-    this.recipiesService.addRecipy(recipy);
+    this.dialogRef.close({recipy, mode: this.data.mode})
   }
 
-  addClonedRecipy() {}
+  addClonedRecipy() {
+    if (this.data.recipy) {
+      let recipy: NewRecipy = {
+        name: this.detailsFormGroup.controls.name.value,
+        ingrediends: this.convertIngredientsToDbFriendlyVersion(),
+        complexity: this.detailsFormGroup.controls.complexity.value,
+        type: this.detailsFormGroup.controls.type.value,
+        steps: this.convertStepsToDbFriendlyVersion(),
+        clonedBy: this.userService.currentUser.email,
+        clonedOn: Date.now(),
+        author: this.data.recipy.author,
+        createdOn: this.data.recipy.createdOn,
+        originalRecipy: this.data.recipy.id
+      };
+      this.dialogRef.close({ recipy, mode: this.data.mode });
+    }
+  }
 
-  updateRecipy() {}
-  check() {}
+  updateRecipy() {
+    if (this.data.recipy) {
+      let recipy: Recipy = {
+        id: this.data.recipy.id,
+        name: this.detailsFormGroup.controls.name.value,
+        ingrediends: this.convertIngredientsToDbFriendlyVersion(),
+        complexity: this.detailsFormGroup.controls.complexity.value,
+        type: this.detailsFormGroup.controls.type.value,
+        steps: this.convertStepsToDbFriendlyVersion(),
+        editedBy: this.userService.currentUser.email,
+        lastEdited: Date.now(),
+        author: this.data.recipy.author,
+        createdOn: this.data.recipy.createdOn,
+      };
+      this.dialogRef.close({ recipy, mode: this.data.mode });
+    }
+  }
+  submit(){
+    if(this.data.mode === 'create'){
+      this.addNewRecipy()
+    } else if(this.data.mode === 'edit'){
+      this.updateRecipy()
+    } else this.addClonedRecipy()
+  }
 }

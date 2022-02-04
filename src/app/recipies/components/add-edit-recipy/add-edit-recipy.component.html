@@ -39,7 +39,7 @@
           >Приготування</span
         ></ng-template
       >
-      <div class="recipy-steps" *ngIf="data.mode === 'create'">
+      <div class="recipy-steps">
         <div formArrayName="steps">
           <div
             *ngFor="
@@ -136,11 +136,11 @@
         [disabled]="
           !isStepsFormValid || !isIngredientsFormValid || !isDetailsFormValid
         "
+        (click)="submit()"
       >
         Зберегти
       </button>
 
-      <button (click)="check()">check</button>
     </div>
   </mat-step>
 </mat-stepper>

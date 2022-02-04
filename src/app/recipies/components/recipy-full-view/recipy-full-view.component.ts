@@ -8,7 +8,7 @@ import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { Recipy } from '../../models/recipy.interface';
-import { AddRecipyComponent } from '../add-recipy/add-recipy.component';
+import { AddEditRecipyComponent } from '../add-edit-recipy/add-edit-recipy.component';
 import { LayoutService } from './../../../shared/services/layout.service';
 import { RecipiesService } from './../../services/recipies.service';
 
@@ -49,6 +49,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
     this.getRecipy(this.recipyId);
+    this.recipiesService.recipiesUpdated$.pipe(takeUntil(this.destroy$)).subscribe(() => {this.getRecipy(this.recipyId)})
   }
 
   getRecipy(recipyId: string) {
@@ -169,13 +170,12 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
 
   editRecipy() {
     let mode = this.getMode();
-    const dialogRef = this.dialog.open(AddRecipyComponent, {
-      width: '100%',
+    const dialogRef = this.dialog.open(AddEditRecipyComponent, {
+      width: '90%',
       maxWidth: '100%',
-      height: '100%',
-      position: { bottom: '0' },
+      height: '80%',
       hasBackdrop: false,
-      panelClass: 'full-recipy-dialog',
+      panelClass: 'add-recipy-dialog',
       autoFocus: false,
       data: {
         mode,
@@ -187,12 +187,11 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(take(1))
       .subscribe((result: any) => {
-        if (result?.recipy.id) {
+        if (result.recipy) {
           if(mode === 'edit'){
-            this.recipiesService.editRecipy(result.recipy.id, result.recipy);
+            this.recipiesService.updateRecipy(result.recipy);
           } else {
-            result.originalRecipy = result.recipy.id;
-            this.recipiesService.processAddNewRecipy(result.recipy, 'clone')
+            this.recipiesService.addRecipy(result.recipy)
           }
           // 
         }

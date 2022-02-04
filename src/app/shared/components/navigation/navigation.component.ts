@@ -47,7 +47,6 @@ export class NavigationComponent implements OnDestroy {
       width: '90%',
       maxWidth: '100%',
       height: '80%',
-      // position: { bottom: '0' },
       hasBackdrop: false,
       panelClass: 'add-recipy-dialog',
       autoFocus: false,
@@ -60,7 +59,7 @@ export class NavigationComponent implements OnDestroy {
       .afterClosed()
       .pipe(take(1))
       .subscribe((result: any) => {
-        this.recipiesService.processAddNewRecipy(result.recipy, result.mode);
+        this.recipiesService.addRecipy(result.recipy);
       });
   }
 }
