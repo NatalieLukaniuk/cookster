@@ -2,10 +2,10 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
+import { AddEditRecipyComponent } from 'src/app/recipies/components/add-edit-recipy/add-edit-recipy.component';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
 import { LayoutService } from '../../services/layout.service';
-import { AddRecipyComponent } from './../../../recipies/components/add-recipy/add-recipy.component';
 
 
 @Component({
@@ -43,13 +43,13 @@ export class NavigationComponent implements OnDestroy {
   }
 
   addRecipy() {
-    const dialogRef = this.dialog.open(AddRecipyComponent, {
-      width: '100%',
+    const dialogRef = this.dialog.open(AddEditRecipyComponent, {
+      width: '90%',
       maxWidth: '100%',
-      height: '100%',
-      position: { bottom: '0' },
+      height: '80%',
+      // position: { bottom: '0' },
       hasBackdrop: false,
-      panelClass: 'full-recipy-dialog',
+      panelClass: 'add-recipy-dialog',
       autoFocus: false,
       data: {
         mode: 'create'

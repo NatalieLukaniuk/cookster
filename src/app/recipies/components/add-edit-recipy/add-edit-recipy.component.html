@@ -1,0 +1,144 @@
+<h1 *ngIf="data.mode === 'create'">Новий рецепт</h1>
+<h1 *ngIf="data.mode === 'edit'">Редагувати рецепт</h1>
+<mat-stepper #stepper>
+  <mat-step [stepControl]="ingredientsFormGroup" #ingredients>
+    <form [formGroup]="ingredientsFormGroup">
+      <ng-template matStepLabel
+        ><span
+          [class.has-errors]="!isIngredientsFormValid && ingredients.interacted"
+          >Інгридієнти</span
+        ></ng-template
+      >
+      <ng-container formArrayName="ingrediends">
+        <div
+          *ngFor="
+            let ingredient of getIngredientFormsControls()['controls'];
+            index as i
+          "
+        >
+          <app-add-edit-ingredient
+            formControlName="{{ i }}"
+          ></app-add-edit-ingredient>
+        </div>
+      </ng-container>
+      <button mat-icon-button (click)="addIngredient()">
+        <mat-icon svgIcon="add"></mat-icon>Додати ще один інгридієнт
+      </button>
+
+      <div>
+        <button mat-flat-button class="action-button" matStepperNext>
+          Наступний крок
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="stepsFormGroup" #steps>
+    <form [formGroup]="stepsFormGroup">
+      <ng-template matStepLabel
+        ><span [class.has-errors]="!isStepsFormValid && steps.interacted"
+          >Приготування</span
+        ></ng-template
+      >
+      <div class="recipy-steps" *ngIf="data.mode === 'create'">
+        <div formArrayName="steps">
+          <div
+            *ngFor="
+              let ingredient of getStepsFormsControls()['controls'];
+              let i = index
+            "
+          >
+            <app-add-steps
+              formControlName="{{ i }}"
+              [index]="i"
+            ></app-add-steps>
+          </div>
+        </div>
+        <button mat-icon-button (click)="addStep()">
+          <mat-icon svgIcon="add"></mat-icon>Додати ще один крок
+        </button>
+      </div>
+      <div>
+        <button mat-flat-button class="secondary-button" matStepperPrevious>
+          Попередній крок
+        </button>
+        <button mat-flat-button class="action-button" matStepperNext>
+          Наступний крок
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="detailsFormGroup" #details>
+    <form [formGroup]="detailsFormGroup">
+      <ng-template matStepLabel
+        ><span [class.has-errors]="!isDetailsFormValid && details.interacted"
+          >Додаткова інформація</span
+        ></ng-template
+      >
+      <mat-form-field appearance="outline" class="recipy-name">
+        <mat-label>Назва</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="Напр.: Картопляне пюре"
+          #name
+        />
+        <mat-icon
+          matSuffix
+          svgIcon="done"
+          *ngIf="detailsFormGroup.controls.name.valid"
+        ></mat-icon>
+        <!-- <mat-hint>Hint</mat-hint> -->
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Складність</mat-label>
+        <mat-select formControlName="complexity">
+          <mat-option *ngFor="let unit of complexityOptions" [value]="unit">
+            {{ getComplexityOptionsText(unit) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Теги</mat-label>
+        <mat-select formControlName="type" multiple="true">
+          <mat-option *ngFor="let tag of tags" [value]="tag">
+            {{ getTagsText(tag) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div>
+        <button mat-flat-button class="secondary-button" matStepperPrevious>
+          Попередній крок
+        </button>
+        <button mat-flat-button class="action-button" matStepperNext>
+          Наступний крок
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-flat-button class="secondary-button" matStepperPrevious>
+        Back
+      </button>
+      <button
+        mat-flat-button
+        class="secondary-button"
+        (click)="stepper.reset()"
+      >
+        Reset
+      </button>
+      <button
+        mat-flat-button
+        class="action-button"
+        [disabled]="
+          !isStepsFormValid || !isIngredientsFormValid || !isDetailsFormValid
+        "
+      >
+        Зберегти
+      </button>
+    </div>
+  </mat-step>
+</mat-stepper>

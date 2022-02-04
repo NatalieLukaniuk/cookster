@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
+import { AddEditIngredientComponent } from './components/add-edit-recipy/add-edit-ingredient/add-edit-ingredient.component';
+import { AddEditRecipyComponent } from './components/add-edit-recipy/add-edit-recipy.component';
 import { AddProductComponent } from './components/add-product/add-product.component';
 import { AddIngredientsComponent } from './components/add-recipy/add-ingredients/add-ingredients.component';
 import { AddRecipyComponent } from './components/add-recipy/add-recipy.component';
@@ -33,7 +35,9 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     AddIngredientsComponent,
     AddProductComponent,
     AllRecipiesComponent,
-    EditIngredientComponent
+    EditIngredientComponent,
+    AddEditRecipyComponent,
+    AddEditIngredientComponent
   ],
   exports: [AddRecipyComponent],
 })
