@@ -3,7 +3,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { MeasuringUnit } from '../models/measuring-units.enum';
-import { PreparationStep } from '../models/preparationStep.interface';
 import { Product } from '../models/products.interface';
 import { UserService } from './../../auth/services/user.service';
 import { Ingredient } from './../models/ingredient.interface';
@@ -29,35 +28,8 @@ export class RecipiesService {
     private userService: UserService
   ) {}
 
-  processAddNewRecipy(newRecipy: NewRecipy, mode: string) {
+  processAddNewRecipy(newRecipy: NewRecipy, mode: string) { // TODO: to be refactored and deleted
     if (newRecipy) {
-      if (mode === 'create') {
-        newRecipy.ingrediends = newRecipy.ingrediends.map((ingr: any) => {
-          let productId;
-          for (let product of this.products$.value) {
-            if (product.name === ingr.ingredient) {
-              productId = product.id;
-            }
-          }
-          ingr.product = productId;
-
-          ingr.amount = this.transformToGr(ingr);
-
-          return {
-            product: ingr.product,
-            amount: ingr.amount,
-            defaultUnit: ingr.defaultUnit,
-          };
-        });
-        newRecipy.steps = newRecipy.steps.map((step: PreparationStep) => {
-          return {
-            id: step.id,
-            description: step.description,
-            timeActive: +step.timeActive,
-            timePassive: +step.timePassive,
-          };
-        });
-      }
       let recipy: NewRecipy = {
         name: newRecipy.name,
         complexity: newRecipy.complexity,
@@ -78,6 +50,23 @@ export class RecipiesService {
         this.recipiesUpdated$.next();
       });
     }
+  }
+
+  addRecipy(recipy: NewRecipy){
+    this.recipiesApi.addRecipy(recipy).subscribe((id: any) => {
+      this.addRecipyToUserRecipies(id.name);
+      this.recipiesUpdated$.next();
+    });
+  }
+
+  getIngredientIdFromName(ingr: any){
+    let productId;
+    for (let product of this.products$.value) {
+      if (product.name === ingr.ingredient) {
+        productId = product.id;
+      }
+    }
+    return productId;
   }
 
   editRecipy(recipyId: string, changes: any) {

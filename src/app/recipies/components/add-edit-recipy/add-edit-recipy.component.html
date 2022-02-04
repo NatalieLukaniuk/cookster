@@ -27,7 +27,7 @@
 
       <div>
         <button mat-flat-button class="action-button" matStepperNext>
-          Наступний крок
+          Далі
         </button>
       </div>
     </form>
@@ -59,10 +59,10 @@
       </div>
       <div>
         <button mat-flat-button class="secondary-button" matStepperPrevious>
-          Попередній крок
+          Назад
         </button>
         <button mat-flat-button class="action-button" matStepperNext>
-          Наступний крок
+          Далі
         </button>
       </div>
     </form>
@@ -108,10 +108,10 @@
 
       <div>
         <button mat-flat-button class="secondary-button" matStepperPrevious>
-          Попередній крок
+          Назад
         </button>
         <button mat-flat-button class="action-button" matStepperNext>
-          Наступний крок
+          Далі
         </button>
       </div>
     </form>
@@ -121,7 +121,7 @@
     <p>You are now done.</p>
     <div>
       <button mat-flat-button class="secondary-button" matStepperPrevious>
-        Back
+        Назад
       </button>
       <button
         mat-flat-button
@@ -139,6 +139,8 @@
       >
         Зберегти
       </button>
+
+      <button (click)="check()">check</button>
     </div>
   </mat-step>
 </mat-stepper>

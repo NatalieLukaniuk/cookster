@@ -5,7 +5,9 @@ import { UserService } from 'src/app/auth/services/user.service';
 
 import { Complexity, ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
-import { Recipy } from '../../models/recipy.interface';
+import { PreparationStep } from '../../models/preparationStep.interface';
+import { NewRecipy, Recipy } from '../../models/recipy.interface';
+import { RecipiesService } from '../../services/recipies.service';
 
 interface AddEditRecipyData {
   mode: 'create' | 'edit' | 'clone';
@@ -29,7 +31,8 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
   constructor(
     public dialogRef: MatDialogRef<AddEditRecipyComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddEditRecipyData,
-    private userService: UserService
+    private userService: UserService,
+    private recipiesService: RecipiesService
   ) {}
   ngAfterContentChecked(): void {
     this.checkFormsValidity();
@@ -63,7 +66,9 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
 
   addFields() {}
 
-  fillForms() {}
+  fillForms() {
+
+  }
 
   getIngredientFormsControls(): FormArray {
     return this.ingredientsFormGroup.controls['ingrediends'] as FormArray;
@@ -148,4 +153,49 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
     }
     return isValid;
   }
+
+  convertIngredientsToDbFriendlyVersion() {
+    return this.ingredientsFormGroup.controls.ingrediends.value.map(
+      (ingr: any) => {
+        ingr.product = this.recipiesService.getIngredientIdFromName(ingr);
+        ingr.amount = this.recipiesService.transformToGr(ingr);
+        return {
+          product: ingr.product,
+          amount: ingr.amount,
+          defaultUnit: ingr.defaultUnit,
+        };
+      }
+    );
+  }
+
+  convertStepsToDbFriendlyVersion() {
+    return this.stepsFormGroup.controls.steps.value.map(
+      (step: PreparationStep) => {
+        return {
+          id: step.id,
+          description: step.description,
+          timeActive: +step.timeActive,
+          timePassive: +step.timePassive,
+        };
+      }
+    );
+  }
+
+  addNewRecipy() {
+    let recipy: NewRecipy = {
+      name: this.detailsFormGroup.controls.name.value,
+      ingrediends: this.convertIngredientsToDbFriendlyVersion(),
+      complexity: this.detailsFormGroup.controls.complexity.value,
+      type: this.detailsFormGroup.controls.type.value,
+      steps: this.convertStepsToDbFriendlyVersion(),
+      author: this.userService.currentUser.email,
+      createdOn: Date.now(),
+    };
+    this.recipiesService.addRecipy(recipy);
+  }
+
+  addClonedRecipy() {}
+
+  updateRecipy() {}
+  check() {}
 }
