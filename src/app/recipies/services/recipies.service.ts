@@ -3,7 +3,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { MeasuringUnit } from '../models/measuring-units.enum';
-import { PreparationStep } from '../models/preparationStep.interface';
 import { Product } from '../models/products.interface';
 import { UserService } from './../../auth/services/user.service';
 import { Ingredient } from './../models/ingredient.interface';
@@ -29,64 +28,28 @@ export class RecipiesService {
     private userService: UserService
   ) {}
 
-  processAddNewRecipy(newRecipy: NewRecipy, mode: string) {
-    if (newRecipy) {
-      if (mode === 'create') {
-        newRecipy.ingrediends = newRecipy.ingrediends.map((ingr: any) => {
-          let productId;
-          for (let product of this.products$.value) {
-            if (product.name === ingr.ingredient) {
-              productId = product.id;
-            }
-          }
-          ingr.product = productId;
-
-          ingr.amount = this.transformToGr(ingr);
-
-          return {
-            product: ingr.product,
-            amount: ingr.amount,
-            defaultUnit: ingr.defaultUnit,
-          };
-        });
-        newRecipy.steps = newRecipy.steps.map((step: PreparationStep) => {
-          return {
-            id: step.id,
-            description: step.description,
-            timeActive: +step.timeActive,
-            timePassive: +step.timePassive,
-          };
-        });
-      }
-      let recipy: NewRecipy = {
-        name: newRecipy.name,
-        complexity: newRecipy.complexity,
-        steps: newRecipy.steps,
-        type: newRecipy.type,
-        ingrediends: newRecipy.ingrediends,
-        // photo: '/assets/images/recipies/2.jpg',
-        author: newRecipy.author,
-        createdOn: newRecipy.createdOn,
-      };
-      if (newRecipy.clonedBy) {
-        recipy.clonedBy = newRecipy.clonedBy;
-        recipy.clonedOn = newRecipy.clonedOn;
-        recipy.originalRecipy = newRecipy.originalRecipy;
-      }
-      this.recipiesApi.addRecipy(recipy).subscribe((id: any) => {
-        this.addRecipyToUserRecipies(id.name);
-        this.recipiesUpdated$.next();
-      });
-    }
+  addRecipy(recipy: NewRecipy){
+    this.recipiesApi.addRecipy(recipy).subscribe((id: any) => {
+      this.addRecipyToUserRecipies(id.name);
+      this.recipiesUpdated$.next();
+    });
   }
 
-  editRecipy(recipyId: string, changes: any) {
-    this.recipiesApi
-      .updateRecipy(recipyId, changes)
-      .pipe(take(1))
-      .subscribe((res) => {
-        this.recipiesUpdated$.next();
-      });
+  updateRecipy(recipy: Recipy){
+    this.recipiesApi.updateRecipy(recipy.id, recipy).pipe(take(1))
+    .subscribe(() => {
+      this.recipiesUpdated$.next();
+    });
+  }
+
+  getIngredientIdFromName(ingr: any){
+    let productId;
+    for (let product of this.products$.value) {
+      if (product.name === ingr.ingredient) {
+        productId = product.id;
+      }
+    }
+    return productId;
   }
 
   transformToGr(ingr: Ingredient) {

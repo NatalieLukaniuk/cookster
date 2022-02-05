@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { AddRecipyComponent } from 'src/app/recipies/components/add-recipy/add-recipy.component';
+import { AddEditRecipyComponent } from 'src/app/recipies/components/add-edit-recipy/add-edit-recipy.component';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
@@ -71,13 +71,12 @@ export class RecipiesAdminComponent implements OnInit {
   }
 
   addRecipy() {
-    const dialogRef = this.dialog.open(AddRecipyComponent, {
-      width: '100%',
+    const dialogRef = this.dialog.open(AddEditRecipyComponent, {
+      width: '90%',
       maxWidth: '100%',
-      height: '100%',
-      position: { bottom: '0' },
+      height: '80%',
       hasBackdrop: false,
-      panelClass: 'full-recipy-dialog',
+      panelClass: 'add-recipy-dialog',
       autoFocus: false,
       data: {
         mode: 'create',
@@ -89,7 +88,7 @@ export class RecipiesAdminComponent implements OnInit {
       .pipe(take(1))
       .subscribe((result: any) => {
         if (result) {
-          this.recipiesService.processAddNewRecipy(result.recipy, result.mode);
+          this.recipiesService.addRecipy(result.recipy);
         }
       });
   }
@@ -101,13 +100,12 @@ export class RecipiesAdminComponent implements OnInit {
   }
 
   editRecipy(recipy: Recipy) {
-    const dialogRef = this.dialog.open(AddRecipyComponent, {
-      width: '100%',
+    const dialogRef = this.dialog.open(AddEditRecipyComponent, {
+      width: '90%',
       maxWidth: '100%',
-      height: '100%',
-      position: { bottom: '0' },
+      height: '80%',
       hasBackdrop: false,
-      panelClass: 'full-recipy-dialog',
+      panelClass: 'add-recipy-dialog',
       autoFocus: false,
       data: {
         mode: 'edit',
@@ -120,7 +118,7 @@ export class RecipiesAdminComponent implements OnInit {
       .pipe(take(1))
       .subscribe((result: any) => {
         if (result?.recipy.id) {
-          this.recipiesService.editRecipy(result.recipy.id, result.mode);
+          this.recipiesService.updateRecipy(result.recipy);
         }
       });
   }
