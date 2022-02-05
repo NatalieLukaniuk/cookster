@@ -1,24 +1,24 @@
 import { Component, forwardRef, OnInit } from '@angular/core';
-import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
+import { MeasuringUnit, MeasuringUnitOptions, MeasuringUnitText } from 'src/app/recipies/models/measuring-units.enum';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
-import { MeasuringUnit, MeasuringUnitOptions, MeasuringUnitText } from './../../../models/measuring-units.enum';
-
 @Component({
-  selector: 'app-add-ingredients',
-  templateUrl: './add-ingredients.component.html',
-  styleUrls: ['./add-ingredients.component.scss'],
+  selector: 'app-add-edit-ingredient',
+  templateUrl: './add-edit-ingredient.component.html',
+  styleUrls: ['./add-edit-ingredient.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => AddIngredientsComponent),
+      useExisting: forwardRef(() => AddEditIngredientComponent),
       multi: true
     }
   ]
 })
-export class AddIngredientsComponent implements OnInit, ControlValueAccessor {
+export class AddEditIngredientComponent implements OnInit {
+
   public ingredientsForm: FormGroup = new FormGroup({
     ingredient: new FormControl('', Validators.required),
     amount: new FormControl('', Validators.required),
@@ -90,5 +90,4 @@ export class AddIngredientsComponent implements OnInit, ControlValueAccessor {
     }
     return productId;
   }
-
 }

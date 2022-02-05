@@ -69,6 +69,20 @@ body {
   }
 }
 
+.add-recipy-dialog {
+  .mat-dialog-container {
+    padding: 20px;
+    color: var(--text-color);
+    background: var(--background-color);
+  }
+  .mat-stepper-horizontal,
+  .mat-stepper-vertical {
+    background: var(--background-color);
+    font-family: "Montserrat", sans-serif;
+    color: var(--text-color);
+  }
+}
+
 h1 {
   font-size: 24px;
   margin: 0;
@@ -83,10 +97,18 @@ button.action-button {
   background-color: var(--primary);
   color: var(--text-color);
   font-family: "Montserrat", sans-serif;
-  &:not(:disabled){
-      border: 1px solid var(--tint4);
+  &:not(:disabled) {
+    border: 1px solid var(--tint4);
   }
+}
 
+button.secondary-button {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: "Montserrat", sans-serif;
+  &:not(:disabled) {
+    border: 1px solid var(--tint2);
+  }
 }
 
 select.inline-select {
@@ -97,20 +119,20 @@ select.inline-select {
   font-family: "Montserrat", sans-serif;
 }
 
-.mat-chip.mat-standard-chip{
+.mat-chip.mat-standard-chip {
   border-radius: 4px;
   min-height: 21px;
   font-size: 10px;
   color: var(--text-color);
   height: auto;
   padding: 5px 13px 7px;
-    background-color: var(--tint1);
-    border: 1px solid var(--tint2);
+  background-color: var(--tint1);
+  border: 1px solid var(--tint2);
 }
 
 // ----- Mat-menu --- //
 
-.mat-menu-panel{
+.mat-menu-panel {
   background-color: var(--background-color);
   border-radius: 2px;
   min-height: 0 !important;
@@ -134,36 +156,33 @@ button.mat-menu-item {
 // --- Scrollbar --- //
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--text-color) #F5F5F5;
+  scrollbar-color: var(--text-color) #f5f5f5;
 }
 
-::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #F5F5F5;
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
 }
 
-::-webkit-scrollbar
-{
-	width: 10px;
-	background-color: #F5F5F5;
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f5f5f5;
 }
 
-::-webkit-scrollbar-thumb
-{
-  border: 2px solid var( --tint2);
-  background-color: var( --tint1);
+::-webkit-scrollbar-thumb {
+  border: 2px solid var(--tint2);
+  background-color: var(--tint1);
 }
 
-.cdk-global-scrollblock{
+.cdk-global-scrollblock {
   overflow-y: auto;
 }
 
 // ---- Admin-panel
 
-.admin-panel{
-  .admin-header{
+.admin-panel {
+  .admin-header {
     display: flex;
     justify-content: space-between;
   }
@@ -177,17 +196,17 @@ button.mat-menu-item {
     padding: 0 0 0.44rem 0;
     border-top: 0.69rem solid transparent;
   }
-  
+
   ::ng-deep .mat-form-field-appearance-outline .mat-form-field-suffix {
     top: 0.38rem !important;
     color: var(--text-color);
   }
-  
+
   ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
     padding-bottom: 0.75rem;
     margin: 0 !important;
   }
-  
+
   table {
     width: 100%;
     tr.mat-row,
@@ -206,24 +225,24 @@ button.mat-menu-item {
       line-height: 1.25rem;
       font-family: "Montserrat", sans-serif;
     }
-  
+
     .table-actions,
     .table-id {
       width: 9%;
     }
   }
-  
+
   button.mat-flat-button {
     font-size: 0.75rem;
     line-height: 0.94rem;
     padding-inline: 0.5rem;
     height: 30px;
   }
-  
+
   ::ng-deep .mat-paginator {
     position: relative;
   }
-  
+
   ::ng-deep div.btn_custom-paging-container {
     .mat-icon-button {
       margin: 0.13rem 0.63rem 0;
@@ -233,7 +252,7 @@ button.mat-menu-item {
       }
     }
   }
-  
+
   ::ng-deep .mat-paginator-range-actions {
     position: absolute;
     left: 1.5rem;
@@ -241,11 +260,11 @@ button.mat-menu-item {
       width: 1rem;
     }
   }
-  
+
   ::ng-deep .cdk-overlay-pane {
     max-width: 90vw !important;
   }
-  
+
   ::ng-deep .mat-progress-spinner {
     position: absolute !important;
     left: 47%;
@@ -258,7 +277,7 @@ button.mat-menu-item {
 
 // -- Forms
 
-.mat-form-field{
+.mat-form-field {
   font-family: "Montserrat", sans-serif;
 }
 
@@ -280,35 +299,34 @@ button.mat-menu-item {
 
 // --- Auth-forms
 
-.auth-form-wrapper{
+.auth-form-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 72px);
-  form{
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--tint2);
-      padding: 40px 70px 60px;
-      box-shadow: 0px 0px 4px 0px var(--tint4);
-      margin-bottom: 72px;
-      h1{
-          margin-bottom: 25px;
-      }
-      .action-button{
-          width: 100%;
-      }
+  form {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--tint2);
+    padding: 40px 70px 60px;
+    box-shadow: 0px 0px 4px 0px var(--tint4);
+    margin-bottom: 72px;
+    h1 {
+      margin-bottom: 25px;
+    }
+    .action-button {
+      width: 100%;
+    }
   }
 }
 
-
 // ---- Ingredients
 
-.ingredient-wrapper{
+.ingredient-wrapper {
   display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
 }
 
 .ingredient-name {
@@ -333,17 +351,18 @@ button.mat-menu-item {
   }
 }
 
-.tag-button{
+.tag-button {
   position: absolute !important;
   right: 0;
-  bottom: 0;  
-  mat-icon{
+  bottom: 0;
+  mat-icon {
     width: 16px;
   }
 }
 
-@media (max-width: 600px){
-  html, body{
+@media (max-width: 600px) {
+  html,
+  body {
     font-size: 14px;
   }
 }
