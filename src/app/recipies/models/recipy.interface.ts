@@ -6,14 +6,7 @@ import { PreparationStep } from './preparationStep.interface';
 export interface Recipy {
   id: string;
   name: string;
-  ingrediends:
-    | Ingredient[]
-    | {
-        main?: Ingredient[];
-        souce?: Ingredient[];
-        filling?: Ingredient[];
-        dough?: Ingredient[];
-      };
+  ingrediends: Ingredient[];
   complexity: Complexity;
   steps: PreparationStep[];
   type: DishType[];
@@ -24,19 +17,12 @@ export interface Recipy {
   lastEdited?: number;
   clonedBy?: string;
   clonedOn?: number;
-  originalRecipy?: string;
+  originalRecipy?: string
 }
 
 export interface NewRecipy {
   name: string;
-  ingrediends:
-    | Ingredient[]
-    | {
-        main?: Ingredient[];
-        souce?: Ingredient[];
-        filling?: Ingredient[];
-        dough?: Ingredient[];
-      };
+  ingrediends: Ingredient[];
   complexity: Complexity;
   steps: PreparationStep[];
   type: DishType[];
@@ -45,5 +31,5 @@ export interface NewRecipy {
   createdOn: number;
   clonedBy?: string;
   clonedOn?: number;
-  originalRecipy?: string;
+  originalRecipy?: string
 }
