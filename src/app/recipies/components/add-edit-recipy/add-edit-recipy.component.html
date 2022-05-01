@@ -57,7 +57,7 @@
             let ingredient of getIngredientFormsControls()['controls'];
             index as i
           ">
-          <app-add-edit-ingredient [isIngredientsSplitToGroups]='isIngredientsSplitToGroups' formControlName="{{ i }}">
+          <app-add-edit-ingredient [isIngredientsSplitToGroups]='isSplitToGroups' formControlName="{{ i }}">
           </app-add-edit-ingredient>
         </div>
       </ng-container>
@@ -82,7 +82,7 @@
               let ingredient of getStepsFormsControls()['controls'];
               let i = index
             ">
-            <app-add-steps [isSplitToGroups]="isIngredientsSplitToGroups" [groupOptions]="recipyGroups"
+            <app-add-steps [isSplitToGroups]="isSplitToGroups" [groupOptions]="recipyGroups"
               formControlName="{{ i }}" [index]="i"></app-add-steps>
           </div>
         </div>

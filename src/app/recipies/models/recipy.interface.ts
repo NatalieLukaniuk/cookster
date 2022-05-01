@@ -17,7 +17,8 @@ export interface Recipy {
   lastEdited?: number;
   clonedBy?: string;
   clonedOn?: number;
-  originalRecipy?: string
+  originalRecipy?: string;
+  isSplitIntoGroups: boolean
 }
 
 export interface NewRecipy {
@@ -31,5 +32,6 @@ export interface NewRecipy {
   createdOn: number;
   clonedBy?: string;
   clonedOn?: number;
-  originalRecipy?: string
+  originalRecipy?: string;
+  isSplitIntoGroups: boolean
 }

@@ -29,7 +29,7 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
   isIngredientsFormValid: boolean = false;
   isDetailsFormValid: boolean = false;
 
-  isIngredientsSplitToGroups: boolean = false;  
+  isSplitToGroups: boolean = false;  
   GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
   recipyGroups: IngredientsGroup[] = []
@@ -74,8 +74,8 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
   addFields() {}
 
   toggleSplitToGroups(){
-    this.isIngredientsSplitToGroups = !this.isIngredientsSplitToGroups;
-    if(this.isIngredientsSplitToGroups){
+    this.isSplitToGroups = !this.isSplitToGroups;
+    if(this.isSplitToGroups){
       this.recipyGroups = [IngredientsGroup.Main]
     } else this.recipyGroups = []
   }
@@ -271,6 +271,7 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
       steps: this.convertStepsToDbFriendlyVersion(),
       author: this.userService.currentUser.email,
       createdOn: Date.now(),
+      isSplitIntoGroups: this.isSplitToGroups
     };
     this.dialogRef.close({recipy, mode: this.data.mode})
   }
@@ -287,7 +288,8 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
         clonedOn: Date.now(),
         author: this.data.recipy.author,
         createdOn: this.data.recipy.createdOn,
-        originalRecipy: this.data.recipy.id
+        originalRecipy: this.data.recipy.id,
+        isSplitIntoGroups: this.isSplitToGroups
       };
       this.dialogRef.close({ recipy, mode: this.data.mode });
     }
@@ -306,6 +308,7 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
         lastEdited: Date.now(),
         author: this.data.recipy.author,
         createdOn: this.data.recipy.createdOn,
+        isSplitIntoGroups: this.isSplitToGroups
       };
       this.dialogRef.close({ recipy, mode: this.data.mode });
     }
