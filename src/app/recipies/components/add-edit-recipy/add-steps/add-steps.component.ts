@@ -1,5 +1,6 @@
 import { Component, EventEmitter, forwardRef, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { GetUkrIngredientsGroup, IngredientsGroup } from 'src/app/recipies/models/ingredient.interface';
 
 @Component({
   selector: 'app-add-steps',
@@ -17,7 +18,11 @@ export class AddStepsComponent implements OnInit, OnChanges, ControlValueAccesso
   @Input()
   index!: number;
   public stepsForm!: FormGroup;
+  @Input() isSplitToGroups: boolean = false;
+  @Input() groupOptions: IngredientsGroup[] = []
   @Output() stepsFormValid = new EventEmitter<boolean>();
+
+  GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
   public onTouched: () => void = () => {};
 
@@ -40,6 +45,10 @@ export class AddStepsComponent implements OnInit, OnChanges, ControlValueAccesso
     } else {
       this.stepsFormValid.emit(false)
     }
+
+    if(this.isSplitToGroups){
+      this.stepsForm.addControl('group', new FormControl('', Validators.required))
+    }
   }
 
   ngOnInit() {
@@ -54,5 +63,9 @@ export class AddStepsComponent implements OnInit, OnChanges, ControlValueAccesso
 
   get idValue() {
     return this.index + 1;
+  }
+
+  get stepGroupOptions(){
+    return this.groupOptions;
   }
 }

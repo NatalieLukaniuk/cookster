@@ -23,6 +23,7 @@ import { ExtendedSearchComponent } from './components/extended-search/extended-s
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { SearchComponent } from './components/search/search.component';
 import { HeaderComponent } from './containers/header/header.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { HeaderComponent } from './containers/header/header.component';
     MatPaginatorModule,
     MatSortModule,
     MatButtonToggleModule,
-    MatStepperModule
+    MatStepperModule,
+    MatCheckboxModule
   ],
   declarations: [
     HeaderComponent,
@@ -76,7 +78,8 @@ import { HeaderComponent } from './containers/header/header.component';
     MatPaginatorModule,
     MatSortModule,
     MatButtonToggleModule,
-    MatStepperModule
+    MatStepperModule,
+    MatCheckboxModule
   ],
   providers: []
 })

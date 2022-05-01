@@ -1,11 +1,11 @@
-import { AfterContentChecked, Component, Inject, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from 'src/app/auth/services/user.service';
 
 import { Complexity, ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
-import { Ingredient } from '../../models/ingredient.interface';
+import { GetUkrIngredientsGroup, Ingredient, IngredientsGroup } from '../../models/ingredient.interface';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { NewRecipy, Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
@@ -30,6 +30,9 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
   isDetailsFormValid: boolean = false;
 
   isIngredientsSplitToGroups: boolean = false;  
+  GetUkrIngredientsGroup = GetUkrIngredientsGroup;
+
+  recipyGroups: IngredientsGroup[] = []
 
   constructor(
     public dialogRef: MatDialogRef<AddEditRecipyComponent>,
@@ -60,6 +63,7 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
       name: new FormControl('', Validators.required),
       complexity: new FormControl('', Validators.required),
       type: new FormControl('', Validators.required),
+      isIngredientsSplitToGroups: new FormControl(false)
     });
   }
 
@@ -70,7 +74,10 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
   addFields() {}
 
   toggleSplitToGroups(){
-    this.isIngredientsSplitToGroups = true;
+    this.isIngredientsSplitToGroups = !this.isIngredientsSplitToGroups;
+    if(this.isIngredientsSplitToGroups){
+      this.recipyGroups = [IngredientsGroup.Main]
+    } else this.recipyGroups = []
   }
 
   fillForms() {
@@ -241,12 +248,16 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
   convertStepsToDbFriendlyVersion() {
     return this.stepsFormGroup.controls.steps.value.map(
       (step: PreparationStep) => {
-        return {
+        let stepToReturn: PreparationStep = {
           id: step.id,
           description: step.description,
           timeActive: +step.timeActive,
           timePassive: +step.timePassive,
         };
+        if(step.group){
+          stepToReturn.group = step.group
+        }
+        return stepToReturn
       }
     );
   }
@@ -309,5 +320,19 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
 
   close(){
     this.dialogRef.close()
+  }
+
+  stepSelected(event: any){
+    if(event.selectedIndex == 2){
+      this.getRecipyGroupsByIngredients()
+    }
+  }
+
+  getRecipyGroupsByIngredients(){
+    this.ingredientsFormGroup.controls.ingrediends.value.forEach((ing: Ingredient) => {
+      if(ing.group && !this.recipyGroups.includes(ing.group)){
+        this.recipyGroups.push(ing.group)
+      }
+    })
   }
 }

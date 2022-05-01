@@ -25,6 +25,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
   portionsToServe: number | undefined;
 
   isMobile: boolean = false;
+  isRecipySplitToGroups: boolean = false;
   destroy$ = new Subject();
 
   currentTab: string = 'ingredients';
@@ -58,6 +59,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((recipy) => {
         this.recipy = recipy;
+        console.log(recipy)
         recipy.id = recipyId;
         this.portionsToServe = this.savedPortionsServed;
       });
