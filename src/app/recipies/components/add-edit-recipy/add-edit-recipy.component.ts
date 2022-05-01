@@ -5,6 +5,7 @@ import { UserService } from 'src/app/auth/services/user.service';
 
 import { Complexity, ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
+import { Ingredient } from '../../models/ingredient.interface';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { NewRecipy, Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
@@ -27,6 +28,8 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
   isStepsFormValid: boolean = false;
   isIngredientsFormValid: boolean = false;
   isDetailsFormValid: boolean = false;
+
+  isIngredientsSplitToGroups: boolean = false;  
 
   constructor(
     public dialogRef: MatDialogRef<AddEditRecipyComponent>,
@@ -65,6 +68,10 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
   }
 
   addFields() {}
+
+  toggleSplitToGroups(){
+    this.isIngredientsSplitToGroups = true;
+  }
 
   fillForms() {
     this.detailsFormGroup.patchValue({
@@ -218,11 +225,15 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
       (ingr: any) => {
         ingr.product = this.recipiesService.getIngredientIdFromName(ingr);
         ingr.amount = this.recipiesService.transformToGr(ingr);
-        return {
+        let ingredient: Ingredient = {
           product: ingr.product,
           amount: ingr.amount,
           defaultUnit: ingr.defaultUnit,
         };
+        if(ingr.group){
+          ingredient.group = ingr.group;
+        }
+        return ingredient;
       }
     );
   }

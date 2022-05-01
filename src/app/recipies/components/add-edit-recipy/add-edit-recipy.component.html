@@ -2,6 +2,7 @@
 <h1 *ngIf="data.mode === 'edit'">Редагувати рецепт</h1>
 <mat-stepper #stepper>
   <mat-step [stepControl]="ingredientsFormGroup" #ingredients>
+    <button mat-button *ngIf=!isIngredientsSplitToGroups (click)="toggleSplitToGroups()">Split to groups</button>
     <form [formGroup]="ingredientsFormGroup">
       <ng-template matStepLabel
         ><span
@@ -16,7 +17,7 @@
             index as i
           "
         >
-          <app-add-edit-ingredient
+          <app-add-edit-ingredient [isIngredientsSplitToGroups]='isIngredientsSplitToGroups'
             formControlName="{{ i }}"
           ></app-add-edit-ingredient>
         </div>

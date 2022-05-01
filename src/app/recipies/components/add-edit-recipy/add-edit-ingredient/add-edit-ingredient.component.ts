@@ -1,7 +1,8 @@
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
+import { GetUkrIngredientsGroup, IngredientsGroupOptions } from 'src/app/recipies/models/ingredient.interface';
 import { MeasuringUnit, MeasuringUnitOptions, MeasuringUnitText } from 'src/app/recipies/models/measuring-units.enum';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
@@ -17,7 +18,9 @@ import { RecipiesService } from 'src/app/recipies/services/recipies.service';
     }
   ]
 })
-export class AddEditIngredientComponent implements OnInit {
+export class AddEditIngredientComponent implements OnInit, OnChanges {
+
+  @Input() isIngredientsSplitToGroups: boolean = false;
 
   public ingredientsForm: FormGroup = new FormGroup({
     ingredient: new FormControl('', Validators.required),
@@ -27,6 +30,8 @@ export class AddEditIngredientComponent implements OnInit {
 
   filteredOptions: Observable<string[]> | undefined;
   noFilteredOptions: boolean = false;
+
+  GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
   public onTouched: () => void = () => {};
 
@@ -44,8 +49,14 @@ export class AddEditIngredientComponent implements OnInit {
   }
 
   constructor(private recipiesService: RecipiesService) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if(this.isIngredientsSplitToGroups){
+      this.ingredientsForm.addControl('group', new FormControl('', Validators.required))
+    }
+  }
 
   ngOnInit() {
+    
     this.filteredOptions = this.ingredientsForm.controls.ingredient.valueChanges.pipe(
       startWith(''),
       map((value:string) => this._filter(value)),
@@ -57,6 +68,7 @@ export class AddEditIngredientComponent implements OnInit {
         }
       })
     );
+    
   }
 
   private _filter(value: string): string[] {
@@ -67,6 +79,10 @@ export class AddEditIngredientComponent implements OnInit {
 
   get measuringUnitsOptions(){
     return MeasuringUnitOptions;
+  }
+
+  get ingredientGroupOptions(){
+    return IngredientsGroupOptions;
   }
 
   getMeasuringUnitText(unit: MeasuringUnit){

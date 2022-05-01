@@ -26,4 +26,12 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field *ngIf="isIngredientsSplitToGroups" appearance="outline">
+    <mat-label>Group</mat-label>
+    <mat-select formControlName="group">
+      <mat-option *ngFor="let unit of ingredientGroupOptions" [value]="unit">
+        {{GetUkrIngredientsGroup(unit)}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </form>
