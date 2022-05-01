@@ -1,6 +1,6 @@
 import { Complexity } from './complexity.enum';
 import { DishType } from './dishType.enum';
-import { Ingredient } from './ingredient.interface';
+import { Ingredient, IngredientsGroup } from './ingredient.interface';
 import { PreparationStep } from './preparationStep.interface';
 
 export interface Recipy {
@@ -18,7 +18,7 @@ export interface Recipy {
   clonedBy?: string;
   clonedOn?: number;
   originalRecipy?: string;
-  isSplitIntoGroups: boolean
+  isSplitIntoGroups: IngredientsGroup[]
 }
 
 export interface NewRecipy {
@@ -33,5 +33,5 @@ export interface NewRecipy {
   clonedBy?: string;
   clonedOn?: number;
   originalRecipy?: string;
-  isSplitIntoGroups: boolean
+  isSplitIntoGroups: IngredientsGroup[]
 }

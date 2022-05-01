@@ -6,12 +6,20 @@ import { UserService } from 'src/app/auth/services/user.service';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
+import { Ingredient, IngredientsGroup } from '../../models/ingredient.interface';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { Recipy } from '../../models/recipy.interface';
 import { AddEditRecipyComponent } from '../add-edit-recipy/add-edit-recipy.component';
 import { LayoutService } from './../../../shared/services/layout.service';
 import { RecipiesService } from './../../services/recipies.service';
 
+export interface IngredientsByGroup {
+  main: Ingredient[];
+  filling: Ingredient[];
+  souce: Ingredient[];
+  dough: Ingredient[];
+  decoration: Ingredient[];
+}
 @Component({
   selector: 'app-recipy-full-view',
   templateUrl: './recipy-full-view.component.html',
@@ -19,16 +27,25 @@ import { RecipiesService } from './../../services/recipies.service';
 })
 export class RecipyFullViewComponent implements OnInit, OnDestroy {
   recipyId!: string;
-  recipy: Recipy | undefined;
+  recipy!: Recipy;
   averagePortion: number = 250;
 
   portionsToServe: number | undefined;
 
   isMobile: boolean = false;
-  isRecipySplitToGroups: boolean = false;
+  isRecipySplitToGroups: IngredientsGroup[] | null = null;
   destroy$ = new Subject();
 
   currentTab: string = 'ingredients';
+
+  ingredientsByGroup: IngredientsByGroup = {
+    main: [],
+    decoration: [],
+    dough: [],
+    souce: [],
+    filling: []
+  };
+  stepsByGroup: any = {};
 
   constructor(
     // public dialogRef: MatDialogRef<RecipyFullViewComponent>,
@@ -61,8 +78,29 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
         this.recipy = recipy;
         console.log(recipy)
         recipy.id = recipyId;
+        this.isRecipySplitToGroups = recipy.isSplitIntoGroups;
+        if(this.isRecipySplitToGroups){
+          this.getIngredientsByGroup();
+          this.getStepsByGroup()
+        }
         this.portionsToServe = this.savedPortionsServed;
       });
+  }
+
+  getIngredientsByGroup(){
+    if(this.isRecipySplitToGroups && this.recipy){
+      this.isRecipySplitToGroups.forEach(group => {
+        this.ingredientsByGroup[group] = this.recipy.ingrediends.filter(ingredient => ingredient.group == group)
+    });
+    }    
+  }
+
+  getStepsByGroup(){
+    if(this.isRecipySplitToGroups){
+      this.isRecipySplitToGroups.forEach(group => {
+        this.stepsByGroup[group] = this.recipy?.steps.filter(step => step.group == group)
+    });
+    }    
   }
 
   goBack(): void {

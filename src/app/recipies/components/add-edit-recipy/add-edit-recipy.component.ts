@@ -271,7 +271,7 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
       steps: this.convertStepsToDbFriendlyVersion(),
       author: this.userService.currentUser.email,
       createdOn: Date.now(),
-      isSplitIntoGroups: this.isSplitToGroups
+      isSplitIntoGroups: this.recipyGroups
     };
     this.dialogRef.close({recipy, mode: this.data.mode})
   }
@@ -289,7 +289,7 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
         author: this.data.recipy.author,
         createdOn: this.data.recipy.createdOn,
         originalRecipy: this.data.recipy.id,
-        isSplitIntoGroups: this.isSplitToGroups
+        isSplitIntoGroups: this.recipyGroups
       };
       this.dialogRef.close({ recipy, mode: this.data.mode });
     }
@@ -308,7 +308,7 @@ export class AddEditRecipyComponent implements OnInit, AfterContentChecked {
         lastEdited: Date.now(),
         author: this.data.recipy.author,
         createdOn: this.data.recipy.createdOn,
-        isSplitIntoGroups: this.isSplitToGroups
+        isSplitIntoGroups: this.recipyGroups
       };
       this.dialogRef.close({ recipy, mode: this.data.mode });
     }

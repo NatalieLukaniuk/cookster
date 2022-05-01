@@ -13,7 +13,7 @@
             </select>
             {{ portionsText }}
           </h3>
-          <div class="ingredients-table">
+          <div class="ingredients-table" *ngIf="!isRecipySplitToGroups">
             <app-ingredient
               *ngFor="let ingredient of recipy.ingrediends; let i = index"
               [ingredient]="ingredient"
@@ -22,6 +22,20 @@
               [isMobile]="isMobile"
             ></app-ingredient>
           </div>
+          <ng-container *ngIf="isRecipySplitToGroups">
+            <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
+              <ng-container *ngIf="item.value.length > 0">
+                <h4>{{item.key}}</h4>
+              <app-ingredient
+              *ngFor="let ingredient of item.value; let i = index"
+              [ingredient]="ingredient"
+              [savedPortionsToServe]="savedPortionsServed"
+              [actualPortionsToServe]="portionsToServe"
+              [isMobile]="isMobile"
+            ></app-ingredient>
+              </ng-container>              
+            </ng-container>
+          </ng-container>
         </div>
         <div class="preparation-wrapper">
           <h3>Приготування</h3>
