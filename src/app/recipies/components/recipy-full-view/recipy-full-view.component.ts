@@ -6,7 +6,7 @@ import { UserService } from 'src/app/auth/services/user.service';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
-import { Ingredient, IngredientsGroup } from '../../models/ingredient.interface';
+import { GetUkrIngredientsGroup, Ingredient, IngredientsGroup } from '../../models/ingredient.interface';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { Recipy } from '../../models/recipy.interface';
 import { AddEditRecipyComponent } from '../add-edit-recipy/add-edit-recipy.component';
@@ -60,6 +60,8 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     souce: [],
     filling: []
   };
+
+  GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
   constructor(
     // public dialogRef: MatDialogRef<RecipyFullViewComponent>,
