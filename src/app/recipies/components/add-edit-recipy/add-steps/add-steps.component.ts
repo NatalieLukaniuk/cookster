@@ -24,7 +24,7 @@ export class AddStepsComponent implements OnInit, OnChanges, ControlValueAccesso
 
   GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
-  public onTouched: () => void = () => {};
+  public onTouched: () => void = () => { };
 
   writeValue(val: any): void {
     val && this.stepsForm.setValue(val, { emitEvent: false });
@@ -38,26 +38,37 @@ export class AddStepsComponent implements OnInit, OnChanges, ControlValueAccesso
   setDisabledState?(isDisabled: boolean): void {
     isDisabled ? this.stepsForm.disable() : this.stepsForm.enable();
   }
-  constructor() {}
+  constructor() { }
   ngOnChanges(changes: SimpleChanges): void {
-    if(this.stepsForm && this.stepsForm.valid){
+    if (this.stepsForm && this.stepsForm.valid) {
       this.stepsFormValid.emit(true);
     } else {
       this.stepsFormValid.emit(false)
     }
 
-    if(this.isSplitToGroups){
+    if(this.isSplitToGroups && this.stepsForm){
       this.stepsForm.addControl('group', new FormControl('', Validators.required))
     }
   }
 
   ngOnInit() {
-    this.stepsForm = new FormGroup({
-      id: new FormControl(this.idValue),
-      description: new FormControl('', Validators.required),
-      timeActive: new FormControl('', Validators.required),
-      timePassive: new FormControl('', Validators.required),
-    });
+    if (!this.isSplitToGroups) {
+      this.stepsForm = new FormGroup({
+        id: new FormControl(this.idValue),
+        description: new FormControl('', Validators.required),
+        timeActive: new FormControl('', Validators.required),
+        timePassive: new FormControl('', Validators.required),
+      });
+    } else {
+      this.stepsForm = new FormGroup({
+        id: new FormControl(this.idValue),
+        description: new FormControl('', Validators.required),
+        timeActive: new FormControl('', Validators.required),
+        timePassive: new FormControl('', Validators.required),
+        group: new FormControl('', Validators.required)
+      });
+    }
+
     this.stepsForm.valid
   }
 
@@ -65,7 +76,7 @@ export class AddStepsComponent implements OnInit, OnChanges, ControlValueAccesso
     return this.index + 1;
   }
 
-  get stepGroupOptions(){
+  get stepGroupOptions() {
     return this.groupOptions;
   }
 }
