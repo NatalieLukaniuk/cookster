@@ -20,6 +20,14 @@ export interface IngredientsByGroup {
   dough: Ingredient[];
   decoration: Ingredient[];
 }
+
+export interface StepsByGroup {
+  main: PreparationStep[];
+  filling: PreparationStep[];
+  souce: PreparationStep[];
+  dough: PreparationStep[];
+  decoration: PreparationStep[];
+}
 @Component({
   selector: 'app-recipy-full-view',
   templateUrl: './recipy-full-view.component.html',
@@ -45,7 +53,13 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     souce: [],
     filling: []
   };
-  stepsByGroup: any = {};
+  stepsByGroup: StepsByGroup = {
+    main: [],
+    decoration: [],
+    dough: [],
+    souce: [],
+    filling: []
+  };
 
   constructor(
     // public dialogRef: MatDialogRef<RecipyFullViewComponent>,
@@ -82,6 +96,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
         if(this.isRecipySplitToGroups){
           this.getIngredientsByGroup();
           this.getStepsByGroup()
+          console.log(this.stepsByGroup)
         }
         this.portionsToServe = this.savedPortionsServed;
       });

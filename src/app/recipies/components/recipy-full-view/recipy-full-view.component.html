@@ -40,7 +40,7 @@
         <div class="preparation-wrapper">
           <h3>Приготування</h3>
         </div>
-        <table class="steps-table">
+        <table class="steps-table"  *ngIf="!isRecipySplitToGroups">
           <tr *ngFor="let step of recipy.steps; let i = index">
             <td>
               <p>{{ step.id }}. {{ step.description }}</p>
@@ -48,6 +48,21 @@
             <td>{{ getTotalStepTime(step) }} хв.</td>
           </tr>
         </table>
+        <ng-container *ngIf="isRecipySplitToGroups">
+          <ng-container *ngFor="let item of stepsByGroup | keyvalue">
+            <ng-container  *ngIf="item.value.length > 0">
+              <h4>{{item.key}}</h4>
+              <table class="steps-table">
+                <tr *ngFor="let step of item.value; let i = index">
+                  <td>
+                    <p>{{ step.id }}. {{ step.description }}</p>
+                  </td>
+                  <td>{{ getTotalStepTime(step) }} хв.</td>
+                </tr>
+              </table>
+            </ng-container>
+          </ng-container>
+        </ng-container>
       </div>
       <div class="recipy-info">
         <!-- <img class="recipy-photo" [src]="recipy.photo" /> -->
