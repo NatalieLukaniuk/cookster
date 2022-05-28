@@ -24,11 +24,11 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy {
   portionsToServe: number | undefined;
   ingredientsByGroup: IngredientsByGroup = new ingredientsByGroup();
   stepsByGroup: StepsByGroup = new stepsByGroup();
+  isSplitToGroups: boolean = false;
 
   GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
   currentTab: string = 'ingredients';
-  // isRecipySplitToGroups: IngredientsGroup[] | null = null;
 
   AVERAGE_PORTION: number = 250;
 
@@ -43,7 +43,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
       this.portionsToServe = this.savedPortionsServed;
-        if (this.recipy.isSplitIntoGroups) {
+        if (this.recipy.isSplitIntoGroups && !!this.recipy.isSplitIntoGroups.length) {
+          this.isSplitToGroups = true;
           this.getIngredientsByGroup();
           this.getStepsByGroup()
         }

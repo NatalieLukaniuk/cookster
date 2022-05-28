@@ -13,12 +13,12 @@
               </select>
               {{ portionsText }}
             </h3>
-            <div class="ingredients-table" *ngIf="!recipy.isSplitIntoGroups.length">
+            <div class="ingredients-table" *ngIf="!isSplitToGroups">
               <app-ingredient *ngFor="let ingredient of recipy.ingrediends; let i = index" [ingredient]="ingredient"
                 [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"
                 [isMobile]="isMobile"></app-ingredient>
             </div>
-            <ng-container *ngIf="!!recipy.isSplitIntoGroups.length">
+            <ng-container *ngIf="isSplitToGroups">
               <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
                 <ng-container *ngIf="item.value.length > 0">
                   <h4>{{item.key}}</h4>
@@ -32,7 +32,7 @@
           <div class="preparation-wrapper">
             <h3>Приготування</h3>
           </div>
-          <table class="steps-table" *ngIf="!recipy.isSplitIntoGroups.length">
+          <table class="steps-table" *ngIf="!isSplitToGroups">
             <tr *ngFor="let step of recipy.steps; let i = index">
               <td>
                 <p>{{ step.id }}. {{ step.description }}</p>
@@ -40,7 +40,7 @@
               <td>{{ getTotalStepTime(step) }} хв.</td>
             </tr>
           </table>
-          <ng-container *ngIf="!!recipy.isSplitIntoGroups.length">
+          <ng-container *ngIf="isSplitToGroups">
             <ng-container *ngFor="let item of stepsByGroup | keyvalue">
               <ng-container *ngIf="item.value.length > 0">
                 <h4>{{item.key}}</h4>
@@ -112,12 +112,12 @@
             }}</button>
         </mat-menu>
       </div>
-      <ng-container *ngIf="!recipy.isSplitIntoGroups">
+      <ng-container *ngIf="!isSplitToGroups">
         <app-ingredient *ngFor="let ingredient of recipy.ingrediends" [ingredient]="ingredient"
           [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe" [isMobile]="isMobile">
         </app-ingredient>
       </ng-container>
-      <ng-container *ngIf="recipy.isSplitIntoGroups">
+      <ng-container *ngIf="isSplitToGroups">
         <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
           <ng-container *ngIf="item.value.length > 0">
             <h4>{{item.key}}</h4>
@@ -130,7 +130,7 @@
   
     </ng-container>
     <ng-container *ngIf="currentTab === 'preparation'">
-      <table class="steps-table" *ngIf="!recipy.isSplitIntoGroups">
+      <table class="steps-table" *ngIf="!isSplitToGroups">
         <tr *ngFor="let step of recipy.steps; let i = index">
           <td>
             <p>{{ step.id }}. {{ step.description }}</p>
@@ -138,7 +138,7 @@
           <td>{{ getTotalStepTime(step) }} хв.</td>
         </tr>
       </table>
-      <ng-container *ngIf="recipy.isSplitIntoGroups">
+      <ng-container *ngIf="isSplitToGroups">
         <ng-container *ngFor="let item of stepsByGroup | keyvalue">
           <ng-container *ngIf="item.value.length > 0">
             <h4>{{item.key}}</h4>
