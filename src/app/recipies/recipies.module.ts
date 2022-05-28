@@ -11,12 +11,12 @@ import { RecipyShortViewComponent } from './components/recipy-short-view/recipy-
 import { AllRecipiesComponent } from './containers/all-recipies/all-recipies.component';
 import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.component';
 
-import { AddIngredientComponent } from './components/add-recipy-dialog/add-ingredient/add-ingredient.component';
-import { AddStepComponent } from './components/add-recipy-dialog/add-step-form/add-step.component';
-import { AddTagsComponent } from './components/add-recipy-dialog/add-tags/add-tags.component';
+import { AddIngredientComponent } from './components/add-recipy/add-ingredient/add-ingredient.component';
+import { AddStepComponent } from './components/add-recipy/add-step-form/add-step.component';
+import { AddTagsComponent } from './components/add-recipy/add-tags/add-tags.component';
 import { RecipyPreviewComponent } from './components/recipy-preview/recipy-preview.component';
 import { EditRecipyComponent } from './containers/edit-recipy/edit-recipy.component';
-import { AddRecipyComponent } from './components/add-recipy-dialog/add-recipy.component';
+import { AddRecipyComponent } from './components/add-recipy/add-recipy.component';
 
 @NgModule({
   imports: [
