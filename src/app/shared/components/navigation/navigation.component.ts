@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { AddEditRecipyComponent } from 'src/app/recipies/components/add-edit-recipy/add-edit-recipy.component';
 
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
@@ -46,50 +45,7 @@ export class NavigationComponent implements OnDestroy {
     this.destroy$.next()
   }
 
-  addRecipy() {
-    const dialogRef = this.dialog.open(AddEditRecipyComponent, {
-      width: '90%',
-      maxWidth: '100%',
-      height: '80%',
-      hasBackdrop: false,
-      panelClass: 'add-recipy-dialog',
-      autoFocus: false,
-      data: {
-        mode: 'create'
-      }
-    });
-
-    dialogRef
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe((result: any) => {
-        if(result){
-          this.recipiesService.addRecipy(result.recipy);
-        }        
-      });
-  }
   onAddRecipy(){
-  //   const dialogRef = this.dialog.open(AddRecipyDialogComponent, {
-  //     width: '90%',
-  //     maxWidth: '100%',
-  //     height: '80%',
-  //     hasBackdrop: false,
-  //     panelClass: 'add-recipy-dialog',
-  //     autoFocus: false,
-  //     data: {
-  //       // mode: 'create'
-  //     }
-  //   });
-
-  //   dialogRef
-  //     .afterClosed()
-  //     .pipe(take(1))
-  //     .subscribe((result: any) => {
-  //       if(result){
-  //         console.log(result)
-  //         this.recipiesService.addRecipy(result.recipy);
-  //       }        
-  //     });
   this.router.navigate(['recipies', 'edit-recipy'], { relativeTo: this.route })
    }
 }

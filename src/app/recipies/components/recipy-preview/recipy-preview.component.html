@@ -83,14 +83,6 @@
         </div>
       </div>
     </div>
-    <div class="action-buttons-wrapper">
-      <button mat-flat-button class="action-button back-button" (click)="goBack()">
-        <mat-icon svgIcon="arrow-left"></mat-icon><span *ngIf="!isMobile">Повернутися</span>
-      </button>
-      <button mat-flat-button class="action-button" (click)="editRecipy()">Редагувати рецепт</button>
-      <!-- <button mat-flat-button class="action-button">Додати в меню</button>
-    <button mat-flat-button class="action-button">В список покупок</button> -->
-    </div>
   </ng-container>
   <ng-container *ngIf="isMobile && recipy">
     <header class="mobile-header">

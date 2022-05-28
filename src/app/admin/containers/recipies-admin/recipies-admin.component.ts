@@ -5,7 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { AddEditRecipyComponent } from 'src/app/recipies/components/add-edit-recipy/add-edit-recipy.component';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
@@ -71,56 +70,13 @@ export class RecipiesAdminComponent implements OnInit {
   }
 
   addRecipy() {
-    const dialogRef = this.dialog.open(AddEditRecipyComponent, {
-      width: '90%',
-      maxWidth: '100%',
-      height: '80%',
-      hasBackdrop: false,
-      panelClass: 'add-recipy-dialog',
-      autoFocus: false,
-      data: {
-        mode: 'create',
-      },
-    });
-
-    dialogRef
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe((result: any) => {
-        if (result) {
-          this.recipiesService.addRecipy(result.recipy);
-        }
-      });
+    this.router.navigate(['recipies', 'edit-recipy'], { relativeTo: this.route })
   }
 
   openRecipy(recipy: Recipy) {
     this.router.navigate(['cookster/recipies/full-recipy/', recipy.id], {
       relativeTo: this.route.parent,
     });
-  }
-
-  editRecipy(recipy: Recipy) {
-    const dialogRef = this.dialog.open(AddEditRecipyComponent, {
-      width: '90%',
-      maxWidth: '100%',
-      height: '80%',
-      hasBackdrop: false,
-      panelClass: 'add-recipy-dialog',
-      autoFocus: false,
-      data: {
-        mode: 'edit',
-        recipy: recipy,
-      },
-    });
-
-    dialogRef
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe((result: any) => {
-        if (result?.recipy.id) {
-          this.recipiesService.updateRecipy(result.recipy);
-        }
-      });
   }
 
   deleteRecipy(recipy: Recipy) {

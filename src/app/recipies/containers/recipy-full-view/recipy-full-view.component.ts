@@ -4,13 +4,9 @@ import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/auth/services/user.service';
 
-import { ComplexityDescription } from '../../models/complexity.enum';
-import { DishType } from '../../models/dishType.enum';
-import { GetUkrIngredientsGroup, Ingredient, IngredientsGroup } from '../../models/ingredient.interface';
+import { Ingredient } from '../../models/ingredient.interface';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { Recipy } from '../../models/recipy.interface';
-import { AddEditRecipyComponent } from '../../components/add-edit-recipy/add-edit-recipy.component';
-import { LayoutService } from '../../../shared/services/layout.service';
 import { RecipiesService } from '../../services/recipies.service';
 
 export interface IngredientsByGroup {
@@ -54,26 +50,9 @@ export class stepsByGroup implements StepsByGroup {
 export class RecipyFullViewComponent implements OnInit, OnDestroy {
   recipyId!: string;
   recipy!: Recipy;
-  // averagePortion: number = 250;
-
-  // portionsToServe: number | undefined;
-
-  // isMobile: boolean = false;
-  // isRecipySplitToGroups: IngredientsGroup[] | null = null;
   destroy$ = new Subject();
 
-  // currentTab: string = 'ingredients';
-
-  // ingredientsByGroup: IngredientsByGroup = new ingredientsByGroup();
-  // stepsByGroup: StepsByGroup = new stepsByGroup();
-
-
-  // GetUkrIngredientsGroup = GetUkrIngredientsGroup;
-
   constructor(
-    // public dialogRef: MatDialogRef<RecipyFullViewComponent>,
-    // @Inject(MAT_DIALOG_DATA) public data: Recipy,
-    // private layoutService: LayoutService,
     private recipiesService: RecipiesService,
     public dialog: MatDialog,
     private userService: UserService
@@ -86,9 +65,6 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.layoutService.isMobile$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((bool) => (this.isMobile = bool));
     this.getRecipy(this.recipyId);
     this.recipiesService.recipiesUpdated$.pipe(takeUntil(this.destroy$)).subscribe(() => { this.getRecipy(this.recipyId) })
   }
@@ -100,66 +76,9 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .subscribe((recipy) => {
         this.recipy = recipy;
         recipy.id = recipyId;
-        // this.isRecipySplitToGroups = recipy.isSplitIntoGroups;
-        // if (this.isRecipySplitToGroups) {
-        //   this.getIngredientsByGroup();
-        //   this.getStepsByGroup()
-        //   console.log(this.stepsByGroup)
-        // }
-        // this.portionsToServe = this.savedPortionsServed;
       });
   }
 
-  // getIngredientsByGroup() {
-  //   if (this.isRecipySplitToGroups && this.recipy) {
-  //     this.isRecipySplitToGroups.forEach(group => {
-  //       this.ingredientsByGroup[group] = this.recipy.ingrediends.filter(ingredient => ingredient.group == group)
-  //     });
-  //   }
-  // }
-
-  // getStepsByGroup() {
-  //   if (this.isRecipySplitToGroups) {
-  //     this.isRecipySplitToGroups.forEach(group => {
-  //       this.stepsByGroup[group] = this.recipy?.steps.filter(step => step.group == group)
-  //     });
-  //   }
-  // }
-
-  goBack(): void {
-    // this.dialogRef.close();
-  }
-
-  // get complexity() {
-  //   if (this.recipy) {
-  //     return ComplexityDescription[this.recipy.complexity];
-  //   } else return '';
-  // }
-
-  // get savedPortionsServed() {
-  //   let portions = 0;
-  //   if (this.recipy) {
-  //     let amount = 0;
-  //     for (let ingr of this.recipy.ingrediends) {
-  //       amount = ingr.amount + amount;
-  //     }
-  //     portions = Math.floor(amount / this.averagePortion);
-  //   }
-
-  //   return portions;
-  // }
-
-  // get portionsOptions() {
-  //   let portionsArray = [];
-  //   if (this.recipy) {
-  //     for (let i = 1; i <= 20; i++) {
-  //       portionsArray.push(i);
-  //     }
-  //   }
-  //   return portionsArray;
-  // }
-
-  
 
   getMode() {
     let mode: string = '';
@@ -174,36 +93,6 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     }
     return mode;
   }
-
-  // editRecipy() {
-  //   let mode = this.getMode();
-  //   const dialogRef = this.dialog.open(AddEditRecipyComponent, {
-  //     width: '90%',
-  //     maxWidth: '100%',
-  //     height: '80%',
-  //     hasBackdrop: false,
-  //     panelClass: 'add-recipy-dialog',
-  //     autoFocus: false,
-  //     data: {
-  //       mode,
-  //       recipy: this.recipy,
-  //     },
-  //   });
-
-  //   dialogRef
-  //     .afterClosed()
-  //     .pipe(take(1))
-  //     .subscribe((result: any) => {
-  //       if (result.recipy) {
-  //         if (mode === 'edit') {
-  //           this.recipiesService.updateRecipy(result.recipy);
-  //         } else {
-  //           this.recipiesService.addRecipy(result.recipy)
-  //         }
-  //         // 
-  //       }
-  //     });
-  // }
 }
 
-//TODO chips: figure out what should happen on click on tag chip
+
