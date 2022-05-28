@@ -42,8 +42,8 @@ export class RecipiesService {
     });
   }
 
-  getIngredientIdFromName(ingr: any){
-    let productId;
+  getIngredientIdFromName(ingr: any): string{
+    let productId = '';
     for (let product of this.products$.value) {
       if (product.name === ingr.ingredient) {
         productId = product.id;

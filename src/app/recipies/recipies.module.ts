@@ -9,10 +9,17 @@ import { AddEditRecipyComponent } from './components/add-edit-recipy/add-edit-re
 import { AddStepsComponent } from './components/add-edit-recipy/add-steps/add-steps.component';
 import { AddProductComponent } from './components/add-product/add-product.component';
 import { IngredientComponent } from './components/ingredient/ingredient.component';
-import { RecipyFullViewComponent } from './components/recipy-full-view/recipy-full-view.component';
+import { RecipyFullViewComponent } from './containers/recipy-full-view/recipy-full-view.component';
 import { RecipyShortViewComponent } from './components/recipy-short-view/recipy-short-view.component';
 import { AllRecipiesComponent } from './containers/all-recipies/all-recipies.component';
 import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.component';
+
+import { AddIngredientComponent } from './components/add-recipy-dialog/add-ingredient/add-ingredient.component';
+import { AddStepComponent } from './components/add-recipy-dialog/add-step-form/add-step.component';
+import { AddTagsComponent } from './components/add-recipy-dialog/add-tags/add-tags.component';
+import { RecipyPreviewComponent } from './components/recipy-preview/recipy-preview.component';
+import { EditRecipyComponent } from './containers/edit-recipy/edit-recipy.component';
+import { AddRecipyComponent } from './components/add-recipy-dialog/add-recipy.component';
 
 @NgModule({
   imports: [
@@ -31,7 +38,13 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     AddProductComponent,
     AllRecipiesComponent,
     AddEditRecipyComponent,
-    AddEditIngredientComponent
+    AddEditIngredientComponent,
+    AddRecipyComponent,
+    AddIngredientComponent,
+    AddStepComponent,
+    AddTagsComponent,
+    RecipyPreviewComponent,
+    EditRecipyComponent
   ],
   exports: [],
 })

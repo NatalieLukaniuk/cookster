@@ -8,10 +8,12 @@ import { CooksterComponent } from './cookster/cookster.component';
 import { FriendsFeedComponent } from './layout/containers/friends-feed/friends-feed.component';
 import { ShoppingListComponent } from './layout/containers/shopping-list/shopping-list.component';
 import { MenusComponent } from './menus/menus.component';
-import { RecipyFullViewComponent } from './recipies/components/recipy-full-view/recipy-full-view.component';
+import { RecipyFullViewComponent } from './recipies/containers/recipy-full-view/recipy-full-view.component';
+import { RecipyPreviewComponent } from './recipies/components/recipy-preview/recipy-preview.component';
 import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
 import { UserRecipiesComponent } from './recipies/containers/user-recipies/user-recipies.component';
 import { ExtendedSearchComponent } from './shared/components/extended-search/extended-search.component';
+import { EditRecipyComponent } from './recipies/containers/edit-recipy/edit-recipy.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'cookster' },
@@ -30,7 +32,8 @@ export const routes: Routes = [
             component: RecipyFullViewComponent,
             pathMatch: 'full',
           },
-          {path: 'all-recipies', component: AllRecipiesComponent}
+          {path: 'all-recipies', component: AllRecipiesComponent},
+          {path: 'edit-recipy', component: EditRecipyComponent}
         ],
       },
       { path: 'friends-feed', component: FriendsFeedComponent },

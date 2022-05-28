@@ -24,6 +24,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { SearchComponent } from './components/search/search.component';
 import { HeaderComponent } from './containers/header/header.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSortModule,
     MatButtonToggleModule,
     MatStepperModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRadioModule
   ],
   declarations: [
     HeaderComponent,
@@ -79,7 +81,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSortModule,
     MatButtonToggleModule,
     MatStepperModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRadioModule
   ],
   providers: []
 })

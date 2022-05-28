@@ -3,7 +3,7 @@ import { DishType } from './dishType.enum';
 import { Ingredient, IngredientsGroup } from './ingredient.interface';
 import { PreparationStep } from './preparationStep.interface';
 
-export interface Recipy {
+export interface Recipy extends NewRecipy {
   id: string;
   name: string;
   ingrediends: Ingredient[];
@@ -34,4 +34,18 @@ export interface NewRecipy {
   clonedOn?: number;
   originalRecipy?: string;
   isSplitIntoGroups: IngredientsGroup[]
+}
+
+export class emptyRecipy implements NewRecipy {
+  name: string = '';
+  ingrediends: Ingredient[] = [];
+  complexity: Complexity = Complexity.simple;
+  steps: PreparationStep[] = [];
+  type: DishType[] = [];
+  author: string;
+  createdOn: number = Date.now();
+  isSplitIntoGroups: IngredientsGroup[] = []
+  constructor(author: string) {
+    this.author = author;
+  }
 }

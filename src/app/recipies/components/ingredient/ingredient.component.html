@@ -1,11 +1,10 @@
 <div class="ingredient-wrapper">
   <div class="ingredient-name">{{ getIngredientText() }}</div>
   <div class="ingredient-amount">
-    {{ amountToDisplay }}
-    <select
+    {{ amountToDisplay }} <ng-container *ngIf="!savedPortionsToServe && !this.actualPortionsToServe">{{getUnitText(ingredient.defaultUnit)}}</ng-container>
+    <select *ngIf="!!savedPortionsToServe && !!this.actualPortionsToServe && !isMobile"
       (change)="onValueChange($event)"
       class="inline-select"
-      *ngIf="!isMobile"
     >
       <option
         *ngFor="let unit of measurementUnits"

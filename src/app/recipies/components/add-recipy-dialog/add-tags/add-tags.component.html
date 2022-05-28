@@ -1,0 +1,3 @@
+<mat-chip-list selectable="true">
+    <mat-chip selectable="true" *ngFor="let tag of chips" (click)="onChange(tag)" [class.selected]="tag.selected">{{ getTagsText(tag.id) }}</mat-chip>
+  </mat-chip-list>

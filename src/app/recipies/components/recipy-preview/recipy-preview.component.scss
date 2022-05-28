@@ -1,0 +1,201 @@
+.full-recipy-wrapper {
+    background-color: var(--background-color);
+    width: 100%;
+    height: 100%;
+    padding: 20px 60px 90px;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  
+  .recipy-body {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .recipy-details {
+    width: 56%;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  
+  .ingredients-wrapper,
+  .preparation-wrapper {
+    margin-top: 34px;
+  }
+  
+  .ingredients-table {
+    margin-top: 23px;
+    font-size: 16px;
+    line-height: 20px;
+    width: 100%;
+    & > div {
+      width: 100%;
+    }
+  }
+  
+  .steps-table {
+    td:first-child {
+      width: 87%;
+    }
+    td:last-child {
+      width: 9%;
+      text-align: end;
+    }
+    p {
+      margin: 6px 0;
+    }
+  }
+  
+  .action-buttons-wrapper {
+    display: flex;
+    position: fixed;
+    top: 0;
+    width: 95%;
+    padding: 18px 33px 0;
+    box-sizing: border-box;
+    justify-content: flex-end;
+    z-index: 1000;
+    button {
+      margin-left: 12px;
+    }
+  }
+  
+  .back-button {
+    mat-icon {
+      width: 14px;
+      margin-right: 5px;
+      margin-bottom: 3px;
+    }
+  }
+  
+  .recipy-info {
+    width: 35%;
+    font-size: 14px;
+    .bold {
+      font-weight: 700;
+    }
+    p {
+      margin: 0;
+    }
+  }
+  .recipy-photo {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+  }
+  
+  .recipy-complexity {
+    margin-top: 20px;
+  }
+  
+  .recipy-time,
+  .recipy-tags {
+    display: flex;
+    margin-top: 30px;
+    & > div:first-child {
+      margin-right: 5px;
+    }
+  }
+  
+  .recipy-tags {
+    align-items: center;
+  }
+  
+  .add-tag {
+    mat-icon {
+      width: 13px;
+    }
+  }
+  
+  .mobile-header {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .mat-button-toggle-group {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .mat-button-toggle {
+    height: 98%;
+    display: flex;
+    font-family: "Montserrat", sans-serif;
+    &.mat-button-toggle-checked {
+      background-color: var(--primary);
+      border-radius: 4px;
+    }
+  }
+  
+  .edit-button {
+    height: 23px;
+    line-height: 23px;
+    width: 24px;
+    font-size: 5px;
+    margin-left: 5px;
+    .mat-icon {
+      height: 13px;
+    }
+  }
+  
+  .portions-selector {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px 15px;
+  }
+  
+  .mobile-details-wrapper {
+    padding: 10px;
+  }
+  
+  @media (max-width: 600px) {
+    .full-recipy-wrapper {
+      padding-inline: 10px;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    .recipy-body {
+      flex-direction: column;
+    }
+    .recipy-details,
+    .recipy-info {
+      width: 100%;
+    }
+    .action-buttons-wrapper {
+      bottom: 10px;
+      top: auto;
+      justify-content: flex-start;
+      padding-inline: 0;
+    }
+  
+    .steps-table {
+      padding-inline: 10px;
+      td:first-child {
+        width: 85%;
+      }
+      td:last-child {
+        width: 15%;
+        text-align: end;
+      }
+      p {
+        margin-block: 10px;
+        line-height: 150%;
+      }
+    }
+    .recipy-time {
+      margin-top: 20px;
+    }
+    .recipy-complexity {
+      margin-top: 40px;
+    }
+    h4{
+      padding-inline: 10px;
+    }
+  }
+  

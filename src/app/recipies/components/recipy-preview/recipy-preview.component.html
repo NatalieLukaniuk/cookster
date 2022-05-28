@@ -1,0 +1,181 @@
+<ng-container *ngIf="recipy && !isMobile">
+    <div class="full-recipy-wrapper">
+      <div class="recipy-body">
+        <div class="recipy-details">
+          <h1>{{ recipy.name }}</h1>
+          <div class="ingredients-wrapper" *ngIf="portionsToServe">
+            <h3>
+              Інгридієнти на
+              <select class="inline-select" [(ngModel)]="portionsToServe">
+                <option *ngFor="let option of portionsOptions">
+                  {{ option }}
+                </option>
+              </select>
+              {{ portionsText }}
+            </h3>
+            <div class="ingredients-table" *ngIf="!recipy.isSplitIntoGroups.length">
+              <app-ingredient *ngFor="let ingredient of recipy.ingrediends; let i = index" [ingredient]="ingredient"
+                [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"
+                [isMobile]="isMobile"></app-ingredient>
+            </div>
+            <ng-container *ngIf="!!recipy.isSplitIntoGroups.length">
+              <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
+                <ng-container *ngIf="item.value.length > 0">
+                  <h4>{{item.key}}</h4>
+                  <app-ingredient *ngFor="let ingredient of item.value; let i = index" [ingredient]="ingredient"
+                    [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"
+                    [isMobile]="isMobile"></app-ingredient>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </div>
+          <div class="preparation-wrapper">
+            <h3>Приготування</h3>
+          </div>
+          <table class="steps-table" *ngIf="!recipy.isSplitIntoGroups.length">
+            <tr *ngFor="let step of recipy.steps; let i = index">
+              <td>
+                <p>{{ step.id }}. {{ step.description }}</p>
+              </td>
+              <td>{{ getTotalStepTime(step) }} хв.</td>
+            </tr>
+          </table>
+          <ng-container *ngIf="!!recipy.isSplitIntoGroups.length">
+            <ng-container *ngFor="let item of stepsByGroup | keyvalue">
+              <ng-container *ngIf="item.value.length > 0">
+                <h4>{{item.key}}</h4>
+                <table class="steps-table">
+                  <tr *ngFor="let step of item.value; let i = index">
+                    <td>
+                      <p>{{ step.id }}. {{ step.description }}</p>
+                    </td>
+                    <td>{{ getTotalStepTime(step) }} хв.</td>
+                  </tr>
+                </table>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </div>
+        <div class="recipy-info">
+          <!-- <img class="recipy-photo" [src]="recipy.photo" /> -->
+          <div class="recipy-complexity">
+            <span class="bold">Складність:</span> {{ complexity }}
+          </div>
+          <div class="recipy-time">
+            <div><span class="bold">Час приготування: </span></div>
+            <div>
+              <p>{{ activeTime + passiveTime }} хвилин</p>
+              <p>Активний: {{ activeTime }} хвилин</p>
+              <p>Пасивний: {{ passiveTime }} хвилин</p>
+            </div>
+          </div>
+          <div class="recipy-tags">
+            <div><span class="bold">Теги: </span></div>
+            <div>
+              <mat-chip-list>
+                <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
+                <!-- <mat-chip class="add-tag"
+                ><mat-icon svgIcon="add"></mat-icon
+              ></mat-chip> -->
+              </mat-chip-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="action-buttons-wrapper">
+      <button mat-flat-button class="action-button back-button" (click)="goBack()">
+        <mat-icon svgIcon="arrow-left"></mat-icon><span *ngIf="!isMobile">Повернутися</span>
+      </button>
+      <button mat-flat-button class="action-button" (click)="editRecipy()">Редагувати рецепт</button>
+      <!-- <button mat-flat-button class="action-button">Додати в меню</button>
+    <button mat-flat-button class="action-button">В список покупок</button> -->
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isMobile && recipy">
+    <header class="mobile-header">
+      {{ recipy.name }}
+    </header>
+    <mat-button-toggle-group appearance="legacy" aria-label="Font Style" (change)="onMatToggleChange($event)">
+      <mat-button-toggle value="ingredients" checked>Інгридієнти</mat-button-toggle>
+      <mat-button-toggle value="preparation">Приготування</mat-button-toggle>
+      <mat-button-toggle value="details">Деталі</mat-button-toggle>
+    </mat-button-toggle-group>
+    <ng-container *ngIf="currentTab === 'ingredients' && portionsToServe">
+      <div class="portions-selector">
+        <span>Кількість порцій: {{portionsToServe}}</span>
+        <button mat-icon-button [matMenuTriggerFor]="unitMenu" class="edit-button">
+          <mat-icon svgIcon="edit"></mat-icon>
+        </button>
+        <mat-menu #unitMenu="matMenu">
+          <button mat-menu-item *ngFor="let option of portionsOptions" (click)="onPortionsChange(option)">{{ option
+            }}</button>
+        </mat-menu>
+      </div>
+      <ng-container *ngIf="!recipy.isSplitIntoGroups">
+        <app-ingredient *ngFor="let ingredient of recipy.ingrediends" [ingredient]="ingredient"
+          [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe" [isMobile]="isMobile">
+        </app-ingredient>
+      </ng-container>
+      <ng-container *ngIf="recipy.isSplitIntoGroups">
+        <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
+          <ng-container *ngIf="item.value.length > 0">
+            <h4>{{item.key}}</h4>
+            <app-ingredient *ngFor="let ingredient of item.value" [ingredient]="ingredient"
+              [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"
+              [isMobile]="isMobile"></app-ingredient>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+  
+    </ng-container>
+    <ng-container *ngIf="currentTab === 'preparation'">
+      <table class="steps-table" *ngIf="!recipy.isSplitIntoGroups">
+        <tr *ngFor="let step of recipy.steps; let i = index">
+          <td>
+            <p>{{ step.id }}. {{ step.description }}</p>
+          </td>
+          <td>{{ getTotalStepTime(step) }} хв.</td>
+        </tr>
+      </table>
+      <ng-container *ngIf="recipy.isSplitIntoGroups">
+        <ng-container *ngFor="let item of stepsByGroup | keyvalue">
+          <ng-container *ngIf="item.value.length > 0">
+            <h4>{{item.key}}</h4>
+            <table class="steps-table">
+              <tr *ngFor="let step of item.value; let i = index">
+                <td>
+                  <p>{{ step.id }}. {{ step.description }}</p>
+                </td>
+                <td>{{ getTotalStepTime(step) }} хв.</td>
+              </tr>
+            </table>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <div *ngIf="currentTab === 'details'" class="mobile-details-wrapper">
+      <div>
+        <mat-chip-list>
+          <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
+          <!-- <mat-chip class="add-tag"
+          ><mat-icon svgIcon="add"></mat-icon
+        ></mat-chip> -->
+        </mat-chip-list>
+      </div>
+      <div class="recipy-complexity">
+        <span>Складність: </span> <b>{{ complexity }}</b>
+      </div>
+      <div class="recipy-time">
+  
+        <div>
+          <p>Загальний час приготування: <b>{{ activeTime + passiveTime }} хвилин</b></p>
+          <p>Активний: {{ activeTime }} хвилин</p>
+          <p>Пасивний: {{ passiveTime }} хвилин</p>
+        </div>
+      </div>
+      <div class="recipy-tags">
+  
+      </div>
+    </div>
+  </ng-container>

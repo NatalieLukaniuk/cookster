@@ -32,7 +32,7 @@ export class IngredientComponent implements OnInit {
   constructor(
     private converter: AmountConverterService,
     private recipiesService: RecipiesService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.measuringUnit = this.getDefaultMeasuringUnit();
@@ -43,13 +43,16 @@ export class IngredientComponent implements OnInit {
   }
 
   getAmount(amount: number) {
-    if (this.savedPortionsToServe == this.actualPortionsToServe) {
-      return amount;
-    } else {
-      const amountPerPortion = amount / this.savedPortionsToServe;
-      const actualAmount = amountPerPortion * this.actualPortionsToServe;
-      return actualAmount;
-    }
+    if (!!this.savedPortionsToServe && !!this.actualPortionsToServe) {
+      if (this.savedPortionsToServe == this.actualPortionsToServe) {
+        return amount;
+      } else {
+        const amountPerPortion = amount / this.savedPortionsToServe;
+        const actualAmount = amountPerPortion * this.actualPortionsToServe;
+        return actualAmount;
+      }
+    } else return amount
+
   }
 
   getDefaultMeasuringUnit() {
