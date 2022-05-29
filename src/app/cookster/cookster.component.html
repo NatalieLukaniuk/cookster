@@ -2,7 +2,7 @@
   <div class="content-pane">
     <router-outlet></router-outlet>
   </div>
-  <div class="navigation-pane" *ngIf="!(isMobile$ | async)">
+  <div class="navigation-pane" *ngIf="!(isMobile$ | async) && isShowNavPane">
     <app-navigation></app-navigation>
   </div>
 </section>

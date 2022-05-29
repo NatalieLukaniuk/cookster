@@ -10,12 +10,16 @@
   .recipy-body {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
   
   .recipy-details {
-    width: 56%;
     font-size: 16px;
     line-height: 24px;
+    flex-grow: 1;
+    min-width: 400px;
+    margin-right: 40px;
+    max-width: 550px;
   }
   
   .ingredients-wrapper,
@@ -69,8 +73,8 @@
   }
   
   .recipy-info {
-    width: 35%;
     font-size: 14px;
+    min-width: 300px;
     .bold {
       font-weight: 700;
     }

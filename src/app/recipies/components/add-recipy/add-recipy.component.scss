@@ -10,3 +10,23 @@
         margin-bottom: 30px;
     }
 }
+
+.action-buttons-wrapper{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.complexity-radio-group{
+    margin-left: 20px;
+}
+
+.recipy-constructor-wrapper{
+    display: flex;
+    .preview{
+        flex: 2 0 60%;
+    }
+    .recipy-constructor{
+        flex: 1 1 30%;
+    }
+}

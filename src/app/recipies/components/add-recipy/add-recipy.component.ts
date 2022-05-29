@@ -49,6 +49,7 @@ export class AddRecipyComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.destroy$.next();
+    this.destroy$.complete()
   }
 
   stepSelected(event: any) {

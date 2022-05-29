@@ -25,9 +25,11 @@ export class EditRecipyComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  previewNewRecipy(event: NewRecipy){
-this.mode = RecipyMode.EditRecipy;
-this.recipy = event;
+  previewNewRecipy(event: NewRecipy) {
+    this.mode = RecipyMode.EditRecipy;
+    if (event) {
+      this.recipy = event;
+    }
   }
 
 }

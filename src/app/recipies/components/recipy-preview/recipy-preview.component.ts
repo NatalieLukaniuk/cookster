@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from 'src/app/shared/services/layout.service';
@@ -14,7 +14,7 @@ import { IngredientsByGroup, ingredientsByGroup, StepsByGroup, stepsByGroup } fr
   templateUrl: './recipy-preview.component.html',
   styleUrls: ['./recipy-preview.component.scss']
 })
-export class RecipyPreviewComponent implements OnInit, OnDestroy {
+export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() recipy!: NewRecipy;
 
@@ -34,20 +34,29 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy {
 
 
   constructor(private layoutService: LayoutService,) { }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!!this.recipy.ingrediends.length) {
+      this.portionsToServe = this.savedPortionsServed;
+    }
+    if (this.recipy.isSplitIntoGroups && !!this.recipy.isSplitIntoGroups.length) {
+      this.isSplitToGroups = true;
+      this.getIngredientsByGroup();
+      this.getStepsByGroup()
+    }
+  }
 
   ngOnInit(): void {
-    console.log(this.recipy)
-    
-    debugger
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
+    if (!!this.recipy.ingrediends.length) {
       this.portionsToServe = this.savedPortionsServed;
-        if (this.recipy.isSplitIntoGroups && !!this.recipy.isSplitIntoGroups.length) {
-          this.isSplitToGroups = true;
-          this.getIngredientsByGroup();
-          this.getStepsByGroup()
-        }
+    }
+    if (this.recipy.isSplitIntoGroups && !!this.recipy.isSplitIntoGroups.length) {
+      this.isSplitToGroups = true;
+      this.getIngredientsByGroup();
+      this.getStepsByGroup()
+    }
   }
 
   ngOnDestroy(): void {
@@ -157,11 +166,11 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy {
     } else return '';
   }
 
-  goBack(){
+  goBack() {
 
   }
 
-  editRecipy(){
+  editRecipy() {
 
   }
 }

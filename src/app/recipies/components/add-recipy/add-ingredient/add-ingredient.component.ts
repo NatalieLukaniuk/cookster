@@ -11,13 +11,6 @@ import { RecipiesService } from 'src/app/recipies/services/recipies.service';
   selector: 'app-add-ingredient',
   templateUrl: './add-ingredient.component.html',
   styleUrls: ['./add-ingredient.component.scss'],
-  // providers: [
-  //   {
-  //     provide: NG_VALUE_ACCESSOR,
-  //     useExisting: forwardRef(() => AddEditIngredientComponent),
-  //     multi: true
-  //   }
-  // ]
 })
 export class AddIngredientComponent implements OnInit, OnChanges {
 
@@ -32,7 +25,6 @@ export class AddIngredientComponent implements OnInit, OnChanges {
   GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
   constructor(private recipiesService: RecipiesService) { 
-    // this.initForm()
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isIngredientsSplitToGroups) {
@@ -44,7 +36,7 @@ export class AddIngredientComponent implements OnInit, OnChanges {
     this.ingredientsForm = new FormGroup({
       ingredient: new FormControl('', Validators.required),
       amount: new FormControl('', Validators.required),
-      defaultUnit: new FormControl('', Validators.required),
+      defaultUnit: new FormControl(MeasuringUnit.gr, Validators.required),
     });
     if (this.isIngredientsSplitToGroups){
       this.ingredientsForm.addControl('group', new FormControl('', Validators.required))

@@ -8,7 +8,8 @@
         {{option}}
       </mat-option>
     </mat-autocomplete>
-    <mat-icon matSuffix svgIcon="done" *ngIf="ingredientsForm.controls.ingredient.valid && !noFilteredOptions"></mat-icon>
+    <mat-icon matSuffix svgIcon="done" *ngIf="ingredientsForm.controls.ingredient.valid && !noFilteredOptions">
+    </mat-icon>
     <mat-hint *ngIf="noFilteredOptions">Такого інгридієнту немає</mat-hint>
   </mat-form-field>
 
@@ -18,21 +19,17 @@
     <mat-icon matSuffix svgIcon="done" *ngIf="ingredientsForm.controls.amount.valid"></mat-icon>
     <!-- <mat-hint>Hint</mat-hint> -->
   </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label>Одиниці</mat-label>
-    <mat-select formControlName="defaultUnit">
-      <mat-option *ngFor="let unit of measuringUnitsOptions" [value]="unit">
-        {{getMeasuringUnitText(unit)}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field *ngIf="isIngredientsSplitToGroups" appearance="outline">
-    <mat-label>Group</mat-label>
-    <mat-select formControlName="group">
-      <mat-option *ngFor="let unit of ingredientGroupOptions" [value]="unit">
-        {{GetUkrIngredientsGroup(unit)}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button mat-flat-button [disabled]="ingredientsForm.invalid" class="action-button" type="submit">Add</button>
+
+  <mat-radio-group class="cookster-radio-group units-radio-group" formControlName="defaultUnit">
+    <mat-radio-button *ngFor="let unit of measuringUnitsOptions" [value]="unit">
+      {{getMeasuringUnitText(unit)}}
+    </mat-radio-button>
+  </mat-radio-group>
+  <mat-radio-group *ngIf="isIngredientsSplitToGroups" class="cookster-radio-group" formControlName="group" #group>
+    <mat-radio-button [ngClass]="ingredientsForm.controls.group.value == unit? 'selected' : 'not-selected'" class="example-radio-button" *ngFor="let unit of ingredientGroupOptions" [value]="unit">
+      {{GetUkrIngredientsGroup(unit)}}
+    </mat-radio-button>
+  </mat-radio-group>
+
+  <button class="action-button" mat-flat-button [disabled]="ingredientsForm.invalid" class="action-button" type="submit">Add</button>
 </form>
