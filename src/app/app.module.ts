@@ -12,6 +12,11 @@ import { LayoutModule } from './layout/layout.module';
 import { MenusModule } from './menus/menus.module';
 import { RecipiesModule } from './recipies/recipies.module';
 import { SharedModule } from './shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './store/reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
  
 
@@ -31,7 +36,10 @@ import { SharedModule } from './shared/shared.module';
     MenusModule,
     AdminModule,
     CooksterModule,
-    AuthModule
+    AuthModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [],
   bootstrap: [AppComponent]

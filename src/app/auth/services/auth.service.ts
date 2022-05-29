@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
+import { User } from '../models/user.interface';
 
 import { UserService } from './user.service';
+import * as UserActions from '../../store/actions/user.actions'
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +13,7 @@ import { UserService } from './user.service';
 export class AuthService {
   isLoggedIn = new BehaviorSubject<boolean>(false);
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private store: Store) { }
 
   registerUser(email: string, password: string) {
     const auth = getAuth();
@@ -56,7 +59,16 @@ export class AuthService {
   checkIsLoggedIn() {
     getAuth().onAuthStateChanged((user) => {
       if (user) {
+        if (user.email) {
+          let currentUser: User = {
+            email: user.email,
+            uid: user.uid
+          }
+          this.store.dispatch(new UserActions.UserLoadedAction(currentUser))
+        }
+
         this.userService.userAtFirebaseAuth = user;
+        console.log(user)
         this.isLoggedIn.next(true);
       } else {
         this.isLoggedIn.next(false);

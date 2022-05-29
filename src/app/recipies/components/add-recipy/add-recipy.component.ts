@@ -14,6 +14,10 @@ import { RecipiesService } from '../../services/recipies.service';
 import { ingredientsByGroup, IngredientsByGroup, StepsByGroup, stepsByGroup } from '../../containers/recipy-full-view/recipy-full-view.component';
 import { AddIngredientComponent } from './add-ingredient/add-ingredient.component';
 import { AddStepComponent } from './add-step-form/add-step.component';
+import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
+import { select, Store } from '@ngrx/store';
+import { IUserState } from 'src/app/store/reducers/user.reducer';
+import { User } from 'src/app/auth/models/user.interface';
 
 @Component({
   selector: 'app-add-recipy',
@@ -21,9 +25,9 @@ import { AddStepComponent } from './add-step-form/add-step.component';
   styleUrls: ['./add-recipy.component.scss']
 })
 export class AddRecipyComponent implements OnInit {
-  newRecipy: NewRecipy;
+  newRecipy: NewRecipy = {} as NewRecipy;
 
-  isSplitToGroups: boolean;
+  isSplitToGroups: boolean = false;
   destroy$ = new Subject();
   isMobile: boolean = false;
 
@@ -36,15 +40,23 @@ export class AddRecipyComponent implements OnInit {
 
   @Output() previewRecipy = new EventEmitter<NewRecipy>()
 
-  constructor(private userService: UserService, private layoutService: LayoutService, private recipiesService: RecipiesService) {
-    this.newRecipy = new emptyRecipy(this.userService.currentUser.email);
-    this.isSplitToGroups = false;
+  currentUser: User | undefined;
+
+  constructor(private userService: UserService, private layoutService: LayoutService, private recipiesService: RecipiesService, private store: Store<IUserState>) {
+
   }
 
   ngOnInit(): void {
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
+    this.store.pipe(select(getCurrentUser)).subscribe(res => {
+      if (res) {
+        this.currentUser = res;
+        this.newRecipy = new emptyRecipy(this.currentUser?.email);
+        this.isSplitToGroups = false;
+      }
+    })
   }
 
   ngOnDestroy(): void {
@@ -70,12 +82,12 @@ export class AddRecipyComponent implements OnInit {
     }
   }
 
-  getStepsByGroup(){
-    if(this.newRecipy.isSplitIntoGroups && !!this.newRecipy.steps.length){
+  getStepsByGroup() {
+    if (this.newRecipy.isSplitIntoGroups && !!this.newRecipy.steps.length) {
       this.newRecipy.isSplitIntoGroups.forEach(group => {
         this.stepsByGroup[group] = this.newRecipy?.steps.filter(step => step.group == group)
-    });
-    }    
+      });
+    }
   }
 
   onaAddNewIngredient(event: Ingredient) {
@@ -87,7 +99,7 @@ export class AddRecipyComponent implements OnInit {
     }
     if ('group' in event && event.group) {
       ingr.group = event.group;
-      if(!this.newRecipy.isSplitIntoGroups.includes(ingr.group)){
+      if (!this.newRecipy.isSplitIntoGroups.includes(ingr.group)) {
         this.newRecipy.isSplitIntoGroups.push(event.group)
       }
     }
@@ -126,7 +138,7 @@ export class AddRecipyComponent implements OnInit {
     return ComplexityDescription[unit];
   }
 
-  
+
   get tags() {
     let tags: number[] = [];
     tags = Object.values(DishType).filter(
@@ -135,11 +147,11 @@ export class AddRecipyComponent implements OnInit {
     return tags;
   }
 
-  onPreviewRecipy(){
+  onPreviewRecipy() {
     this.previewRecipy.emit(this.newRecipy)
   }
 
-  onTagsSelectionChange(tags: DishType[]){
+  onTagsSelectionChange(tags: DishType[]) {
     this.newRecipy.type = tags
 
   }
