@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from 'src/app/auth/models/user.interface';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { Recipy } from '../../models/recipy.interface';
@@ -15,8 +16,9 @@ import { UserService } from './../../../auth/services/user.service';
 export class RecipyShortViewComponent implements OnInit {
   @Input()
   recipy!: Recipy;
+  @Input()
+  currentUser!: User;
   currentPath: string;
-  isUserLoaded: boolean = false;
   constructor(
     public dialog: MatDialog,
     private router: Router,
@@ -29,12 +31,9 @@ export class RecipyShortViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.userService.currentUser){
-      this.isUserLoaded = true;
-    }
   }
-  goFullRecipy(id: string | undefined) {
-    this.router.navigate(['full-recipy/', id], {
+  goFullRecipy() {
+    this.router.navigate(['full-recipy/', this.recipy.id], {
       relativeTo: this.route.parent,
     });
   }
@@ -52,15 +51,7 @@ export class RecipyShortViewComponent implements OnInit {
   }
 
   get isUserRecipy(){
-    return this.recipiesService.getIsUserRecipy(this.recipy)    
-  }
-
-  addToUserRecipies(){
-    this.recipiesService.addRecipyToUserRecipies(this.recipy.id)
-  }
-
-  removeFromUserRecipies(){
-    this.recipiesService.removeRecipyFromUserRecipies(this.recipy.id)
+    return this.recipy.author == this.currentUser.email   
   }
 
   get author(){

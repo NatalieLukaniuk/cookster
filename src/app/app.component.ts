@@ -4,12 +4,14 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Store } from '@ngrx/store';
 import { initializeApp } from 'firebase/app';
 
 import { AuthService } from './auth/services/auth.service';
 import { UserService } from './auth/services/user.service';
 import { RecipiesService } from './recipies/services/recipies.service';
 import { LayoutService } from './shared/services/layout.service';
+import { GetRecipiesAction } from './store/actions/recipies.actions';
 
 @UntilDestroy()
 @Component({
@@ -37,7 +39,8 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store
   ) {
     this.addIcons();
     const app = initializeApp(this.firebaseConfig);
@@ -48,7 +51,6 @@ export class AppComponent implements OnInit {
     this.recipiesService.productsUpdated$.subscribe(() =>
       this.recipiesService.getAllProducts()
     );
-    this.recipiesService.recipiesUpdated$.subscribe(() => this.recipiesService.getRecipies())
     this.breakpointObserver
       .observe(['(min-width: 600px)'])
       .subscribe((state: BreakpointState) => {
@@ -62,7 +64,6 @@ export class AppComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe((isLoggedIn) => {        
         if (isLoggedIn) {
-          this.recipiesService.getRecipies();
           this.recipiesService.getAllProducts();
           this.userService.getAllUsers();
           this.router.navigate([url]);
@@ -70,6 +71,7 @@ export class AppComponent implements OnInit {
           this.router.navigate(['login']);
         }
       });
+      this.store.dispatch(new GetRecipiesAction())
   }
 
   addIcons() {

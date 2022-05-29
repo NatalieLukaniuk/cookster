@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { NewRecipy, Recipy } from './../models/recipy.interface';
 
@@ -19,8 +20,8 @@ export class RecipiesApiService {
     return this.http.patch<Recipy>(`${this.url}/${id}.json`, data);
   }
 
-  getRecipies() {
-    return this.http.get(`${this.url}.json`);
+  getRecipies(): Observable<Recipy[]> {
+    return this.http.get<Recipy[]>(`${this.url}.json`);
   }
 
   getRecipyById(id: string) {

@@ -17,6 +17,8 @@ import { AddTagsComponent } from './components/add-recipy/add-tags/add-tags.comp
 import { RecipyPreviewComponent } from './components/recipy-preview/recipy-preview.component';
 import { EditRecipyComponent } from './containers/edit-recipy/edit-recipy.component';
 import { AddRecipyComponent } from './components/add-recipy/add-recipy.component';
+import { RecipiesReducers } from '../store/reducers/recipies.reducer';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   imports: [
@@ -25,6 +27,7 @@ import { AddRecipyComponent } from './components/add-recipy/add-recipy.component
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    StoreModule.forFeature('recipies', RecipiesReducers)
   ],
   declarations: [
     UserRecipiesComponent,

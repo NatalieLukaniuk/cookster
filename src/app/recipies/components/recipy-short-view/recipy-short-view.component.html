@@ -1,4 +1,4 @@
-<div class="recipy-wrapper" (click)="goFullRecipy(recipy.id)">
+<div class="recipy-wrapper" (click)="goFullRecipy()">
   <!-- <img class="recipy-photo" [src]="recipy.photo" /> -->
   <div class="recipy-info">
     <div class="recipy-upper-part">
@@ -25,22 +25,6 @@
   </div>
 </div>
 
-<button
-  mat-icon-button
-  class="tag-button"
-  *ngIf="!isUserRecipy && currentPath !== 'user-recipies'"
-  (click)="addToUserRecipies()"
->
-  <mat-icon svgIcon="tag"></mat-icon>
-</button>
-<button
-  mat-icon-button
-  class="tag-button"
-  *ngIf="currentPath === 'user-recipies'"
-  (click)="removeFromUserRecipies()"
->
-  <mat-icon svgIcon="delete"></mat-icon>
-</button>
 
 <div class="recipy-menu" style="display: none">
   <button

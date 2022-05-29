@@ -26,23 +26,9 @@ export class UserRecipiesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.recipies.userRecipiesUpdated$.subscribe(() => this.recipies.getRecipies())
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
-    this.recipies.allRecipies$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((allrecipies) => {
-        this.userRecipies = [];
-        this.userService.currentUser.recipies?.forEach(
-          (id: string) => {
-            for (let recipy of allrecipies) {
-              if (id === recipy.id) {
-                this.userRecipies.push(recipy);
-              }
-            }
-          }
-        );
-      });
+    
   }
 }

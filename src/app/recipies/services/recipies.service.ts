@@ -15,11 +15,8 @@ import { RecipiesApiService } from './recipies-api.service';
   providedIn: 'root',
 })
 export class RecipiesService {
-  allRecipies$ = new BehaviorSubject<Recipy[]>([]);
   products$ = new BehaviorSubject<Product[]>([]);
   productsUpdated$ = new Subject<any>();
-  userRecipiesUpdated$ = new Subject();
-  recipiesUpdated$ = new Subject();
 
   constructor(
     private recipiesApi: RecipiesApiService,
@@ -30,17 +27,16 @@ export class RecipiesService {
 
   addRecipy(recipy: NewRecipy){
     this.recipiesApi.addRecipy(recipy).subscribe((id: any) => {
-      this.addRecipyToUserRecipies(id.name);
-      this.recipiesUpdated$.next();
+
     });
   }
 
-  updateRecipy(recipy: Recipy){
-    this.recipiesApi.updateRecipy(recipy.id, recipy).pipe(take(1))
-    .subscribe(() => {
-      this.recipiesUpdated$.next();
-    });
-  }
+  // updateRecipy(recipy: Recipy){
+  //   this.recipiesApi.updateRecipy(recipy.id, recipy).pipe(take(1))
+  //   .subscribe(() => {
+  //     this.recipiesUpdated$.next();
+  //   });
+  // }
 
   getIngredientIdFromName(ingr: any): string{
     let productId = '';
@@ -112,23 +108,6 @@ export class RecipiesService {
     return grInOneItem;
   }
 
-  getRecipies() {
-    this.recipiesApi
-      .getRecipies()
-      .pipe(take(1))
-      .subscribe((res) => {
-        let array = Object.entries(res);
-        let recipies: any = [];
-        for (let entry of array) {
-          let recipy: any = {
-            id: entry[0],
-            ...entry[1],
-          };
-          recipies.push(recipy);
-        }
-        this.allRecipies$.next(recipies);
-      });
-  }
 
   getRecipyById(id: string) {
     return this.recipiesApi.getRecipyById(id);
@@ -236,35 +215,12 @@ export class RecipiesService {
     }
   }
 
-  addRecipyToUserRecipies(recipyId: string) {
-    let recipies = [];
-    if (this.userService.currentUser.recipies) {
-      recipies = this.userService.currentUser.recipies;
-    }
-    recipies.push(recipyId);
-    let updatedUserRecipies = { recipies: recipies };
-    this.userService
-      .updateUserDetailsFromMyDatabase(updatedUserRecipies)
-      .pipe(take(1))
-      .subscribe((res) => this.getRecipies());
-  }
-
-  removeRecipyFromUserRecipies(recipyId: string) {
-    let recipies = this.userService.currentUser.recipies;
-    let index = recipies.indexOf(recipyId);
-    recipies.splice(index, 1);
-    let updatedUserRecipies = { recipies: recipies };
-    this.userService
-      .updateUserDetailsFromMyDatabase(updatedUserRecipies)
-      .pipe(take(1))
-      .subscribe((res) => this.getRecipies());
-  }
 
   deleteRecipy(recipy: Recipy) {
     this.recipiesApi
       .deleteRecipy(recipy.id)
       .pipe(take(1))
-      .subscribe((res) => this.recipiesUpdated$.next());
+      .subscribe((res) => {});
   }
 
   getRecipyBelongsTo(recipy: Recipy) {
@@ -281,9 +237,4 @@ export class RecipiesService {
     } else return recipy.createdOn;
   }
 
-  getIsUserRecipy(recipy: Recipy){
-    if(this.userService.currentUser.recipies){
-      return this.userService.currentUser.recipies.includes(recipy.id)
-    } else return false
-  }
 }

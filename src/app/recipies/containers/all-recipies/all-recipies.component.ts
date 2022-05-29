@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { User } from 'src/app/auth/models/user.interface';
 import { LayoutService } from 'src/app/shared/services/layout.service';
+import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
+import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import { Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
@@ -13,21 +17,32 @@ import { RecipiesService } from '../../services/recipies.service';
 })
 export class AllRecipiesComponent implements OnInit {
 
-  allRecipies: Recipy[] = [];
+  allRecipies: Recipy[] | undefined;
   isMobile: boolean = false;
+  currentUser: User | undefined;
   destroy$ = new Subject();
   constructor(
     private recipies: RecipiesService,
-    private layoutService: LayoutService
-  ) {}
+    private layoutService: LayoutService,
+    private store: Store
+  ) {
+    this.store.pipe(select(getAllRecipies)).subscribe((res: Recipy[]) => {
+      if(!!res){        
+        this.allRecipies = res;
+        console.log(this.allRecipies)
+      }
+    });
+    this.store.pipe(select(getCurrentUser)).subscribe((res: any) => {
+      if (!!res){
+        this.currentUser = res;
+      }
+    })
+  }
   ngOnDestroy(): void {
     this.destroy$.next()
   }
 
   ngOnInit() {
-    this.recipies.allRecipies$.subscribe(recipies => {
-      this.allRecipies = recipies;
-    })
     this.layoutService.isMobile$.pipe(takeUntil(this.destroy$)).subscribe(bool => this.isMobile = bool)
   }
 

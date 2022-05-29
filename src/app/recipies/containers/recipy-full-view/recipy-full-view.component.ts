@@ -66,7 +66,6 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getRecipy(this.recipyId);
-    this.recipiesService.recipiesUpdated$.pipe(takeUntil(this.destroy$)).subscribe(() => { this.getRecipy(this.recipyId) })
   }
 
   getRecipy(recipyId: string) {
