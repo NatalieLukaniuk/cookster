@@ -103,7 +103,7 @@
                 </mat-step>
                 <mat-step [completed]="newRecipy.steps.length > 0" #additional>
                     <ng-template matStepLabel><span
-                            [class.has-errors]="!newRecipy.steps.length && steps.interacted">Приготування</span>
+                            [class.has-errors]="!newRecipy.steps.length && steps.interacted">Додаткова інформація</span>
                     </ng-template>
                     <label id="complexity">Виберіть складність</label>
                     <mat-radio-group aria-labelledby="complexity" class="complexity-radio-group cookster-radio-group"
