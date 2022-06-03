@@ -11,22 +11,42 @@
     }
 }
 
-.action-buttons-wrapper{
+.action-buttons-wrapper {
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
 }
 
-.complexity-radio-group{
+.complexity-radio-group {
     margin-left: 20px;
 }
 
-.recipy-constructor-wrapper{
+.recipy-constructor-wrapper {
     display: flex;
-    .preview{
+    .preview {
         flex: 2 0 60%;
     }
-    .recipy-constructor{
+    .recipy-constructor {
         flex: 1 1 30%;
+        max-width: 100vw;
+    }
+}
+
+@media (max-width: 600px) {
+    .recipy-constructor {
+        padding: 0 10px 0 0;
+    }
+
+    ::ng-deep.mat-checkbox-label {
+        white-space: normal;
+    }
+
+    ::ng-deep.cookster-radio-group {
+        flex-wrap: wrap;
+        justify-content: flex-start !important;
+        .mat-radio-button {
+            margin: 5px;
+            padding: 12px 30px 12px 20px !important;
+        }
     }
 }

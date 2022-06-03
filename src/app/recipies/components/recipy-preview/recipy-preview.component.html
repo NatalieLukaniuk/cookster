@@ -83,6 +83,7 @@
           </div>
         </div>
       </div>
+      <button mat-flat-button class="action-button" *ngIf="mode == RecipyMode.AddPreview" (click)="onAddRecipy()">Add recipy</button>
     </div>
   </ng-container>
   <ng-container *ngIf="isMobile && recipy">

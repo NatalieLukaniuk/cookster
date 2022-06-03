@@ -8,6 +8,10 @@ import { GetUkrIngredientsGroup } from '../../models/ingredient.interface';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { NewRecipy, Recipy } from '../../models/recipy.interface';
 import { IngredientsByGroup, ingredientsByGroup, StepsByGroup, stepsByGroup } from '../../containers/recipy-full-view/recipy-full-view.component';
+import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
+import { Store } from '@ngrx/store';
+import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
+
 
 @Component({
   selector: 'app-recipy-preview',
@@ -17,6 +21,8 @@ import { IngredientsByGroup, ingredientsByGroup, StepsByGroup, stepsByGroup } fr
 export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() recipy!: NewRecipy;
+  @Input() mode: RecipyMode = RecipyMode.ViewRecipy;
+  RecipyMode = RecipyMode;
 
   isMobile: boolean = false;
   destroy$ = new Subject();
@@ -33,7 +39,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   AVERAGE_PORTION: number = 250;
 
 
-  constructor(private layoutService: LayoutService,) { }
+  constructor(private layoutService: LayoutService, private store: Store) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
       this.portionsToServe = this.savedPortionsServed;
@@ -172,5 +178,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   editRecipy() {
 
+  }
+  onAddRecipy(){
+    this.store.dispatch(new fromRecipiesActions.AddNewRecipyAction(this.recipy))
   }
 }

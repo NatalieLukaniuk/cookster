@@ -5,6 +5,18 @@ export enum UiActionTypes {
     SET_IS_LOADING_FALSE = '[UI] Loading Completed',
     SHOW_SUCCESS_MESSAGE = '[UI] Show Success Message',
     DISMISS_SUCCESS_MESSAGE = '[UI] Dismiss Success Message',
+    SET_ERROR = '[DATA] Error',
+    RESET_ERROR = '[DATA] Reset Error',
+}
+
+export class ErrorAction implements Action {
+    readonly type = UiActionTypes.SET_ERROR;
+    constructor(public details: any) { }
+}
+
+export class ResetErrorAction implements Action {
+    readonly type = UiActionTypes.RESET_ERROR;
+    constructor() { }
 }
 
 export class SetIsLoadingAction implements Action {
@@ -27,4 +39,7 @@ export class DismissSuccessMessageAction implements Action {
     constructor() { }
 }
 
-export type UiActions = SetIsLoadingAction | SetIsLoadingFalseAction | ShowSuccessMessageAction | DismissSuccessMessageAction;
+
+
+
+export type UiActions = SetIsLoadingAction | SetIsLoadingFalseAction | ShowSuccessMessageAction | DismissSuccessMessageAction | ErrorAction | ResetErrorAction;

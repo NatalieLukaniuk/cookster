@@ -1,5 +1,4 @@
 import {
-  ActionReducer,
   ActionReducerMap,
 } from '@ngrx/store';
 import { InitialUiState, UiReducers, UiState } from './ui.reducer';

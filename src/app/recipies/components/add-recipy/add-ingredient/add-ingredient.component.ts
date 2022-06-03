@@ -104,4 +104,22 @@ export class AddIngredientComponent implements OnInit, OnChanges {
   resetForm(){
     this.ingredientsForm.reset()
   }
+
+  // get measurementUnits() {
+  //   let optionsArray: MeasuringUnit[] = [];
+  //   switch (this.productType) {
+  //     case ProductType.fluid:
+  //       optionsArray = MeasuringUnitOptionsFluid;
+  //       break;
+  //     case ProductType.hardItem:
+  //       optionsArray = MeasuringUnitOptionsHardItems;
+  //       break;
+  //     case ProductType.herb:
+  //       optionsArray = MeasuringUnitOptionsHerbs;
+  //       break;
+  //     case ProductType.spice:
+  //       optionsArray = MeasuringUnitOptionsSpice;
+  //   }
+  //   return optionsArray;
+  // }
 }

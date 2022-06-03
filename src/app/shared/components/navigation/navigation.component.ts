@@ -46,6 +46,8 @@ export class NavigationComponent implements OnDestroy {
   }
 
   onAddRecipy(){
-  this.router.navigate(['recipies', 'edit-recipy'], { relativeTo: this.route })
+    if(!this.isMobile){
+      this.router.navigate(['recipies', 'edit-recipy'], { relativeTo: this.route })
+    } else {this.router.navigate(['cookster','recipies', 'edit-recipy'], { relativeTo: this.route })}
    }
 }

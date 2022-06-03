@@ -25,6 +25,7 @@ import { SearchComponent } from './components/search/search.component';
 import { HeaderComponent } from './containers/header/header.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import {MatRadioModule} from '@angular/material/radio';
     MatButtonToggleModule,
     MatStepperModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSnackBarModule
   ],
   declarations: [
     HeaderComponent,
@@ -82,7 +84,8 @@ import {MatRadioModule} from '@angular/material/radio';
     MatButtonToggleModule,
     MatStepperModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSnackBarModule
   ],
   providers: []
 })

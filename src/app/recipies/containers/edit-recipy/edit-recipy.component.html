@@ -2,6 +2,6 @@
     <app-add-recipy (previewRecipy)="previewNewRecipy($event)"></app-add-recipy>
 </ng-container>
 
-<ng-container *ngIf="mode == RecipyMode.EditRecipy && recipy">
-    <app-recipy-preview [recipy]="recipy"></app-recipy-preview>
+<ng-container *ngIf="mode == RecipyMode.AddPreview && recipy">
+    <app-recipy-preview [recipy]="recipy" [mode]="mode"></app-recipy-preview>
 </ng-container>

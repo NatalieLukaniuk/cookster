@@ -3,8 +3,10 @@ import { NewRecipy, Recipy } from '../../models/recipy.interface';
 
 export enum RecipyMode {
   AddRecipy,
+  AddPreview,
   EditRecipy,
   CloneRecipy,
+  ViewRecipy
 }
 
 @Component({
@@ -26,7 +28,7 @@ export class EditRecipyComponent implements OnInit {
   }
 
   previewNewRecipy(event: NewRecipy) {
-    this.mode = RecipyMode.EditRecipy;
+    this.mode = RecipyMode.AddPreview;
     if (event) {
       this.recipy = event;
     }

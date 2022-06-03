@@ -12,8 +12,8 @@ export class RecipiesApiService {
 
   constructor(private http: HttpClient) {}
 
-  addRecipy(recipy: NewRecipy) {
-    return this.http.post(`${this.url}.json`, recipy);
+  addRecipy(recipy: NewRecipy): Observable<{name: string}> {
+    return this.http.post<{name: string}>(`${this.url}.json`, recipy);
   }
 
   updateRecipy(id: string, data: any){

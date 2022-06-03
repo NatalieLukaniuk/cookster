@@ -1,10 +1,11 @@
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { initializeApp } from 'firebase/app';
 
 import { AuthService } from './auth/services/auth.service';
@@ -12,6 +13,9 @@ import { UserService } from './auth/services/user.service';
 import { RecipiesService } from './recipies/services/recipies.service';
 import { LayoutService } from './shared/services/layout.service';
 import { GetRecipiesAction } from './store/actions/recipies.actions';
+import * as UiActions from './store/actions/ui.actions';
+import { IAppState } from './store/reducers';
+import { getIsError, getIsSuccessMessage } from './store/selectors/ui.selectors';
 
 @UntilDestroy()
 @Component({
@@ -40,13 +44,14 @@ export class AppComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private route: ActivatedRoute,
-    private store: Store
+    private store: Store<IAppState>,
+    private _snackBar: MatSnackBar
   ) {
     this.addIcons();
     const app = initializeApp(this.firebaseConfig);
   }
   ngOnInit(): void {
-    const url = window.location.pathname;    
+    const url = window.location.pathname;
     this.authService.checkIsLoggedIn();
     this.recipiesService.productsUpdated$.subscribe(() =>
       this.recipiesService.getAllProducts()
@@ -62,7 +67,7 @@ export class AppComponent implements OnInit {
       });
     this.authService.isLoggedIn
       .pipe(untilDestroyed(this))
-      .subscribe((isLoggedIn) => {        
+      .subscribe((isLoggedIn) => {
         if (isLoggedIn) {
           this.recipiesService.getAllProducts();
           this.userService.getAllUsers();
@@ -71,7 +76,26 @@ export class AppComponent implements OnInit {
           this.router.navigate(['login']);
         }
       });
-      this.store.dispatch(new GetRecipiesAction())
+    this.store.dispatch(new GetRecipiesAction())
+
+    this.store.pipe(select(getIsError)).subscribe(error => {
+      if(!!error){
+        this._snackBar.open(error, 'Ok', {
+        duration: 3000
+      });
+      this.store.dispatch(new UiActions.ResetErrorAction())
+      }      
+
+    })
+    this.store.pipe(select(getIsSuccessMessage)).subscribe(message => {
+      if (message) {
+        this._snackBar.open(message, 'Ok', {
+          duration: 3000
+        });
+        this.store.dispatch(new UiActions.DismissSuccessMessageAction())
+      }
+
+    })
   }
 
   addIcons() {
