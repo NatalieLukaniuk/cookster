@@ -1,6 +1,11 @@
-<app-header></app-header>
-<section>
-    <router-outlet></router-outlet>
-</section>
-
-
+<mat-drawer-container class="example-container" [hasBackdrop]="true">
+    <mat-drawer #drawer [mode]="'over'">
+        <app-filters></app-filters>
+    </mat-drawer>
+    <mat-drawer-content>
+        <app-header></app-header>
+        <section>
+            <router-outlet></router-outlet>
+        </section>
+    </mat-drawer-content>
+</mat-drawer-container>

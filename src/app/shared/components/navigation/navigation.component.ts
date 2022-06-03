@@ -1,12 +1,16 @@
 import { Component, OnDestroy } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
+import { FiltersComponent } from 'src/app/filters/components/filters/filters.component';
 
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
 import { LayoutService } from '../../services/layout.service';
+import * as UiActions from '../../../store/actions/ui.actions'
 
 
 @Component({
@@ -35,7 +39,8 @@ export class NavigationComponent implements OnDestroy {
     private recipiesService: RecipiesService,
     private layoutService: LayoutService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store
   ) {
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
@@ -49,5 +54,9 @@ export class NavigationComponent implements OnDestroy {
     if(!this.isMobile){
       this.router.navigate(['recipies', 'edit-recipy'], { relativeTo: this.route })
     } else {this.router.navigate(['cookster','recipies', 'edit-recipy'], { relativeTo: this.route })}
+   }
+
+   onOpenFilters(){
+     this.store.dispatch(new UiActions.SetIsSidebarOpenAction(true))
    }
 }

@@ -1,6 +1,7 @@
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
+import { MatDrawer } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,7 +16,7 @@ import { LayoutService } from './shared/services/layout.service';
 import { GetRecipiesAction } from './store/actions/recipies.actions';
 import * as UiActions from './store/actions/ui.actions';
 import { IAppState } from './store/reducers';
-import { getIsError, getIsSuccessMessage } from './store/selectors/ui.selectors';
+import { getIsError, getIsSidebarOpen, getIsSuccessMessage } from './store/selectors/ui.selectors';
 
 @UntilDestroy()
 @Component({
@@ -23,7 +24,7 @@ import { getIsError, getIsSuccessMessage } from './store/selectors/ui.selectors'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   firebaseConfig = {
     apiKey: 'AIzaSyAYe2tCdCuYoEPi0grZ1PkHTHgScw19LpA',
     authDomain: 'cookster-12ac8.firebaseapp.com',
@@ -33,6 +34,9 @@ export class AppComponent implements OnInit {
     messagingSenderId: '755799855022',
     appId: '1:755799855022:web:506cb5221a72eff4cf023f',
   };
+
+  @ViewChild('drawer')
+  sidebar!: MatDrawer;
 
   constructor(
     private iconRegistry: MatIconRegistry,
@@ -49,6 +53,19 @@ export class AppComponent implements OnInit {
   ) {
     this.addIcons();
     const app = initializeApp(this.firebaseConfig);
+  }
+  ngAfterViewInit(): void {
+    this.sidebar.openedChange.subscribe(isOpen => {
+      if (!isOpen) {
+        this.store.dispatch(new UiActions.SetIsSidebarOpenAction(false))
+      }
+    })
+    this.store.pipe(select(getIsSidebarOpen)).subscribe(isOpen => {
+      if (isOpen) {
+        this.sidebar.open()
+      }
+
+    })
   }
   ngOnInit(): void {
     const url = window.location.pathname;
@@ -79,12 +96,12 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new GetRecipiesAction())
 
     this.store.pipe(select(getIsError)).subscribe(error => {
-      if(!!error){
+      if (!!error) {
         this._snackBar.open(error, 'Ok', {
-        duration: 3000
-      });
-      this.store.dispatch(new UiActions.ResetErrorAction())
-      }      
+          duration: 3000
+        });
+        this.store.dispatch(new UiActions.ResetErrorAction())
+      }
 
     })
     this.store.pipe(select(getIsSuccessMessage)).subscribe(message => {

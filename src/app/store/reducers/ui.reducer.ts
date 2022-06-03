@@ -5,12 +5,14 @@ export interface UiState {
     isLoading: boolean;
     successMessage: string | null;
     error: any | null;
+    isSidebarOpen: boolean;
 }
 
 export const InitialUiState: UiState = {
     isLoading: false,
     successMessage: null,
-    error: null
+    error: null,
+    isSidebarOpen: false
 }
 
 export function UiReducers(state: UiState = InitialUiState, action: UiActions): UiState {
@@ -52,6 +54,13 @@ export function UiReducers(state: UiState = InitialUiState, action: UiActions): 
             return {
                 ...state,
                 error: null
+            }
+        }
+
+        case UiActionTypes.SET_IS_SIDEBAR_OPEN: {
+            return {
+                ...state,
+                isSidebarOpen: action.isSidebarOpen
             }
         }
         default: return { ...state }

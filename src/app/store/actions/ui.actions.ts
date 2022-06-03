@@ -7,8 +7,13 @@ export enum UiActionTypes {
     DISMISS_SUCCESS_MESSAGE = '[UI] Dismiss Success Message',
     SET_ERROR = '[DATA] Error',
     RESET_ERROR = '[DATA] Reset Error',
+    SET_IS_SIDEBAR_OPEN = '[UI] Toggle Sidebar',
 }
 
+export class SetIsSidebarOpenAction implements Action {
+    readonly type = UiActionTypes.SET_IS_SIDEBAR_OPEN;
+    constructor(public isSidebarOpen: boolean){}
+}
 export class ErrorAction implements Action {
     readonly type = UiActionTypes.SET_ERROR;
     constructor(public details: any) { }
@@ -42,4 +47,4 @@ export class DismissSuccessMessageAction implements Action {
 
 
 
-export type UiActions = SetIsLoadingAction | SetIsLoadingFalseAction | ShowSuccessMessageAction | DismissSuccessMessageAction | ErrorAction | ResetErrorAction;
+export type UiActions = SetIsLoadingAction | SetIsLoadingFalseAction | ShowSuccessMessageAction | DismissSuccessMessageAction | ErrorAction | ResetErrorAction |SetIsSidebarOpenAction;
