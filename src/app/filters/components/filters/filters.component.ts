@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { Product } from 'src/app/recipies/models/products.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
+import * as FiltersActions from '../../../store/actions/filters.actions';
 
 @Component({
   selector: 'app-filters',
@@ -28,10 +29,10 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   onIngredientsToIncludeChange(event: any) {
-    console.log(event.option.value)
+    this.store.dispatch(new FiltersActions.ToggleIngredientToIncludeAction(event.option.value))
   }
   onIngredientsToExcludeChange(event: any) {
-    console.log(event.option.value)
+    this.store.dispatch(new FiltersActions.ToggleIngredientToExcludeAction(event.option.value))
   }
 
 }

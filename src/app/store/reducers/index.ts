@@ -1,16 +1,20 @@
 import {
   ActionReducerMap,
 } from '@ngrx/store';
+import { FiltersReducers, FiltersState, InitialFiltersState } from './filters.reducers';
 import { InitialUiState, UiReducers, UiState } from './ui.reducer';
 
 export interface IAppState {
-  ui: UiState
+  ui: UiState,
+  filters: FiltersState
 }
 
 export const InitialAppState: IAppState = {
-  ui: InitialUiState
+  ui: InitialUiState,
+  filters: InitialFiltersState
 }
 
 export const reducers: ActionReducerMap<IAppState, any> = {
-  ui: UiReducers
+  ui: UiReducers,
+  filters: FiltersReducers
 };
