@@ -7,3 +7,11 @@
     padding: 0 0 0 15px !important;
     min-width: 65vw;
 }
+
+::ng-deep.mat-slider{
+    width: 90%;
+    .mat-slider-thumb-label{
+        width: 40px;
+        height: 40px;
+    }
+}

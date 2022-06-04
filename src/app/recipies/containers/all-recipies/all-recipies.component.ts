@@ -55,6 +55,16 @@ export class AllRecipiesComponent implements OnInit {
           return recipy.type.find(tag => filters.tags.includes(tag))
         })
       }
+      if(!!filters.maxPrepTime){
+        const maxTime = filters.maxPrepTime
+        _recipies = _recipies.filter(recipy => {
+          let prepTime = 0;
+          recipy.steps.forEach(step => {
+            prepTime = prepTime + (step.timeActive + step.timePassive)
+          })
+          return prepTime <= maxTime
+        })
+      }
       this.allRecipies = _recipies
     })
   }

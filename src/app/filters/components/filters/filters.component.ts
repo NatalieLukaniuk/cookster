@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSelectionListChange } from '@angular/material/list';
+import { MatSliderChange } from '@angular/material/slider';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { DishType } from 'src/app/recipies/models/dishType.enum';
@@ -40,15 +42,28 @@ export class FiltersComponent implements OnInit, OnDestroy {
     return DishType[tag];
   }
 
-  onIngredientsToIncludeChange(event: any) {
+  onIngredientsToIncludeChange(event: MatSelectionListChange) {
     this.store.dispatch(new FiltersActions.ToggleIngredientToIncludeAction(event.option.value))
   }
-  onIngredientsToExcludeChange(event: any) {
+  onIngredientsToExcludeChange(event: MatSelectionListChange) {
     this.store.dispatch(new FiltersActions.ToggleIngredientToExcludeAction(event.option.value))
   }
 
-  onTagsChange(event: any){
+  onTagsChange(event: MatSelectionListChange) {
+    console.log(event)
     this.store.dispatch(new FiltersActions.ToggleTagAction(event.option.value))
+  }
+
+  formatPrepTimeSliderLabel(value: number) {
+    if (value >= 60) {
+      return (value / 60).toFixed(1) + 'год';
+    } else return value + "хв";
+  }
+
+  onPrepTimeChange(event: MatSliderChange) {
+    if (!!event.value) {
+      this.store.dispatch(new FiltersActions.SetMaxPrepTimeAction(event.value))
+    }
   }
 
 }

@@ -2,51 +2,54 @@
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Ingredients to include
+                Пошук за інгридієнтами
             </mat-panel-title>
             <!-- <mat-panel-description>
           This is a summary of the content
         </mat-panel-description> -->
         </mat-expansion-panel-header>
-        <mat-selection-list *ngIf="!!products" class="filters-list" color="primary" (selectionChange)="onIngredientsToIncludeChange($event)">
-            <mat-list-option  *ngFor="let product of products" [value]="product.id">{{product.name}}</mat-list-option>
-          </mat-selection-list>
+        <mat-selection-list *ngIf="!!products" class="filters-list" color="primary"
+            (selectionChange)="onIngredientsToIncludeChange($event)">
+            <mat-list-option *ngFor="let product of products" [value]="product.id">{{product.name}}</mat-list-option>
+        </mat-selection-list>
     </mat-expansion-panel>
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Ingredients to exclude
+                Не показувати страви з інгридієнтами...
             </mat-panel-title>
             <!-- <mat-panel-description>
             This is a summary of the content
           </mat-panel-description> -->
         </mat-expansion-panel-header>
-        <mat-selection-list *ngIf="!!products" class="filters-list" color="primary" (selectionChange)="onIngredientsToExcludeChange($event)">
-            <mat-list-option  *ngFor="let product of products" [value]="product.id">{{product.name}}</mat-list-option>
-          </mat-selection-list>
+        <mat-selection-list *ngIf="!!products" class="filters-list" color="primary"
+            (selectionChange)="onIngredientsToExcludeChange($event)">
+            <mat-list-option *ngFor="let product of products" [value]="product.id">{{product.name}}</mat-list-option>
+        </mat-selection-list>
     </mat-expansion-panel>
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
             <mat-panel-title>
-               Filter by tags
+                Типи страв
             </mat-panel-title>
             <!-- <mat-panel-description>
             This is a summary of the content
           </mat-panel-description> -->
         </mat-expansion-panel-header>
         <mat-selection-list class="filters-list" color="primary" (selectionChange)="onTagsChange($event)">
-            <mat-list-option  *ngFor="let tag of tags" [value]="tag">{{getTagsText(tag)}}</mat-list-option>
-          </mat-selection-list>
+            <mat-list-option *ngFor="let tag of tags" [value]="tag">{{getTagsText(tag)}}</mat-list-option>
+        </mat-selection-list>
     </mat-expansion-panel>
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
             <mat-panel-title>
-               Filter by time
+                Максимальний час приготування
             </mat-panel-title>
             <!-- <mat-panel-description>
             This is a summary of the content
           </mat-panel-description> -->
         </mat-expansion-panel-header>
-        <p>filter content will be here</p>
+        <mat-slider thumbLabel [displayWith]="formatPrepTimeSliderLabel" min="0" max="600"
+            aria-label="units" (change)="onPrepTimeChange($event)"></mat-slider>
     </mat-expansion-panel>
 </mat-accordion>

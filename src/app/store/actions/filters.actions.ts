@@ -3,7 +3,8 @@ import { Action } from "@ngrx/store";
 export enum FiltersActionTypes {
     TOGGLE_INGREDIENT_TO_INCLUDE = '[FILTERS] Toggle Ingredient To Include',
     TOGGLE_INGREDIENT_TO_EXLUDE = '[FILTERS] Toggle Ingredient To Exclude',
-    TOGGLE_TAG = '[FILTERS] Toggle Tag'
+    TOGGLE_TAG = '[FILTERS] Toggle Tag',
+    SET_MAX_PREP_TIME = '[FILTERS] Set Max Prep Time'
 }
 
 export class ToggleIngredientToIncludeAction implements Action {
@@ -21,4 +22,9 @@ export class ToggleTagAction implements Action {
     constructor(public tagNumber: number){}
 }
 
-export type FiltersActions = ToggleIngredientToIncludeAction | ToggleIngredientToExcludeAction | ToggleTagAction;
+export class SetMaxPrepTimeAction implements Action {
+    readonly type = FiltersActionTypes.SET_MAX_PREP_TIME;
+    constructor(public maxTime: number){}
+}
+
+export type FiltersActions = ToggleIngredientToIncludeAction | ToggleIngredientToExcludeAction | ToggleTagAction | SetMaxPrepTimeAction;

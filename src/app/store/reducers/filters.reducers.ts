@@ -3,13 +3,15 @@ import { FiltersActions, FiltersActionTypes } from "../actions/filters.actions";
 export interface FiltersState {
     ingredientsToInclude: string[],
     ingredientsToExclude: string[],
-    tags: number[]
+    tags: number[],
+    maxPrepTime: number
 }
 
 export const InitialFiltersState: FiltersState = {
     ingredientsToInclude: [],
     ingredientsToExclude: [],
-    tags: []
+    tags: [],
+    maxPrepTime: 0
 }
 
 export function FiltersReducers(state: FiltersState = InitialFiltersState, action: FiltersActions): FiltersState {
@@ -32,6 +34,13 @@ export function FiltersReducers(state: FiltersState = InitialFiltersState, actio
             return {
                 ...state,
                 tags: processToggleTag(state.tags, action.tagNumber)
+            }
+        }
+
+        case FiltersActionTypes.SET_MAX_PREP_TIME: {
+            return {
+                ...state,
+                maxPrepTime: action.maxTime
             }
         }
         default: return {...state}

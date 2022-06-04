@@ -27,6 +27,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSliderModule} from '@angular/material/slider';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatCheckboxModule,
     MatRadioModule,
     MatSnackBarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSliderModule
   ],
   declarations: [
     HeaderComponent,
@@ -88,7 +90,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatCheckboxModule,
     MatRadioModule,
     MatSnackBarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSliderModule
   ],
   providers: []
 })
