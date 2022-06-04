@@ -17,7 +17,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   constructor(private recipiesService: RecipiesService, private store: Store) { }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.recipiesService.products$.subscribe((products: Product[]) => {
       this.products = products;
     })
@@ -25,6 +25,13 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroyed$.complete()
+  }
+
+  onIngredientsToIncludeChange(event: any) {
+    console.log(event.option.value)
+  }
+  onIngredientsToExcludeChange(event: any) {
+    console.log(event.option.value)
   }
 
 }

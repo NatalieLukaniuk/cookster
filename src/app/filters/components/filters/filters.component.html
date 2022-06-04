@@ -8,12 +8,9 @@
           This is a summary of the content
         </mat-panel-description> -->
         </mat-expansion-panel-header>
-
-        <ul *ngIf="!!products" class="filters-list">
-            <li *ngFor="let product of products">
-                <mat-checkbox>{{product.name}}</mat-checkbox>
-            </li>
-        </ul>
+        <mat-selection-list *ngIf="!!products" class="filters-list" color="primary" (selectionChange)="onIngredientsToIncludeChange($event)">
+            <mat-list-option  *ngFor="let product of products" [value]="product.id">{{product.name}}</mat-list-option>
+          </mat-selection-list>
     </mat-expansion-panel>
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
@@ -24,11 +21,9 @@
             This is a summary of the content
           </mat-panel-description> -->
         </mat-expansion-panel-header>
-        <ul *ngIf="!!products" class="filters-list">
-            <li *ngFor="let product of products">
-                <mat-checkbox>{{product.name}}</mat-checkbox>
-            </li>
-        </ul>
+        <mat-selection-list *ngIf="!!products" class="filters-list" color="primary" (selectionChange)="onIngredientsToExcludeChange($event)">
+            <mat-list-option  *ngFor="let product of products" [value]="product.id">{{product.name}}</mat-list-option>
+          </mat-selection-list>
     </mat-expansion-panel>
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>

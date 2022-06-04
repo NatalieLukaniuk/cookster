@@ -1,11 +1,6 @@
 .filters-list{
-    padding: 0;
-    list-style-type: none;
-    max-height: 55vh;
+    max-height: 65vh;
     overflow-y: auto;
-    li{
-        margin-bottom: 15px;
-    }
 }
 
 ::ng-deep.mat-expansion-panel-body{
