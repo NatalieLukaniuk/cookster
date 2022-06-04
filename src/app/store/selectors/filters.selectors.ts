@@ -7,6 +7,7 @@ const getFiltersState = (state: IAppState) => state.filters;
 export const getFilters = createSelector(getFiltersState, (state: FiltersState) => {
     return {
         ingredientsToInclude: state.ingredientsToInclude,
-        ingredientsToExclude: state.ingredientsToExclude
+        ingredientsToExclude: state.ingredientsToExclude,
+        tags: state.tags
     }
 })

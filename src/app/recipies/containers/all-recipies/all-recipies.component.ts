@@ -50,6 +50,11 @@ export class AllRecipiesComponent implements OnInit {
           return !recipy.ingrediends.find(ingr => filters.ingredientsToExclude.includes(ingr.product))
         })
       }
+      if(!!filters.tags.length){
+        _recipies = _recipies.filter(recipy => {
+          return recipy.type.find(tag => filters.tags.includes(tag))
+        })
+      }
       this.allRecipies = _recipies
     })
   }

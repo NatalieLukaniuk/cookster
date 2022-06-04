@@ -34,7 +34,9 @@
             This is a summary of the content
           </mat-panel-description> -->
         </mat-expansion-panel-header>
-        <p>filter content will be here</p>
+        <mat-selection-list class="filters-list" color="primary" (selectionChange)="onTagsChange($event)">
+            <mat-list-option  *ngFor="let tag of tags" [value]="tag">{{getTagsText(tag)}}</mat-list-option>
+          </mat-selection-list>
     </mat-expansion-panel>
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
