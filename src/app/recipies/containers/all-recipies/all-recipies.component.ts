@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
+import { combineLatest, forkJoin, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { LayoutService } from 'src/app/shared/services/layout.service';
+import { IAppState } from 'src/app/store/reducers';
+import { getFilters } from 'src/app/store/selectors/filters.selectors';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
@@ -24,18 +26,31 @@ export class AllRecipiesComponent implements OnInit {
   constructor(
     private recipies: RecipiesService,
     private layoutService: LayoutService,
-    private store: Store
+    private store: Store<IAppState>
   ) {
-    this.store.pipe(select(getAllRecipies)).subscribe((res: Recipy[]) => {
-      if(!!res){        
-        this.allRecipies = res;
-        console.log(this.allRecipies)
-      }
-    });
     this.store.pipe(select(getCurrentUser)).subscribe((res: any) => {
-      if (!!res){
+      if (!!res) {
         this.currentUser = res;
       }
+    })
+    let recipies$ = this.store.pipe(select(getAllRecipies))
+    let filters$ = this.store.pipe(select(getFilters))
+    combineLatest([recipies$, filters$]).subscribe(res => {
+      let [recipies, filters] = res;
+      let _recipies = recipies.map(recipy => recipy)
+      if (!!filters.ingredientsToInclude.length) {
+        _recipies = _recipies.filter(recipy => {
+          let recipyIngredientsIds = recipy.ingrediends.map(ingr => ingr.product)
+          return filters.ingredientsToInclude.every(id => recipyIngredientsIds.includes(id))
+        })
+      }
+      if (!!filters.ingredientsToExclude.length) {
+        _recipies = _recipies.filter(recipy => {
+          let recipyIngredientsIds = recipy.ingrediends.map(ingr => ingr.product)
+          return !recipy.ingrediends.find(ingr => filters.ingredientsToExclude.includes(ingr.product))
+        })
+      }
+      this.allRecipies = _recipies
     })
   }
   ngOnDestroy(): void {
