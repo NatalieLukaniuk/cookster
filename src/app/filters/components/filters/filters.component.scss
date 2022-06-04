@@ -1,0 +1,14 @@
+.filters-list{
+    padding: 0;
+    list-style-type: none;
+    max-height: 55vh;
+    overflow-y: auto;
+    li{
+        margin-bottom: 15px;
+    }
+}
+
+::ng-deep.mat-expansion-panel-body{
+    padding: 0 0 0 15px !important;
+    min-width: 65vw;
+}
