@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatSelectionListChange } from '@angular/material/list';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { MatSliderChange } from '@angular/material/slider';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -7,6 +7,7 @@ import { DishType } from 'src/app/recipies/models/dishType.enum';
 import { Product } from 'src/app/recipies/models/products.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import * as FiltersActions from '../../../store/actions/filters.actions';
+import * as UiActions from '../../../store/actions/ui.actions'
 
 @Component({
   selector: 'app-filters',
@@ -66,4 +67,17 @@ export class FiltersComponent implements OnInit, OnDestroy {
     }
   }
 
+  @ViewChild('ingrediendsFilter') ingrediendsFilter!: MatSelectionList;
+  @ViewChild('tagsFilter') tagsFilter!: MatSelectionList;
+  @ViewChild('ingrediendsFilter2') ingrediendsFilter2!: MatSelectionList;
+  clearFilters(){
+    this.ingrediendsFilter.deselectAll();
+    this.tagsFilter.deselectAll()
+    this.ingrediendsFilter2.deselectAll()
+    this.store.dispatch(new FiltersActions.ResetFiltersAction())
+  }
+
+  closeSidebar(){
+    this.store.dispatch(new UiActions.SetIsSidebarOpenAction(false))
+  }
 }

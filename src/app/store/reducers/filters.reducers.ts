@@ -43,6 +43,16 @@ export function FiltersReducers(state: FiltersState = InitialFiltersState, actio
                 maxPrepTime: action.maxTime
             }
         }
+
+        case FiltersActionTypes.RESET_FILTERS: {
+            return {
+                ...state,
+                maxPrepTime: 0,
+                ingredientsToExclude: [],
+                ingredientsToInclude: [],
+                tags: []
+            }
+        }
         default: return {...state}
     }
 }

@@ -4,9 +4,14 @@ export enum FiltersActionTypes {
     TOGGLE_INGREDIENT_TO_INCLUDE = '[FILTERS] Toggle Ingredient To Include',
     TOGGLE_INGREDIENT_TO_EXLUDE = '[FILTERS] Toggle Ingredient To Exclude',
     TOGGLE_TAG = '[FILTERS] Toggle Tag',
-    SET_MAX_PREP_TIME = '[FILTERS] Set Max Prep Time'
+    SET_MAX_PREP_TIME = '[FILTERS] Set Max Prep Time',
+    RESET_FILTERS = '[FILTERS] Reset Filters',
 }
 
+export class ResetFiltersAction implements Action{
+    readonly type = FiltersActionTypes.RESET_FILTERS;
+    constructor(){}
+}
 export class ToggleIngredientToIncludeAction implements Action {
     readonly type = FiltersActionTypes.TOGGLE_INGREDIENT_TO_INCLUDE;
     constructor(public ingredientId: string){}
@@ -27,4 +32,4 @@ export class SetMaxPrepTimeAction implements Action {
     constructor(public maxTime: number){}
 }
 
-export type FiltersActions = ToggleIngredientToIncludeAction | ToggleIngredientToExcludeAction | ToggleTagAction | SetMaxPrepTimeAction;
+export type FiltersActions = ToggleIngredientToIncludeAction | ToggleIngredientToExcludeAction | ToggleTagAction | SetMaxPrepTimeAction | ResetFiltersAction;

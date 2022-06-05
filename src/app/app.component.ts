@@ -63,6 +63,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.store.pipe(select(getIsSidebarOpen)).subscribe(isOpen => {
       if (isOpen) {
         this.sidebar.open()
+      } else if (!isOpen && this.sidebar.opened) {
+        this.sidebar.close()
       }
 
     })
