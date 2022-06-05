@@ -26,7 +26,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   destroyed$ = new Subject();
 
-  constructor(private recipiesService: RecipiesService, private store: Store) { }
+  constructor(public recipiesService: RecipiesService, private store: Store) { }
 
   ngOnInit(): void {
     this.recipiesService.products$.subscribe((products: Product[]) => {

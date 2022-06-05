@@ -18,6 +18,8 @@ export class RecipiesService {
   products$ = new BehaviorSubject<Product[]>([]);
   productsUpdated$ = new Subject<any>();
 
+  filteredRecipies: number = 0;
+
   constructor(
     private recipiesApi: RecipiesApiService,
     private converter: AmountConverterService,

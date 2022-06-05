@@ -50,12 +50,12 @@ export class AllRecipiesComponent implements OnInit {
           return !recipy.ingrediends.find(ingr => filters.ingredientsToExclude.includes(ingr.product))
         })
       }
-      if(!!filters.tags.length){
+      if (!!filters.tags.length) {
         _recipies = _recipies.filter(recipy => {
           return recipy.type.find(tag => filters.tags.includes(tag))
         })
       }
-      if(!!filters.maxPrepTime){
+      if (!!filters.maxPrepTime) {
         const maxTime = filters.maxPrepTime
         _recipies = _recipies.filter(recipy => {
           let prepTime = 0;
@@ -65,7 +65,8 @@ export class AllRecipiesComponent implements OnInit {
           return prepTime <= maxTime
         })
       }
-      this.allRecipies = _recipies
+      this.allRecipies = _recipies;
+      this.recipies.filteredRecipies = this.allRecipies.length
     })
   }
   ngOnDestroy(): void {
