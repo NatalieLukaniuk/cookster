@@ -11,7 +11,9 @@ import { LayoutService } from '../shared/services/layout.service';
 })
 export class CooksterComponent implements OnInit {
   isMobile$: Observable<boolean>;
-  isShowNavPane: boolean = true;
+  isShowDesktopActionsPane: boolean = true;
+  isDesktopActionsPaneExpanded: boolean = false
+
 
   constructor(private layoutService: LayoutService, private router: Router) { 
     this.isMobile$ = this.layoutService.isMobile$;
@@ -21,9 +23,9 @@ export class CooksterComponent implements OnInit {
     this.router.events.subscribe(res => {
       if(res instanceof NavigationEnd){
         if(res.url == '/cookster/recipies/edit-recipy'){
-          this.isShowNavPane = false;
+          this.isShowDesktopActionsPane = false;
         } else {
-          this.isShowNavPane = true;
+          this.isShowDesktopActionsPane = true;
         }
       }
     })    

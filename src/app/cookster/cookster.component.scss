@@ -6,13 +6,18 @@
 }
 
 .content-pane{
-    width: 83.5%;
+    width: 95%;
     padding: 30px 30px 25px;
 }
 
-.navigation-pane{
-    width: 16.5%;
-    padding-top: 100px;
+.desktop-actions-pane{
+    position: fixed;
+    right: 0;
+    background-color: var(--tint1);
+    border-radius: 30% 0 0 30%;
+    height: fit-content;
+    top: 40%;
+    padding-block: 10px;
 }
 
 @media (max-width: 600px){

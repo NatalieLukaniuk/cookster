@@ -2,7 +2,7 @@
   <div class="content-pane">
     <router-outlet></router-outlet>
   </div>
-  <div class="navigation-pane" *ngIf="!(isMobile$ | async) && isShowNavPane">
-    <app-navigation></app-navigation>
+  <div class="desktop-actions-pane" *ngIf="!(isMobile$ | async) && isShowDesktopActionsPane">
+    <app-navigation [isNarrowVersion]="!isDesktopActionsPaneExpanded" [displayExpandButton]="true"></app-navigation>
   </div>
 </section>

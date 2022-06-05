@@ -1,17 +1,31 @@
-.filters-list{
+.filters-list {
     max-height: 45vh;
     overflow-y: auto;
 }
 
-::ng-deep.mat-expansion-panel-body{
-    padding: 0 0 0 15px !important;
-    min-width: 65vw;
+::ng-deep.mat-expansion-panel-body {
+    padding-right: 0 !important;
 }
 
-::ng-deep.mat-slider{
+::ng-deep.mat-slider {
     width: 90%;
-    .mat-slider-thumb-label{
+    .mat-slider-thumb-label {
         width: 40px;
         height: 40px;
+    }
+}
+
+.action-buttons{
+    display: flex;
+    &>button{
+        flex-grow: 1;
+        margin: 10px 5px;
+    }
+}
+
+@media (max-width: 600px) {
+    ::ng-deep.mat-expansion-panel-body {
+        min-width: 65vw;
+        padding: 0 0 0 15px !important;
     }
 }

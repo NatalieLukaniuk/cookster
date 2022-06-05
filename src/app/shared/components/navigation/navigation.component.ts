@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +19,8 @@ import * as UiActions from '../../../store/actions/ui.actions'
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnDestroy {
+  @Input() isNarrowVersion: boolean = false;
+  @Input() displayExpandButton: boolean = false;
   navigation = [
     // { path: 'extended-search', name: 'Розширений пошук' },
     { path: 'recipies/user-recipies', name: 'Мої рецепти' },
@@ -58,5 +60,9 @@ export class NavigationComponent implements OnDestroy {
 
    onOpenFilters(){
      this.store.dispatch(new UiActions.SetIsSidebarOpenAction(true))
+   }
+
+   toggleIsExpanded(){
+     this.isNarrowVersion = !this.isNarrowVersion;
    }
 }

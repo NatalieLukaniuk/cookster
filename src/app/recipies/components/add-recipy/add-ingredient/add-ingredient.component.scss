@@ -22,8 +22,8 @@ form {
             display: none;
         }
         &.mat-radio-checked {
-            background-color: var(--primary);
-            border-color: var(--primary);
+            background-color: var(--tint1);
+            border-color: var(--tint1);
         }
     }
 }
