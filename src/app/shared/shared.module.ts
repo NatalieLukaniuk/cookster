@@ -19,9 +19,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 
-import { ExtendedSearchComponent } from './components/extended-search/extended-search.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
-import { SearchComponent } from './components/search/search.component';
 import { HeaderComponent } from './containers/header/header.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
@@ -61,16 +59,12 @@ import {MatSliderModule} from '@angular/material/slider';
   declarations: [
     HeaderComponent,
     NavigationComponent,
-    SearchComponent,
-    ExtendedSearchComponent,
   ],
   exports: [
     HeaderComponent,
     MatButtonModule,
     NavigationComponent,
-    SearchComponent,
     MatSidenavModule,
-    ExtendedSearchComponent,
     MatListModule,
     MatMenuModule,
     MatIconModule,
