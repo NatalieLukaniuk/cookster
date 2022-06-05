@@ -12,7 +12,6 @@ import { RecipyFullViewComponent } from './recipies/containers/recipy-full-view/
 import { RecipyPreviewComponent } from './recipies/components/recipy-preview/recipy-preview.component';
 import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
 import { UserRecipiesComponent } from './recipies/containers/user-recipies/user-recipies.component';
-import { ExtendedSearchComponent } from './shared/components/extended-search/extended-search.component';
 import { EditRecipyComponent } from './recipies/containers/edit-recipy/edit-recipy.component';
 
 export const routes: Routes = [
@@ -22,7 +21,6 @@ export const routes: Routes = [
     component: CooksterComponent,
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'recipies/all-recipies' },
-      { path: 'extended-search', component: ExtendedSearchComponent },
       {
         path: 'recipies',
         children: [
