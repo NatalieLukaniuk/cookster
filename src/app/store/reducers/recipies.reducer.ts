@@ -25,6 +25,13 @@ export function RecipiesReducers(state: IRecipiesState = InitialRecipiesState, a
                 allRecipies: addRecipy(state.allRecipies, action.recipy)
             }
         }
+
+        case RecipiesActionTypes.UPDATE_RECIPY_SUCCESS: {
+            return {
+                ...state,
+                allRecipies: updateRecipy(state.allRecipies, action.recipy)
+            }
+        }
         default: return { ...state }
     }
 }
@@ -33,4 +40,13 @@ export function addRecipy(recipiesArray: Recipy[], newRecipy: Recipy): Recipy[] 
     let _array = recipiesArray.map(recipy => recipy);
     _array.unshift(newRecipy);
     return _array;
+}
+
+export function updateRecipy(recipiesArray: Recipy[], updatedRecipy: Recipy): Recipy[] {
+    let _array = recipiesArray.map(recipy => {
+        if(recipy.id == updatedRecipy.id){
+            return updatedRecipy
+        } else return recipy
+    });
+    return _array
 }

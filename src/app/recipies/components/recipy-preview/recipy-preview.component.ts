@@ -213,6 +213,10 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   saveUpdatedRecipy() {
     console.log(this._clonedRecipy)
     this.mode = RecipyMode.ViewRecipy
+    if (this._clonedRecipy && 'id' in this._clonedRecipy) {
+      this.store.dispatch(new fromRecipiesActions.UpdateRecipyAction(this._clonedRecipy))
+    }
+    this.portionsToServe = this.savedPortionsServed;
   }
 
   other() {

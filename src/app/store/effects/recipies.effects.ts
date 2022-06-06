@@ -51,6 +51,14 @@ export class RecipiesEffects {
         ))
     ))
 
+    updateRecipy$ = createEffect(() => this.actions$.pipe(
+        ofType(RecipiesActionTypes.UPDATE_RECIPY),
+        switchMap((action: RecipiesActions.UpdateRecipyAction) => this.recipiesService.updateRecipy(action.recipy.id, action.recipy).pipe(
+            map((res: any) => new RecipiesActions.UpdateRecipySuccessAction(res)),
+            catchError(error => of(new UiActions.ErrorAction(error)))
+        ))
+    ))
+
     constructor(
         private actions$: Actions,
         private recipiesService: RecipiesApiService,

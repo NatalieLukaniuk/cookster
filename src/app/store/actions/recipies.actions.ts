@@ -7,6 +7,18 @@ export enum RecipiesActionTypes {
     GET_RECIPIES = '[RECIPIES] Get Recipies',
     ADD_RECIPY = '[RECIPIES] Add New Recipy',
     ADD_RECIPY_SUCCESS = '[RECIPIES] New Recipy Has Been Added',
+    UPDATE_RECIPY = '[RECIPIES] Update Recipy',
+    UPDATE_RECIPY_SUCCESS = '[RECIPIES] Recipy Has Been Updated',
+}
+
+export class UpdateRecipyAction implements Action {
+    readonly type = RecipiesActionTypes.UPDATE_RECIPY;
+    constructor(public recipy: Recipy){}
+}
+
+export class UpdateRecipySuccessAction implements Action {
+    readonly type = RecipiesActionTypes.UPDATE_RECIPY_SUCCESS;
+    constructor(public recipy: Recipy){}
 }
 
 export class AddNewRecipyAction implements Action {
@@ -29,4 +41,4 @@ export class RecipiesLoadedAction implements Action {
     constructor(public recipies: Recipy[]) { }
 }
 
-export type RecipiesActions = GetRecipiesAction | RecipiesLoadedAction | AddNewRecipyAction | AddNewRecipySuccessAction;
+export type RecipiesActions = GetRecipiesAction | RecipiesLoadedAction | AddNewRecipyAction | AddNewRecipySuccessAction | UpdateRecipyAction | UpdateRecipySuccessAction;
