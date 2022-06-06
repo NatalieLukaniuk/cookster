@@ -2,11 +2,12 @@
   <div class="full-recipy-wrapper">
     <div class="recipy-body">
       <div class="recipy-details">
-        <div fxLayout="row" fxLayoutAlign="space-between">
-          <h1>{{ recipy.name }}</h1><button mat-icon-button (click)="onEditRecipy()">
-            <mat-icon>edit</mat-icon>
+          <h1>{{ recipy.name }}
+            <button mat-icon-button (click)="mode == RecipyMode.ViewRecipy? onEditRecipy() : mode == RecipyMode.EditRecipy? saveUpdatedRecipy() : other()">
+            <mat-icon *ngIf="mode == RecipyMode.ViewRecipy">edit</mat-icon>
+            <mat-icon *ngIf="mode == RecipyMode.EditRecipy">check</mat-icon>
           </button>
-        </div>
+          </h1>
 
         <div class="ingredients-wrapper" *ngIf="portionsToServe && !!recipy.ingrediends">
           <h3 *ngIf="portionsToServe">

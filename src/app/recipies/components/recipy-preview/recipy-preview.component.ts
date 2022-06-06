@@ -185,5 +185,19 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   onEditRecipy(){
     console.log(this.recipy)
+    console.log(this.mode)
+    this.mode = RecipyMode.EditRecipy
+    console.log(this.mode)
+  }
+
+  saveUpdatedRecipy(){
+    console.log(this.recipy)
+    console.log(this.mode)
+    this.mode = RecipyMode.ViewRecipy
+  }
+
+  other(){
+    console.log(this.recipy)
+    console.log(this.mode)
   }
 }
