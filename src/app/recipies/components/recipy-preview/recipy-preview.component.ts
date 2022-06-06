@@ -273,6 +273,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       this._clonedRecipy.steps = this._clonedRecipy.steps.filter(item => item.id !== step.id)
       this.getStepsByGroup()
     }
+    this.isChangesSaved = false
   }
 
   onStepDescriptionEdited(step: PreparationStep) {
@@ -301,5 +302,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     this._clonedRecipy?.steps.push(step);
     this.getStepsByGroup()
     this.isAddStepFormShown = false
+    this.isChangesSaved = false
   }
 }
