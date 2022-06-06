@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
 import * as _ from 'lodash';
 import { RecipiesService } from '../../services/recipies.service';
+import { filter, template } from 'lodash';
 
 
 @Component({
@@ -264,6 +265,13 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     this.isChangesSaved = false
     if (this._clonedRecipy) {
       this._clonedRecipy.type = event
+    }
+  }
+  onDeleteStep(step: PreparationStep){
+    console.log(step)
+    if(this._clonedRecipy){
+      this._clonedRecipy.steps = this._clonedRecipy.steps.filter(item => item.id !== step.id)
+      this.getStepsByGroup()
     }
   }
 }

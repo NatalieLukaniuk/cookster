@@ -55,6 +55,9 @@
                 <p>{{ i + 1 }}. {{ step.description }}</p>
               </td>
               <td>{{ getTotalStepTime(step) }} хв.</td>
+              <td *ngIf="mode == RecipyMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
+                <mat-icon>delete</mat-icon>
+              </button></td>
             </tr>
           </table>
           <ng-container *ngIf="isSplitToGroups">
@@ -67,6 +70,7 @@
                       <p>{{ i + 1 }}. {{ step.description }}</p>
                     </td>
                     <td>{{ getTotalStepTime(step) }} хв.</td>
+                    <td *ngIf="mode == RecipyMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)"><mat-icon>delete</mat-icon></button></td>
                   </tr>
                 </table>
               </ng-container>
