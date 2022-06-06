@@ -3,28 +3,31 @@
   display: flex;
 }
 
-
-
-
-select{
+select {
   width: 72px;
 }
 
-.actions{
-  button{
+.actions {
+  button {
     height: 23px;
     line-height: 23px;
     width: 24px;
     font-size: 5px;
     margin-left: 5px;
-    .mat-icon{
+    .mat-icon {
       height: 13px;
     }
   }
 }
 
-@media (max-width: 600px){
-  .ingredient-wrapper{
+.edit-input {
+  border-bottom: 1px solid;
+  max-width: 65px;
+  text-align: right;
+}
+
+@media (max-width: 600px) {
+  .ingredient-wrapper {
     border-bottom: 1px solid var(--tint2);
     padding: 10px;
     align-items: center;

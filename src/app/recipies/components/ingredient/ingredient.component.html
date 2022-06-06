@@ -14,11 +14,8 @@
     </div>
   </ng-container>
   <ng-container *ngIf="mode == RecipyMode.EditRecipy && !!_ingredient">
-    <input matInput [(ngModel)]="_amountInSelectedUnit">
+    <input matInput class="edit-input" [(ngModel)]="_amountInSelectedUnit" (ngModelChange)="amountChanged()">
     <span>{{getUnitText(measuringUnit)}}</span>
-    <button mat-icon-button [disabled]="isSaveButtonDisabled" (click)="finishEditing()">
-      <mat-icon>check</mat-icon>
-    </button>
     <button mat-icon-button (click)="onDeleteIngredient()">
       <mat-icon>delete</mat-icon>
     </button>

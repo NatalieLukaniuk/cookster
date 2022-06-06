@@ -116,7 +116,7 @@ export class IngredientComponent implements OnInit, OnChanges {
     this.measuringUnit = value; //TODO: needs refactoring
   }
 
-  finishEditing() {
+  amountChanged() {
     if (!!this._ingredient) {
       let ingr: Ingredient = {
         product: this._ingredient?.product,
@@ -135,14 +135,11 @@ export class IngredientComponent implements OnInit, OnChanges {
       this._savedAmount = _.cloneDeep(this._amountInSelectedUnit)
       this.ingredientChanged.emit(ingrToSave)
     }
-
-
   }
 
   onDeleteIngredient(){
     this.deleteIngredient.emit(this._ingredient)
   }
-
 
   get amountToDisplay() {
     const convertedToSelectedUnit = this.recipiesService.convertAmountToSelectedUnit(this.measuringUnit, this.ingredient);
@@ -151,11 +148,5 @@ export class IngredientComponent implements OnInit, OnChanges {
       amountPerSelectedPortions = +amountPerSelectedPortions.toFixed(2);
     }
     return amountPerSelectedPortions;
-  }
-
-  get isSaveButtonDisabled(){
-    if(!!this._ingredient){
-      return this._savedAmount == this._amountInSelectedUnit
-    } else return true
   }
 }
