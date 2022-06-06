@@ -65,4 +65,8 @@ export class NavigationComponent implements OnDestroy {
    toggleIsExpanded(){
      this.isNarrowVersion = !this.isNarrowVersion;
    }
+
+   goHome(){
+    this.router.navigate(['/'], { relativeTo: this.route })
+   }
 }

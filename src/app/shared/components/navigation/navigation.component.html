@@ -25,6 +25,11 @@
           <mat-icon *ngIf="!isNarrowVersion">chevron_right</mat-icon><span *ngIf="!isNarrowVersion">Згорнути</span>
         </button>
       </mat-list-item>
+      <mat-list-item  *ngIf="!isMobile">
+        <button mat-flat-button class="menu-button" (click)="goHome()">
+          <mat-icon>home</mat-icon><span *ngIf="!isNarrowVersion">На головну сторінку</span>
+        </button>
+      </mat-list-item>
       <mat-list-item>
         <button mat-flat-button class="menu-button" (click)="onAddRecipy()">
           <mat-icon>add_circle_outline</mat-icon><span *ngIf="!isNarrowVersion">Додати рецепт</span>
