@@ -4,13 +4,14 @@ import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from 'src/app/shared/services/layout.service';
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
-import { GetUkrIngredientsGroup } from '../../models/ingredient.interface';
+import { GetUkrIngredientsGroup, Ingredient } from '../../models/ingredient.interface';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { NewRecipy, Recipy } from '../../models/recipy.interface';
 import { IngredientsByGroup, ingredientsByGroup, StepsByGroup, stepsByGroup } from '../../containers/recipy-full-view/recipy-full-view.component';
 import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
 import { Store } from '@ngrx/store';
 import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
+import * as _ from 'lodash';
 
 
 @Component({
@@ -20,7 +21,7 @@ import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
 })
 export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Input() recipy!: NewRecipy;
+  @Input() recipy!: NewRecipy | Recipy;
   @Input() mode: RecipyMode = RecipyMode.ViewRecipy;
   RecipyMode = RecipyMode;
 
@@ -31,6 +32,10 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   ingredientsByGroup: IngredientsByGroup = new ingredientsByGroup();
   stepsByGroup: StepsByGroup = new stepsByGroup();
   isSplitToGroups: boolean = false;
+
+  isChangesSaved: boolean = true;
+
+  _clonedRecipy: Recipy | NewRecipy | undefined;
 
   GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
@@ -52,13 +57,16 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
+
+    this._clonedRecipy = _.cloneDeep(this.recipy)
+
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
-    if (!!this.recipy.ingrediends.length) {
+    if (!!this._clonedRecipy.ingrediends.length) {
       this.portionsToServe = this.savedPortionsServed;
     }
-    if (this.recipy.isSplitIntoGroups && !!this.recipy.isSplitIntoGroups.length) {
+    if (this._clonedRecipy.isSplitIntoGroups && !!this._clonedRecipy.isSplitIntoGroups.length) {
       this.isSplitToGroups = true;
       this.getIngredientsByGroup();
       this.getStepsByGroup()
@@ -71,9 +79,9 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   get savedPortionsServed() {
     let portions = 0;
-    if (this.recipy) {
+    if (this._clonedRecipy) {
       let amount = 0;
-      for (let ingr of this.recipy.ingrediends) {
+      for (let ingr of this._clonedRecipy.ingrediends) {
         amount = ingr.amount + amount;
       }
       portions = Math.floor(amount / this.AVERAGE_PORTION);
@@ -93,17 +101,19 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   getIngredientsByGroup() {
-    if (this.recipy.isSplitIntoGroups && this.recipy) {
-      this.recipy.isSplitIntoGroups.forEach(group => {
-        this.ingredientsByGroup[group] = this.recipy.ingrediends.filter(ingredient => ingredient.group == group)
+    if (!!this._clonedRecipy && this._clonedRecipy.isSplitIntoGroups) {
+      let ingredients = this._clonedRecipy.ingrediends
+      this._clonedRecipy.isSplitIntoGroups.forEach(group => {
+        this.ingredientsByGroup[group] = ingredients.filter(ingredient => ingredient.group == group)
       });
     }
   }
 
   getStepsByGroup() {
-    if (this.recipy.isSplitIntoGroups) {
-      this.recipy.isSplitIntoGroups.forEach(group => {
-        this.stepsByGroup[group] = this.recipy?.steps.filter(step => step.group == group)
+    if (this._clonedRecipy && this._clonedRecipy.isSplitIntoGroups) {
+      let steps = this._clonedRecipy?.steps
+      this._clonedRecipy.isSplitIntoGroups.forEach(group => {
+        this.stepsByGroup[group] = steps.filter(step => step.group == group)
       });
     }
   }
@@ -128,8 +138,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   get activeTime() {
     let time = 0;
-    if (this.recipy) {
-      for (let step of this.recipy.steps) {
+    if (this._clonedRecipy) {
+      for (let step of this._clonedRecipy.steps) {
         time = time + step.timeActive;
       }
     }
@@ -139,8 +149,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   get passiveTime() {
     let time = 0;
-    if (this.recipy) {
-      for (let step of this.recipy.steps) {
+    if (this._clonedRecipy) {
+      for (let step of this._clonedRecipy.steps) {
         time = time + step.timePassive;
       }
     }
@@ -150,8 +160,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   get tags() {
     let tags: string[] = [];
-    if (this.recipy) {
-      this.recipy.type.forEach((tag: DishType) => {
+    if (this._clonedRecipy) {
+      this._clonedRecipy.type.forEach((tag: DishType) => {
         tags.push(DishType[tag]);
       });
     }
@@ -167,8 +177,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get complexity() {
-    if (this.recipy) {
-      return ComplexityDescription[this.recipy.complexity];
+    if (this._clonedRecipy) {
+      return ComplexityDescription[this._clonedRecipy.complexity];
     } else return '';
   }
 
@@ -179,25 +189,47 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   editRecipy() {
 
   }
-  onAddRecipy(){
-    this.store.dispatch(new fromRecipiesActions.AddNewRecipyAction(this.recipy))
+  onAddRecipy() {
+    if (this._clonedRecipy) {
+      this.store.dispatch(new fromRecipiesActions.AddNewRecipyAction(this._clonedRecipy))
+    }
   }
 
-  onEditRecipy(){
-    console.log(this.recipy)
-    console.log(this.mode)
+  onEditRecipy() {
     this.mode = RecipyMode.EditRecipy
-    console.log(this.mode)
   }
 
-  saveUpdatedRecipy(){
-    console.log(this.recipy)
-    console.log(this.mode)
-    this.mode = RecipyMode.ViewRecipy
+  saveUpdatedRecipy() {
+    console.log(this._clonedRecipy)
+    // this.mode = RecipyMode.ViewRecipy
   }
 
-  other(){
+  other() {
     console.log(this.recipy)
     console.log(this.mode)
+  }
+  onIngredientChanged(event: Ingredient) {
+    if (!!this._clonedRecipy) {
+      this._clonedRecipy.ingrediends = this._clonedRecipy?.ingrediends.map(ingr => {
+        if (ingr.product == event.product) {
+          return event
+        } else return ingr;
+      })
+    }
+    this.isChangesSaved = false;
+  }
+
+  onDeleteIngredient(event: Ingredient) {
+    if (!!this._clonedRecipy) {
+      this._clonedRecipy.ingrediends = this._clonedRecipy.ingrediends.filter(ingr => {
+        if ('group' in ingr) {
+          return !(ingr.group == event.group && ingr.product == event.product)
+        } else {
+          return !(ingr.product == event.product)
+        }
+      })
+    }
+    this.getIngredientsByGroup();
+    this.isChangesSaved = false;
   }
 }

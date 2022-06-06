@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
 
 import { ProductType } from '../../models/products.interface';
 import { RecipiesService } from '../../services/recipies.service';
@@ -12,13 +13,14 @@ import {
   MeasuringUnitText,
 } from './../../models/measuring-units.enum';
 import { AmountConverterService } from './../../services/amount-converter.service';
+import * as _ from 'lodash'
 
 @Component({
   selector: 'app-ingredient',
   templateUrl: './ingredient.component.html',
   styleUrls: ['./ingredient.component.scss'],
 })
-export class IngredientComponent implements OnInit {
+export class IngredientComponent implements OnInit, OnChanges {
   @Input()
   ingredient!: Ingredient;
   @Input()
@@ -27,12 +29,28 @@ export class IngredientComponent implements OnInit {
   actualPortionsToServe!: number;
   @Input()
   isMobile!: boolean;
+  @Input() mode: RecipyMode = RecipyMode.ViewRecipy;
+
+  @Output() ingredientChanged = new EventEmitter<Ingredient>()
+  @Output() deleteIngredient = new EventEmitter<Ingredient>()
+
+  RecipyMode = RecipyMode;
+  _ingredient: Ingredient | undefined;
+  _amountInSelectedUnit: number = 0;
+  _savedAmount: number = 0;
 
   measuringUnit: MeasuringUnit = MeasuringUnit.gr;
   constructor(
     private converter: AmountConverterService,
     private recipiesService: RecipiesService,
   ) { }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.mode) {
+      this._ingredient = _.cloneDeep(this.ingredient);
+      this._amountInSelectedUnit = this.recipiesService.convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient);
+      this._savedAmount = this.recipiesService.convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient);
+    }
+  }
 
   ngOnInit() {
     this.measuringUnit = this.getDefaultMeasuringUnit();
@@ -98,73 +116,33 @@ export class IngredientComponent implements OnInit {
     this.measuringUnit = value; //TODO: needs refactoring
   }
 
-  // get actualAmount() {
-  //   if (this.measuringUnit == MeasuringUnit.gr) {
-  //     return this.ingredient.amount;
-  //   } else {
-  //     let amount = 0;
-  //     switch (this.measuringUnit) {
-  //       case MeasuringUnit.kg:
-  //         amount = this.converter.grToKg(this.ingredient.amount);
-  //         break;
-  //       case MeasuringUnit.l:
-  //         amount = this.converter.grToLiter(
-  //           this.ingredient.amount,
-  //           this.density
-  //         );
-  //         break;
-  //       case MeasuringUnit.ml:
-  //         amount = this.converter.grToMl(this.ingredient.amount, this.density);
-  //         break;
-  //       case MeasuringUnit.tableSpoon:
-  //         amount = this.converter.grToTableSpoons(
-  //           this.ingredient.amount,
-  //           this.density
-  //         );
-  //         break;
-  //       case MeasuringUnit.dessertSpoon:
-  //         amount = this.converter.grToDessertSpoons(
-  //           this.ingredient.amount,
-  //           this.density
-  //         );
-  //         break;
-  //       case MeasuringUnit.teaSpoon:
-  //         amount = this.converter.grToTeaSpoons(
-  //           this.ingredient.amount,
-  //           this.density
-  //         );
-  //         break;
-  //       case MeasuringUnit.coffeeSpoon:
-  //         amount = this.converter.grToCoffeeSpoons(
-  //           this.ingredient.amount,
-  //           this.density
-  //         );
-  //         break;
-  //       case MeasuringUnit.pinch:
-  //         amount = this.converter.grToPinch(this.ingredient.amount);
-  //         break;
-  //       case MeasuringUnit.bunch:
-  //         amount = this.converter.grToBunch(this.ingredient.amount);
-  //         break;
-  //       case MeasuringUnit.item:
-  //         amount = this.converter.grToItems(
-  //           this.ingredient.amount,
-  //           this.recipies.getGrPerItem(this.ingredient.product)
-  //         );
-  //     }
-  //     return amount;
-  //   }
-  // }
+  finishEditing() {
+    if (!!this._ingredient) {
+      let ingr: Ingredient = {
+        product: this._ingredient?.product,
+        amount: this._amountInSelectedUnit,
+        defaultUnit: this._ingredient?.defaultUnit
+      }
+      let amountToSave = this.recipiesService.transformToGr(ingr)
+      let ingrToSave: Ingredient = {
+        product: this._ingredient?.product,
+        amount: amountToSave,
+        defaultUnit: this._ingredient?.defaultUnit
+      }
+      if ('group' in this._ingredient) {
+        ingrToSave.group = this._ingredient.group
+      }
+      this._savedAmount = _.cloneDeep(this._amountInSelectedUnit)
+      this.ingredientChanged.emit(ingrToSave)
+    }
 
-  // get density() {
-  //   let density = 1;
-  //   for (let product of this.productsService.products$.value) {
-  //     if (product.id === this.ingredient.product) {
-  //       density = product.density;
-  //     }
-  //   }
-  //   return density;
-  // }
+
+  }
+
+  onDeleteIngredient(){
+    this.deleteIngredient.emit(this._ingredient)
+  }
+
 
   get amountToDisplay() {
     const convertedToSelectedUnit = this.recipiesService.convertAmountToSelectedUnit(this.measuringUnit, this.ingredient);
@@ -173,5 +151,11 @@ export class IngredientComponent implements OnInit {
       amountPerSelectedPortions = +amountPerSelectedPortions.toFixed(2);
     }
     return amountPerSelectedPortions;
+  }
+
+  get isSaveButtonDisabled(){
+    if(!!this._ingredient){
+      return this._savedAmount == this._amountInSelectedUnit
+    } else return true
   }
 }

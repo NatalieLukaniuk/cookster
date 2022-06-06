@@ -1,25 +1,35 @@
 <div class="ingredient-wrapper">
   <div class="ingredient-name">{{ getIngredientText() }}</div>
-  <div class="ingredient-amount">
-    {{ amountToDisplay }} <ng-container *ngIf="!savedPortionsToServe && !this.actualPortionsToServe && !isMobile">{{getUnitText(ingredient.defaultUnit)}}</ng-container>
-    <select *ngIf="!!savedPortionsToServe && !!this.actualPortionsToServe && !isMobile"
-      (change)="onValueChange($event)"
-      class="inline-select"
-    >
-      <option
-        *ngFor="let unit of measurementUnits"
-        [value]="unit"
-        [selected]="unit === measuringUnit"
-      >
-        {{ getUnitText(unit) }}
-      </option>
-    </select>
-    <span *ngIf="isMobile">{{ getUnitText(measuringUnit) }}</span>
-  </div>
+  <ng-container *ngIf="mode !== RecipyMode.EditRecipy">
+    <div class="ingredient-amount">
+      {{ amountToDisplay }} <ng-container *ngIf="!savedPortionsToServe && !this.actualPortionsToServe && !isMobile">
+        {{getUnitText(ingredient.defaultUnit)}}</ng-container>
+      <select *ngIf="!!savedPortionsToServe && !!this.actualPortionsToServe && !isMobile"
+        (change)="onValueChange($event)" class="inline-select">
+        <option *ngFor="let unit of measurementUnits" [value]="unit" [selected]="unit === measuringUnit">
+          {{ getUnitText(unit) }}
+        </option>
+      </select>
+      <span *ngIf="isMobile">{{ getUnitText(measuringUnit) }}</span>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="mode == RecipyMode.EditRecipy && !!_ingredient">
+    <input matInput [(ngModel)]="_amountInSelectedUnit">
+    <span>{{getUnitText(measuringUnit)}}</span>
+    <button mat-icon-button [disabled]="isSaveButtonDisabled" (click)="finishEditing()">
+      <mat-icon>check</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onDeleteIngredient()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </ng-container>
   <div class="actions" *ngIf="isMobile">
-    <button mat-icon-button [matMenuTriggerFor]="unitMenu"><mat-icon svgIcon="edit"></mat-icon></button>
+    <button mat-icon-button [matMenuTriggerFor]="unitMenu">
+      <mat-icon svgIcon="edit"></mat-icon>
+    </button>
     <mat-menu #unitMenu="matMenu">
-      <button mat-menu-item *ngFor="let unit of measurementUnits" [value]="unit" (click)="onValueChangeMatMenu(unit)">{{ getUnitText(unit) }}</button>
+      <button mat-menu-item *ngFor="let unit of measurementUnits" [value]="unit" (click)="onValueChangeMatMenu(unit)">{{
+        getUnitText(unit) }}</button>
     </mat-menu>
   </div>
 </div>

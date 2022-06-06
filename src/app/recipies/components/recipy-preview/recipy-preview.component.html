@@ -1,16 +1,17 @@
-<ng-container *ngIf="recipy && !isMobile">
+<ng-container *ngIf="_clonedRecipy && !isMobile">
   <div class="full-recipy-wrapper">
     <div class="recipy-body">
       <div class="recipy-details">
-          <h1>{{ recipy.name }}
-            <button mat-icon-button (click)="mode == RecipyMode.ViewRecipy? onEditRecipy() : mode == RecipyMode.EditRecipy? saveUpdatedRecipy() : other()">
+        <h1>{{ _clonedRecipy.name }}
+          <button mat-icon-button (click)="mode == RecipyMode.ViewRecipy? onEditRecipy() : other()">
             <mat-icon *ngIf="mode == RecipyMode.ViewRecipy">edit</mat-icon>
-            <mat-icon *ngIf="mode == RecipyMode.EditRecipy">check</mat-icon>
           </button>
-          </h1>
+          <button mat-flat-button class="action-button" *ngIf="mode == RecipyMode.EditRecipy"
+            (click)="saveUpdatedRecipy()" [disabled]="isChangesSaved">Save Changes</button>
+        </h1>
 
-        <div class="ingredients-wrapper" *ngIf="portionsToServe && !!recipy.ingrediends">
-          <h3 *ngIf="portionsToServe">
+        <div class="ingredients-wrapper" *ngIf="portionsToServe && !!_clonedRecipy.ingrediends">
+          <h3 *ngIf="portionsToServe && mode !==RecipyMode.EditRecipy">
             Інгридієнти на
             <select class="inline-select" [(ngModel)]="portionsToServe">
               <option *ngFor="let option of portionsOptions">
@@ -20,25 +21,29 @@
             {{ portionsText }}
           </h3>
           <div class="ingredients-table" *ngIf="!isSplitToGroups">
-            <app-ingredient *ngFor="let ingredient of recipy.ingrediends; let i = index" [ingredient]="ingredient"
-              [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"
+            <app-ingredient (ingredientChanged)="onIngredientChanged($event)"
+              (deleteIngredient)="onDeleteIngredient($event)"
+              *ngFor="let ingredient of _clonedRecipy.ingrediends; let i = index" [ingredient]="ingredient"
+              [mode]="mode" [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"
               [isMobile]="isMobile"></app-ingredient>
           </div>
           <ng-container *ngIf="isSplitToGroups">
             <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
               <ng-container *ngIf="item.value.length > 0">
                 <h4>{{item.key}}</h4>
-                <app-ingredient *ngFor="let ingredient of item.value; let i = index" [ingredient]="ingredient"
+                <app-ingredient (ingredientChanged)="onIngredientChanged($event)"
+                  (deleteIngredient)="onDeleteIngredient($event)" [mode]="mode"
+                  *ngFor="let ingredient of item.value; let i = index" [ingredient]="ingredient"
                   [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"
                   [isMobile]="isMobile"></app-ingredient>
               </ng-container>
             </ng-container>
           </ng-container>
         </div>
-        <div class="preparation-wrapper" *ngIf="!!recipy.steps">
+        <div class="preparation-wrapper" *ngIf="!!_clonedRecipy.steps">
           <h3>Приготування</h3>
           <table class="steps-table" *ngIf="!isSplitToGroups">
-            <tr *ngFor="let step of recipy.steps; let i = index">
+            <tr *ngFor="let step of _clonedRecipy.steps; let i = index">
               <td>
                 <p>{{ step.id }}. {{ step.description }}</p>
               </td>
@@ -65,10 +70,10 @@
       </div>
       <div class="recipy-info">
         <!-- <img class="recipy-photo" [src]="recipy.photo" /> -->
-        <div class="recipy-complexity" *ngIf="!!recipy.complexity">
+        <div class="recipy-complexity" *ngIf="!!_clonedRecipy.complexity">
           <span class="bold">Складність:</span> {{ complexity }}
         </div>
-        <div class="recipy-time" *ngIf="!!recipy.steps.length">
+        <div class="recipy-time" *ngIf="!!_clonedRecipy.steps.length">
           <div><span class="bold">Час приготування: </span></div>
           <div>
             <p>{{ activeTime + passiveTime }} хвилин</p>
@@ -93,9 +98,9 @@
       recipy</button>
   </div>
 </ng-container>
-<ng-container *ngIf="isMobile && recipy">
+<ng-container *ngIf="isMobile && _clonedRecipy">
   <header class="mobile-header">
-    {{ recipy.name }}
+    {{ _clonedRecipy.name }}
   </header>
   <mat-button-toggle-group appearance="legacy" aria-label="Font Style" (change)="onMatToggleChange($event)">
     <mat-button-toggle value="ingredients" checked>Інгридієнти</mat-button-toggle>
@@ -114,7 +119,7 @@
       </mat-menu>
     </div>
     <ng-container *ngIf="!isSplitToGroups">
-      <app-ingredient *ngFor="let ingredient of recipy.ingrediends" [ingredient]="ingredient"
+      <app-ingredient *ngFor="let ingredient of _clonedRecipy.ingrediends" [ingredient]="ingredient"
         [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe" [isMobile]="isMobile">
       </app-ingredient>
     </ng-container>
@@ -132,7 +137,7 @@
   </ng-container>
   <ng-container *ngIf="currentTab === 'preparation'">
     <table class="steps-table" *ngIf="!isSplitToGroups">
-      <tr *ngFor="let step of recipy.steps; let i = index">
+      <tr *ngFor="let step of _clonedRecipy.steps; let i = index">
         <td>
           <p>{{ step.id }}. {{ step.description }}</p>
         </td>
