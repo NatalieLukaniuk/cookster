@@ -182,4 +182,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   onAddRecipy(){
     this.store.dispatch(new fromRecipiesActions.AddNewRecipyAction(this.recipy))
   }
+
+  onEditRecipy(){
+    console.log(this.recipy)
+  }
 }

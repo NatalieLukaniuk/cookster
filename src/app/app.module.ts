@@ -19,6 +19,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { RecipiesEffects } from './store/effects/recipies.effects';
 import { FiltersModule } from './filters/filters.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
  
 
@@ -40,6 +41,7 @@ import { FiltersModule } from './filters/filters.module';
     CooksterModule,
     AuthModule,
     FiltersModule,
+    FlexLayoutModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([RecipiesEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
