@@ -1,5 +1,5 @@
 import { Component, EventEmitter, forwardRef, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
 import { GetUkrIngredientsGroup, Ingredient, IngredientsGroupOptions } from 'src/app/recipies/models/ingredient.interface';
@@ -17,7 +17,7 @@ export class AddIngredientComponent implements OnInit, OnChanges {
   @Input() isIngredientsSplitToGroups: boolean = false;
   @Output() addNewIngredient: EventEmitter<Ingredient> = new EventEmitter<Ingredient>()
 
-  public ingredientsForm!: FormGroup;
+  public ingredientsForm!: UntypedFormGroup;
 
   filteredOptions: Observable<string[]> | undefined;
   noFilteredOptions: boolean = false;
@@ -28,18 +28,18 @@ export class AddIngredientComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isIngredientsSplitToGroups) {
-      this.ingredientsForm.addControl('group', new FormControl('', Validators.required))
+      this.ingredientsForm.addControl('group', new UntypedFormControl('', Validators.required))
     }
   }
 
   initForm(){
-    this.ingredientsForm = new FormGroup({
-      ingredient: new FormControl('', Validators.required),
-      amount: new FormControl('', Validators.required),
-      defaultUnit: new FormControl(MeasuringUnit.gr, Validators.required),
+    this.ingredientsForm = new UntypedFormGroup({
+      ingredient: new UntypedFormControl('', Validators.required),
+      amount: new UntypedFormControl('', Validators.required),
+      defaultUnit: new UntypedFormControl(MeasuringUnit.gr, Validators.required),
     });
     if (this.isIngredientsSplitToGroups){
-      this.ingredientsForm.addControl('group', new FormControl('', Validators.required))
+      this.ingredientsForm.addControl('group', new UntypedFormControl('', Validators.required))
     }
   }
 

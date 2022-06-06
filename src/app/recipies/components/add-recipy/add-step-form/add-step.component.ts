@@ -1,5 +1,5 @@
 import { Component, EventEmitter, forwardRef, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, UntypedFormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { GetUkrIngredientsGroup, IngredientsGroup } from 'src/app/recipies/models/ingredient.interface';
 import { PreparationStep } from 'src/app/recipies/models/preparationStep.interface';
 
@@ -12,7 +12,7 @@ import { PreparationStep } from 'src/app/recipies/models/preparationStep.interfa
 export class AddStepComponent implements OnInit, OnChanges {
   @Input()
   index!: number;
-  public stepsForm!: FormGroup;
+  public stepsForm!: UntypedFormGroup;
   @Input() isSplitToGroups: boolean = false;
   @Input() groupOptions: IngredientsGroup[] = []
   @Output() addNewStep: EventEmitter<PreparationStep> = new EventEmitter<PreparationStep>()
@@ -43,25 +43,25 @@ export class AddStepComponent implements OnInit, OnChanges {
     // }
 
     if(this.isSplitToGroups && this.stepsForm){
-      this.stepsForm.addControl('group', new FormControl('', Validators.required))
+      this.stepsForm.addControl('group', new UntypedFormControl('', Validators.required))
     }
   }
 
   ngOnInit() {
     if (!this.isSplitToGroups) {
-      this.stepsForm = new FormGroup({
-        id: new FormControl(this.idValue),
-        description: new FormControl('', Validators.required),
-        timeActive: new FormControl('', Validators.required),
-        timePassive: new FormControl('', Validators.required),
+      this.stepsForm = new UntypedFormGroup({
+        id: new UntypedFormControl(this.idValue),
+        description: new UntypedFormControl('', Validators.required),
+        timeActive: new UntypedFormControl('', Validators.required),
+        timePassive: new UntypedFormControl('', Validators.required),
       });
     } else {
-      this.stepsForm = new FormGroup({
-        id: new FormControl(this.idValue),
-        description: new FormControl('', Validators.required),
-        timeActive: new FormControl('', Validators.required),
-        timePassive: new FormControl('', Validators.required),
-        group: new FormControl('', Validators.required)
+      this.stepsForm = new UntypedFormGroup({
+        id: new UntypedFormControl(this.idValue),
+        description: new UntypedFormControl('', Validators.required),
+        timeActive: new UntypedFormControl('', Validators.required),
+        timePassive: new UntypedFormControl('', Validators.required),
+        group: new UntypedFormControl('', Validators.required)
       });
     }
 
@@ -82,19 +82,19 @@ this.addNewStep.emit(this.stepsForm.value)
 
   resetForm(){
     if (!this.isSplitToGroups) {
-      this.stepsForm = new FormGroup({
-        id: new FormControl(this.idValue),
-        description: new FormControl('', Validators.required),
-        timeActive: new FormControl('', Validators.required),
-        timePassive: new FormControl('', Validators.required),
+      this.stepsForm = new UntypedFormGroup({
+        id: new UntypedFormControl(this.idValue),
+        description: new UntypedFormControl('', Validators.required),
+        timeActive: new UntypedFormControl('', Validators.required),
+        timePassive: new UntypedFormControl('', Validators.required),
       });
     } else {
-      this.stepsForm = new FormGroup({
-        id: new FormControl(this.idValue),
-        description: new FormControl('', Validators.required),
-        timeActive: new FormControl('', Validators.required),
-        timePassive: new FormControl('', Validators.required),
-        group: new FormControl('', Validators.required)
+      this.stepsForm = new UntypedFormGroup({
+        id: new UntypedFormControl(this.idValue),
+        description: new UntypedFormControl('', Validators.required),
+        timeActive: new UntypedFormControl('', Validators.required),
+        timePassive: new UntypedFormControl('', Validators.required),
+        group: new UntypedFormControl('', Validators.required)
       });
     }
   }
