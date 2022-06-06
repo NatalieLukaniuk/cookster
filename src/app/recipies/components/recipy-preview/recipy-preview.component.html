@@ -52,7 +52,7 @@
           <table class="steps-table" *ngIf="!isSplitToGroups">
             <tr *ngFor="let step of _clonedRecipy.steps; let i = index">
               <td>
-                <p>{{ step.id }}. {{ step.description }}</p>
+                <p>{{ i + 1 }}. {{ step.description }}</p>
               </td>
               <td>{{ getTotalStepTime(step) }} хв.</td>
             </tr>
@@ -64,7 +64,7 @@
                 <table class="steps-table">
                   <tr *ngFor="let step of item.value; let i = index">
                     <td>
-                      <p>{{ step.id }}. {{ step.description }}</p>
+                      <p>{{ i + 1 }}. {{ step.description }}</p>
                     </td>
                     <td>{{ getTotalStepTime(step) }} хв.</td>
                   </tr>
@@ -93,9 +93,6 @@
           <div *ngIf="mode !== RecipyMode.EditRecipy">
             <mat-chip-list>
               <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
-              <!-- <mat-chip class="add-tag"
-                ><mat-icon svgIcon="add"></mat-icon
-              ></mat-chip> -->
             </mat-chip-list>
           </div>
           <div *ngIf="mode == RecipyMode.EditRecipy">

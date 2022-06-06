@@ -113,6 +113,9 @@
   
   .recipy-tags {
     align-items: center;
+    & > div:first-child{
+      align-self: flex-start;
+    }
   }
   
   .add-tag {
