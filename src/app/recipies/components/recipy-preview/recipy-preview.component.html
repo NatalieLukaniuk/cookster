@@ -39,7 +39,7 @@
               </ng-container>
             </ng-container>
           </ng-container>
-          <button mat-flat-button class="action-button" *ngIf="mode == RecipyMode.EditRecipy && !isAddIngredientFormShown"
+          <button mat-flat-button class="action-button add-ingredient-button" *ngIf="mode == RecipyMode.EditRecipy && !isAddIngredientFormShown"
             (click)="isAddIngredientFormShown = true">Add Ingredient</button>
             <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
             (addNewIngredient)="onaAddNewIngredient($event)" *ngIf="isAddIngredientFormShown"></app-add-ingredient>
