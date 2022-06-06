@@ -4,9 +4,9 @@ import { DishType } from 'src/app/recipies/models/dishType.enum';
 export class chip {
   id: DishType;
   selected: boolean;
-  constructor(id: number) {
+  constructor(id: number, selected = false) {
     this.id = id;
-    this.selected = false
+    this.selected = selected
   }
 }
 @Component({
@@ -17,6 +17,7 @@ export class chip {
 export class AddTagsComponent implements OnInit {
   chips: chip[] = [];
   @Input() tags!: DishType[]
+  @Input() selected: DishType[] = []
   @Output() selectedTags = new EventEmitter<DishType[]>()
 
 
@@ -25,7 +26,15 @@ export class AddTagsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chips = this.tags.map(tag => new chip(tag))
+    if (!!this.selected.length) {
+      this.chips = this.tags.map(tag => {
+        if (this.selected.includes(tag)) {
+          return new chip(tag, true)
+        } else return new chip(tag)
+      })
+    } else {
+      this.chips = this.tags.map(tag => new chip(tag))
+    }
   }
 
   getTagsText(tag: DishType) {

@@ -90,13 +90,16 @@
         </div>
         <div class="recipy-tags">
           <div><span class="bold">Теги: </span></div>
-          <div>
+          <div *ngIf="mode !== RecipyMode.EditRecipy">
             <mat-chip-list>
               <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
               <!-- <mat-chip class="add-tag"
                 ><mat-icon svgIcon="add"></mat-icon
               ></mat-chip> -->
             </mat-chip-list>
+          </div>
+          <div *ngIf="mode == RecipyMode.EditRecipy">
+            <app-add-tags [selected]="_clonedRecipy.type" [tags]="allTags" (selectedTags)="onTagsSelectionChange($event)"></app-add-tags>
           </div>
         </div>
       </div>

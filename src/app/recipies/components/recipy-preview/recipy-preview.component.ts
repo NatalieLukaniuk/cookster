@@ -167,7 +167,14 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
         tags.push(DishType[tag]);
       });
     }
+    return tags;
+  }
 
+  get allTags() {
+    let tags: number[] = [];
+    tags = Object.values(DishType).filter(
+      (value) => typeof value === 'number'
+    ) as number[];
     return tags;
   }
   onMatToggleChange(event: any) {
@@ -203,7 +210,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   saveUpdatedRecipy() {
     console.log(this._clonedRecipy)
-    // this.mode = RecipyMode.ViewRecipy
+    this.mode = RecipyMode.ViewRecipy
   }
 
   other() {
@@ -252,5 +259,11 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     this.isAddIngredientFormShown = false;
     this.getIngredientsByGroup();
     this.isChangesSaved = false
+  }
+  onTagsSelectionChange(event: DishType[]) {
+    this.isChangesSaved = false
+    if (this._clonedRecipy) {
+      this._clonedRecipy.type = event
+    }
   }
 }
