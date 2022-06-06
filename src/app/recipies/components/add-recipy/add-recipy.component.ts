@@ -123,7 +123,6 @@ export class AddRecipyComponent implements OnInit {
     if ('group' in event) {
       step.group = event.group
     }
-    step.id = this.newRecipy.steps.length + 1;
     this.newRecipy.steps = [...this.newRecipy.steps, step]
     if (!!this.newRecipy.isSplitIntoGroups.length) { this.getStepsByGroup() }
     this.addStepForm.resetForm()

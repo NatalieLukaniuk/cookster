@@ -92,7 +92,7 @@
                             </ng-container>
                         </ng-container>
                     </ng-container>
-                    <app-add-step [index]="1" [isSplitToGroups]='!!newRecipy.isSplitIntoGroups.length'
+                    <app-add-step [index]="newRecipy.steps.length" [isSplitToGroups]='!!newRecipy.isSplitIntoGroups.length'
                         [groupOptions]="newRecipy.isSplitIntoGroups" (addNewStep)="onAddNewStep($event)"></app-add-step>
                     <div class="action-buttons-wrapper">
                         <button mat-flat-button class="action-button" [disabled]="newRecipy.steps.length <= 0"

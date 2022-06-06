@@ -4,7 +4,7 @@
       <div class="recipy-details">
         <div class="recipy-name-wrapper">
           <h1 *ngIf="mode !== RecipyMode.EditRecipy">{{ _clonedRecipy.name }}</h1>
-          <input matInput *ngIf="mode == RecipyMode.EditRecipy" [(ngModel)]="_clonedRecipy.name"
+          <input matInput class="input-edit" *ngIf="mode == RecipyMode.EditRecipy" [(ngModel)]="_clonedRecipy.name"
             (ngModelChange)="isChangesSaved = false">
           <button *ngIf="mode == RecipyMode.ViewRecipy" mat-icon-button
             (click)="mode == RecipyMode.ViewRecipy? onEditRecipy() : other()">
@@ -54,9 +54,9 @@
             <tr *ngFor="let step of _clonedRecipy.steps; let i = index">
               <td>
                 <p *ngIf="mode !== RecipyMode.EditRecipy">{{ i + 1 }}. {{ step.description }}</p>
-                <div *ngIf="mode == RecipyMode.EditRecipy">{{ i + 1 }}. <input matInput [(ngModel)]="step.description" (ngModelChange)="onStepDescriptionEdited(step)"> </div>
+                <div *ngIf="mode == RecipyMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical" class="input-edit" [(ngModel)]="step.description" (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
               </td>
-              <td>{{ getTotalStepTime(step) }} хв.</td>
+              <td class="time-cell">{{ getTotalStepTime(step) }} хв.</td>
               <td *ngIf="mode == RecipyMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
                   <mat-icon>delete</mat-icon>
                 </button></td>
@@ -70,9 +70,9 @@
                   <tr *ngFor="let step of item.value; let i = index">
                     <td>
                       <p *ngIf="mode !== RecipyMode.EditRecipy">{{ i + 1 }}. {{ step.description }}</p>
-                      <div *ngIf="mode == RecipyMode.EditRecipy">{{ i + 1 }}. <input matInput [(ngModel)]="step.description" (ngModelChange)="onStepDescriptionEdited(step)"> </div>
+                      <div *ngIf="mode == RecipyMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical" class="input-edit" [(ngModel)]="step.description" (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
                     </td>
-                    <td>{{ getTotalStepTime(step) }} хв.</td>
+                    <td class="time-cell">{{ getTotalStepTime(step) }} хв.</td>
                     <td *ngIf="mode == RecipyMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
                         <mat-icon>delete</mat-icon>
                       </button></td>
@@ -81,6 +81,11 @@
               </ng-container>
             </ng-container>
           </ng-container>
+          <button mat-flat-button class="action-button add-ingredient-button"
+            *ngIf="mode == RecipyMode.EditRecipy && !isAddStepFormShown"
+            (click)="isAddStepFormShown = true">Add Step</button>
+            <app-add-step *ngIf="mode == RecipyMode.EditRecipy && isAddStepFormShown" [index]="_clonedRecipy.steps.length" [isSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
+                        [groupOptions]="_clonedRecipy.isSplitIntoGroups" (addNewStep)="onAddNewStep($event)"></app-add-step>
         </div>
 
       </div>

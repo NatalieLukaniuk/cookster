@@ -37,6 +37,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   isChangesSaved: boolean = true;
   isAddIngredientFormShown: boolean = false;
+  isAddStepFormShown: boolean = false;
 
   _clonedRecipy: Recipy | NewRecipy | undefined;
 
@@ -283,5 +284,22 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       })
     }
     this.isChangesSaved = false
+  }
+
+  //TODO make the textareas for preparation steps in edit mode auto-adjust to text height - a separate component for that
+
+  onAddNewStep(event: PreparationStep) {
+    let step: PreparationStep = {
+      id: event.id,
+      description: event.description,
+      timeActive: +event.timeActive,
+      timePassive: +event.timePassive,
+    }
+    if ('group' in event) {
+      step.group = event.group
+    }
+    this._clonedRecipy?.steps.push(step);
+    this.getStepsByGroup()
+    this.isAddStepFormShown = false
   }
 }
