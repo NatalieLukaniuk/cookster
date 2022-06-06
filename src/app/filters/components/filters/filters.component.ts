@@ -44,15 +44,15 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   onIngredientsToIncludeChange(event: MatSelectionListChange) {
-    this.store.dispatch(new FiltersActions.ToggleIngredientToIncludeAction(event.option.value))
+    this.store.dispatch(new FiltersActions.ToggleIngredientToIncludeAction(event.options[0].value))
   }
   onIngredientsToExcludeChange(event: MatSelectionListChange) {
-    this.store.dispatch(new FiltersActions.ToggleIngredientToExcludeAction(event.option.value))
+    this.store.dispatch(new FiltersActions.ToggleIngredientToExcludeAction(event.options[0].value))
   }
 
   onTagsChange(event: MatSelectionListChange) {
     console.log(event)
-    this.store.dispatch(new FiltersActions.ToggleTagAction(event.option.value))
+    this.store.dispatch(new FiltersActions.ToggleTagAction(event.options[0].value))
   }
 
   formatPrepTimeSliderLabel(value: number) {
@@ -70,14 +70,14 @@ export class FiltersComponent implements OnInit, OnDestroy {
   @ViewChild('ingrediendsFilter') ingrediendsFilter!: MatSelectionList;
   @ViewChild('tagsFilter') tagsFilter!: MatSelectionList;
   @ViewChild('ingrediendsFilter2') ingrediendsFilter2!: MatSelectionList;
-  clearFilters(){
+  clearFilters() {
     this.ingrediendsFilter.deselectAll();
     this.tagsFilter.deselectAll()
     this.ingrediendsFilter2.deselectAll()
     this.store.dispatch(new FiltersActions.ResetFiltersAction())
   }
 
-  closeSidebar(){
+  closeSidebar() {
     this.store.dispatch(new UiActions.SetIsSidebarOpenAction(false))
   }
 }
