@@ -267,11 +267,21 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       this._clonedRecipy.type = event
     }
   }
-  onDeleteStep(step: PreparationStep){
-    console.log(step)
-    if(this._clonedRecipy){
+  onDeleteStep(step: PreparationStep) {
+    if (this._clonedRecipy) {
       this._clonedRecipy.steps = this._clonedRecipy.steps.filter(item => item.id !== step.id)
       this.getStepsByGroup()
     }
+  }
+
+  onStepDescriptionEdited(step: PreparationStep) {
+    if (this._clonedRecipy) {
+      this._clonedRecipy.steps = this._clonedRecipy.steps.map(item => {
+        if (item.id == step.id) {
+          return step
+        } else return item
+      })
+    }
+    this.isChangesSaved = false
   }
 }
