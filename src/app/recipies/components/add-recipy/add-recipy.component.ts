@@ -93,10 +93,10 @@ export class AddRecipyComponent implements OnInit {
   onaAddNewIngredient(event: Ingredient) {
     let ingr: Ingredient = {
       product: this.recipiesService.getIngredientIdFromName(event),
-      amount: this.recipiesService.transformToGr(event),
+      amount: event.amount,
       defaultUnit: event.defaultUnit
-
     }
+    ingr.amount = this.recipiesService.transformToGr(ingr)
     if ('group' in event && event.group) {
       ingr.group = event.group;
       if (!this.newRecipy.isSplitIntoGroups.includes(ingr.group)) {

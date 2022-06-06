@@ -39,6 +39,10 @@
               </ng-container>
             </ng-container>
           </ng-container>
+          <button mat-flat-button class="action-button" *ngIf="mode == RecipyMode.EditRecipy && !isAddIngredientFormShown"
+            (click)="isAddIngredientFormShown = true">Add Ingredient</button>
+            <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
+            (addNewIngredient)="onaAddNewIngredient($event)" *ngIf="isAddIngredientFormShown"></app-add-ingredient>
         </div>
         <div class="preparation-wrapper" *ngIf="!!_clonedRecipy.steps">
           <h3>Приготування</h3>

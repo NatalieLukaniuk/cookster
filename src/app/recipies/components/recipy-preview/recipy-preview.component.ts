@@ -12,6 +12,7 @@ import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
 import { Store } from '@ngrx/store';
 import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
 import * as _ from 'lodash';
+import { RecipiesService } from '../../services/recipies.service';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   isSplitToGroups: boolean = false;
 
   isChangesSaved: boolean = true;
+  isAddIngredientFormShown: boolean = false;
 
   _clonedRecipy: Recipy | NewRecipy | undefined;
 
@@ -44,7 +46,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   AVERAGE_PORTION: number = 250;
 
 
-  constructor(private layoutService: LayoutService, private store: Store) { }
+  constructor(private layoutService: LayoutService, private store: Store, private recipiesService: RecipiesService) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
       this.portionsToServe = this.savedPortionsServed;
@@ -231,5 +233,24 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     }
     this.getIngredientsByGroup();
     this.isChangesSaved = false;
+  }
+
+  onaAddNewIngredient(event: Ingredient) {
+    let ingr: Ingredient = {
+      product: this.recipiesService.getIngredientIdFromName(event),
+      amount: event.amount,
+      defaultUnit: event.defaultUnit
+    }
+    ingr.amount = this.recipiesService.transformToGr(ingr)
+    if ('group' in event && event.group) {
+      ingr.group = event.group;
+      if (!!this._clonedRecipy && !this._clonedRecipy.isSplitIntoGroups.includes(ingr.group)) {
+        this._clonedRecipy.isSplitIntoGroups.push(event.group)
+      }
+    }
+    this._clonedRecipy?.ingrediends.push(ingr)
+    this.isAddIngredientFormShown = false;
+    this.getIngredientsByGroup();
+    this.isChangesSaved = false
   }
 }

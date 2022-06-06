@@ -27,7 +27,7 @@ export class AddIngredientComponent implements OnInit, OnChanges {
   constructor(private recipiesService: RecipiesService) { 
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.isIngredientsSplitToGroups) {
+    if (this.isIngredientsSplitToGroups && !!this.ingredientsForm) {
       this.ingredientsForm.addControl('group', new UntypedFormControl('', Validators.required))
     }
   }
