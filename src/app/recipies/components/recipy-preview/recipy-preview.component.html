@@ -2,14 +2,16 @@
   <div class="full-recipy-wrapper">
     <div class="recipy-body">
       <div class="recipy-details">
-        <h1>{{ _clonedRecipy.name }}
-          <button mat-icon-button (click)="mode == RecipyMode.ViewRecipy? onEditRecipy() : other()">
-            <mat-icon *ngIf="mode == RecipyMode.ViewRecipy">edit</mat-icon>
+        <div class="recipy-name-wrapper">
+          <h1 *ngIf="mode !== RecipyMode.EditRecipy">{{ _clonedRecipy.name }}</h1>
+          <input matInput *ngIf="mode == RecipyMode.EditRecipy" [(ngModel)]="_clonedRecipy.name"
+            (ngModelChange)="isChangesSaved = false">
+          <button *ngIf="mode == RecipyMode.ViewRecipy" mat-icon-button (click)="mode == RecipyMode.ViewRecipy? onEditRecipy() : other()">
+            <mat-icon>edit</mat-icon>
           </button>
           <button mat-flat-button class="action-button" *ngIf="mode == RecipyMode.EditRecipy"
             (click)="saveUpdatedRecipy()" [disabled]="isChangesSaved">Save Changes</button>
-        </h1>
-
+        </div>
         <div class="ingredients-wrapper" *ngIf="portionsToServe && !!_clonedRecipy.ingrediends">
           <h3 *ngIf="portionsToServe && mode !==RecipyMode.EditRecipy">
             Інгридієнти на
@@ -39,9 +41,10 @@
               </ng-container>
             </ng-container>
           </ng-container>
-          <button mat-flat-button class="action-button add-ingredient-button" *ngIf="mode == RecipyMode.EditRecipy && !isAddIngredientFormShown"
+          <button mat-flat-button class="action-button add-ingredient-button"
+            *ngIf="mode == RecipyMode.EditRecipy && !isAddIngredientFormShown"
             (click)="isAddIngredientFormShown = true">Add Ingredient</button>
-            <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
+          <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
             (addNewIngredient)="onaAddNewIngredient($event)" *ngIf="isAddIngredientFormShown"></app-add-ingredient>
         </div>
         <div class="preparation-wrapper" *ngIf="!!_clonedRecipy.steps">
