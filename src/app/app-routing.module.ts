@@ -13,6 +13,7 @@ import { RecipyPreviewComponent } from './recipies/components/recipy-preview/rec
 import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
 import { UserRecipiesComponent } from './recipies/containers/user-recipies/user-recipies.component';
 import { EditRecipyComponent } from './recipies/containers/edit-recipy/edit-recipy.component';
+import { CalendarContainerComponent } from './menus/containers/calendar-container/calendar-container.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'cookster' },
@@ -30,8 +31,8 @@ export const routes: Routes = [
             component: RecipyFullViewComponent,
             pathMatch: 'full',
           },
-          {path: 'all-recipies', component: AllRecipiesComponent},
-          {path: 'edit-recipy', component: EditRecipyComponent}
+          { path: 'all-recipies', component: AllRecipiesComponent },
+          { path: 'edit-recipy', component: EditRecipyComponent }
         ],
       },
       { path: 'friends-feed', component: FriendsFeedComponent },
@@ -39,14 +40,14 @@ export const routes: Routes = [
       { path: 'user-menus', component: MenusComponent },
     ],
   },
-
+  { path: 'calendar', component: CalendarContainerComponent },
   { path: 'admin-panel', component: AdminComponent },
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent}
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegistrationComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

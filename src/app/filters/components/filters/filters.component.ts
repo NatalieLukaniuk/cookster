@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
-import { MatSliderChange } from '@angular/material/slider';
+import { MatSlider, MatSliderChange } from '@angular/material/slider';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { DishType } from 'src/app/recipies/models/dishType.enum';
@@ -70,10 +70,12 @@ export class FiltersComponent implements OnInit, OnDestroy {
   @ViewChild('ingrediendsFilter') ingrediendsFilter!: MatSelectionList;
   @ViewChild('tagsFilter') tagsFilter!: MatSelectionList;
   @ViewChild('ingrediendsFilter2') ingrediendsFilter2!: MatSelectionList;
+  @ViewChild('prepTimeSlider') prepTimeSlider!: MatSlider
   clearFilters() {
     this.ingrediendsFilter.deselectAll();
     this.tagsFilter.deselectAll()
     this.ingrediendsFilter2.deselectAll()
+    this.prepTimeSlider.value = 0
     this.store.dispatch(new FiltersActions.ResetFiltersAction())
   }
 

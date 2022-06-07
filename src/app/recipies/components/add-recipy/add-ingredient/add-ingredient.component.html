@@ -20,16 +20,21 @@
     <!-- <mat-hint>Hint</mat-hint> -->
   </mat-form-field>
 
+  <h5>Одиниця виміру</h5>
   <mat-radio-group class="cookster-radio-group units-radio-group" formControlName="defaultUnit">
     <mat-radio-button *ngFor="let unit of measuringUnitsOptions" [value]="unit">
       {{getMeasuringUnitText(unit)}}
     </mat-radio-button>
   </mat-radio-group>
+
+  <h5 *ngIf="isIngredientsSplitToGroups">Група</h5>
   <mat-radio-group *ngIf="isIngredientsSplitToGroups" class="cookster-radio-group" formControlName="group" #group>
-    <mat-radio-button [ngClass]="ingredientsForm.controls.group.value == unit? 'selected' : 'not-selected'" class="example-radio-button" *ngFor="let unit of ingredientGroupOptions" [value]="unit">
+    <mat-radio-button [ngClass]="ingredientsForm.controls.group.value == unit? 'selected' : 'not-selected'"
+      class="example-radio-button" *ngFor="let unit of ingredientGroupOptions" [value]="unit">
       {{GetUkrIngredientsGroup(unit)}}
     </mat-radio-button>
   </mat-radio-group>
 
-  <button class="action-button" mat-flat-button [disabled]="ingredientsForm.invalid" class="action-button" type="submit">Add</button>
+  <button class="action-button" mat-flat-button [disabled]="ingredientsForm.invalid" class="action-button"
+    type="submit">Add</button>
 </form>

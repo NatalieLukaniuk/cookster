@@ -69,4 +69,7 @@ export class NavigationComponent implements OnDestroy {
    goHome(){
     this.router.navigate(['/'], { relativeTo: this.route })
    }
+   goCalendar(){
+     this.router.navigate(['calendar'])
+   }
 }

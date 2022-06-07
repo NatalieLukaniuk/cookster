@@ -1,8 +1,17 @@
 .filters-list {
     max-height: 45vh;
     overflow-y: auto;
+    .mat-list-option{
+        max-width: 95%;
+    }
 }
 
+.filters-header-wrapper{
+    padding: 10px 10px 5px;
+    h5{
+        margin-block: 6px;
+    }
+}
 ::ng-deep.mat-expansion-panel-body {
     padding-right: 0 !important;
 }

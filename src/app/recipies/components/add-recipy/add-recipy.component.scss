@@ -17,10 +17,6 @@
     margin-top: 20px;
 }
 
-.complexity-radio-group {
-    margin-left: 20px;
-}
-
 .recipy-constructor-wrapper {
     display: flex;
     .preview {
@@ -42,11 +38,26 @@
     }
 
     ::ng-deep.cookster-radio-group {
+        display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start !important;
+        justify-content: space-between !important;
         .mat-radio-button {
-            margin: 5px;
-            padding: 12px 30px 12px 20px !important;
+            margin: 5px !important;
+            padding: 15px 20px 15px 10px !important;
+            flex-grow: 1;
+            .mat-radio-label {
+                justify-content: center;
+            }
         }
+    }
+    h1 {
+        font-size: 20px;
+        padding-inline: 20px;
+    }
+    .action-button {
+        width: 100%;
+    }
+    ::ng-deep.mat-vertical-content {
+        padding-inline: 20px !important;
     }
 }

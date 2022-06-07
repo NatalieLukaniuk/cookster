@@ -19,27 +19,38 @@
         }}</a>
       </mat-list-item>
       </ng-container> -->
+
       <mat-list-item *ngIf="displayExpandButton">
         <button mat-flat-button class="menu-button" (click)="toggleIsExpanded()">
           <mat-icon *ngIf="isNarrowVersion">chevron_left</mat-icon>
           <mat-icon *ngIf="!isNarrowVersion">chevron_right</mat-icon><span *ngIf="!isNarrowVersion">Згорнути</span>
         </button>
       </mat-list-item>
+
       <mat-list-item  *ngIf="!isMobile">
         <button mat-flat-button class="menu-button" (click)="goHome()">
           <mat-icon>home</mat-icon><span *ngIf="!isNarrowVersion">На головну сторінку</span>
         </button>
       </mat-list-item>
+
       <mat-list-item>
         <button mat-flat-button class="menu-button" (click)="onAddRecipy()">
           <mat-icon>add_circle_outline</mat-icon><span *ngIf="!isNarrowVersion">Додати рецепт</span>
         </button>
       </mat-list-item>
+
       <mat-list-item>
         <button mat-flat-button class="menu-button" (click)="onOpenFilters()">
           <mat-icon>filter_list</mat-icon><span *ngIf="!isNarrowVersion">Фільтри</span>
         </button>
       </mat-list-item>
+
+      <mat-list-item>
+        <button mat-flat-button class="menu-button" (click)="goCalendar()">
+          <mat-icon>calendar_today</mat-icon><span *ngIf="!isNarrowVersion">Календар</span>
+        </button>
+      </mat-list-item>
+      
     </mat-nav-list>
   </nav>
 </section>

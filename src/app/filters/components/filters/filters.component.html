@@ -1,5 +1,7 @@
-<h3>Фільтри</h3>
-<h5>Знайдено {{recipiesService.filteredRecipies}} рецептів</h5>
+<div class="filters-header-wrapper">
+    <h3>Фільтри</h3>
+    <h5>Знайдено {{recipiesService.filteredRecipies}} рецептів</h5>
+</div>
 <mat-accordion>
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
@@ -51,7 +53,7 @@
             This is a summary of the content
           </mat-panel-description> -->
         </mat-expansion-panel-header>
-        <mat-slider thumbLabel [displayWith]="formatPrepTimeSliderLabel" min="0" max="600" aria-label="units"
+        <mat-slider #prepTimeSlider thumbLabel [displayWith]="formatPrepTimeSliderLabel" min="0" max="600" aria-label="units"
             (change)="onPrepTimeChange($event)"></mat-slider>
     </mat-expansion-panel>
 </mat-accordion>
