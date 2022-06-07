@@ -9,12 +9,12 @@ import { PreparationStep } from '../../models/preparationStep.interface';
 import { NewRecipy, Recipy } from '../../models/recipy.interface';
 import { IngredientsByGroup, ingredientsByGroup, StepsByGroup, stepsByGroup } from '../../containers/recipy-full-view/recipy-full-view.component';
 import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
 import * as _ from 'lodash';
 import { RecipiesService } from '../../services/recipies.service';
-import { filter, template } from 'lodash';
-
+import { User } from 'src/app/auth/models/user.interface';
+import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 @Component({
   selector: 'app-recipy-preview',
@@ -39,6 +39,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   isAddIngredientFormShown: boolean = false;
   isAddStepFormShown: boolean = false;
 
+  currentUser: User | undefined
+
   _clonedRecipy: Recipy | NewRecipy | undefined;
 
   GetUkrIngredientsGroup = GetUkrIngredientsGroup;
@@ -46,7 +48,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   currentTab: string = 'ingredients';
 
   AVERAGE_PORTION: number = 250;
-
 
   constructor(private layoutService: LayoutService, private store: Store, private recipiesService: RecipiesService) { }
   ngOnChanges(changes: SimpleChanges): void {
@@ -75,6 +76,11 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       this.getIngredientsByGroup();
       this.getStepsByGroup()
     }
+    this.store.pipe(select(getCurrentUser), takeUntil(this.destroy$)).subscribe(user => {
+      if (user) {
+        this.currentUser = user
+      }
+    })
   }
 
   ngOnDestroy(): void {
@@ -197,11 +203,9 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   }
 
-  editRecipy() {
-
-  }
   onAddRecipy() {
     if (this._clonedRecipy) {
+      this._clonedRecipy.createdOn = Date.now()
       this.store.dispatch(new fromRecipiesActions.AddNewRecipyAction(this._clonedRecipy))
     }
   }
@@ -211,12 +215,11 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   saveUpdatedRecipy() {
-    console.log(this._clonedRecipy)
-    this.mode = RecipyMode.ViewRecipy
-    if (this._clonedRecipy && 'id' in this._clonedRecipy) {
-      this.store.dispatch(new fromRecipiesActions.UpdateRecipyAction(this._clonedRecipy))
+    if (this._clonedRecipy && this.currentUser && 'id' in this._clonedRecipy) {
+      this.recipiesService.saveUpdatedRecipy(this._clonedRecipy, this.currentUser.email)
     }
     this.portionsToServe = this.savedPortionsServed;
+    this.mode = RecipyMode.ViewRecipy
   }
 
   other() {

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { IAppState } from 'src/app/store/reducers';
 
 import { MeasuringUnit } from '../models/measuring-units.enum';
 import { Product } from '../models/products.interface';
@@ -10,6 +12,7 @@ import { NewRecipy, Recipy } from './../models/recipy.interface';
 import { AmountConverterService } from './amount-converter.service';
 import { ProductsApiService } from './products-api.service';
 import { RecipiesApiService } from './recipies-api.service';
+import * as fromRecipiesActions from '../../store/actions/recipies.actions'
 
 @Injectable({
   providedIn: 'root',
@@ -24,23 +27,12 @@ export class RecipiesService {
     private recipiesApi: RecipiesApiService,
     private converter: AmountConverterService,
     private productsApi: ProductsApiService,
-    private userService: UserService
-  ) {}
+    private userService: UserService,
+    private store: Store<IAppState>
+  ) { }
 
-  addRecipy(recipy: NewRecipy){
-    this.recipiesApi.addRecipy(recipy).subscribe((id: any) => {
 
-    });
-  }
-
-  // updateRecipy(recipy: Recipy){
-  //   this.recipiesApi.updateRecipy(recipy.id, recipy).pipe(take(1))
-  //   .subscribe(() => {
-  //     this.recipiesUpdated$.next();
-  //   });
-  // }
-
-  getIngredientIdFromName(ingr: any): string{
+  getIngredientIdFromName(ingr: any): string {
     let productId = '';
     for (let product of this.products$.value) {
       if (product.name === ingr.ingredient) {
@@ -222,7 +214,7 @@ export class RecipiesService {
     this.recipiesApi
       .deleteRecipy(recipy.id)
       .pipe(take(1))
-      .subscribe((res) => {});
+      .subscribe((res) => { });
   }
 
   getRecipyBelongsTo(recipy: Recipy) {
@@ -237,6 +229,43 @@ export class RecipiesService {
     if (recipy.clonedOn) {
       return recipy.clonedOn;
     } else return recipy.createdOn;
+  }
+
+  saveUpdatedRecipy(recipy: Recipy, currentUserEmail: string) {
+    if (currentUserEmail == recipy.author || ('clonedBy' in recipy && recipy.clonedBy == currentUserEmail)) {
+      let updatedRecipy: Recipy = {
+        id: recipy.id,
+        name: recipy.name,
+        ingrediends: recipy.ingrediends,
+        complexity: recipy.complexity,
+        steps: recipy.steps,
+        type: recipy.type,
+        isSplitIntoGroups: recipy.isSplitIntoGroups,
+        author: recipy.author,
+        createdOn: recipy.createdOn,
+        editedBy: currentUserEmail,
+        lastEdited: Date.now()
+      }
+      if('clonedBy' in recipy){
+        updatedRecipy.clonedBy = recipy.clonedBy,
+        updatedRecipy.clonedOn = recipy.clonedOn
+      }
+      this.store.dispatch(new fromRecipiesActions.UpdateRecipyAction(updatedRecipy))
+    } else {
+      let clonedRecipy: NewRecipy = {
+        name: recipy.name,
+        ingrediends: recipy.ingrediends,
+        complexity: recipy.complexity,
+        steps: recipy.steps,
+        type: recipy.type,
+        isSplitIntoGroups: recipy.isSplitIntoGroups,
+        author: recipy.author,
+        createdOn: recipy.createdOn,
+        clonedBy: currentUserEmail,
+        clonedOn: Date.now()
+      }
+      this.store.dispatch(new fromRecipiesActions.AddNewRecipyAction(clonedRecipy))
+    }
   }
 
 }
