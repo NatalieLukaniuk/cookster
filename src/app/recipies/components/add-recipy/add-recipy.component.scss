@@ -15,6 +15,9 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
+    & > button:not(:first-child){
+        margin-left: 5px;
+    }
 }
 
 .recipy-constructor-wrapper {

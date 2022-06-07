@@ -42,9 +42,10 @@ export class AddRecipyComponent implements OnInit {
 
   currentUser: User | undefined;
 
-  constructor(private userService: UserService, private layoutService: LayoutService, private recipiesService: RecipiesService, private store: Store<IUserState>) {
+  isAddIngredientFormShown: boolean = true;
+  isAddStepFormShown: boolean = true;
 
-  }
+  constructor(private userService: UserService, private layoutService: LayoutService, private recipiesService: RecipiesService, private store: Store<IUserState>) { }
 
   ngOnInit(): void {
     this.layoutService.isMobile$
@@ -105,8 +106,8 @@ export class AddRecipyComponent implements OnInit {
     }
     this.newRecipy.ingrediends = [...this.newRecipy.ingrediends, ingr];
     if (!!this.newRecipy.isSplitIntoGroups.length) { this.getIngredientsByGroup() }
-    this.addIngredientFrom.resetForm()
-
+    this.addIngredientFrom.resetForm();
+    this.isAddIngredientFormShown = false
   }
 
   getTotalStepTime(step: PreparationStep) {
@@ -126,6 +127,7 @@ export class AddRecipyComponent implements OnInit {
     this.newRecipy.steps = [...this.newRecipy.steps, step]
     if (!!this.newRecipy.isSplitIntoGroups.length) { this.getStepsByGroup() }
     this.addStepForm.resetForm()
+    this.isAddStepFormShown = false
   }
 
 

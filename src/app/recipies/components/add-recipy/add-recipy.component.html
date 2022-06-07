@@ -53,9 +53,12 @@
                             </ng-container>
                         </ng-container>
                     </ng-container>
-                    <app-add-ingredient [isIngredientsSplitToGroups]='!!newRecipy.isSplitIntoGroups.length'
+                    <app-add-ingredient *ngIf="isAddIngredientFormShown" [isIngredientsSplitToGroups]='!!newRecipy.isSplitIntoGroups.length'
                         (addNewIngredient)="onaAddNewIngredient($event)"></app-add-ingredient>
                     <div class="action-buttons-wrapper">
+                        <button *ngIf="!isAddIngredientFormShown" mat-flat-button class="action-button" (click)="isAddIngredientFormShown = true">
+                            + Інгридієнт
+                        </button>
                         <button mat-flat-button class="action-button" [disabled]="newRecipy.ingrediends.length <= 0"
                             matStepperNext>
                             Далі
@@ -93,10 +96,13 @@
                             </ng-container>
                         </ng-container>
                     </ng-container>
-                    <app-add-step [index]="newRecipy.steps.length"
+                    <app-add-step *ngIf="isAddStepFormShown" [index]="newRecipy.steps.length"
                         [isSplitToGroups]='!!newRecipy.isSplitIntoGroups.length'
                         [groupOptions]="newRecipy.isSplitIntoGroups" (addNewStep)="onAddNewStep($event)"></app-add-step>
                     <div class="action-buttons-wrapper">
+                        <button *ngIf="!isAddStepFormShown" mat-flat-button class="action-button" (click)="isAddStepFormShown = true">
+                            + Крок
+                        </button>
                         <button mat-flat-button class="action-button" [disabled]="newRecipy.steps.length <= 0"
                             matStepperNext>
                             Далі
