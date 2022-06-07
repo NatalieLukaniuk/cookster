@@ -297,6 +297,16 @@ button.mat-menu-item {
   padding: 0.5em 0 1em 0;
 }
 
+.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element,
+.mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+  background: var(--primary);
+}
+
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background: var(--primary);
+}
+
 // --- Auth-forms
 
 .auth-form-wrapper {
@@ -360,7 +370,15 @@ button.mat-menu-item {
   }
 }
 
-.mat-drawer-container{
+// --- Stepper
+
+.mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done,
+.mat-step-header .mat-step-icon-state-edit {
+  background-color: var(--primary);
+}
+
+.mat-drawer-container {
   height: 100%;
 }
 
@@ -370,12 +388,11 @@ button.mat-menu-item {
     font-size: 14px;
   }
 
-  .mat-chip-list-wrapper{
+  .mat-chip-list-wrapper {
     justify-content: space-between;
-    
   }
 
-  .mat-chip.mat-standard-chip{
+  .mat-chip.mat-standard-chip {
     border-radius: 2px;
     flex-grow: 1;
     min-height: 40px;

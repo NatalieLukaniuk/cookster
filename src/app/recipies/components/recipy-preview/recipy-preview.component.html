@@ -129,7 +129,7 @@
     <mat-button-toggle value="preparation">Приготування</mat-button-toggle>
     <mat-button-toggle value="details">Деталі</mat-button-toggle>
   </mat-button-toggle-group>
-  <ng-container *ngIf="currentTab === 'ingredients' && portionsToServe">
+  <div class="tab-content" *ngIf="currentTab === 'ingredients' && portionsToServe">
     <div class="portions-selector">
       <span>Кількість порцій: {{portionsToServe}}</span>
       <button mat-icon-button [matMenuTriggerFor]="unitMenu" class="edit-button">
@@ -156,8 +156,8 @@
       </ng-container>
     </ng-container>
 
-  </ng-container>
-  <ng-container *ngIf="currentTab === 'preparation'">
+  </div>
+  <div class="tab-content" *ngIf="currentTab === 'preparation'">
     <table class="steps-table" *ngIf="!isSplitToGroups">
       <tr *ngFor="let step of _clonedRecipy.steps; let i = index">
         <td>
@@ -181,8 +181,8 @@
         </ng-container>
       </ng-container>
     </ng-container>
-  </ng-container>
-  <div *ngIf="currentTab === 'details'" class="mobile-details-wrapper">
+  </div>
+  <div class="tab-content" *ngIf="currentTab === 'details'" class="mobile-details-wrapper">
     <div>
       <mat-chip-list>
         <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
