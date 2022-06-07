@@ -193,6 +193,15 @@
   margin-top: 20px;
 }
 
+.add-recipy-mobile-button{
+  position: fixed;
+  bottom: 60px;
+  height: 50px;
+  width: 100vw;
+  border-radius: 0;
+  border: none !important;
+}
+
 @media (max-width: 600px) {
   .full-recipy-wrapper {
     padding-inline: 10px;

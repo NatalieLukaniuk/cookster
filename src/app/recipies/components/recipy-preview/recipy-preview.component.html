@@ -54,7 +54,9 @@
             <tr *ngFor="let step of _clonedRecipy.steps; let i = index">
               <td>
                 <p *ngIf="mode !== RecipyMode.EditRecipy">{{ i + 1 }}. {{ step.description }}</p>
-                <div *ngIf="mode == RecipyMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical" class="input-edit" [(ngModel)]="step.description" (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
+                <div *ngIf="mode == RecipyMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical"
+                    class="input-edit" [(ngModel)]="step.description"
+                    (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
               </td>
               <td class="time-cell">{{ getTotalStepTime(step) }} хв.</td>
               <td *ngIf="mode == RecipyMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
@@ -70,7 +72,9 @@
                   <tr *ngFor="let step of item.value; let i = index">
                     <td>
                       <p *ngIf="mode !== RecipyMode.EditRecipy">{{ i + 1 }}. {{ step.description }}</p>
-                      <div *ngIf="mode == RecipyMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical" class="input-edit" [(ngModel)]="step.description" (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
+                      <div *ngIf="mode == RecipyMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical"
+                          class="input-edit" [(ngModel)]="step.description"
+                          (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
                     </td>
                     <td class="time-cell">{{ getTotalStepTime(step) }} хв.</td>
                     <td *ngIf="mode == RecipyMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
@@ -82,10 +86,11 @@
             </ng-container>
           </ng-container>
           <button mat-flat-button class="action-button add-ingredient-button"
-            *ngIf="mode == RecipyMode.EditRecipy && !isAddStepFormShown"
-            (click)="isAddStepFormShown = true">Add Step</button>
-            <app-add-step *ngIf="mode == RecipyMode.EditRecipy && isAddStepFormShown" [index]="_clonedRecipy.steps.length" [isSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
-                        [groupOptions]="_clonedRecipy.isSplitIntoGroups" (addNewStep)="onAddNewStep($event)"></app-add-step>
+            *ngIf="mode == RecipyMode.EditRecipy && !isAddStepFormShown" (click)="isAddStepFormShown = true">Add
+            Step</button>
+          <app-add-step *ngIf="mode == RecipyMode.EditRecipy && isAddStepFormShown" [index]="_clonedRecipy.steps.length"
+            [isSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
+            [groupOptions]="_clonedRecipy.isSplitIntoGroups" (addNewStep)="onAddNewStep($event)"></app-add-step>
         </div>
 
       </div>
@@ -124,11 +129,6 @@
   <header class="mobile-header">
     {{ _clonedRecipy.name }}
   </header>
-  <mat-button-toggle-group appearance="legacy" aria-label="Font Style" (change)="onMatToggleChange($event)">
-    <mat-button-toggle value="ingredients" checked>Інгридієнти</mat-button-toggle>
-    <mat-button-toggle value="preparation">Приготування</mat-button-toggle>
-    <mat-button-toggle value="details">Деталі</mat-button-toggle>
-  </mat-button-toggle-group>
   <div class="tab-content" *ngIf="currentTab === 'ingredients' && portionsToServe">
     <div class="portions-selector">
       <span>Кількість порцій: {{portionsToServe}}</span>
@@ -206,4 +206,12 @@
 
     </div>
   </div>
-</ng-container>
+  <button mat-flat-button class="action-button add-recipy-mobile-button"
+            *ngIf="mode == RecipyMode.EditRecipy || mode == RecipyMode.AddPreview"
+            (click)="mode == RecipyMode.AddPreview? onAddRecipy() : saveUpdatedRecipy()">Зберегти рецепт</button>
+  <mat-button-toggle-group appearance="legacy" aria-label="Font Style" (change)="onMatToggleChange($event)">
+    <mat-button-toggle value="ingredients" checked>Інгридієнти</mat-button-toggle>
+    <mat-button-toggle value="preparation">Приготування</mat-button-toggle>
+    <mat-button-toggle value="details">Деталі</mat-button-toggle>
+  </mat-button-toggle-group>
+  </ng-container>
