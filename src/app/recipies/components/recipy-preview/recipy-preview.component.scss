@@ -34,6 +34,11 @@
   border-bottom: 1px solid;
 }
 
+.recipy-action-buttons {
+  align-items: flex-start;
+  display: flex;
+}
+
 .preparation-wrapper {
   .input-edit {
     max-width: 95%;
@@ -193,7 +198,7 @@
   margin-top: 20px;
 }
 
-.add-recipy-mobile-button{
+.add-recipy-mobile-button {
   position: fixed;
   bottom: 60px;
   height: 50px;
@@ -239,7 +244,7 @@
   h4 {
     padding-inline: 10px;
   }
-  .tab-content{
+  .tab-content {
     padding-bottom: 5vh;
   }
 }

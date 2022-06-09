@@ -6,12 +6,17 @@
           <h1 *ngIf="mode !== RecipyMode.EditRecipy">{{ _clonedRecipy.name }}</h1>
           <input matInput class="input-edit" *ngIf="mode == RecipyMode.EditRecipy" [(ngModel)]="_clonedRecipy.name"
             (ngModelChange)="isChangesSaved = false">
-          <button *ngIf="mode == RecipyMode.ViewRecipy" mat-icon-button
-            (click)="mode == RecipyMode.ViewRecipy? onEditRecipy() : other()">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-flat-button class="action-button" *ngIf="mode == RecipyMode.EditRecipy"
-            (click)="saveUpdatedRecipy()" [disabled]="isChangesSaved">Save Changes</button>
+          <div class="recipy-action-buttons">
+            <my-date-picker name="mydate" (dateChanged)="onDateChanged($event)" [options]="myDatePickerOptions"
+              [(ngModel)]="datePicker" required></my-date-picker>
+            <button *ngIf="mode == RecipyMode.ViewRecipy" mat-icon-button
+              (click)="mode == RecipyMode.ViewRecipy? onEditRecipy() : other()">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-flat-button class="action-button" *ngIf="mode == RecipyMode.EditRecipy"
+              (click)="saveUpdatedRecipy()" [disabled]="isChangesSaved">Save Changes</button>
+          </div>
+
         </div>
         <div class="ingredients-wrapper" *ngIf="portionsToServe && !!_clonedRecipy.ingrediends">
           <h3 *ngIf="portionsToServe && mode !==RecipyMode.EditRecipy">
@@ -210,11 +215,11 @@
     </div>
   </div>
   <button mat-flat-button class="action-button add-recipy-mobile-button"
-            *ngIf="mode == RecipyMode.EditRecipy || mode == RecipyMode.AddPreview"
-            (click)="mode == RecipyMode.AddPreview? onAddRecipy() : saveUpdatedRecipy()">Зберегти рецепт</button>
+    *ngIf="mode == RecipyMode.EditRecipy || mode == RecipyMode.AddPreview"
+    (click)="mode == RecipyMode.AddPreview? onAddRecipy() : saveUpdatedRecipy()">Зберегти рецепт</button>
   <mat-button-toggle-group appearance="legacy" aria-label="Font Style" (change)="onMatToggleChange($event)">
     <mat-button-toggle value="ingredients" checked>Інгридієнти</mat-button-toggle>
     <mat-button-toggle value="preparation">Приготування</mat-button-toggle>
     <mat-button-toggle value="details">Деталі</mat-button-toggle>
   </mat-button-toggle-group>
-  </ng-container>
+</ng-container>

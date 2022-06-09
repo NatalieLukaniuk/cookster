@@ -15,6 +15,8 @@ import * as _ from 'lodash';
 import { RecipiesService } from '../../services/recipies.service';
 import { User } from 'src/app/auth/models/user.interface';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
+import { IMyDpOptions } from 'mydatepicker';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-recipy-preview',
@@ -48,6 +50,16 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   currentTab: string = 'ingredients';
 
   AVERAGE_PORTION: number = 250;
+
+
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'dd.mm.yyyy',
+    showInputField: false,
+    showClearDateBtn: false
+  };
+
+  datePicker: any;
 
   constructor(private layoutService: LayoutService, private store: Store, private recipiesService: RecipiesService) { }
   ngOnChanges(changes: SimpleChanges): void {
@@ -310,5 +322,11 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     this.getStepsByGroup()
     this.isAddStepFormShown = false
     this.isChangesSaved = false
+  }
+
+  pipe = new DatePipe('en-US');
+  onDateChanged(event: any) {
+    let day = this.pipe.transform(event.jsdate, 'ddMMYYYY')
+
   }
 }

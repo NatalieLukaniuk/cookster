@@ -26,6 +26,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
+import { MyDatePickerModule } from 'mydatepicker';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import {MatSliderModule} from '@angular/material/slider';
     MatRadioModule,
     MatSnackBarModule,
     MatExpansionModule,
-    MatSliderModule
+    MatSliderModule,
+    MyDatePickerModule
   ],
   declarations: [
     HeaderComponent,
@@ -85,7 +87,8 @@ import {MatSliderModule} from '@angular/material/slider';
     MatRadioModule,
     MatSnackBarModule,
     MatExpansionModule,
-    MatSliderModule
+    MatSliderModule,
+    MyDatePickerModule
   ],
   providers: []
 })
