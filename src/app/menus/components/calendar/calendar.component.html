@@ -17,6 +17,7 @@
       [class.active]="day.active"
     >
       <span>{{ day.value | moment: "D" }}</span>
+      <app-day [day]="day" [userCalendarDataExtended]="userCalendarDataExtended"></app-day>
     </div>
   </div>
 </div>

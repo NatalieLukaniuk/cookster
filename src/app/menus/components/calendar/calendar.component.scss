@@ -22,10 +22,10 @@
       opacity: 0.5;
       cursor: not-allowed;
   }
-  &:hover:not(.disabled){
-      background-color: lightgreen;
-      cursor: pointer;
-  }
+  // &:hover:not(.disabled){
+      // background-color: lightgreen;
+      // cursor: pointer;
+  // }
 }
 
 .calendar-week:not(:first-child) .calendar-day {
