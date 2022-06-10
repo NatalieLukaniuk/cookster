@@ -1,6 +1,5 @@
 .day-wrapper {
     text-align: left;
-    margin-top: 20px;
 }
 
 h5 {
@@ -21,5 +20,11 @@ h5 {
     padding: 5px;
     &:not(:last-child) {
         border-bottom: 1px solid var(--tint3);
+    }
+}
+
+@media (min-width: 600px){
+    .day-wrapper {
+        margin-top: 20px;
     }
 }

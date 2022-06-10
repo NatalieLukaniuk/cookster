@@ -12,7 +12,8 @@
     <ng-container *ngFor="let day of week.days">
       <div class="calendar-day" *ngIf="!isMobile || !day.disabled" [class.disabled]="day.disabled"
         [class.selected]="day.selected" [class.active]="day.active">
-        <span *ngIf="!isMobile">{{ day.value | moment: "D" }}</span><span *ngIf="isMobile">{{day.value | moment: 'dddd, Do MMMM'}}</span>
+        <span *ngIf="!isMobile">{{ day.value | moment: "D" }}</span>
+        <div *ngIf="isMobile" class="day-header"><span>{{day.value | moment: 'dddd, Do MMMM'}}</span><button mat-icon-button><mat-icon>add_circle_outline</mat-icon></button></div>
         <app-day [day]="day" [isMobile]="isMobile"></app-day>
       </div>
     </ng-container>
