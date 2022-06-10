@@ -1,15 +1,30 @@
-<div *ngIf="!!currentDayDetails" (click)="check()" class="day-wrapper">
-    <div *ngIf="!!currentDayDetails.breakfast.length" class="meal-time">
-        <h5>Breakfast</h5>        
-        <div *ngFor="let item of currentDayDetails.breakfast" class="recipy-name" [matMenuTriggerFor]="recipyMenu"><span>{{item.name}}</span></div>
+<div *ngIf="!!day.details" (click)="check()" class="day-wrapper">
+    <div *ngIf="!!day.details.breakfast.length || isMobile" class="meal-time">
+        <h5>Breakfast</h5>
+        <ng-container *ngIf="!!day.details.breakfast">
+            <div *ngFor="let item of day.details.breakfast" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
+                <span>{{item.name}}</span>
+            </div>
+        </ng-container>
+
     </div>
-    <div *ngIf="!!currentDayDetails.lunch.length" class="meal-time">
-        <h5>Lunch</h5>        
-        <div *ngFor="let item of currentDayDetails.lunch" class="recipy-name" [matMenuTriggerFor]="recipyMenu"><span>{{item.name}}</span></div>
+    <div *ngIf="!!day.details.lunch.length || isMobile" class="meal-time">
+        <h5>Lunch</h5>
+        <ng-container *ngIf="!!day.details.lunch">
+            <div *ngFor="let item of day.details.lunch" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
+                <span>{{item.name}}</span>
+            </div>
+        </ng-container>
+
     </div>
-    <div *ngIf="!!currentDayDetails.dinner.length" class="meal-time">
-        <h5>Dinner</h5>        
-        <div *ngFor="let item of currentDayDetails.dinner" class="recipy-name" [matMenuTriggerFor]="recipyMenu"><span>{{item.name}}</span></div>
+    <div *ngIf="!!day.details.dinner.length || isMobile" class="meal-time">
+        <h5>Dinner</h5>
+        <ng-container *ngIf="!!day.details.dinner">
+            <div *ngFor="let item of day.details.dinner" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
+                <span>{{item.name}}</span>
+            </div>
+        </ng-container>
+
     </div>
 
 </div>
@@ -18,4 +33,4 @@
     <button mat-menu-item>Переглянути рецепт</button>
     <button mat-menu-item>Додати інгридієнти в список покупок</button>
     <button mat-menu-item>Видалити</button>
-  </mat-menu>
+</mat-menu>

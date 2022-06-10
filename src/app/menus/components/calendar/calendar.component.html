@@ -1,5 +1,5 @@
 <div class="calendar-wrapper">
-  <div class="calendar-week">
+  <div class="calendar-week" *ngIf="!isMobile">
     <div class="calendar-day">Неділя</div>
     <div class="calendar-day">Понеділок</div>
     <div class="calendar-day">Вівторок</div>
@@ -9,15 +9,13 @@
     <div class="calendar-day">Субота</div>
   </div>
   <div class="calendar-week" *ngFor="let week of calendar">
-    <div
-      class="calendar-day"
-      *ngFor="let day of week.days"
-      [class.disabled]="day.disabled"
-      [class.selected]="day.selected"
-      [class.active]="day.active"
-    >
-      <span>{{ day.value | moment: "D" }}</span>
-      <app-day [day]="day" [userCalendarDataExtended]="userCalendarDataExtended"></app-day>
-    </div>
+    <ng-container *ngFor="let day of week.days">
+      <div class="calendar-day" *ngIf="!isMobile || !day.disabled" [class.disabled]="day.disabled"
+        [class.selected]="day.selected" [class.active]="day.active">
+        <span *ngIf="!isMobile">{{ day.value | moment: "D" }}</span><span *ngIf="isMobile">{{day.value | moment: 'dddd, Do MMMM'}}</span>
+        <app-day [day]="day" [isMobile]="isMobile"></app-day>
+      </div>
+    </ng-container>
+
   </div>
 </div>

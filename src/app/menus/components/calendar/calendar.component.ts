@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { isNgTemplate } from '@angular/compiler';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
@@ -7,7 +8,7 @@ import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { IAppState } from 'src/app/store/reducers';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { MOCK_CALENDAR_DATA } from '../../services/mockData';
-import { DayDetailsExtended, IDayDetails } from '../day/day.component';
+import { DayDetails, DayDetailsExtended, IDayDetails } from '../day/day.component';
 
 import { DateService } from './../../services/date.service';
 
@@ -16,6 +17,7 @@ export interface Day {
   active: boolean;
   selected: boolean;
   disabled: boolean;
+  details: DayDetailsExtended
 }
 
 interface Week {
@@ -28,10 +30,10 @@ interface Week {
   styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent implements OnInit, OnDestroy {
+  @Input() isMobile: boolean = false;
   calendar: Week[] = [];
   userCalendarData: IDayDetails[] = [];
   destroyed$ = new Subject();
-  userCalendarDataExtended: DayDetailsExtended[] = [];
 
   constructor(private dateService: DateService, private store: Store<IAppState>) {}
   ngOnDestroy(): void {
@@ -42,41 +44,37 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.dateService.date.subscribe((res) => this.generate(res));
     this.userCalendarData = MOCK_CALENDAR_DATA; // TODO data should be fetched from user 
     this.store.pipe(select(getAllRecipies), takeUntil(this.destroyed$)).subscribe(res => {
-      this.userCalendarData.forEach((item: IDayDetails) => {
-        let itemToReturn: DayDetailsExtended = {
-          day: item.day,
-          breakfast: [],
-          lunch: [],
-          dinner: []
+      this.calendar.forEach((week: Week) => week.days.forEach((day: Day) => {
+        let foundDay = this.userCalendarData.find((item: IDayDetails) => item.day == day.details.day);
+        if(!!foundDay){
+          if(!!foundDay.breakfast.length){
+            foundDay.breakfast.forEach(recId => {
+              let foundRecipy = res.find(recipy => recipy.id == recId)
+              if(foundRecipy){
+                day.details.breakfast.push(foundRecipy)
+              }
+            })
+          }
+          if(!!foundDay.lunch.length){
+            foundDay.lunch.forEach(recId => {
+              let foundRecipy = res.find(recipy => recipy.id == recId)
+              if(foundRecipy){
+                day.details.lunch.push(foundRecipy)
+              }
+            })
+          }
+          if(!!foundDay.dinner.length){
+            foundDay.dinner.forEach(recId => {
+              let foundRecipy = res.find(recipy => recipy.id == recId)
+              if(foundRecipy){
+                day.details.dinner.push(foundRecipy)
+              }
+            })
+          }
         }
-        if(!!item.breakfast.length){
-          item.breakfast.forEach(recId => {
-            let foundRecipy = res.find(recipy => recipy.id == recId)
-            if(foundRecipy){
-              itemToReturn.breakfast.push(foundRecipy)
-            }
-          })
-        }
-        if(!!item.lunch.length){
-          item.lunch.forEach(recId => {
-            let foundRecipy = res.find(recipy => recipy.id == recId)
-            if(foundRecipy){
-              itemToReturn.lunch.push(foundRecipy)
-            }
-          })
-        }
-        if(!!item.dinner.length){
-          item.dinner.forEach(recId => {
-            let foundRecipy = res.find(recipy => recipy.id == recId)
-            if(foundRecipy){
-              itemToReturn.dinner.push(foundRecipy)
-            }
-          })
-        }
-        this.userCalendarDataExtended.push(itemToReturn)
-      })
-      console.log(this.userCalendarDataExtended)
+      }))
     })
+
   }
 
   findRecipy(allRecipies: Recipy[], recipyToFindId: string): Recipy | null {
@@ -104,8 +102,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
           const active = moment().isSame(value, 'date')
           const disabled = !now.isSame(value, 'month')
           const selected = now.isSame(value, 'date')
-
-          return {value, active, disabled, selected}
+          const details = new DayDetails(value.format('DDMMYYYY'))
+          return {value, active, disabled, selected, details}
         })
       })
     }

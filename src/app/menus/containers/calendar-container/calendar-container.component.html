@@ -1,9 +1,9 @@
-<div>
+<div class="calendar-container">
   <div class="calendar-header">
     <app-calendar-selector></app-calendar-selector>
   </div>
   <div class="calendar-body">
-    <app-calendar></app-calendar>
+    <app-calendar [isMobile]="isMobile"></app-calendar>
   </div>
   <div class="optional"></div>
 </div>

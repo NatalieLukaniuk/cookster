@@ -32,21 +32,17 @@ export interface DayDetailsExtended {
 })
 export class DayComponent implements OnInit {
   @Input() day!: Day
-  @Input()
-  userCalendarDataExtended!: DayDetailsExtended[];
 
-  currentDayDetails: DayDetailsExtended | undefined
+  @Input() isMobile: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
-    let currentDay = this.day.value.format('DDMMYYYY');
-    this.currentDayDetails = this.userCalendarDataExtended.find((item: DayDetailsExtended) => item.day == currentDay.toString())
     
   }
 
   check() {
-    console.log(this.currentDayDetails)
+    console.log(this.day)
   }
 
 }

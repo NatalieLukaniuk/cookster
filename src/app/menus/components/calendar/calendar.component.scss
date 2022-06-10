@@ -13,21 +13,29 @@
   border: 1px solid var(--text-color);
   padding: 5px;
   &.active {
-      border-color: black;
+    border-color: black;
     span {
       font-weight: 800;
     }
   }
-  &.disabled{
-      opacity: 0.5;
-      cursor: not-allowed;
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
-  // &:hover:not(.disabled){
-      // background-color: lightgreen;
-      // cursor: pointer;
-  // }
 }
 
 .calendar-week:not(:first-child) .calendar-day {
   min-height: 90px;
+}
+
+@media (max-width: 600px) {
+  .calendar-wrapper {
+    .calendar-week {
+      flex-direction: column;
+      .calendar-day {
+        width: 100%;
+        min-height: auto;
+      }
+    }
+  }
 }
