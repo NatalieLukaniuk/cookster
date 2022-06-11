@@ -134,6 +134,8 @@
 
 
 <ng-container *ngIf="isMobile && _clonedRecipy">
+  <div class="date-picker"><my-date-picker name="mydate" (dateChanged)="onDateChanged($event)" [options]="myDatePickerOptions"
+    [(ngModel)]="datePicker"></my-date-picker></div>
   <header class="mobile-header">
     {{ _clonedRecipy.name }}
   </header>

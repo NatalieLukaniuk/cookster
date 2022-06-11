@@ -64,7 +64,7 @@ export class AuthService {
             email: user.email,
             uid: user.uid
           }
-          this.store.dispatch(new UserActions.UserLoadedAction(currentUser))
+          // this.store.dispatch(new UserActions.UserLoadedAction(currentUser))
         }
 
         this.userService.userAtFirebaseAuth = user;

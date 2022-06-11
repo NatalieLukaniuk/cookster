@@ -51,7 +51,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
             foundDay.breakfast.forEach(recId => {
               let foundRecipy = res.find(recipy => recipy.id == recId)
               if(foundRecipy){
-                day.details.breakfast.push(foundRecipy)
+                day.details.breakfastRecipies.push(foundRecipy)
               }
             })
           }
@@ -59,7 +59,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
             foundDay.lunch.forEach(recId => {
               let foundRecipy = res.find(recipy => recipy.id == recId)
               if(foundRecipy){
-                day.details.lunch.push(foundRecipy)
+                day.details.lunchRecipies.push(foundRecipy)
               }
             })
           }
@@ -67,7 +67,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
             foundDay.dinner.forEach(recId => {
               let foundRecipy = res.find(recipy => recipy.id == recId)
               if(foundRecipy){
-                day.details.dinner.push(foundRecipy)
+                day.details.dinnerRecipies.push(foundRecipy)
               }
             })
           }
@@ -102,7 +102,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
           const active = moment().isSame(value, 'date')
           const disabled = !now.isSame(value, 'month')
           const selected = now.isSame(value, 'date')
-          const details = new DayDetails(value.format('DDMMYYYY'))
+          let det = new DayDetails(value.format('DDMMYYYY'))
+          const details: DayDetailsExtended = {
+            ...det,
+            breakfastRecipies: [],
+            lunchRecipies: [],
+            dinnerRecipies: []
+          }
           return {value, active, disabled, selected, details}
         })
       })

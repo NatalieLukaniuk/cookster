@@ -11,12 +11,14 @@ import { IngredientsByGroup, ingredientsByGroup, StepsByGroup, stepsByGroup } fr
 import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
 import { select, Store } from '@ngrx/store';
 import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
+import * as UserActions from '../../../store/actions/user.actions';
 import * as _ from 'lodash';
 import { RecipiesService } from '../../services/recipies.service';
 import { User } from 'src/app/auth/models/user.interface';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { IMyDpOptions } from 'mydatepicker';
 import { DatePipe } from '@angular/common';
+import { DayDetails } from 'src/app/menus/components/day/day.component';
 
 @Component({
   selector: 'app-recipy-preview',
@@ -327,6 +329,29 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   pipe = new DatePipe('en-US');
   onDateChanged(event: any) {
     let day = this.pipe.transform(event.jsdate, 'ddMMYYYY')
+    if (!!this.currentUser) {
+      let userToSave: User = _.cloneDeep(this.currentUser)
+      if (!('details' in userToSave)) {
+        userToSave.details = []
+      }
+      let dayExists = userToSave.details?.find(item => item.day == day);
+      if (!!dayExists && ('id' in this.recipy)) {
+        let recipyId = this.recipy.id
+        userToSave.details = userToSave.details!.map(item => {
+          if (item.day == day) {
+            item.breakfast.push(recipyId)
+          }
+          return item
+        })
+        this.store.dispatch(new UserActions.UpdateUserAction(userToSave))
+      } else if (!!day && 'id' in this.recipy) {
+        let itemToSave: DayDetails = new DayDetails(day);
+        itemToSave.breakfast.push(this.recipy.id)
+        userToSave.details!.push(itemToSave)
+        this.store.dispatch(new UserActions.UpdateUserAction(userToSave))
+      }
+    }
+
 
   }
 }

@@ -1,26 +1,26 @@
 <div *ngIf="!!day.details" (click)="check()" class="day-wrapper">
-    <div *ngIf="!!day.details.breakfast.length || isMobile" class="meal-time">
+    <div *ngIf="!!day.details.breakfastRecipies.length || isMobile" class="meal-time">
         <h5>Breakfast</h5>
-        <ng-container *ngIf="!!day.details.breakfast">
-            <div *ngFor="let item of day.details.breakfast" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
+        <ng-container *ngIf="!!day.details.breakfastRecipies">
+            <div *ngFor="let item of day.details.breakfastRecipies" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
                 <span>{{item.name}}</span>
             </div>
         </ng-container>
 
     </div>
-    <div *ngIf="!!day.details.lunch.length || isMobile" class="meal-time">
+    <div *ngIf="!!day.details.lunchRecipies.length || isMobile" class="meal-time">
         <h5>Lunch</h5>
-        <ng-container *ngIf="!!day.details.lunch">
-            <div *ngFor="let item of day.details.lunch" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
+        <ng-container *ngIf="!!day.details.lunchRecipies">
+            <div *ngFor="let item of day.details.lunchRecipies" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
                 <span>{{item.name}}</span>
             </div>
         </ng-container>
 
     </div>
-    <div *ngIf="!!day.details.dinner.length || isMobile" class="meal-time">
+    <div *ngIf="!!day.details.dinnerRecipies.length || isMobile" class="meal-time">
         <h5>Dinner</h5>
-        <ng-container *ngIf="!!day.details.dinner">
-            <div *ngFor="let item of day.details.dinner" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
+        <ng-container *ngIf="!!day.details.dinnerRecipies">
+            <div *ngFor="let item of day.details.dinnerRecipies" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
                 <span>{{item.name}}</span>
             </div>
         </ng-container>

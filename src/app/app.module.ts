@@ -20,6 +20,7 @@ import { environment } from '../environments/environment';
 import { RecipiesEffects } from './store/effects/recipies.effects';
 import { FiltersModule } from './filters/filters.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { UserEffects } from './store/effects/user.effects';
 
  
 
@@ -43,7 +44,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FiltersModule,
     FlexLayoutModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([RecipiesEffects]),
+    EffectsModule.forRoot([RecipiesEffects, UserEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [],

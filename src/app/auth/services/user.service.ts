@@ -53,6 +53,9 @@ export class UserService {
       if (userAtFirebaseAuth.email === user.email) {
         console.log(user)
         this.currentUser = user;
+        if(!('details' in this.currentUser)){
+          this.currentUser.details = []
+        }
         this.store.dispatch(new UserActions.UserLoadedAction(user))
       }
     }
