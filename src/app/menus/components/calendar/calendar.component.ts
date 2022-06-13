@@ -9,7 +9,6 @@ import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { IAppState } from 'src/app/store/reducers';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
-import { MOCK_CALENDAR_DATA } from '../../services/mockData';
 import { DayDetails, DayDetailsExtended, IDayDetails } from '../day/day.component';
 
 import { DateService } from './../../services/date.service';
