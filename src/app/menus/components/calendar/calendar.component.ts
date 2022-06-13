@@ -2,11 +2,13 @@ import { isNgTemplate } from '@angular/compiler';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as moment from 'moment';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { User } from 'src/app/auth/models/user.interface';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { IAppState } from 'src/app/store/reducers';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
+import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { MOCK_CALENDAR_DATA } from '../../services/mockData';
 import { DayDetails, DayDetailsExtended, IDayDetails } from '../day/day.component';
 
@@ -42,30 +44,35 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dateService.date.subscribe((res) => this.generate(res));
-    this.userCalendarData = MOCK_CALENDAR_DATA; // TODO data should be fetched from user 
-    this.store.pipe(select(getAllRecipies), takeUntil(this.destroyed$)).subscribe(res => {
+    let currentUser$ = this.store.pipe(select(getCurrentUser), takeUntil(this.destroyed$));
+    let allRecipies$ = this.store.pipe(select(getAllRecipies), takeUntil(this.destroyed$));
+    combineLatest([currentUser$, allRecipies$]).subscribe(res => {
+      let [currentUser, recipies] = res;
+      if(!!currentUser && 'details' in currentUser && !!currentUser.details){
+        this.userCalendarData = currentUser.details;
+      }
       this.calendar.forEach((week: Week) => week.days.forEach((day: Day) => {
         let foundDay = this.userCalendarData.find((item: IDayDetails) => item.day == day.details.day);
         if(!!foundDay){
-          if(!!foundDay.breakfast.length){
+          if('breakfast' in foundDay && !!foundDay.breakfast.length){
             foundDay.breakfast.forEach(recId => {
-              let foundRecipy = res.find(recipy => recipy.id == recId)
+              let foundRecipy = recipies.find(recipy => recipy.id == recId)
               if(foundRecipy){
                 day.details.breakfastRecipies.push(foundRecipy)
               }
             })
           }
-          if(!!foundDay.lunch.length){
+          if('lunch' in foundDay && !!foundDay.lunch.length){
             foundDay.lunch.forEach(recId => {
-              let foundRecipy = res.find(recipy => recipy.id == recId)
+              let foundRecipy = recipies.find(recipy => recipy.id == recId)
               if(foundRecipy){
                 day.details.lunchRecipies.push(foundRecipy)
               }
             })
           }
-          if(!!foundDay.dinner.length){
+          if('dinner' in foundDay && !!foundDay.dinner.length){
             foundDay.dinner.forEach(recId => {
-              let foundRecipy = res.find(recipy => recipy.id == recId)
+              let foundRecipy = recipies.find(recipy => recipy.id == recId)
               if(foundRecipy){
                 day.details.dinnerRecipies.push(foundRecipy)
               }
@@ -74,7 +81,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
         }
       }))
     })
-
   }
 
   findRecipy(allRecipies: Recipy[], recipyToFindId: string): Recipy | null {
