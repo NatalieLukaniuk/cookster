@@ -1,9 +1,18 @@
-.wrapper{
+.wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-span{
+span {
     margin-inline: 15px;
+}
+
+@media (max-width: 600px) {
+    .wrapper {
+        position: fixed;
+        top: 55px;
+        width: 100%;
+        background: var(--background-color);
+    }
 }
