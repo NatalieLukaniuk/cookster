@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 import { LayoutService } from 'src/app/shared/services/layout.service';
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
@@ -19,6 +19,8 @@ import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { IMyDpOptions } from 'mydatepicker';
 import { DatePipe } from '@angular/common';
 import { DayDetails } from 'src/app/menus/components/day/day.component';
+import { SelectOptionDialogComponent } from 'src/app/shared/components/select-option-dialog/select-option-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-recipy-preview',
@@ -63,7 +65,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   datePicker: any;
 
-  constructor(private layoutService: LayoutService, private store: Store, private recipiesService: RecipiesService) { }
+  constructor(private layoutService: LayoutService, private store: Store, private recipiesService: RecipiesService, public dialog: MatDialog) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
       this.portionsToServe = this.savedPortionsServed;
@@ -328,30 +330,58 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   pipe = new DatePipe('en-US');
   onDateChanged(event: any) {
-    let day = this.pipe.transform(event.jsdate, 'ddMMYYYY')
-    if (!!this.currentUser) {
-      let userToSave: User = _.cloneDeep(this.currentUser)
-      if (!('details' in userToSave)) {
-        userToSave.details = []
-      }
-      let dayExists = userToSave.details?.find(item => item.day == day);
-      if (!!dayExists && ('id' in this.recipy)) {
-        let recipyId = this.recipy.id
-        userToSave.details = userToSave.details!.map(item => {
-          if (item.day == day) {
-            item.breakfast.push(recipyId)
-          }
-          return item
-        })
-        this.store.dispatch(new UserActions.UpdateUserAction(userToSave))
-      } else if (!!day && 'id' in this.recipy) {
-        let itemToSave: DayDetails = new DayDetails(day);
-        itemToSave.breakfast.push(this.recipy.id)
-        userToSave.details!.push(itemToSave)
-        this.store.dispatch(new UserActions.UpdateUserAction(userToSave))
-      }
-    }
+    let day = this.pipe.transform(event.jsdate, 'ddMMYYYY');
+    this.openDialog().pipe(take(1)).subscribe((mealTime: string) => {
+      if (!!this.currentUser && !!mealTime) {
+        let userToSave: User = _.cloneDeep(this.currentUser)
+        if (!('details' in userToSave)) {
+          userToSave.details = []
+        }
+        let dayExists = userToSave.details?.find(item => item.day == day);
+        if (!!dayExists && ('id' in this.recipy)) {
+          let recipyId = this.recipy.id
+          userToSave.details = userToSave.details!.map(item => {
+            if (item.day == day) {
+              switch (mealTime) {
+                case 'breakfast': item.breakfast.push(recipyId);
+                  break;
+                case 'lunch': item.lunch.push(recipyId);
+                  break;
+                case 'dinner': item.dinner.push(recipyId);
+              }
 
+            }
+            return item
+          })
+          this.store.dispatch(new UserActions.UpdateUserAction(userToSave))
+        } else if (!!day && 'id' in this.recipy) {
+          let itemToSave: DayDetails = new DayDetails(day);
+          switch (mealTime) {
+            case 'breakfast': itemToSave.breakfast.push(this.recipy.id);
+              break;
+            case 'lunch': itemToSave.lunch.push(this.recipy.id);
+              break;
+            case 'dinner': itemToSave.dinner.push(this.recipy.id);
+          }
+          userToSave.details!.push(itemToSave)
+          this.store.dispatch(new UserActions.UpdateUserAction(userToSave))
+        }
+      }
+    })
+  }
+
+  openDialog(): Observable<string> {
+    return new Observable(observer => {
+      const dialogRef = this.dialog.open(SelectOptionDialogComponent, {
+        width: '250px',
+        data: { title: 'Select meal time', options: ['breakfast', 'lunch', 'dinner'] },
+      });
+
+      dialogRef.afterClosed().subscribe((result: string | undefined) => {
+        observer.next(result)
+        observer.complete()
+      });
+    })
 
   }
 }

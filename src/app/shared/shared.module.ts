@@ -27,11 +27,14 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
 import { MyDatePickerModule } from 'mydatepicker';
+import { SelectOptionDialogComponent } from './components/select-option-dialog/select-option-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
@@ -61,6 +64,7 @@ import { MyDatePickerModule } from 'mydatepicker';
   declarations: [
     HeaderComponent,
     NavigationComponent,
+    SelectOptionDialogComponent,
   ],
   exports: [
     HeaderComponent,
@@ -88,7 +92,8 @@ import { MyDatePickerModule } from 'mydatepicker';
     MatSnackBarModule,
     MatExpansionModule,
     MatSliderModule,
-    MyDatePickerModule
+    MyDatePickerModule,
+    SelectOptionDialogComponent
   ],
   providers: []
 })

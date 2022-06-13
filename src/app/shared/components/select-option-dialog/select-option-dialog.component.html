@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+    <mat-radio-group class="cookster-radio-group" [(ngModel)]="selectedOption">
+        <mat-radio-button class="example-radio-button" *ngFor="let unit of data.options"
+            [value]="unit">
+            {{unit}}
+        </mat-radio-button>
+    </mat-radio-group>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button [mat-dialog-close]="selectedOption" cdkFocusInitial>Ok</button>
+  </div>
