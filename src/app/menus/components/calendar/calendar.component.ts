@@ -100,7 +100,7 @@ export class CalendarComponent implements OnInit, OnDestroy, AfterViewInit {
     let hacked = (+formatted - 1000000).toString()
     let el = document.getElementById(hacked);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'end', inline: "nearest" });
+      el.scrollIntoView({ behavior: 'smooth', block: 'start', inline: "nearest" });
     }
 
   }
