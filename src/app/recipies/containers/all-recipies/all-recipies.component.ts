@@ -33,8 +33,8 @@ export class AllRecipiesComponent implements OnInit {
         this.currentUser = res;
       }
     })
-    let recipies$ = this.store.pipe(select(getAllRecipies))
-    let filters$ = this.store.pipe(select(getFilters))
+    let recipies$ = this.store.pipe(select(getAllRecipies), takeUntil(this.destroy$))
+    let filters$ = this.store.pipe(select(getFilters), takeUntil(this.destroy$))
     combineLatest([recipies$, filters$]).subscribe(res => {
       let [recipies, filters] = res;
       let _recipies = recipies.map(recipy => recipy)
