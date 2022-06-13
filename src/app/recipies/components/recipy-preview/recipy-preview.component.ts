@@ -373,7 +373,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   openDialog(): Observable<string> {
     return new Observable(observer => {
       const dialogRef = this.dialog.open(SelectOptionDialogComponent, {
-        width: '250px',
+        width: '320px',
+        maxWidth: '99vw',
         data: { title: 'Select meal time', options: ['breakfast', 'lunch', 'dinner'] },
       });
 
