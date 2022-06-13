@@ -7,14 +7,15 @@ import * as UserActions from '../actions/user.actions';
 import { UserActionTypes } from "../actions/user.actions";
 import * as UiActions from '../actions/ui.actions'
 import { AuthApiService } from "src/app/auth/services/auth-api.service";
+import { User } from "src/app/auth/models/user.interface";
 
 @Injectable()
 
 export class UserEffects {
     updateUser$ = createEffect(() => this.actions$.pipe(
       ofType(UserActionTypes.UPDATE_USER),
-      switchMap((action: UserActions.UpdateUserAction) => this.authService.updateUser(action.user.uid!, action.user).pipe(
-        map((res) => new UserActions.UpdateUserSuccessfulAction(res)),
+      switchMap((action: UserActions.UpdateUserAction) => this.authService.updateUser(action.user.id!, action.user).pipe(
+        map((res: User) => new UserActions.UpdateUserSuccessfulAction(res)),
         catchError(error => of(new UiActions.ErrorAction(error)))
       ))
     ))

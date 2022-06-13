@@ -16,7 +16,7 @@ export class UpdateUserAction implements Action{
 
 export class UpdateUserSuccessfulAction implements Action {
     readonly type = UserActionTypes.UPDATE_USER_SUCCESSFUL;
-    constructor(public response: any){}
+    constructor(public response: User){}
 }
 
 export class GetUserAction implements Action {

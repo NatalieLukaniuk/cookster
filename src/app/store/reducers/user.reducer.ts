@@ -17,6 +17,12 @@ export function UserReducers (state: IUserState = InitialUserState, action: User
                 currentUser: action.user
             }
         }
+        case UserActionTypes.UPDATE_USER_SUCCESSFUL: {
+            return {
+                ...state,
+                currentUser: action.response
+            }
+        }
         default: return {...state}
     }
 }
