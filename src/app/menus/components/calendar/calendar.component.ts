@@ -30,16 +30,13 @@ interface Week {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CalendarComponent implements OnInit, OnDestroy {
   @Input() isMobile: boolean = false;
   calendar: Week[] = [];
   userCalendarData: IDayDetails[] = [];
   destroyed$ = new Subject();
 
   constructor(private dateService: DateService, private store: Store<IAppState>) { }
-  ngAfterViewInit(): void {
-    this.scrollToCurrentDay()
-  }
   ngOnDestroy(): void {
     this.destroyed$.next()
   }
@@ -94,16 +91,11 @@ export class CalendarComponent implements OnInit, OnDestroy, AfterViewInit {
     } else return null
   }
 
-  scrollToCurrentDay() {
+  getCurrentDay(): string{
     let currentDay = new Date()
-    let formatted = moment(currentDay).format('DDMMYYYY')
-    let hacked = (+formatted - 1000000).toString()
-    let el = document.getElementById(hacked);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start', inline: "nearest" });
-    }
-
+    return moment(currentDay).format('DDMMYYYY')
   }
+
 
   generate(now: moment.Moment) {
     const startDay = now.clone().startOf('month').startOf('week');
