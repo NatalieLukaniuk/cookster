@@ -105,6 +105,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     const calendar = [];
 
+    const currentDay = moment();
+    
     while (date.isBefore(endDay, 'day')) {
       calendar.push({
         days: Array(7)
@@ -112,7 +114,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
           .map(() => {
             const value = date.add(1, 'day').clone()
             const active = moment().isSame(value, 'date')
-            const disabled = !now.isSame(value, 'month')
+            const disabled = (!now.isSame(value, 'month') || (!value.isSame(currentDay, 'date') && value.isBefore(currentDay)))
             const selected = now.isSame(value, 'date')
             let det = new DayDetails(value.format('DDMMYYYY'))
             const details: DayDetailsExtended = {
