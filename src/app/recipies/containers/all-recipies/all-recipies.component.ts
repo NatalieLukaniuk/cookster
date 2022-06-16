@@ -52,7 +52,7 @@ export class AllRecipiesComponent implements OnInit {
       }
       if (!!filters.tags.length) {
         _recipies = _recipies.filter(recipy => {
-          return recipy.type.find(tag => filters.tags.includes(tag))
+          return filters.tags.every(tag => recipy.type.includes(tag))
         })
       }
       if (!!filters.maxPrepTime) {
