@@ -1,4 +1,4 @@
-<div *ngIf="!!day.details" (click)="check()" class="day-wrapper">
+<div *ngIf="!!day.details" class="day-wrapper">
     <div *ngIf="!!day.details.breakfastRecipies.length || isMobile" class="meal-time">
         <h5>Breakfast</h5>
         <ng-container *ngIf="!!day.details.breakfastRecipies">
