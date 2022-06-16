@@ -8,6 +8,7 @@ import { CalendarContainerComponent } from './containers/calendar-container/cale
 import { MenusComponent } from './menus.component';
 import { MomentPipe } from './pipes/moment.pipe';
 import { DayComponent } from './components/day/day.component';
+import { CalendarRecipyComponent } from './components/calendar-recipy/calendar-recipy.component';
 
 @NgModule({
   imports: [CommonModule, SharedModule],
@@ -18,6 +19,7 @@ import { DayComponent } from './components/day/day.component';
     CalendarSelectorComponent,
     MomentPipe,
     DayComponent,
+    CalendarRecipyComponent,
   ],
 })
 export class MenusModule {}

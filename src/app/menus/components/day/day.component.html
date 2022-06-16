@@ -2,35 +2,30 @@
     <div *ngIf="!!day.details.breakfastRecipies.length || isMobile" class="meal-time">
         <h5>Breakfast</h5>
         <ng-container *ngIf="!!day.details.breakfastRecipies">
-            <div *ngFor="let item of day.details.breakfastRecipies" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
-                <span>{{item.name}}</span>
-            </div>
+            <ng-container *ngFor="let item of day.details.breakfastRecipies">
+                <app-calendar-recipy [isMobile]="isMobile" [recipy]="item"></app-calendar-recipy>
+            </ng-container>
         </ng-container>
 
     </div>
     <div *ngIf="!!day.details.lunchRecipies.length || isMobile" class="meal-time">
         <h5>Lunch</h5>
         <ng-container *ngIf="!!day.details.lunchRecipies">
-            <div *ngFor="let item of day.details.lunchRecipies" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
-                <span>{{item.name}}</span>
-            </div>
+            <ng-container *ngFor="let item of day.details.lunchRecipies">
+                <app-calendar-recipy [isMobile]="isMobile" [recipy]="item"></app-calendar-recipy>
+            </ng-container>
         </ng-container>
 
     </div>
     <div *ngIf="!!day.details.dinnerRecipies.length || isMobile" class="meal-time">
         <h5>Dinner</h5>
         <ng-container *ngIf="!!day.details.dinnerRecipies">
-            <div *ngFor="let item of day.details.dinnerRecipies" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
-                <span>{{item.name}}</span>
-            </div>
+            <ng-container *ngFor="let item of day.details.dinnerRecipies">
+                <app-calendar-recipy [isMobile]="isMobile" [recipy]="item"></app-calendar-recipy>
+            </ng-container>
         </ng-container>
 
     </div>
 
 </div>
 
-<mat-menu #recipyMenu="matMenu">
-    <button mat-menu-item>Переглянути рецепт</button>
-    <button mat-menu-item>Додати інгридієнти в список покупок</button>
-    <button mat-menu-item>Видалити</button>
-</mat-menu>

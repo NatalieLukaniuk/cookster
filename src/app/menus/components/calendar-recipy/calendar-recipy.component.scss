@@ -1,0 +1,38 @@
+.recipy-name {
+    &:hover{
+        cursor: pointer;
+    }
+    &:not(:first-child) {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 600px){
+    .recipy-name{
+        font-size: 14px;
+        margin-block: 5px;
+    }
+    .mat-expansion-panel{
+        background-color: var(--background-color);
+        border: 1px solid var(--gray);
+        .mat-expansion-panel-header{
+            padding-inline: 10px;
+            &.mat-expanded{
+                height: 45px;
+                border-bottom: 1px solid var(--tint3);
+                background-color: var(--tint3);
+                .mat-expansion-panel-header-title, .mat-expansion-panel-header-description{
+                    color: white;
+                }
+            }
+        }        
+    }
+    .mat-list-base .mat-list-item{
+        font-size: 12px;
+        height: 40px;
+        mat-icon{
+            font-size: 20px;
+            margin-right: 10px;
+        }
+    }
+}

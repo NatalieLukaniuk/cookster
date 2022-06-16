@@ -50,16 +50,17 @@ body {
 
 :root {
   --primary: rgb(10, 92, 21);
-  --background-color: hsla(128, 100%, 98%, 1);
+  --background-color: hsla(168, 100%, 98%, 1);
   --text-color: hsla(128, 100%, 10%, 1);
-  --tint1: rgb(180, 241, 228);
-  --tint2: hsla(128, 80%, 83%, 1);
-  --tint3: hsla(128, 80%, 63%, 1);
-  --tint4: hsla(128, 80%, 53%, 1);
-  --tint5: hsla(128, 80%, 43%, 1);
-  --tint6: hsla(128, 80%, 33%, 1);
-  --tint7: hsla(128, 80%, 23%, 1);
-  --tint7: hsla(128, 80%, 13%, 1);
+  --tint1: rgba(180, 241, 228, 1);
+  --tint2: hsla(168, 47%, 90%, 1);
+  --tint3: hsla(168, 47%, 50%, 1);
+  --tint4: hsla(168, 47%, 53%, 1);
+  --tint5: hsla(168, 47%, 43%, 1);
+  --tint6: hsla(168, 47%, 33%, 1);
+  --tint7: hsla(168, 47%, 23%, 1);
+  --tint7: hsla(168, 47%, 13%, 1);
+  --gray: hsla(0, 0%, 90%, 0.9);
 }
 
 .full-recipy-dialog {
