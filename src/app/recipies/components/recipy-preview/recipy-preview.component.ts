@@ -11,15 +11,14 @@ import { IngredientsByGroup, ingredientsByGroup, StepsByGroup, stepsByGroup } fr
 import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
 import { select, Store } from '@ngrx/store';
 import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
-import * as UserActions from '../../../store/actions/user.actions';
 import * as _ from 'lodash';
 import { RecipiesService } from '../../services/recipies.service';
 import { User } from 'src/app/auth/models/user.interface';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { IMyDpOptions } from 'mydatepicker';
 import { DatePipe } from '@angular/common';
-import { DayDetails } from 'src/app/menus/components/day/day.component';
 import { DialogsService } from 'src/app/shared/services/dialogs.service';
+import { CalendarService } from 'src/app/menus/services/calendar.service';
 
 @Component({
   selector: 'app-recipy-preview',
@@ -64,7 +63,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   datePicker: any;
 
-  constructor(private layoutService: LayoutService, private store: Store, private recipiesService: RecipiesService, private dialogsService: DialogsService) { }
+  constructor(private layoutService: LayoutService, private store: Store, private recipiesService: RecipiesService, private dialogsService: DialogsService, private calendarService: CalendarService) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
       this.portionsToServe = this.savedPortionsServed;
@@ -333,37 +332,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((mealTime: string) => {
       if (!!this.currentUser && !!mealTime) {
         let userToSave: User = _.cloneDeep(this.currentUser)
-        if (!('details' in userToSave)) {
-          userToSave.details = []
-        }
-        let dayExists = userToSave.details?.find(item => item.day == day);
-        if (!!dayExists && ('id' in this.recipy)) {
-          let recipyId = this.recipy.id
-          userToSave.details = userToSave.details!.map(item => {
-            if (item.day == day) {
-              switch (mealTime) {
-                case 'breakfast': item.breakfast.push(recipyId);
-                  break;
-                case 'lunch': item.lunch.push(recipyId);
-                  break;
-                case 'dinner': item.dinner.push(recipyId);
-              }
-
-            }
-            return item
-          })
-          this.store.dispatch(new UserActions.UpdateUserAction(userToSave))
-        } else if (!!day && 'id' in this.recipy) {
-          let itemToSave: DayDetails = new DayDetails(day);
-          switch (mealTime) {
-            case 'breakfast': itemToSave.breakfast.push(this.recipy.id);
-              break;
-            case 'lunch': itemToSave.lunch.push(this.recipy.id);
-              break;
-            case 'dinner': itemToSave.dinner.push(this.recipy.id);
-          }
-          userToSave.details!.push(itemToSave)
-          this.store.dispatch(new UserActions.UpdateUserAction(userToSave))
+        if (!!day && 'id' in this.recipy) {
+          this.calendarService.saveRecipyToCalendar(userToSave, day, this.recipy.id, mealTime)
         }
       }
     })

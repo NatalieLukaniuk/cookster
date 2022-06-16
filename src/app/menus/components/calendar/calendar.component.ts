@@ -1,7 +1,9 @@
+import { DatePipe } from '@angular/common';
 import { isNgTemplate } from '@angular/compiler';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { select, Store } from '@ngrx/store';
+import * as _ from 'lodash';
 import * as moment from 'moment';
 import { combineLatest, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -11,7 +13,8 @@ import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { IAppState } from 'src/app/store/reducers';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
-import { DayDetails, DayDetailsExtended, IDayDetails } from '../day/day.component';
+import { CalendarService } from '../../services/calendar.service';
+import { DayDetails, DayDetailsExtended, EmptyDayDetailsExtended, IDayDetails } from '../day/day.component';
 import { RecipiesBottomsheetComponent } from '../recipies-bottomsheet/recipies-bottomsheet.component';
 
 import { DateService } from './../../services/date.service';
@@ -39,7 +42,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   userCalendarData: IDayDetails[] = [];
   destroyed$ = new Subject();
 
-  constructor(private dateService: DateService, private store: Store<IAppState>, private _bottomSheet: MatBottomSheet, private dialogsService: DialogsService) { }
+  constructor(private dateService: DateService, private store: Store<IAppState>, private _bottomSheet: MatBottomSheet, private dialogsService: DialogsService, private calendarService: CalendarService) { }
   ngOnDestroy(): void {
     this.destroyed$.next()
   }
@@ -51,6 +54,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     let currentUser$ = this.store.pipe(select(getCurrentUser), takeUntil(this.destroyed$));
     let allRecipies$ = this.store.pipe(select(getAllRecipies), takeUntil(this.destroyed$));
     combineLatest([currentUser$, allRecipies$]).subscribe(res => {
+      this.cleanCalendarRecipies();
       let [currentUser, recipies] = res;
       if (!!currentUser && 'details' in currentUser && !!currentUser.details) {
         this.userCalendarData = currentUser.details;
@@ -87,6 +91,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
     })
   }
 
+  cleanCalendarRecipies() {
+    this.calendar.forEach((week: Week) => week.days.forEach(day => {
+      if (day.details) {
+        day.details = new EmptyDayDetailsExtended(day.details.day)
+      }
+    }))
+  }
+
   findRecipy(allRecipies: Recipy[], recipyToFindId: string): Recipy | null {
     let recipy = allRecipies.find(rec => rec.id == recipyToFindId);
     if (recipy) {
@@ -94,7 +106,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     } else return null
   }
 
-  getCurrentDay(): string{
+  getCurrentDay(): string {
     let currentDay = new Date()
     return moment(currentDay).format('DDMMYYYY')
   }
@@ -109,7 +121,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const calendar = [];
 
     const currentDay = moment();
-    
     while (date.isBefore(endDay, 'day')) {
       calendar.push({
         days: Array(7)
@@ -133,14 +144,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.calendar = calendar;
   }
 
-  addRecipy(day: Day){
+  addRecipy(day: Day) {
     const bottomSheetRef = this._bottomSheet.open(RecipiesBottomsheetComponent);
-    bottomSheetRef.afterDismissed().pipe(take(1)).subscribe((id: string) => {      
+    const pipe = new DatePipe('en-US');
+    bottomSheetRef.afterDismissed().pipe(take(1)).subscribe((recipyId: string) => {
       this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((mealTime: string) => {
-        console.log(id);
-        console.log(mealTime)
+        this.store.pipe(select(getCurrentUser), take(1)).subscribe((user) => {
+          if (!!user && !!recipyId && !!mealTime) {
+            let userToSave: User = _.cloneDeep(user);
+            this.calendarService.saveRecipyToCalendar(userToSave, day.details.day, recipyId, mealTime)
+          }
+        })
       })
-
     });
   }
 }

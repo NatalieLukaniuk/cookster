@@ -25,6 +25,18 @@ export interface DayDetailsExtended extends IDayDetails{
   // day: string // 2 digits of day, 2 digits of month, 4 digits of year
 }
 
+export class EmptyDayDetailsExtended implements DayDetailsExtended {
+  breakfastRecipies = [];
+  lunchRecipies = [];
+  dinnerRecipies = [];
+  breakfast: string[] = [];
+  lunch: string[] = [];
+  dinner: string[] = [];
+  constructor(public day: string) {
+    this.day = day
+  }
+}
+
 @Component({
   selector: 'app-day',
   templateUrl: './day.component.html',
