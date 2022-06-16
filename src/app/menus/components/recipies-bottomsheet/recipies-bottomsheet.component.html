@@ -1,0 +1,5 @@
+<ng-container *ngIf="!!allRecipies">
+    <mat-action-list>
+        <button *ngFor="let recipy of allRecipies" mat-list-item (click)="addRecipyToCalendar(recipy.id)"> {{recipy.name}} </button>
+    </mat-action-list>
+</ng-container>

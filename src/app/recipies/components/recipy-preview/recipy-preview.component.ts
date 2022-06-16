@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { LayoutService } from 'src/app/shared/services/layout.service';
 import { ComplexityDescription } from '../../models/complexity.enum';
@@ -19,8 +19,7 @@ import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { IMyDpOptions } from 'mydatepicker';
 import { DatePipe } from '@angular/common';
 import { DayDetails } from 'src/app/menus/components/day/day.component';
-import { SelectOptionDialogComponent } from 'src/app/shared/components/select-option-dialog/select-option-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { DialogsService } from 'src/app/shared/services/dialogs.service';
 
 @Component({
   selector: 'app-recipy-preview',
@@ -65,7 +64,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   datePicker: any;
 
-  constructor(private layoutService: LayoutService, private store: Store, private recipiesService: RecipiesService, public dialog: MatDialog) { }
+  constructor(private layoutService: LayoutService, private store: Store, private recipiesService: RecipiesService, private dialogsService: DialogsService) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
       this.portionsToServe = this.savedPortionsServed;
@@ -331,7 +330,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   pipe = new DatePipe('en-US');
   onDateChanged(event: any) {
     let day = this.pipe.transform(event.jsdate, 'ddMMYYYY');
-    this.openDialog().pipe(take(1)).subscribe((mealTime: string) => {
+    this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((mealTime: string) => {
       if (!!this.currentUser && !!mealTime) {
         let userToSave: User = _.cloneDeep(this.currentUser)
         if (!('details' in userToSave)) {
@@ -368,21 +367,5 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
     })
-  }
-
-  openDialog(): Observable<string> {
-    return new Observable(observer => {
-      const dialogRef = this.dialog.open(SelectOptionDialogComponent, {
-        width: '320px',
-        maxWidth: '99vw',
-        data: { title: 'Select meal time', options: ['breakfast', 'lunch', 'dinner'] },
-      });
-
-      dialogRef.afterClosed().subscribe((result: string | undefined) => {
-        observer.next(result)
-        observer.complete()
-      });
-    })
-
   }
 }

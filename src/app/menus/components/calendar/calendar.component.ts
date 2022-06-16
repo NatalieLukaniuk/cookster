@@ -1,15 +1,18 @@
 import { isNgTemplate } from '@angular/compiler';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { select, Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { combineLatest, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
+import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { IAppState } from 'src/app/store/reducers';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { DayDetails, DayDetailsExtended, IDayDetails } from '../day/day.component';
+import { RecipiesBottomsheetComponent } from '../recipies-bottomsheet/recipies-bottomsheet.component';
 
 import { DateService } from './../../services/date.service';
 
@@ -36,7 +39,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   userCalendarData: IDayDetails[] = [];
   destroyed$ = new Subject();
 
-  constructor(private dateService: DateService, private store: Store<IAppState>) { }
+  constructor(private dateService: DateService, private store: Store<IAppState>, private _bottomSheet: MatBottomSheet, private dialogsService: DialogsService) { }
   ngOnDestroy(): void {
     this.destroyed$.next()
   }
@@ -128,5 +131,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
       })
     }
     this.calendar = calendar;
+  }
+
+  addRecipy(day: Day){
+    const bottomSheetRef = this._bottomSheet.open(RecipiesBottomsheetComponent);
+    bottomSheetRef.afterDismissed().pipe(take(1)).subscribe((id: string) => {      
+      this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((mealTime: string) => {
+        console.log(id);
+        console.log(mealTime)
+      })
+
+    });
   }
 }

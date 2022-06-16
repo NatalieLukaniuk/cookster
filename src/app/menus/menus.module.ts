@@ -9,6 +9,7 @@ import { MenusComponent } from './menus.component';
 import { MomentPipe } from './pipes/moment.pipe';
 import { DayComponent } from './components/day/day.component';
 import { CalendarRecipyComponent } from './components/calendar-recipy/calendar-recipy.component';
+import { RecipiesBottomsheetComponent } from './components/recipies-bottomsheet/recipies-bottomsheet.component';
 
 @NgModule({
   imports: [CommonModule, SharedModule],
@@ -20,6 +21,7 @@ import { CalendarRecipyComponent } from './components/calendar-recipy/calendar-r
     MomentPipe,
     DayComponent,
     CalendarRecipyComponent,
+    RecipiesBottomsheetComponent,
   ],
 })
 export class MenusModule {}
