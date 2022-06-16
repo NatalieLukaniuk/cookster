@@ -42,6 +42,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   userCalendarData: IDayDetails[] = [];
   destroyed$ = new Subject();
 
+  currentUser: User | undefined;
+
   constructor(private dateService: DateService, private store: Store<IAppState>, private _bottomSheet: MatBottomSheet, private dialogsService: DialogsService, private calendarService: CalendarService) { }
   ngOnDestroy(): void {
     this.destroyed$.next()
@@ -57,6 +59,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.cleanCalendarRecipies();
       let [currentUser, recipies] = res;
       if (!!currentUser && 'details' in currentUser && !!currentUser.details) {
+        this.currentUser = currentUser;
         this.userCalendarData = currentUser.details;
       }
       this.calendar.forEach((week: Week) => week.days.forEach((day: Day) => {
@@ -160,5 +163,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
         })
       }
     });
+  }
+
+  onUpdateDay(event: IDayDetails){
+    if(!!this.currentUser){
+      this.calendarService.updateDay(this.currentUser, event)
+    }
   }
 }

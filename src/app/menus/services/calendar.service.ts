@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/auth/models/user.interface';
 import { Day } from '../components/calendar/calendar.component';
-import { DayDetails } from '../components/day/day.component';
+import { DayDetails, IDayDetails } from '../components/day/day.component';
 import * as UserActions from '../../store/actions/user.actions';
 
 @Injectable({
@@ -58,5 +58,18 @@ export class CalendarService {
             userToSave.details!.push(itemToSave)
             this.store.dispatch(new UserActions.UpdateUserAction(userToSave))
         }
+    }
+
+    updateDay(userToSave: User, updatedDetails: IDayDetails) {
+        let details = userToSave.details?.map(item => {
+            if (item.day == updatedDetails.day) {
+                return updatedDetails
+            } else return item
+        })
+        let updatedUser = {
+            ...userToSave,
+            details: details
+        }
+        this.store.dispatch(new UserActions.UpdateUserAction(updatedUser))
     }
 }

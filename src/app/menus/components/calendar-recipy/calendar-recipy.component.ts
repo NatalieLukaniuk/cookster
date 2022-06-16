@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 
@@ -12,6 +12,8 @@ export class CalendarRecipyComponent implements OnInit {
   @Input() isMobile: boolean = false;
   @Input() recipy!: Recipy;
 
+  @Output() removeRecipy = new EventEmitter<Recipy>()
+
   constructor(private router: Router,
     private route: ActivatedRoute,) { }
 
@@ -21,5 +23,9 @@ export class CalendarRecipyComponent implements OnInit {
     this.router.navigate(['cookster', 'recipies', 'full-recipy', this.recipy.id], {
       relativeTo: this.route.parent,
     });
+  }
+
+  onRemoveRecipy(){
+    this.removeRecipy.emit(this.recipy)
   }
 }

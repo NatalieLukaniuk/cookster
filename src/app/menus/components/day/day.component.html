@@ -3,7 +3,7 @@
         <h5>Breakfast</h5>
         <ng-container *ngIf="!!day.details.breakfastRecipies">
             <ng-container *ngFor="let item of day.details.breakfastRecipies">
-                <app-calendar-recipy [isMobile]="isMobile" [recipy]="item"></app-calendar-recipy>
+                <app-calendar-recipy [isMobile]="isMobile" [recipy]="item" (removeRecipy)="removeRecipy($event, 'breakfastRecipies')"></app-calendar-recipy>
             </ng-container>
         </ng-container>
 
@@ -12,7 +12,7 @@
         <h5>Lunch</h5>
         <ng-container *ngIf="!!day.details.lunchRecipies">
             <ng-container *ngFor="let item of day.details.lunchRecipies">
-                <app-calendar-recipy [isMobile]="isMobile" [recipy]="item"></app-calendar-recipy>
+                <app-calendar-recipy [isMobile]="isMobile" [recipy]="item" (removeRecipy)="removeRecipy($event, 'lunchRecipies')"></app-calendar-recipy>
             </ng-container>
         </ng-container>
 
@@ -21,7 +21,7 @@
         <h5>Dinner</h5>
         <ng-container *ngIf="!!day.details.dinnerRecipies">
             <ng-container *ngFor="let item of day.details.dinnerRecipies">
-                <app-calendar-recipy [isMobile]="isMobile" [recipy]="item"></app-calendar-recipy>
+                <app-calendar-recipy [isMobile]="isMobile" [recipy]="item"  (removeRecipy)="removeRecipy($event, 'dinnerRecipies')"></app-calendar-recipy>
             </ng-container>
         </ng-container>
 

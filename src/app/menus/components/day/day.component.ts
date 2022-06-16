@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import * as _ from 'lodash';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
+import { CalendarService } from '../../services/calendar.service';
 import { Day } from '../calendar/calendar.component';
 
 export interface IDayDetails {
@@ -47,14 +49,36 @@ export class DayComponent implements OnInit {
 
   @Input() isMobile: boolean = false;
 
+  @Output() updateDay = new EventEmitter<IDayDetails>()
+
   constructor() { }
 
   ngOnInit(): void {
     
   }
 
-  check() {
-    console.log(this.day)
+  removeRecipy(recipy: Recipy, mealtime: string){
+    let detailsToSave: IDayDetails = {
+      day: this.day.details.day,
+      breakfast: this.day.details.breakfastRecipies.map(item => item.id),
+      lunch: this.day.details.lunchRecipies.map(item => item.id),
+      dinner: this.day.details.dinnerRecipies.map(item => item.id),
+    }
+    switch(mealtime){
+      case 'breakfastRecipies': {
+        detailsToSave.breakfast = detailsToSave.breakfast.filter(item => item != recipy.id)
+      }
+      break;
+      case 'lunchRecipies': {
+        detailsToSave.lunch = detailsToSave.lunch.filter(item => item != recipy.id)
+      }
+      break;
+      case 'dinnerRecipies': {
+        detailsToSave.dinner = detailsToSave.dinner.filter(item => item != recipy.id)
+      }
+      break;
+    }
+    this.updateDay.emit(detailsToSave)
   }
 
 }
