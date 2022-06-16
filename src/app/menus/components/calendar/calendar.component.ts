@@ -146,16 +146,19 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   addRecipy(day: Day) {
     const bottomSheetRef = this._bottomSheet.open(RecipiesBottomsheetComponent);
-    const pipe = new DatePipe('en-US');
     bottomSheetRef.afterDismissed().pipe(take(1)).subscribe((recipyId: string) => {
-      this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((mealTime: string) => {
-        this.store.pipe(select(getCurrentUser), take(1)).subscribe((user) => {
-          if (!!user && !!recipyId && !!mealTime) {
-            let userToSave: User = _.cloneDeep(user);
-            this.calendarService.saveRecipyToCalendar(userToSave, day.details.day, recipyId, mealTime)
+      if (!!recipyId) {
+        this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((mealTime: string) => {
+          if (!!mealTime) {
+            this.store.pipe(select(getCurrentUser), take(1)).subscribe((user) => {
+              if (!!user) {
+                let userToSave: User = _.cloneDeep(user);
+                this.calendarService.saveRecipyToCalendar(userToSave, day.details.day, recipyId, mealTime)
+              }
+            })
           }
         })
-      })
+      }
     });
   }
 }
