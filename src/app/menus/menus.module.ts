@@ -10,6 +10,7 @@ import { MomentPipe } from './pipes/moment.pipe';
 import { DayComponent } from './components/day/day.component';
 import { CalendarRecipyComponent } from './components/calendar-recipy/calendar-recipy.component';
 import { RecipiesBottomsheetComponent } from './components/recipies-bottomsheet/recipies-bottomsheet.component';
+import { IngredientsToListBottomsheetComponent } from './components/ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 
 @NgModule({
   imports: [CommonModule, SharedModule],
@@ -22,6 +23,7 @@ import { RecipiesBottomsheetComponent } from './components/recipies-bottomsheet/
     DayComponent,
     CalendarRecipyComponent,
     RecipiesBottomsheetComponent,
+    IngredientsToListBottomsheetComponent,
   ],
 })
 export class MenusModule {}
