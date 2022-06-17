@@ -49,18 +49,18 @@ body {
 }
 
 :root {
-  --primary: rgb(10, 92, 21);
-  --background-color: hsla(168, 100%, 98%, 1);
-  --text-color: hsla(128, 100%, 10%, 1);
-  --tint1: rgba(180, 241, 228, 1);
-  --tint2: hsla(168, 47%, 90%, 1);
-  --tint3: hsla(168, 47%, 50%, 1);
-  --tint4: hsla(168, 47%, 53%, 1);
-  --tint5: hsla(168, 47%, 43%, 1);
-  --tint6: hsla(168, 47%, 33%, 1);
-  --tint7: hsla(168, 47%, 23%, 1);
-  --tint7: hsla(168, 47%, 13%, 1);
-  --gray: hsla(0, 0%, 90%, 0.9);
+  --primary: 	hsla(105, 100%, 25%, 1);
+  --background-color: hsla(105, 100%, 98%, 1);
+  --text-color: hsla(105, 100%, 10%, 1);
+  --tint1: hsla(105, 100%, 90%, 1);
+  --tint2: hsla(105, 100%, 80%, 1);
+  --tint3: hsla(105, 100%, 70%, 1);
+  --tint4: hsla(105, 100%, 60%, 1);
+  --tint5: hsla(105, 100%, 50%, 1);
+  --tint6: hsla(105, 100%, 40%, 1);
+  --tint7: hsla(105, 100%, 30%, 1);
+  --tint7: hsla(105, 100%, 20%, 1);
+  --gray: hsla(105, 0%, 90%, 1);
 }
 
 .full-recipy-dialog {
@@ -381,6 +381,18 @@ button.mat-menu-item {
 
 .mat-drawer-container {
   height: 100%;
+}
+
+// --- Slider
+
+.mat-slider.mat-accent .mat-slider-track-fill, .mat-slider.mat-accent .mat-slider-thumb, .mat-slider.mat-accent .mat-slider-thumb-label{
+  background-color: var(--primary);
+}
+
+//-- checkbox
+
+.mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{
+  background-color: var(--primary);
 }
 
 @media (max-width: 600px) {
