@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Recipy } from 'src/app/recipies/models/recipy.interface';
+import { Recipy, RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { IngredientsToListBottomsheetComponent } from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 
 @Component({
@@ -12,9 +12,9 @@ import { IngredientsToListBottomsheetComponent } from '../ingredients-to-list-bo
 export class CalendarRecipyComponent implements OnInit {
 
   @Input() isMobile: boolean = false;
-  @Input() recipy!: Recipy;
+  @Input() recipy!: RecipyForCalendar;
 
-  @Output() removeRecipy = new EventEmitter<Recipy>()
+  @Output() removeRecipy = new EventEmitter<RecipyForCalendar>()
 
   constructor(private router: Router,
     private route: ActivatedRoute, private _bottomSheet: MatBottomSheet) { }

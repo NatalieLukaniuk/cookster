@@ -8,13 +8,13 @@ import * as moment from 'moment';
 import { combineLatest, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
-import { Recipy } from 'src/app/recipies/models/recipy.interface';
+import { Recipy, RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { IAppState } from 'src/app/store/reducers';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { CalendarService } from '../../services/calendar.service';
-import { DayDetails, DayDetailsExtended, EmptyDayDetailsExtended, IDayDetails } from '../day/day.component';
+import { CalendarRecipyInDatabase, DayDetails, DayDetailsExtended, EmptyDayDetailsExtended, IDayDetails } from '../day/day.component';
 import { RecipiesBottomsheetComponent } from '../recipies-bottomsheet/recipies-bottomsheet.component';
 
 import { DateService } from './../../services/date.service';
@@ -66,26 +66,38 @@ export class CalendarComponent implements OnInit, OnDestroy {
         let foundDay = this.userCalendarData.find((item: IDayDetails) => item.day == day.details.day);
         if (!!foundDay) {
           if ('breakfast' in foundDay && !!foundDay.breakfast.length) {
-            foundDay.breakfast.forEach(recId => {
-              let foundRecipy = recipies.find(recipy => recipy.id == recId)
+            foundDay.breakfast.forEach((rec: CalendarRecipyInDatabase) => {
+              let foundRecipy = recipies.find(recipy => recipy.id == rec.recipyId)
               if (foundRecipy) {
-                day.details.breakfastRecipies.push(foundRecipy)
+                let recipy: RecipyForCalendar = {
+                  ...foundRecipy,
+                  portions: rec.portions
+                }
+                day.details.breakfastRecipies.push(recipy)
               }
             })
           }
           if ('lunch' in foundDay && !!foundDay.lunch.length) {
-            foundDay.lunch.forEach(recId => {
-              let foundRecipy = recipies.find(recipy => recipy.id == recId)
+            foundDay.lunch.forEach((rec: CalendarRecipyInDatabase) => {
+              let foundRecipy = recipies.find(recipy => recipy.id == rec.recipyId)
               if (foundRecipy) {
-                day.details.lunchRecipies.push(foundRecipy)
+                let recipy: RecipyForCalendar = {
+                  ...foundRecipy,
+                  portions: rec.portions
+                }
+                day.details.lunchRecipies.push(recipy)
               }
             })
           }
           if ('dinner' in foundDay && !!foundDay.dinner.length) {
-            foundDay.dinner.forEach(recId => {
-              let foundRecipy = recipies.find(recipy => recipy.id == recId)
+            foundDay.dinner.forEach((rec: CalendarRecipyInDatabase) => {
+              let foundRecipy = recipies.find(recipy => recipy.id == rec.recipyId)
               if (foundRecipy) {
-                day.details.dinnerRecipies.push(foundRecipy)
+                let recipy: RecipyForCalendar = {
+                  ...foundRecipy,
+                  portions: rec.portions
+                }
+                day.details.dinnerRecipies.push(recipy)
               }
             })
           }
@@ -151,12 +163,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const bottomSheetRef = this._bottomSheet.open(RecipiesBottomsheetComponent);
     bottomSheetRef.afterDismissed().pipe(take(1)).subscribe((recipyId: string) => {
       if (!!recipyId) {
-        this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((mealTime: string) => {
-          if (!!mealTime) {
+        this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((res: {meal: string, portions: number}) => {
+          if (!!res.meal) {
             this.store.pipe(select(getCurrentUser), take(1)).subscribe((user) => {
               if (!!user) {
                 let userToSave: User = _.cloneDeep(user);
-                this.calendarService.saveRecipyToCalendar(userToSave, day.details.day, recipyId, mealTime)
+                this.calendarService.saveRecipyToCalendar(userToSave, day.details.day, recipyId, res.meal, res.portions)
               }
             })
           }

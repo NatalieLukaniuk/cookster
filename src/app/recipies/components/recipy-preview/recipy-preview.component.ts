@@ -329,11 +329,11 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   pipe = new DatePipe('en-US');
   onDateChanged(event: any) {
     let day = this.pipe.transform(event.jsdate, 'ddMMYYYY');
-    this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((mealTime: string) => {
-      if (!!this.currentUser && !!mealTime) {
+    this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((res: {meal: string, portions: number}) => {
+      if (!!this.currentUser && !!res) {
         let userToSave: User = _.cloneDeep(this.currentUser)
         if (!!day && 'id' in this.recipy) {
-          this.calendarService.saveRecipyToCalendar(userToSave, day, this.recipy.id, mealTime)
+          this.calendarService.saveRecipyToCalendar(userToSave, day, this.recipy.id, res.meal, res.portions)
         }
       }
     })

@@ -21,6 +21,10 @@ export interface Recipy extends NewRecipy {
   isSplitIntoGroups: IngredientsGroup[]
 }
 
+export interface RecipyForCalendar extends Recipy {
+  portions: number
+}
+
 export interface NewRecipy {
   name: string;
   ingrediends: Ingredient[];

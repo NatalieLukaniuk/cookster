@@ -25,6 +25,9 @@
                     color: white;
                 }
             }
+            .mat-expansion-panel-header-title{
+                justify-content: space-between;
+            }
         }        
     }
     .mat-list-base .mat-list-item{

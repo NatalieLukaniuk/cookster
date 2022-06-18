@@ -10,15 +10,15 @@ export class DialogsService {
 
     constructor(public dialog: MatDialog) { }
 
-    openMealTimeSelectionDialog(): Observable<string> {
+    openMealTimeSelectionDialog(): Observable<{meal: string, portions: number}> {
         return new Observable(observer => {
             const dialogRef = this.dialog.open(SelectOptionDialogComponent, {
                 width: '320px',
                 maxWidth: '99vw',
-                data: { title: 'Select meal time', options: ['breakfast', 'lunch', 'dinner'] },
+                data: { title: 'Select meal time', mealOptions: ['breakfast', 'lunch', 'dinner'] },
             });
 
-            dialogRef.afterClosed().subscribe((result: string | undefined) => {
+            dialogRef.afterClosed().subscribe((result: {meal: string, portions: number} | undefined) => {
                 observer.next(result)
                 observer.complete()
             });

@@ -12,7 +12,7 @@ export class CalendarService {
 
     constructor(private store: Store) { }
 
-    saveRecipyToCalendar(userToSave: User, day: string, recipyId: string, mealTime: string) {
+    saveRecipyToCalendar(userToSave: User, day: string, recipyId: string, mealTime: string, portions: number) {
         if (!('details' in userToSave)) {
             userToSave.details = []
         }
@@ -25,21 +25,21 @@ export class CalendarService {
                             if (!('breakfast' in item)) {
                                 item.breakfast = []
                             }
-                            item.breakfast.push(recipyId)
+                            item.breakfast.push({recipyId, portions})
                         };
                             break;
                         case 'lunch': {
                             if (!('lunch' in item)) {
                                 item.lunch = []
                             }
-                            item.lunch.push(recipyId)
+                            item.lunch.push({recipyId, portions})
                         };
                             break;
                         case 'dinner': {
                             if (!('dinner' in item)) {
                                 item.dinner = []
                             }
-                            item.dinner.push(recipyId)
+                            item.dinner.push({recipyId, portions})
                         };
                     }
                 }
@@ -49,11 +49,11 @@ export class CalendarService {
         } else if (!!day) {
             let itemToSave: DayDetails = new DayDetails(day);
             switch (mealTime) {
-                case 'breakfast': itemToSave.breakfast.push(recipyId);
+                case 'breakfast': itemToSave.breakfast.push({recipyId, portions});
                     break;
-                case 'lunch': itemToSave.lunch.push(recipyId);
+                case 'lunch': itemToSave.lunch.push({recipyId, portions});
                     break;
-                case 'dinner': itemToSave.dinner.push(recipyId);
+                case 'dinner': itemToSave.dinner.push({recipyId, portions});
             }
             userToSave.details!.push(itemToSave)
             this.store.dispatch(new UserActions.UpdateUserAction(userToSave))
