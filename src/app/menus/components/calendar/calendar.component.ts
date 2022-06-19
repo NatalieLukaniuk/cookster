@@ -1,6 +1,4 @@
-import { DatePipe } from '@angular/common';
-import { isNgTemplate } from '@angular/compiler';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
@@ -13,10 +11,17 @@ import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { IAppState } from 'src/app/store/reducers';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
-import { CalendarService } from '../../services/calendar.service';
-import { CalendarRecipyInDatabase, DayDetails, DayDetailsExtended, EmptyDayDetailsExtended, IDayDetails } from '../day/day.component';
-import { RecipiesBottomsheetComponent } from '../recipies-bottomsheet/recipies-bottomsheet.component';
 
+import { CalendarService } from '../../services/calendar.service';
+import {
+  CalendarRecipyInDatabase,
+  DayDetails,
+  DayDetailsExtended,
+  EmptyDayDetailsExtended,
+  IDayDetails,
+} from '../day/day.component';
+import { RecipiesBottomsheetComponent } from '../recipies-bottomsheet/recipies-bottomsheet.component';
+import * as FiltersActions from './../../../store/actions/filters.actions';
 import { DateService } from './../../services/date.service';
 
 export interface Day {
@@ -160,8 +165,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   addRecipy(day: Day) {
-    const bottomSheetRef = this._bottomSheet.open(RecipiesBottomsheetComponent);
+    const bottomSheetRef = this._bottomSheet.open(RecipiesBottomsheetComponent, {panelClass: 'recipies-bottomsheet'});
     bottomSheetRef.afterDismissed().pipe(take(1)).subscribe((recipyId: string) => {
+      this.store.dispatch(new FiltersActions.ResetFiltersAction())
       if (!!recipyId) {
         this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((res: {meal: string, portions: number}) => {
           if (!!res.meal) {

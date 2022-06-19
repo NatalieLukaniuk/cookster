@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, forkJoin, Observable, Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { LayoutService } from 'src/app/shared/services/layout.service';
@@ -11,13 +11,14 @@ import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import { Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
+import * as FiltersActions from './../../../store/actions/filters.actions';
 
 @Component({
   selector: 'app-all-recipies',
   templateUrl: './all-recipies.component.html',
   styleUrls: ['./all-recipies.component.scss']
 })
-export class AllRecipiesComponent implements OnInit {
+export class AllRecipiesComponent implements OnInit, OnDestroy {
 
   allRecipies: Recipy[] | undefined;
   isMobile: boolean = false;
@@ -71,6 +72,7 @@ export class AllRecipiesComponent implements OnInit {
   }
   ngOnDestroy(): void {
     this.destroy$.next()
+    this.store.dispatch(new FiltersActions.ResetFiltersAction())
   }
 
   ngOnInit() {

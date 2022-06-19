@@ -20,6 +20,8 @@ export class RecipiesBottomsheetComponent implements OnInit, OnDestroy {
 
   allRecipies: Recipy[] | undefined;
 
+  isShowFilers: boolean = false;
+
   constructor(private store: Store<IAppState>, private recipies: RecipiesService, private _bottomSheetRef: MatBottomSheetRef<RecipiesBottomsheetComponent>) { 
     let recipies$ = this.store.pipe(select(getAllRecipies), takeUntil(this.destroy$))
     let filters$ = this.store.pipe(select(getFilters), takeUntil(this.destroy$))
