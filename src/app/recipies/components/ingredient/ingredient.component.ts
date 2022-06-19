@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
+import * as _ from 'lodash';
 
+import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
 import { ProductType } from '../../models/products.interface';
 import { RecipiesService } from '../../services/recipies.service';
 import { Ingredient } from './../../models/ingredient.interface';
@@ -13,7 +14,6 @@ import {
   MeasuringUnitText,
 } from './../../models/measuring-units.enum';
 import { AmountConverterService } from './../../services/amount-converter.service';
-import * as _ from 'lodash'
 
 @Component({
   selector: 'app-ingredient',

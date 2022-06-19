@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { CalendarService } from 'src/app/menus/services/calendar.service';
+import { AVERAGE_PORTION } from 'src/app/shared/constants';
 import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { LayoutService } from 'src/app/shared/services/layout.service';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
@@ -56,9 +57,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
   currentTab: string = 'ingredients';
-
-  AVERAGE_PORTION: number = 250;
-
+  
+  portionSize: number = AVERAGE_PORTION
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -69,7 +69,9 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   datePicker: any;
 
-  constructor(private layoutService: LayoutService, private store: Store, private recipiesService: RecipiesService, private dialogsService: DialogsService, private calendarService: CalendarService) { }
+  constructor(
+    private layoutService: LayoutService, 
+    private store: Store, private recipiesService: RecipiesService, private dialogsService: DialogsService, private calendarService: CalendarService, private location:Location) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
       this.portionsToServe = this.savedPortionsServed;
@@ -82,13 +84,22 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
+    console.log(this.location.getState());
+    let navigationData = this.location.getState() as {portions?: number, amountPerportion?: number};
+    if(!!navigationData.portions){
+      this.portionsToServe = navigationData.portions
+    }
+
+    if(!!navigationData.amountPerportion){
+      this.portionSize = navigationData.amountPerportion
+    }
 
     this._clonedRecipy = _.cloneDeep(this.recipy)
 
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
-    if (!!this._clonedRecipy.ingrediends.length) {
+    if (!!this._clonedRecipy.ingrediends.length && !navigationData.portions) {
       this.portionsToServe = this.savedPortionsServed;
     }
     if (this._clonedRecipy.isSplitIntoGroups && !!this._clonedRecipy.isSplitIntoGroups.length) {
@@ -114,7 +125,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       for (let ingr of this._clonedRecipy.ingrediends) {
         amount = ingr.amount + amount;
       }
-      portions = Math.floor(amount / this.AVERAGE_PORTION);
+      portions = Math.floor(amount / this.portionSize);
     }
 
     return portions;

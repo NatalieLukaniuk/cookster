@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Recipy, RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
-import { IngredientsToListBottomsheetComponent } from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
+import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
+
+import {
+  IngredientsToListBottomsheetComponent,
+} from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 
 @Component({
   selector: 'app-calendar-recipy',
@@ -24,6 +27,10 @@ export class CalendarRecipyComponent implements OnInit {
   viewRecipy() {
     this.router.navigate(['cookster', 'recipies', 'full-recipy', this.recipy.id], {
       relativeTo: this.route.parent,
+      state: {
+        portions: this.recipy.portions,
+        amountPerportion: this.recipy.amountPerPortion
+      }
     });
   }
 
