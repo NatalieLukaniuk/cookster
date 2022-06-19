@@ -1,24 +1,30 @@
+import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import * as _ from 'lodash';
+import { IMyDpOptions } from 'mydatepicker';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
+import { User } from 'src/app/auth/models/user.interface';
+import { CalendarService } from 'src/app/menus/services/calendar.service';
+import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { LayoutService } from 'src/app/shared/services/layout.service';
+import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
+
+import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
+import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
+import {
+  IngredientsByGroup,
+  ingredientsByGroup,
+  StepsByGroup,
+  stepsByGroup,
+} from '../../containers/recipy-full-view/recipy-full-view.component';
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
 import { GetUkrIngredientsGroup, Ingredient } from '../../models/ingredient.interface';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { NewRecipy, Recipy } from '../../models/recipy.interface';
-import { IngredientsByGroup, ingredientsByGroup, StepsByGroup, stepsByGroup } from '../../containers/recipy-full-view/recipy-full-view.component';
-import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
-import { select, Store } from '@ngrx/store';
-import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
-import * as _ from 'lodash';
 import { RecipiesService } from '../../services/recipies.service';
-import { User } from 'src/app/auth/models/user.interface';
-import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
-import { IMyDpOptions } from 'mydatepicker';
-import { DatePipe } from '@angular/common';
-import { DialogsService } from 'src/app/shared/services/dialogs.service';
-import { CalendarService } from 'src/app/menus/services/calendar.service';
 
 @Component({
   selector: 'app-recipy-preview',
@@ -329,11 +335,11 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   pipe = new DatePipe('en-US');
   onDateChanged(event: any) {
     let day = this.pipe.transform(event.jsdate, 'ddMMYYYY');
-    this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((res: {meal: string, portions: number}) => {
+    this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((res: {meal: string, portions: number, amountPerPortion: number}) => {
       if (!!this.currentUser && !!res) {
         let userToSave: User = _.cloneDeep(this.currentUser)
         if (!!day && 'id' in this.recipy) {
-          this.calendarService.saveRecipyToCalendar(userToSave, day, this.recipy.id, res.meal, res.portions)
+          this.calendarService.saveRecipyToCalendar(userToSave, day, this.recipy.id, res.meal, res.portions, res.amountPerPortion)
         }
       }
     })

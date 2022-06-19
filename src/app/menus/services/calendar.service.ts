@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/auth/models/user.interface';
-import { Day } from '../components/calendar/calendar.component';
-import { DayDetails, IDayDetails } from '../components/day/day.component';
+
 import * as UserActions from '../../store/actions/user.actions';
+import { DayDetails, IDayDetails } from '../components/day/day.component';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,7 @@ export class CalendarService {
 
     constructor(private store: Store) { }
 
-    saveRecipyToCalendar(userToSave: User, day: string, recipyId: string, mealTime: string, portions: number) {
+    saveRecipyToCalendar(userToSave: User, day: string, recipyId: string, mealTime: string, portions: number, amountPerPortion: number) {
         if (!('details' in userToSave)) {
             userToSave.details = []
         }
@@ -25,21 +25,21 @@ export class CalendarService {
                             if (!('breakfast' in item)) {
                                 item.breakfast = []
                             }
-                            item.breakfast.push({recipyId, portions})
+                            item.breakfast.push({recipyId, portions, amountPerPortion})
                         };
                             break;
                         case 'lunch': {
                             if (!('lunch' in item)) {
                                 item.lunch = []
                             }
-                            item.lunch.push({recipyId, portions})
+                            item.lunch.push({recipyId, portions, amountPerPortion})
                         };
                             break;
                         case 'dinner': {
                             if (!('dinner' in item)) {
                                 item.dinner = []
                             }
-                            item.dinner.push({recipyId, portions})
+                            item.dinner.push({recipyId, portions, amountPerPortion})
                         };
                     }
                 }
@@ -49,11 +49,11 @@ export class CalendarService {
         } else if (!!day) {
             let itemToSave: DayDetails = new DayDetails(day);
             switch (mealTime) {
-                case 'breakfast': itemToSave.breakfast.push({recipyId, portions});
+                case 'breakfast': itemToSave.breakfast.push({recipyId, portions, amountPerPortion});
                     break;
-                case 'lunch': itemToSave.lunch.push({recipyId, portions});
+                case 'lunch': itemToSave.lunch.push({recipyId, portions, amountPerPortion});
                     break;
-                case 'dinner': itemToSave.dinner.push({recipyId, portions});
+                case 'dinner': itemToSave.dinner.push({recipyId, portions, amountPerPortion});
             }
             userToSave.details!.push(itemToSave)
             this.store.dispatch(new UserActions.UpdateUserAction(userToSave))

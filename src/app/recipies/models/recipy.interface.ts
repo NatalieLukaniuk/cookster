@@ -22,7 +22,8 @@ export interface Recipy extends NewRecipy {
 }
 
 export interface RecipyForCalendar extends Recipy {
-  portions: number
+  portions: number,
+  amountPerPortion: number
 }
 
 export interface NewRecipy {

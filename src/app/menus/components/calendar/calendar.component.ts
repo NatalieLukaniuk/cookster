@@ -76,7 +76,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
               if (foundRecipy) {
                 let recipy: RecipyForCalendar = {
                   ...foundRecipy,
-                  portions: rec.portions
+                  portions: rec.portions,
+                  amountPerPortion: rec.amountPerPortion
                 }
                 day.details.breakfastRecipies.push(recipy)
               }
@@ -88,7 +89,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
               if (foundRecipy) {
                 let recipy: RecipyForCalendar = {
                   ...foundRecipy,
-                  portions: rec.portions
+                  portions: rec.portions,
+                  amountPerPortion: rec.amountPerPortion
                 }
                 day.details.lunchRecipies.push(recipy)
               }
@@ -100,7 +102,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
               if (foundRecipy) {
                 let recipy: RecipyForCalendar = {
                   ...foundRecipy,
-                  portions: rec.portions
+                  portions: rec.portions,
+                  amountPerPortion: rec.amountPerPortion
                 }
                 day.details.dinnerRecipies.push(recipy)
               }
@@ -169,12 +172,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
     bottomSheetRef.afterDismissed().pipe(take(1)).subscribe((recipyId: string) => {
       this.store.dispatch(new FiltersActions.ResetFiltersAction())
       if (!!recipyId) {
-        this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((res: {meal: string, portions: number}) => {
+        this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((res: {meal: string, portions: number, amountPerPortion: number}) => {
           if (!!res.meal) {
             this.store.pipe(select(getCurrentUser), take(1)).subscribe((user) => {
               if (!!user) {
                 let userToSave: User = _.cloneDeep(user);
-                this.calendarService.saveRecipyToCalendar(userToSave, day.details.day, recipyId, res.meal, res.portions)
+                this.calendarService.saveRecipyToCalendar(userToSave, day.details.day, recipyId, res.meal, res.portions, res.amountPerPortion)
               }
             })
           }
