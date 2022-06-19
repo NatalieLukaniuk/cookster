@@ -125,6 +125,9 @@
                         </mat-radio-group>
                         <h5>Виберіть теги</h5>
                         <app-add-tags [tags]="tags" (selectedTags)="onTagsSelectionChange($event)"></app-add-tags>
+                        <mat-checkbox [(ngModel)]="newRecipy.isBaseRecipy">
+                            Базовий рецепт (не відображається на сторінці рецептів, але може бути доданий в календар)
+                        </mat-checkbox>
                         <div class="action-buttons-wrapper">
                             <button mat-flat-button class="action-button" (click)="onPreviewRecipy()">
                                 Переглянути

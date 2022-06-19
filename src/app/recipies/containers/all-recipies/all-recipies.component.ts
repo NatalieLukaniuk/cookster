@@ -39,6 +39,7 @@ export class AllRecipiesComponent implements OnInit, OnDestroy {
     combineLatest([recipies$, filters$]).subscribe(res => {
       let [recipies, filters] = res;
       let _recipies = recipies.map(recipy => recipy)
+      _recipies = _recipies.filter(recipy => !recipy.isBaseRecipy)
       if (!!filters.ingredientsToInclude.length) {
         _recipies = _recipies.filter(recipy => {
           let recipyIngredientsIds = recipy.ingrediends.map(ingr => ingr.product)

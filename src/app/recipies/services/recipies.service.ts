@@ -4,6 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { IAppState } from 'src/app/store/reducers';
 
+import * as fromRecipiesActions from '../../store/actions/recipies.actions';
 import { MeasuringUnit } from '../models/measuring-units.enum';
 import { Product } from '../models/products.interface';
 import { UserService } from './../../auth/services/user.service';
@@ -12,7 +13,6 @@ import { NewRecipy, Recipy } from './../models/recipy.interface';
 import { AmountConverterService } from './amount-converter.service';
 import { ProductsApiService } from './products-api.service';
 import { RecipiesApiService } from './recipies-api.service';
-import * as fromRecipiesActions from '../../store/actions/recipies.actions'
 
 @Injectable({
   providedIn: 'root',
@@ -244,7 +244,8 @@ export class RecipiesService {
         author: recipy.author,
         createdOn: recipy.createdOn,
         editedBy: currentUserEmail,
-        lastEdited: Date.now()
+        lastEdited: Date.now(),
+        isBaseRecipy: recipy.isBaseRecipy
       }
       if('clonedBy' in recipy){
         updatedRecipy.clonedBy = recipy.clonedBy,
@@ -262,7 +263,8 @@ export class RecipiesService {
         author: recipy.author,
         createdOn: recipy.createdOn,
         clonedBy: currentUserEmail,
-        clonedOn: Date.now()
+        clonedOn: Date.now(),
+        isBaseRecipy: recipy.isBaseRecipy
       }
       this.store.dispatch(new fromRecipiesActions.AddNewRecipyAction(clonedRecipy))
     }

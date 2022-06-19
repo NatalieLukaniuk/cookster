@@ -37,7 +37,8 @@ export interface NewRecipy {
   clonedBy?: string;
   clonedOn?: number;
   originalRecipy?: string;
-  isSplitIntoGroups: IngredientsGroup[]
+  isSplitIntoGroups: IngredientsGroup[];
+  isBaseRecipy: boolean;
 }
 
 export class emptyRecipy implements NewRecipy {
@@ -48,7 +49,8 @@ export class emptyRecipy implements NewRecipy {
   type: DishType[] = [];
   author: string;
   createdOn: number = Date.now();
-  isSplitIntoGroups: IngredientsGroup[] = []
+  isSplitIntoGroups: IngredientsGroup[] = [];
+  isBaseRecipy: boolean = false
   constructor(author: string) {
     this.author = author;
   }
