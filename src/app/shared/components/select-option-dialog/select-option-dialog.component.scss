@@ -16,6 +16,12 @@
     }
 }
 
+.amount-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
 @media (max-width: 600px){
     ::ng-deep.cookster-radio-group {
         display: flex;
