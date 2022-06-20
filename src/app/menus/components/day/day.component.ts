@@ -113,4 +113,50 @@ export class DayComponent implements OnInit {
     }
     this.updateDay.emit(detailsToSave);
   }
+
+  getPortions(mealtime: string): number | null {
+    if(this.day.details){
+      switch(mealtime){
+        case 'breakfast': return !!this.day.details.breakfastRecipies[0]? this.day.details.breakfastRecipies[0].portions : null;
+        case 'lunch': return !!this.day.details.lunchRecipies[0]? this.day.details.lunchRecipies[0].portions: null;
+        case 'dinner': return !!this.day.details.dinnerRecipies[0]? this.day.details.dinnerRecipies[0].portions: null;
+        default: return null
+      }
+    } else return null
+  }
+
+  getAmountPerPerson(mealtime: string){
+    if(this.day.details){
+      switch(mealtime){
+        case 'breakfast': {
+          let amount = 0;
+          if(!!this.day.details.breakfastRecipies.length){
+            this.day.details.breakfastRecipies.forEach(recipy => {
+              amount = amount + recipy.amountPerPortion
+            })
+          }
+          return amount
+        };
+        case 'lunch': {
+          let amount = 0;
+          if(!!this.day.details.lunchRecipies.length){
+            this.day.details.lunchRecipies.forEach(recipy => {
+              amount = amount + recipy.amountPerPortion
+            })
+          }
+          return amount
+        };
+        case 'dinner': {
+          let amount = 0;
+          if(!!this.day.details.dinnerRecipies.length){
+            this.day.details.dinnerRecipies.forEach(recipy => {
+              amount = amount + recipy.amountPerPortion
+            })
+          }
+          return amount
+        };
+        default: return null
+      }
+    } else return null
+  }
 }
