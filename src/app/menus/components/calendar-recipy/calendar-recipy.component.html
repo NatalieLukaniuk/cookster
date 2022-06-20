@@ -1,24 +1,47 @@
 <div *ngIf="!isMobile" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
-    <span>{{recipy.name}}</span>
+  <span>{{ recipy.name }}</span>
 </div>
 <div *ngIf="isMobile" class="recipy-name">
-    <mat-expansion-panel hideToggle>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                <span>{{recipy.name}}</span><span>{{recipy.portions}} порцій</span>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-action-list>
-            <button mat-list-item  (click)="viewRecipy()">	<mat-icon>zoom_in</mat-icon>Переглянути рецепт</button>
-            <button mat-list-item (click)="addToShoppingList()"><mat-icon>add_shopping_cart</mat-icon>Додати інгридієнти в список покупок</button>
-            <button mat-list-item (click)="onRemoveRecipy()"><mat-icon>delete_outline</mat-icon>Видалити</button>
-        </mat-action-list>
-    </mat-expansion-panel>
-    <span></span>
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span>{{ recipy.name }}</span
+        ><span>{{ recipy.portions }} порцій</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-action-list>
+      <div mat-list-item>
+          <button mat-icon-button (click)="recipy.amountPerPortion = recipy.amountPerPortion - 50; onAmountPerPortionChanged()"><mat-icon>remove</mat-icon></button>
+        <mat-form-field appearance="outline">
+          <mat-label>Amount per portion (in gramms)</mat-label>          
+          <input
+            matInput
+            [(ngModel)]="recipy.amountPerPortion"
+            type="number"
+            (ngModelChange)="onAmountPerPortionChanged()"
+          />
+        </mat-form-field>
+        <button mat-icon-button (click)="recipy.amountPerPortion = recipy.amountPerPortion + 50; onAmountPerPortionChanged()"><mat-icon>add</mat-icon></button>
+      </div>
+      <button mat-list-item (click)="viewRecipy()">
+        <mat-icon>zoom_in</mat-icon>Переглянути рецепт
+      </button>
+      <button mat-list-item (click)="addToShoppingList()">
+        <mat-icon>add_shopping_cart</mat-icon>Додати інгридієнти в список
+        покупок
+      </button>
+      <button mat-list-item (click)="onRemoveRecipy()">
+        <mat-icon>delete_outline</mat-icon>Видалити
+      </button>
+    </mat-action-list>
+  </mat-expansion-panel>
+  <span></span>
 </div>
 
 <mat-menu #recipyMenu="matMenu">
-    <button mat-menu-item (click)="viewRecipy()">Переглянути рецепт</button>
-    <button mat-menu-item (click)="addToShoppingList()">Додати інгридієнти в список покупок</button>
-    <button mat-menu-item (click)="onRemoveRecipy()">Видалити</button>
+  <button mat-menu-item (click)="viewRecipy()">Переглянути рецепт</button>
+  <button mat-menu-item (click)="addToShoppingList()">
+    Додати інгридієнти в список покупок
+  </button>
+  <button mat-menu-item (click)="onRemoveRecipy()">Видалити</button>
 </mat-menu>

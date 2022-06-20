@@ -21,6 +21,7 @@
           [isMobile]="isMobile"
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'breakfastRecipies')"
+          (recipyUpdated)="updateRecipy($event, 'breakfastRecipies')"
         ></app-calendar-recipy>
       </ng-container>
     </ng-container>
@@ -44,6 +45,7 @@
           [isMobile]="isMobile"
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'lunchRecipies')"
+          (recipyUpdated)="updateRecipy($event, 'lunchRecipies')"
         ></app-calendar-recipy>
       </ng-container>
     </ng-container>
@@ -70,6 +72,7 @@
           [isMobile]="isMobile"
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'dinnerRecipies')"
+          (recipyUpdated)="updateRecipy($event, 'dinnerRecipies')"
         ></app-calendar-recipy>
       </ng-container>
     </ng-container>

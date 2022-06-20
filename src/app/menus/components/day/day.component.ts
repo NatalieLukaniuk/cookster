@@ -114,6 +114,34 @@ export class DayComponent implements OnInit {
     this.updateDay.emit(detailsToSave);
   }
 
+  updateRecipy(recipy: RecipyForCalendar, mealtime: string){
+    let detailsToSave: IDayDetails = {
+      day: this.day.details.day,
+      breakfast: this.day.details.breakfastRecipies.map((item: RecipyForCalendar) => this.mapRecipies(item, recipy, mealtime)),
+      lunch: this.day.details.lunchRecipies.map((item: RecipyForCalendar) => this.mapRecipies(item, recipy, mealtime)),
+      dinner: this.day.details.dinnerRecipies.map((item: RecipyForCalendar) => this.mapRecipies(item, recipy, mealtime)),
+    };    
+    this.updateDay.emit(detailsToSave);
+  }
+
+  mapRecipies(originalItem: RecipyForCalendar, updatedItem: RecipyForCalendar, mealtime: string): CalendarRecipyInDatabase{
+    if(mealtime == mealtime && originalItem.id == updatedItem.id){
+      let toSave: CalendarRecipyInDatabase = {
+        recipyId: originalItem.id,
+        portions: updatedItem.portions,
+        amountPerPortion: updatedItem.amountPerPortion,
+      };
+      return toSave;
+    } else {
+      let toSave: CalendarRecipyInDatabase = {
+      recipyId: originalItem.id,
+      portions: originalItem.portions,
+      amountPerPortion: originalItem.amountPerPortion,
+    };
+    return toSave;
+    }
+  }
+
   getPortions(mealtime: string): number | null {
     if(this.day.details){
       switch(mealtime){

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 
 import {
-  IngredientsToListBottomsheetComponent,
+    IngredientsToListBottomsheetComponent,
 } from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 
 @Component({
@@ -18,6 +18,7 @@ export class CalendarRecipyComponent implements OnInit {
   @Input() recipy!: RecipyForCalendar;
 
   @Output() removeRecipy = new EventEmitter<RecipyForCalendar>()
+  @Output() recipyUpdated = new EventEmitter<RecipyForCalendar>()
 
   constructor(private router: Router,
     private route: ActivatedRoute, private _bottomSheet: MatBottomSheet) { }
@@ -42,5 +43,9 @@ export class CalendarRecipyComponent implements OnInit {
     const bottomSheetRef = this._bottomSheet.open(IngredientsToListBottomsheetComponent, {
       data: { ingredients: this.recipy.ingrediends },
     });
+  }
+
+  onAmountPerPortionChanged(){
+    this.recipyUpdated.emit(this.recipy)
   }
 }

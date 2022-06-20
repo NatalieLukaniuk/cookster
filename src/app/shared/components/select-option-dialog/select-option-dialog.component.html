@@ -12,10 +12,15 @@
             {{unit}}
         </mat-radio-button>
     </mat-radio-group>
-    <mat-form-field appearance="outline">
+    <div>
+        <button mat-icon-button (click)="amountPerPortion = amountPerPortion - 50"><mat-icon>remove</mat-icon></button>
+        <mat-form-field appearance="outline">
         <mat-label>Amount per portion (in gramms)</mat-label>
         <input matInput [(ngModel)]="amountPerPortion" type="number">
       </mat-form-field>
+      <button mat-icon-button (click)="amountPerPortion = amountPerPortion + 50"><mat-icon>add</mat-icon></button>
+    </div>
+    
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>

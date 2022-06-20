@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { SharedModule } from '../shared/shared.module';
 import { FiltersModule } from './../filters/filters.module';
@@ -16,7 +17,7 @@ import { MenusComponent } from './menus.component';
 import { MomentPipe } from './pipes/moment.pipe';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, FiltersModule],
+  imports: [CommonModule, SharedModule, FiltersModule, FormsModule],
   declarations: [
     MenusComponent,
     CalendarComponent,
