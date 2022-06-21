@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 
 import {
-    IngredientsToListBottomsheetComponent,
+  IngredientsToListBottomsheetComponent,
 } from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 
 @Component({
@@ -41,7 +41,7 @@ export class CalendarRecipyComponent implements OnInit {
 
   addToShoppingList(){
     const bottomSheetRef = this._bottomSheet.open(IngredientsToListBottomsheetComponent, {
-      data: { ingredients: this.recipy.ingrediends },
+      data: { ingredients: this.recipy.ingrediends, portions: this.recipy.portions, amountPerPortion: this.recipy.amountPerPortion, isMobile: this.isMobile },
     });
   }
 

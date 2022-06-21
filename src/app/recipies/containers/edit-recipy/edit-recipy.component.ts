@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { NewRecipy, Recipy } from '../../models/recipy.interface';
+
+import { NewRecipy } from '../../models/recipy.interface';
 
 export enum RecipyMode {
   AddRecipy = 'add',
   AddPreview = 'add-preview',
   EditRecipy = 'edit',
   CloneRecipy = 'clone',
-  ViewRecipy = 'view'
+  ViewRecipy = 'view',
+  AddIngrToShoppingList = 'addIngredientsToShoppingList'
 }
 
 @Component({

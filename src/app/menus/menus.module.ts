@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { SharedModule } from '../shared/shared.module';
 import { FiltersModule } from './../filters/filters.module';
+import { RecipiesModule } from './../recipies/recipies.module';
 import { CalendarRecipyComponent } from './components/calendar-recipy/calendar-recipy.component';
 import { CalendarSelectorComponent } from './components/calendar-selector/calendar-selector.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
@@ -17,7 +18,7 @@ import { MenusComponent } from './menus.component';
 import { MomentPipe } from './pipes/moment.pipe';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, FiltersModule, FormsModule],
+  imports: [CommonModule, SharedModule, FiltersModule, FormsModule, RecipiesModule],
   declarations: [
     MenusComponent,
     CalendarComponent,

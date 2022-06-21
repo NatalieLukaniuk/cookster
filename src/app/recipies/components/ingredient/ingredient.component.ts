@@ -114,6 +114,18 @@ export class IngredientComponent implements OnInit, OnChanges {
 
   onValueChangeMatMenu(value: any) {
     this.measuringUnit = value; //TODO: needs refactoring
+    if (!!this._ingredient){
+      let ingrToSave: Ingredient = {
+      product: this._ingredient?.product,
+      amount: this._ingredient.amount,
+      defaultUnit: value
+    }
+    if ('group' in this._ingredient) {
+      ingrToSave.group = this._ingredient.group
+    }
+    this.ingredientChanged.emit(ingrToSave)
+    }
+    
   }
 
   amountChanged() {
