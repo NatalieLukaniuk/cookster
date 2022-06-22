@@ -14,7 +14,7 @@
         [class.selected]="day.selected" [class.active]="day.active">
         <span *ngIf="!isMobile">{{ day.value | moment: "D" }}</span>
         <div *ngIf="isMobile" class="day-header"><span>{{day.value | moment: 'dddd, Do MMMM'}}</span><button mat-icon-button (click)="addRecipy(day)"><mat-icon>add_circle_outline</mat-icon></button></div>
-        <app-day [day]="day" [isMobile]="isMobile" (updateDay)="onUpdateDay($event)"></app-day>
+        <app-day [day]="day" [isMobile]="isMobile" (updateDay)="onUpdateDay($event)" (saveToShoppingList)="onSaveToShoppingList($event)"></app-day>
       </div>
     </ng-container>
 

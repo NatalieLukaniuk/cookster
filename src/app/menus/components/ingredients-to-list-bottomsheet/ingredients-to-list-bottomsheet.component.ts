@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
-import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatSelectionList } from '@angular/material/list';
 import * as _ from 'lodash';
 import { RecipyMode } from 'src/app/recipies/containers/edit-recipy/edit-recipy.component';
@@ -25,7 +25,8 @@ export class IngredientsToListBottomsheetComponent implements AfterViewInit {
       portions: number;
       amountPerPortion: number;
       isMobile: boolean;
-    }
+    },
+    private _bottomSheetRef: MatBottomSheetRef<IngredientsToListBottomsheetComponent>
   ) {}
   ngAfterViewInit(): void {
     if (this.ingredientsList) {
@@ -58,7 +59,7 @@ export class IngredientsToListBottomsheetComponent implements AfterViewInit {
       let selectedIngredients = this._ingredients.filter((ingr) =>
         selectedIds.includes(ingr.product)
       );
-      console.log(selectedIngredients); // list to save
+      this._bottomSheetRef.dismiss(selectedIngredients);
     }
   }
 

@@ -21,8 +21,10 @@ import {
   IDayDetails,
 } from '../day/day.component';
 import { RecipiesBottomsheetComponent } from '../recipies-bottomsheet/recipies-bottomsheet.component';
+import { ShoppingListService } from './../../../shopping-list/services/shopping-list.service';
 import * as FiltersActions from './../../../store/actions/filters.actions';
 import { DateService } from './../../services/date.service';
+import { ShoppingListItem } from './../calendar-recipy/calendar-recipy.component';
 
 export interface Day {
   value: moment.Moment;
@@ -49,7 +51,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   currentUser: User | undefined;
 
-  constructor(private dateService: DateService, private store: Store<IAppState>, private _bottomSheet: MatBottomSheet, private dialogsService: DialogsService, private calendarService: CalendarService) { }
+  constructor(
+    private dateService: DateService, 
+    private store: Store<IAppState>, 
+    private _bottomSheet: MatBottomSheet, 
+    private dialogsService: DialogsService, 
+    private calendarService: CalendarService,
+    private shoppingListService: ShoppingListService) { }
   ngOnDestroy(): void {
     this.destroyed$.next()
   }
@@ -190,5 +198,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if(!!this.currentUser){
       this.calendarService.updateDay(this.currentUser, event)
     }
+  }
+
+  onSaveToShoppingList(event: ShoppingListItem){
+    if(this.currentUser){
+      this.shoppingListService.addList(this.currentUser, event)
+    }    
   }
 }

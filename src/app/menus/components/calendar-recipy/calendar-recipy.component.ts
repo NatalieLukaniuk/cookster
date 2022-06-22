@@ -1,12 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 
 import {
   IngredientsToListBottomsheetComponent,
 } from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 
+export interface ShoppingListItem {
+  recipyId?: string,
+  listName?: string,
+  ingredients: Ingredient[]
+}
 @Component({
   selector: 'app-calendar-recipy',
   templateUrl: './calendar-recipy.component.html',
@@ -19,6 +26,7 @@ export class CalendarRecipyComponent implements OnInit {
 
   @Output() removeRecipy = new EventEmitter<RecipyForCalendar>()
   @Output() recipyUpdated = new EventEmitter<RecipyForCalendar>()
+  @Output() saveToShoppingList = new EventEmitter<ShoppingListItem>()
 
   constructor(private router: Router,
     private route: ActivatedRoute, private _bottomSheet: MatBottomSheet) { }
@@ -43,6 +51,16 @@ export class CalendarRecipyComponent implements OnInit {
     const bottomSheetRef = this._bottomSheet.open(IngredientsToListBottomsheetComponent, {
       data: { ingredients: this.recipy.ingrediends, portions: this.recipy.portions, amountPerPortion: this.recipy.amountPerPortion, isMobile: this.isMobile },
     });
+
+    bottomSheetRef.afterDismissed().pipe(take(1)).subscribe(res => {
+      if(!!res){
+        let shoppingListToSave: ShoppingListItem = {
+          recipyId: this.recipy.id,
+          ingredients: res
+        }
+        this.saveToShoppingList.emit(shoppingListToSave)
+      }
+    })
   }
 
   onAmountPerPortionChanged(){
