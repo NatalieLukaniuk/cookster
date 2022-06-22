@@ -1,0 +1,24 @@
+.list-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-buttons {
+  width: 100vw;
+  margin-inline: -10px;
+  button {
+    width: 100%;
+  }
+}
+
+.bottomsheet-wrapper {
+  max-height: 80vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.ingredients-list {
+  overflow-y: auto;
+  max-height: 64vh;
+  margin: 10px -10px;
+}

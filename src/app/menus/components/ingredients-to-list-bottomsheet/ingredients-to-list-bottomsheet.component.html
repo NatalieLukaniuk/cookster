@@ -1,20 +1,35 @@
-<mat-selection-list #ingredients>
-  <mat-list-option
-    *ngFor="let ingredient of data.ingredients"
-    [value]="ingredient.product"
-  >
-    <app-ingredient
-      [ingredient]="ingredient"
-      [actualPortionsToServe]="data.portions"
-      [savedPortionsToServe]="getSavedPortions()"
-      [mode]="RecipyMode.AddIngrToShoppingList"
-      [isMobile]="data.isMobile"
-      (ingredientChanged)="onIngrChanged($event)"
-    ></app-ingredient>
-  </mat-list-option>
-</mat-selection-list>
-<div>
-  <button mat-flat-button class="action-button" (click)="add()">
-    Додати вибрані в список покупок
-  </button>
+<div class="bottomsheet-wrapper">
+  <div *ngIf="!!ingredients" class="list-header">
+    <mat-checkbox
+      [checked]="
+        ingredients.selectedOptions.selected.length == data.ingredients.length
+      "
+      [indeterminate]="
+        ingredients.selectedOptions.selected.length > 0 &&
+        ingredients.selectedOptions.selected.length < data.ingredients.length
+      "
+      (change)="toggleAllSelected($event.checked)"
+    >
+    </mat-checkbox>
+  </div>
+  <mat-selection-list #ingredients class="ingredients-list" color="primary">
+    <mat-list-option
+      *ngFor="let ingredient of data.ingredients"
+      [value]="ingredient.product"
+    >
+      <app-ingredient
+        [ingredient]="ingredient"
+        [actualPortionsToServe]="data.portions"
+        [savedPortionsToServe]="getSavedPortions()"
+        [mode]="RecipyMode.AddIngrToShoppingList"
+        [isMobile]="data.isMobile"
+        (ingredientChanged)="onIngrChanged($event)"
+      ></app-ingredient>
+    </mat-list-option>
+  </mat-selection-list>
+  <div class="action-buttons">
+    <button mat-flat-button class="action-button" (click)="add()">
+      Додати вибрані в список покупок
+    </button>
+  </div>
 </div>

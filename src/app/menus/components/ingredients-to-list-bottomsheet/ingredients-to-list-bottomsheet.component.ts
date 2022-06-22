@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatSelectionList } from '@angular/material/list';
 import * as _ from 'lodash';
@@ -11,7 +11,7 @@ import { AVERAGE_PORTION } from 'src/app/shared/constants';
   templateUrl: './ingredients-to-list-bottomsheet.component.html',
   styleUrls: ['./ingredients-to-list-bottomsheet.component.scss'],
 })
-export class IngredientsToListBottomsheetComponent implements OnInit {
+export class IngredientsToListBottomsheetComponent implements AfterViewInit {
   RecipyMode = RecipyMode;
 
   @ViewChild('ingredients')
@@ -27,8 +27,10 @@ export class IngredientsToListBottomsheetComponent implements OnInit {
       isMobile: boolean;
     }
   ) {}
-
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+    if (this.ingredientsList) {
+      this.ingredientsList.selectAll();
+    }
   }
 
   getSavedPortions(): number {
@@ -57,6 +59,14 @@ export class IngredientsToListBottomsheetComponent implements OnInit {
         selectedIds.includes(ingr.product)
       );
       console.log(selectedIngredients); // list to save
+    }
+  }
+
+  toggleAllSelected(event: boolean) {
+    if (this.ingredientsList) {
+      !event
+        ? this.ingredientsList?.deselectAll()
+        : this.ingredientsList?.selectAll();
     }
   }
 }
