@@ -6,14 +6,13 @@ import { LoginComponent } from './auth/components/login/login.component';
 import { RegistrationComponent } from './auth/components/registration/registration.component';
 import { CooksterComponent } from './cookster/cookster.component';
 import { FriendsFeedComponent } from './layout/containers/friends-feed/friends-feed.component';
-import { ShoppingListComponent } from './layout/containers/shopping-list/shopping-list.component';
-import { MenusComponent } from './menus/menus.component';
-import { RecipyFullViewComponent } from './recipies/containers/recipy-full-view/recipy-full-view.component';
-import { RecipyPreviewComponent } from './recipies/components/recipy-preview/recipy-preview.component';
-import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
-import { UserRecipiesComponent } from './recipies/containers/user-recipies/user-recipies.component';
-import { EditRecipyComponent } from './recipies/containers/edit-recipy/edit-recipy.component';
 import { CalendarContainerComponent } from './menus/containers/calendar-container/calendar-container.component';
+import { MenusComponent } from './menus/menus.component';
+import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
+import { EditRecipyComponent } from './recipies/containers/edit-recipy/edit-recipy.component';
+import { RecipyFullViewComponent } from './recipies/containers/recipy-full-view/recipy-full-view.component';
+import { UserRecipiesComponent } from './recipies/containers/user-recipies/user-recipies.component';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'cookster' },
@@ -36,11 +35,12 @@ export const routes: Routes = [
         ],
       },
       { path: 'friends-feed', component: FriendsFeedComponent },
-      { path: 'shopping-list', component: ShoppingListComponent },
+      
       { path: 'user-menus', component: MenusComponent },
     ],
   },
   { path: 'calendar', component: CalendarContainerComponent },
+  { path: 'shopping-list', component: ShoppingListComponent },
   { path: 'admin-panel', component: AdminComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent }
