@@ -180,6 +180,7 @@ export class DayComponent implements OnInit {
   }
 
   onSaveToShoppingList(event: ShoppingListItem) {
+    event.day = this.day.details.day;
     this.saveToShoppingList.emit(event);
   }
 }

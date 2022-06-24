@@ -20,9 +20,14 @@ export class ShoppingListService {
     }
     if ('shoppingLists' in _currentUser) {
       let listExists: ShoppingListItem | undefined;
-      if ('recipyId' in listToSave) {
+      if ('recipyId' in listToSave && 'day' in listToSave) {
         listExists = _currentUser.shoppingLists!.find(
-          (item) => item.recipyId == listToSave.recipyId
+          (item) =>
+            item.recipyId == listToSave.recipyId && item.day == listToSave.day
+        );
+      } else if ('recipyId' in listToSave && !('day' in listToSave)) {
+        listExists = _currentUser.shoppingLists!.find(
+          (item) => item.recipyId == listToSave.recipyId && !('day' in item)
         );
       } else if ('listName' in listToSave) {
         listExists = _currentUser.shoppingLists!.find(

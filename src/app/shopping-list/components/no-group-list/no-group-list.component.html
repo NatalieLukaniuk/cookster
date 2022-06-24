@@ -1,0 +1,9 @@
+<div *ngIf="!!listToDisplay.length; else noContent">
+    <ng-container *ngFor="let item of listToDisplay">
+        <app-ingredient [ingredient]="item"></app-ingredient>
+    </ng-container>
+</div>
+
+<ng-template #noContent>
+  <app-no-lists-placeholder></app-no-lists-placeholder>
+</ng-template>
