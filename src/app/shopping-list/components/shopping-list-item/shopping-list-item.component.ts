@@ -9,6 +9,7 @@ import {
   MeasuringUnitText,
 } from 'src/app/recipies/models/measuring-units.enum';
 import { Product, ProductType } from 'src/app/recipies/models/products.interface';
+import { convertAmountToSelectedUnit, transformToGr } from 'src/app/recipies/services/recipies.utils';
 
 import { NoGroupListItem } from '../no-group-list/no-group-list.component';
 
@@ -21,19 +22,54 @@ export class ShoppingListItemComponent implements OnInit {
   @Input() item!: NoGroupListItem;
   @Input() allProducts!: Product[];
   _item: NoGroupListItem | undefined;
+  _measuringUnit: MeasuringUnit | undefined;
+  _amountToDisplay: number | undefined;
 
   constructor() {}
 
   ngOnInit(): void {
     this._item = _.cloneDeep(this.item);
+    this._measuringUnit = this._item.defaultUnit;
+    this._amountToDisplay = convertAmountToSelectedUnit(
+      this._measuringUnit,
+      this._item,
+      this.allProducts
+    );
   }
 
-  onAmountChanged() {}
+  onAmountChanged() {
+    debugger;
+    if (this._item && this._measuringUnit && this._amountToDisplay) {
+      this._item.amount = transformToGr(
+        this._item,
+        this._amountToDisplay,
+        this._measuringUnit,
+        this.allProducts
+      );
+      this._amountToDisplay = convertAmountToSelectedUnit(
+        this._measuringUnit,
+        this._item,
+        this.allProducts
+      );
+      if (this._amountToDisplay % 1) {
+        this._amountToDisplay = +this._amountToDisplay.toFixed(2);
+      }
+    }
+  }
 
-  onMeasurementUnitChanged(event: any) {
+  onMeasurementUnitChanged(event: MeasuringUnit) {
     if (this._item) {
-      this._item = _.cloneDeep(this._item)
+      this._item = _.cloneDeep(this._item);
       this._item.defaultUnit = event;
+      this._measuringUnit = event;
+      this._amountToDisplay = convertAmountToSelectedUnit(
+        this._measuringUnit,
+        this._item,
+        this.allProducts
+      );
+      if (this._amountToDisplay % 1) {
+        this._amountToDisplay = +this._amountToDisplay.toFixed(2);
+      }
     }
   }
 

@@ -30,10 +30,9 @@ import { RecipiesService } from '../../services/recipies.service';
 @Component({
   selector: 'app-recipy-preview',
   templateUrl: './recipy-preview.component.html',
-  styleUrls: ['./recipy-preview.component.scss']
+  styleUrls: ['./recipy-preview.component.scss'],
 })
 export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
-
   @Input() recipy!: NewRecipy | Recipy;
   @Input() mode: RecipyMode = RecipyMode.ViewRecipy;
   RecipyMode = RecipyMode;
@@ -50,51 +49,62 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   isAddIngredientFormShown: boolean = false;
   isAddStepFormShown: boolean = false;
 
-  currentUser: User | undefined
+  currentUser: User | undefined;
 
   _clonedRecipy: Recipy | NewRecipy | undefined;
 
   GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
   currentTab: string = 'ingredients';
-  
-  portionSize: number = AVERAGE_PORTION
+
+  portionSize: number = AVERAGE_PORTION;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd.mm.yyyy',
     showInputField: false,
-    showClearDateBtn: false
+    showClearDateBtn: false,
   };
 
   datePicker: any;
 
   constructor(
-    private layoutService: LayoutService, 
-    private store: Store, private recipiesService: RecipiesService, private dialogsService: DialogsService, private calendarService: CalendarService, private location:Location) { }
+    private layoutService: LayoutService,
+    private store: Store,
+    private recipiesService: RecipiesService,
+    private dialogsService: DialogsService,
+    private calendarService: CalendarService,
+    private location: Location
+  ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
       this.portionsToServe = this.savedPortionsServed;
     }
-    if (this.recipy.isSplitIntoGroups && !!this.recipy.isSplitIntoGroups.length) {
+    if (
+      this.recipy.isSplitIntoGroups &&
+      !!this.recipy.isSplitIntoGroups.length
+    ) {
       this.isSplitToGroups = true;
       this.getIngredientsByGroup();
-      this.getStepsByGroup()
+      this.getStepsByGroup();
     }
   }
 
   ngOnInit(): void {
     console.log(this.location.getState());
-    let navigationData = this.location.getState() as {portions?: number, amountPerportion?: number};
-    if(!!navigationData.portions){
-      this.portionsToServe = navigationData.portions
+    let navigationData = this.location.getState() as {
+      portions?: number;
+      amountPerportion?: number;
+    };
+    if (!!navigationData.portions) {
+      this.portionsToServe = navigationData.portions;
     }
 
-    if(!!navigationData.amountPerportion){
-      this.portionSize = navigationData.amountPerportion
+    if (!!navigationData.amountPerportion) {
+      this.portionSize = navigationData.amountPerportion;
     }
 
-    this._clonedRecipy = _.cloneDeep(this.recipy)
+    this._clonedRecipy = _.cloneDeep(this.recipy);
 
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
@@ -102,16 +112,21 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     if (!!this._clonedRecipy.ingrediends.length && !navigationData.portions) {
       this.portionsToServe = this.savedPortionsServed;
     }
-    if (this._clonedRecipy.isSplitIntoGroups && !!this._clonedRecipy.isSplitIntoGroups.length) {
+    if (
+      this._clonedRecipy.isSplitIntoGroups &&
+      !!this._clonedRecipy.isSplitIntoGroups.length
+    ) {
       this.isSplitToGroups = true;
       this.getIngredientsByGroup();
-      this.getStepsByGroup()
+      this.getStepsByGroup();
     }
-    this.store.pipe(select(getCurrentUser), takeUntil(this.destroy$)).subscribe(user => {
-      if (user) {
-        this.currentUser = user
-      }
-    })
+    this.store
+      .pipe(select(getCurrentUser), takeUntil(this.destroy$))
+      .subscribe((user) => {
+        if (user) {
+          this.currentUser = user;
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -143,18 +158,20 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   getIngredientsByGroup() {
     if (!!this._clonedRecipy && this._clonedRecipy.isSplitIntoGroups) {
-      let ingredients = this._clonedRecipy.ingrediends
-      this._clonedRecipy.isSplitIntoGroups.forEach(group => {
-        this.ingredientsByGroup[group] = ingredients.filter(ingredient => ingredient.group == group)
+      let ingredients = this._clonedRecipy.ingrediends;
+      this._clonedRecipy.isSplitIntoGroups.forEach((group) => {
+        this.ingredientsByGroup[group] = ingredients.filter(
+          (ingredient) => ingredient.group == group
+        );
       });
     }
   }
 
   getStepsByGroup() {
     if (this._clonedRecipy && this._clonedRecipy.isSplitIntoGroups) {
-      let steps = this._clonedRecipy?.steps
-      this._clonedRecipy.isSplitIntoGroups.forEach(group => {
-        this.stepsByGroup[group] = steps.filter(step => step.group == group)
+      let steps = this._clonedRecipy?.steps;
+      this._clonedRecipy.isSplitIntoGroups.forEach((group) => {
+        this.stepsByGroup[group] = steps.filter((step) => step.group == group);
       });
     }
   }
@@ -230,53 +247,62 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     } else return '';
   }
 
-  goBack() {
-
-  }
+  goBack() {}
 
   onAddRecipy() {
     if (this._clonedRecipy) {
-      this._clonedRecipy.createdOn = Date.now()
-      this.store.dispatch(new fromRecipiesActions.AddNewRecipyAction(this._clonedRecipy))
+      this._clonedRecipy.createdOn = Date.now();
+      this.store.dispatch(
+        new fromRecipiesActions.AddNewRecipyAction(this._clonedRecipy)
+      );
     }
   }
 
   onEditRecipy() {
-    this.mode = RecipyMode.EditRecipy
+    this.mode = RecipyMode.EditRecipy;
   }
 
   saveUpdatedRecipy() {
     if (this._clonedRecipy && this.currentUser && 'id' in this._clonedRecipy) {
-      this.recipiesService.saveUpdatedRecipy(this._clonedRecipy, this.currentUser.email)
+      this.recipiesService.saveUpdatedRecipy(
+        this._clonedRecipy,
+        this.currentUser.email
+      );
     }
     this.portionsToServe = this.savedPortionsServed;
-    this.mode = RecipyMode.ViewRecipy
+    this.mode = RecipyMode.ViewRecipy;
   }
 
   other() {
-    console.log(this.recipy)
-    console.log(this.mode)
+    console.log(this.recipy);
+    console.log(this.mode);
   }
   onIngredientChanged(event: Ingredient) {
     if (!!this._clonedRecipy) {
-      this._clonedRecipy.ingrediends = this._clonedRecipy?.ingrediends.map(ingr => {
-        if (ingr.product == event.product) {
-          return event
-        } else return ingr;
-      })
+      this._clonedRecipy.ingrediends = this._clonedRecipy?.ingrediends.map(
+        (ingr) => {
+          if (ingr.product == event.product) {
+            return event;
+          } else return ingr;
+        }
+      );
     }
     this.isChangesSaved = false;
   }
 
   onDeleteIngredient(event: Ingredient) {
     if (!!this._clonedRecipy) {
-      this._clonedRecipy.ingrediends = this._clonedRecipy.ingrediends.filter(ingr => {
-        if ('group' in ingr) {
-          return !(ingr.group == event.group && ingr.product == event.product)
-        } else {
-          return !(ingr.product == event.product)
+      this._clonedRecipy.ingrediends = this._clonedRecipy.ingrediends.filter(
+        (ingr) => {
+          if ('group' in ingr) {
+            return !(
+              ingr.group == event.group && ingr.product == event.product
+            );
+          } else {
+            return !(ingr.product == event.product);
+          }
         }
-      })
+      );
     }
     this.getIngredientsByGroup();
     this.isChangesSaved = false;
@@ -286,43 +312,48 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     let ingr: Ingredient = {
       product: this.recipiesService.getIngredientIdFromName(event),
       amount: event.amount,
-      defaultUnit: event.defaultUnit
-    }
-    ingr.amount = this.recipiesService.transformToGr(ingr)
+      defaultUnit: event.defaultUnit,
+    };
+    ingr.amount = this.recipiesService.transformToGr(ingr, event.amount);
     if ('group' in event && event.group) {
       ingr.group = event.group;
-      if (!!this._clonedRecipy && !this._clonedRecipy.isSplitIntoGroups.includes(ingr.group)) {
-        this._clonedRecipy.isSplitIntoGroups.push(event.group)
+      if (
+        !!this._clonedRecipy &&
+        !this._clonedRecipy.isSplitIntoGroups.includes(ingr.group)
+      ) {
+        this._clonedRecipy.isSplitIntoGroups.push(event.group);
       }
     }
-    this._clonedRecipy?.ingrediends.push(ingr)
+    this._clonedRecipy?.ingrediends.push(ingr);
     this.isAddIngredientFormShown = false;
     this.getIngredientsByGroup();
-    this.isChangesSaved = false
+    this.isChangesSaved = false;
   }
   onTagsSelectionChange(event: DishType[]) {
-    this.isChangesSaved = false
+    this.isChangesSaved = false;
     if (this._clonedRecipy) {
-      this._clonedRecipy.type = event
+      this._clonedRecipy.type = event;
     }
   }
   onDeleteStep(step: PreparationStep) {
     if (this._clonedRecipy) {
-      this._clonedRecipy.steps = this._clonedRecipy.steps.filter(item => item.id !== step.id)
-      this.getStepsByGroup()
+      this._clonedRecipy.steps = this._clonedRecipy.steps.filter(
+        (item) => item.id !== step.id
+      );
+      this.getStepsByGroup();
     }
-    this.isChangesSaved = false
+    this.isChangesSaved = false;
   }
 
   onStepDescriptionEdited(step: PreparationStep) {
     if (this._clonedRecipy) {
-      this._clonedRecipy.steps = this._clonedRecipy.steps.map(item => {
+      this._clonedRecipy.steps = this._clonedRecipy.steps.map((item) => {
         if (item.id == step.id) {
-          return step
-        } else return item
-      })
+          return step;
+        } else return item;
+      });
     }
-    this.isChangesSaved = false
+    this.isChangesSaved = false;
   }
 
   //TODO make the textareas for preparation steps in edit mode auto-adjust to text height - a separate component for that
@@ -333,26 +364,38 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       description: event.description,
       timeActive: +event.timeActive,
       timePassive: +event.timePassive,
-    }
+    };
     if ('group' in event) {
-      step.group = event.group
+      step.group = event.group;
     }
     this._clonedRecipy?.steps.push(step);
-    this.getStepsByGroup()
-    this.isAddStepFormShown = false
-    this.isChangesSaved = false
+    this.getStepsByGroup();
+    this.isAddStepFormShown = false;
+    this.isChangesSaved = false;
   }
 
   pipe = new DatePipe('en-US');
   onDateChanged(event: any) {
     let day = this.pipe.transform(event.jsdate, 'ddMMYYYY');
-    this.dialogsService.openMealTimeSelectionDialog().pipe(take(1)).subscribe((res: {meal: string, portions: number, amountPerPortion: number}) => {
-      if (!!this.currentUser && !!res) {
-        let userToSave: User = _.cloneDeep(this.currentUser)
-        if (!!day && 'id' in this.recipy) {
-          this.calendarService.saveRecipyToCalendar(userToSave, day, this.recipy.id, res.meal, res.portions, res.amountPerPortion)
+    this.dialogsService
+      .openMealTimeSelectionDialog()
+      .pipe(take(1))
+      .subscribe(
+        (res: { meal: string; portions: number; amountPerPortion: number }) => {
+          if (!!this.currentUser && !!res) {
+            let userToSave: User = _.cloneDeep(this.currentUser);
+            if (!!day && 'id' in this.recipy) {
+              this.calendarService.saveRecipyToCalendar(
+                userToSave,
+                day,
+                this.recipy.id,
+                res.meal,
+                res.portions,
+                res.amountPerPortion
+              );
+            }
+          }
         }
-      }
-    })
+      );
   }
 }

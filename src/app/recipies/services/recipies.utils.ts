@@ -226,9 +226,12 @@ export function getGrPerItem(productId: string, allProducts: Product[]) {
   return grInOneItem;
 }
 
-export function transformToGr(ingr: Ingredient, allProducts: Product[]) {
-  let unit: MeasuringUnit = ingr.defaultUnit;
-  let amount: number = ingr.amount;
+export function transformToGr(
+  ingr: Ingredient,
+  amount: number,
+  unit: MeasuringUnit,
+  allProducts: Product[]
+): number {
   let density: number = getDensity(ingr.product, allProducts);
   let grInOneItem: number = getGrPerItem(ingr.product, allProducts);
   switch (unit) {

@@ -139,7 +139,7 @@ export class RecipiesService {
     }
   }
 
-  transformToGr(ingr: Ingredient) {
-    return transformToGr(ingr, this.products$.value);
+  transformToGr(ingr: Ingredient, amount: number) {
+    return transformToGr(ingr, amount, ingr.defaultUnit, this.products$.value);
   }
 }
