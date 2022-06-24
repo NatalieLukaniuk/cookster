@@ -5,14 +5,13 @@ import { take } from 'rxjs/operators';
 import { IAppState } from 'src/app/store/reducers';
 
 import * as fromRecipiesActions from '../../store/actions/recipies.actions';
-import { MeasuringUnit } from '../models/measuring-units.enum';
 import { Product } from '../models/products.interface';
 import { UserService } from './../../auth/services/user.service';
 import { Ingredient } from './../models/ingredient.interface';
 import { NewRecipy, Recipy } from './../models/recipy.interface';
-import { AmountConverterService } from './amount-converter.service';
 import { ProductsApiService } from './products-api.service';
 import { RecipiesApiService } from './recipies-api.service';
+import { getIngredientIdFromName, getIngredientText, transformToGr } from './recipies.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -25,83 +24,14 @@ export class RecipiesService {
 
   constructor(
     private recipiesApi: RecipiesApiService,
-    private converter: AmountConverterService,
     private productsApi: ProductsApiService,
     private userService: UserService,
     private store: Store<IAppState>
-  ) { }
-
+  ) {}
 
   getIngredientIdFromName(ingr: any): string {
-    let productId = '';
-    for (let product of this.products$.value) {
-      if (product.name === ingr.ingredient) {
-        productId = product.id;
-      }
-    }
-    return productId;
+    return getIngredientIdFromName(ingr, this.products$.value);
   }
-
-  transformToGr(ingr: Ingredient) {
-    let unit: MeasuringUnit = ingr.defaultUnit;
-    let amount: number = ingr.amount;
-    let density: number = this.getDensity(ingr.product);
-    let grInOneItem: number = this.getGrPerItem(ingr.product);
-    switch (unit) {
-      case MeasuringUnit.gr:
-        return amount;
-        break;
-      case MeasuringUnit.kg:
-        return this.converter.kgToGR(amount);
-        break;
-      case MeasuringUnit.bunch:
-        return this.converter.bunchToGr(amount);
-        break;
-      case MeasuringUnit.coffeeSpoon:
-        return this.converter.coffeeSpoonsToGr(amount, density);
-        break;
-      case MeasuringUnit.dessertSpoon:
-        return this.converter.dessertSpoonsToGr(amount, density);
-        break;
-      case MeasuringUnit.l:
-        return this.converter.literToGr(amount, density);
-        break;
-      case MeasuringUnit.ml:
-        return this.converter.mlToGr(amount, density);
-        break;
-      case MeasuringUnit.pinch:
-        return this.converter.pinchToGr(amount);
-        break;
-      case MeasuringUnit.tableSpoon:
-        return this.converter.tableSpoonsToGr(amount, density);
-        break;
-      case MeasuringUnit.teaSpoon:
-        return this.converter.teaSpoonsToGr(amount, density);
-      case MeasuringUnit.item:
-        return this.converter.itemsToGr(amount, grInOneItem);
-    }
-  }
-
-  getDensity(productId: string) {
-    let density = 0;
-    for (let item of this.products$.value) {
-      if (item.id === productId) {
-        density = item.density;
-      }
-    }
-    return density;
-  }
-
-  getGrPerItem(productId: string) {
-    let grInOneItem = 0;
-    for (let item of this.products$.value) {
-      if (item.id === productId) {
-        grInOneItem = item.grInOneItem ? item.grInOneItem : 0;
-      }
-    }
-    return grInOneItem;
-  }
-
 
   getRecipyById(id: string) {
     return this.recipiesApi.getRecipyById(id);
@@ -139,82 +69,14 @@ export class RecipiesService {
   }
 
   getIngredientText(ingr: Ingredient): string {
-    let productName = '';
-    for (let product of this.products$.value) {
-      if (product.id === ingr.product) {
-        productName = product.name;
-      }
-    }
-    return productName;
+    return getIngredientText(ingr, this.products$.value);
   }
-
-  convertAmountToSelectedUnit(unit: MeasuringUnit, ingredient: Ingredient) {
-    if (unit == MeasuringUnit.gr) {
-      return ingredient.amount;
-    } else {
-      let amount = 0;
-      switch (unit) {
-        case MeasuringUnit.kg:
-          amount = this.converter.grToKg(ingredient.amount);
-          break;
-        case MeasuringUnit.l:
-          amount = this.converter.grToLiter(
-            ingredient.amount,
-            this.getDensity(ingredient.product)
-          );
-          break;
-        case MeasuringUnit.ml:
-          amount = this.converter.grToMl(
-            ingredient.amount,
-            this.getDensity(ingredient.product)
-          );
-          break;
-        case MeasuringUnit.tableSpoon:
-          amount = this.converter.grToTableSpoons(
-            ingredient.amount,
-            this.getDensity(ingredient.product)
-          );
-          break;
-        case MeasuringUnit.dessertSpoon:
-          amount = this.converter.grToDessertSpoons(
-            ingredient.amount,
-            this.getDensity(ingredient.product)
-          );
-          break;
-        case MeasuringUnit.teaSpoon:
-          amount = this.converter.grToTeaSpoons(
-            ingredient.amount,
-            this.getDensity(ingredient.product)
-          );
-          break;
-        case MeasuringUnit.coffeeSpoon:
-          amount = this.converter.grToCoffeeSpoons(
-            ingredient.amount,
-            this.getDensity(ingredient.product)
-          );
-          break;
-        case MeasuringUnit.pinch:
-          amount = this.converter.grToPinch(ingredient.amount);
-          break;
-        case MeasuringUnit.bunch:
-          amount = this.converter.grToBunch(ingredient.amount);
-          break;
-        case MeasuringUnit.item:
-          amount = this.converter.grToItems(
-            ingredient.amount,
-            this.getGrPerItem(ingredient.product)
-          );
-      }
-      return amount;
-    }
-  }
-
 
   deleteRecipy(recipy: Recipy) {
     this.recipiesApi
       .deleteRecipy(recipy.id)
       .pipe(take(1))
-      .subscribe((res) => { });
+      .subscribe((res) => {});
   }
 
   getRecipyBelongsTo(recipy: Recipy) {
@@ -232,7 +94,10 @@ export class RecipiesService {
   }
 
   saveUpdatedRecipy(recipy: Recipy, currentUserEmail: string) {
-    if (currentUserEmail == recipy.author || ('clonedBy' in recipy && recipy.clonedBy == currentUserEmail)) {
+    if (
+      currentUserEmail == recipy.author ||
+      ('clonedBy' in recipy && recipy.clonedBy == currentUserEmail)
+    ) {
       let updatedRecipy: Recipy = {
         id: recipy.id,
         name: recipy.name,
@@ -245,13 +110,15 @@ export class RecipiesService {
         createdOn: recipy.createdOn,
         editedBy: currentUserEmail,
         lastEdited: Date.now(),
-        isBaseRecipy: recipy.isBaseRecipy
+        isBaseRecipy: recipy.isBaseRecipy,
+      };
+      if ('clonedBy' in recipy) {
+        (updatedRecipy.clonedBy = recipy.clonedBy),
+          (updatedRecipy.clonedOn = recipy.clonedOn);
       }
-      if('clonedBy' in recipy){
-        updatedRecipy.clonedBy = recipy.clonedBy,
-        updatedRecipy.clonedOn = recipy.clonedOn
-      }
-      this.store.dispatch(new fromRecipiesActions.UpdateRecipyAction(updatedRecipy))
+      this.store.dispatch(
+        new fromRecipiesActions.UpdateRecipyAction(updatedRecipy)
+      );
     } else {
       let clonedRecipy: NewRecipy = {
         name: recipy.name,
@@ -264,10 +131,15 @@ export class RecipiesService {
         createdOn: recipy.createdOn,
         clonedBy: currentUserEmail,
         clonedOn: Date.now(),
-        isBaseRecipy: recipy.isBaseRecipy
-      }
-      this.store.dispatch(new fromRecipiesActions.AddNewRecipyAction(clonedRecipy))
+        isBaseRecipy: recipy.isBaseRecipy,
+      };
+      this.store.dispatch(
+        new fromRecipiesActions.AddNewRecipyAction(clonedRecipy)
+      );
     }
   }
 
+  transformToGr(ingr: Ingredient) {
+    return transformToGr(ingr, this.products$.value);
+  }
 }

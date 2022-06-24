@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
 import { ProductType } from '../../models/products.interface';
 import { RecipiesService } from '../../services/recipies.service';
+import { convertAmountToSelectedUnit, transformToGr } from '../../services/recipies.utils';
 import { Ingredient } from './../../models/ingredient.interface';
 import {
   MeasuringUnit,
@@ -13,7 +14,6 @@ import {
   MeasuringUnitOptionsSpice,
   MeasuringUnitText,
 } from './../../models/measuring-units.enum';
-import { AmountConverterService } from './../../services/amount-converter.service';
 
 @Component({
   selector: 'app-ingredient',
@@ -41,19 +41,18 @@ export class IngredientComponent implements OnInit, OnChanges {
 
   measuringUnit: MeasuringUnit = MeasuringUnit.gr;
   constructor(
-    private converter: AmountConverterService,
     private recipiesService: RecipiesService,
   ) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mode) {
       this._ingredient = _.cloneDeep(this.ingredient);
-      this._amountInSelectedUnit = this.recipiesService.convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient);
-      this._savedAmount = this.recipiesService.convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient);
+      this._amountInSelectedUnit = convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient, this.recipiesService.products$.value);
+      this._savedAmount = convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient, this.recipiesService.products$.value);
     }
     if(changes.ingredient){
       this._ingredient = _.cloneDeep(this.ingredient);
-      this._amountInSelectedUnit = this.recipiesService.convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient);
-      this._savedAmount = this.recipiesService.convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient);
+      this._amountInSelectedUnit = convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient, this.recipiesService.products$.value);
+      this._savedAmount = convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient, this.recipiesService.products$.value);
       this.measuringUnit = this._ingredient.defaultUnit
     }
   }
@@ -141,7 +140,7 @@ export class IngredientComponent implements OnInit, OnChanges {
         amount: this._amountInSelectedUnit,
         defaultUnit: this._ingredient?.defaultUnit
       }
-      let amountToSave = this.recipiesService.transformToGr(ingr)
+      let amountToSave = transformToGr(ingr, this.recipiesService.products$.value)
       let ingrToSave: Ingredient = {
         product: this._ingredient?.product,
         amount: amountToSave,
@@ -160,7 +159,7 @@ export class IngredientComponent implements OnInit, OnChanges {
   }
 
   get amountToDisplay() {
-    const convertedToSelectedUnit = this.recipiesService.convertAmountToSelectedUnit(this.measuringUnit, this.ingredient);
+    const convertedToSelectedUnit = convertAmountToSelectedUnit(this.measuringUnit, this.ingredient, this.recipiesService.products$.value);
     let amountPerSelectedPortions = this.getAmount(convertedToSelectedUnit);
     if (amountPerSelectedPortions % 1) {
       amountPerSelectedPortions = +amountPerSelectedPortions.toFixed(2);
