@@ -1,0 +1,47 @@
+<div class="shopping-list-item-wrapper">
+  <div *ngIf="_item">
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <app-ingredient [ingredient]="_item"></app-ingredient>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-action-list>
+        <!-- Commented out due to wrong behaviour - the value of input should be displayed converted to selected unit, not in gramms as it is now; when value changes, it should change in selected value
+            <div mat-list-item> 
+          <button
+            mat-icon-button
+            (click)="_item.amount = _item.amount - 1; onAmountChanged()"
+          >
+            <mat-icon>remove</mat-icon>
+          </button>
+          <mat-form-field appearance="outline">
+            <mat-label>Amount per portion (in gramms)</mat-label>
+            <input
+              matInput
+              [(ngModel)]="_item.amount"
+              type="number"
+              (ngModelChange)="onAmountChanged()"
+            />
+          </mat-form-field>
+          <button
+            mat-icon-button
+            (click)="_item.amount = _item.amount + 1; onAmountChanged()"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+        </div> -->
+        <div mat-list-item>
+            <mat-radio-group class="cookster-radio-group" [(ngModel)]="_item.defaultUnit" (ngModelChange)="onMeasurementUnitChanged($event)">
+                <mat-radio-button *ngFor="let unit of measurementUnits"
+                    [value]="unit">
+                    {{ getUnitText(unit) }}
+                </mat-radio-button>
+            </mat-radio-group>          
+        </div>
+      </mat-action-list>
+    </mat-expansion-panel>
+  </div>
+
+  <button mat-icon-button><mat-icon>remove</mat-icon></button>
+</div>

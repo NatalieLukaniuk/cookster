@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
+import { Product } from 'src/app/recipies/models/products.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
 export interface NoGroupListItem extends Ingredient {
@@ -12,6 +13,7 @@ export interface NoGroupListItem extends Ingredient {
 })
 export class NoGroupListComponent implements OnChanges {
   @Input() lists!: ShoppingListItem[];
+  @Input() allProducts!: Product[];
   _lists: ShoppingListItem[] = [];
   listToDisplay: NoGroupListItem[] = [];
 

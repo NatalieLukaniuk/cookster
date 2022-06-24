@@ -50,6 +50,12 @@ export class IngredientComponent implements OnInit, OnChanges {
       this._amountInSelectedUnit = this.recipiesService.convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient);
       this._savedAmount = this.recipiesService.convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient);
     }
+    if(changes.ingredient){
+      this._ingredient = _.cloneDeep(this.ingredient);
+      this._amountInSelectedUnit = this.recipiesService.convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient);
+      this._savedAmount = this.recipiesService.convertAmountToSelectedUnit(this._ingredient.defaultUnit, this._ingredient);
+      this.measuringUnit = this._ingredient.defaultUnit
+    }
   }
 
   ngOnInit() {
