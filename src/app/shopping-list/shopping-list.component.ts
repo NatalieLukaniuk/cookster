@@ -5,37 +5,59 @@ import { Product } from 'src/app/recipies/models/products.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
+import { User } from '../auth/models/user.interface';
 import { RecipiesService } from '../recipies/services/recipies.service';
 import { IAppState } from '../store/reducers';
 import { ShoppingListMode } from './models';
+import { ShoppingListService } from './services/shopping-list.service';
 
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.scss']
+  styleUrls: ['./shopping-list.component.scss'],
 })
 export class ShoppingListComponent implements OnInit {
-
   ShoppingListMode = ShoppingListMode;
 
-  shoppingLists: ShoppingListItem[] = []
+  shoppingLists: ShoppingListItem[] = [];
 
-  allProducts: Product[] = []
+  allProducts: Product[] = [];
 
-  constructor(private store: Store<IAppState>, private recipiesService: RecipiesService) { 
-    this.store.pipe(select(getCurrentUser), map(user => user?.shoppingLists)).subscribe((lists: ShoppingListItem[] | undefined) => {
-      if(lists){
-        this.shoppingLists = lists
+  currentUser: User | undefined;
+
+  constructor(
+    private store: Store<IAppState>,
+    private recipiesService: RecipiesService,
+    private shoppingListService: ShoppingListService
+  ) {
+    this.store
+      .pipe(
+        select(getCurrentUser),
+        map((user) => {
+          if (user) {
+            this.currentUser = user;
+          }
+          return user?.shoppingLists;
+        })
+      )
+      .subscribe((lists: ShoppingListItem[] | undefined) => {
+        if (lists) {
+          this.shoppingLists = lists;
+        } else this.shoppingLists = []
+      });
+    this.recipiesService.products$.subscribe((res) => {
+      if (res) {
+        this.allProducts = res;
       }
-    })
-    this.recipiesService.products$.subscribe(res => {
-      if(res){
-        this.allProducts = res
-      }
-    })
+    });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
+  cleanShoppingList() {
+    // confirmation dialog needs to be added here
+    if (this.currentUser) {
+      this.shoppingListService.removeShoppingLists(this.currentUser);
+    }
+  }
 }

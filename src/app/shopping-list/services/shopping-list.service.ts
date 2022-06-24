@@ -42,4 +42,10 @@ export class ShoppingListService {
       this.store.dispatch(new UserActions.UpdateUserAction(_currentUser));
     }
   }
+
+  removeShoppingLists(currentUser: User){
+    let _currentUser = _.cloneDeep(currentUser);
+    _currentUser.shoppingLists = [];
+    this.store.dispatch(new UserActions.UpdateUserAction(_currentUser));
+  }
 }

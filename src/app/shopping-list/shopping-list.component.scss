@@ -6,4 +6,11 @@
   .list-view-selection{
     background-color: var(--background-color);
   }
+
+  .clean-list-button{
+    position: absolute;
+    right: 40px;
+    top: 5px;
+    z-index: 120;
+  }
 }
