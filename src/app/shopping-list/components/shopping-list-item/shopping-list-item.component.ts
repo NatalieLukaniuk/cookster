@@ -12,6 +12,10 @@ import { Product, ProductType } from 'src/app/recipies/models/products.interface
 import { convertAmountToSelectedUnit, transformToGr } from 'src/app/recipies/services/recipies.utils';
 
 import { NoGroupListItem } from '../no-group-list/no-group-list.component';
+import {
+  MeasuringUnitOptionsGranular,
+  MeasuringUnitOptionsHardHomogeneous,
+} from './../../../recipies/models/measuring-units.enum';
 
 @Component({
   selector: 'app-shopping-list-item',
@@ -102,6 +106,12 @@ export class ShoppingListItemComponent implements OnInit {
         break;
       case ProductType.spice:
         optionsArray = MeasuringUnitOptionsSpice;
+        break;
+      case ProductType.granular:
+        optionsArray = MeasuringUnitOptionsGranular;
+        break;
+      case ProductType.hardHomogenious:
+        optionsArray = MeasuringUnitOptionsHardHomogeneous;
     }
     return optionsArray;
   }

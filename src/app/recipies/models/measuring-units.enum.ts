@@ -71,3 +71,14 @@ export const MeasuringUnitOptionsFluid = [
     MeasuringUnit.item
   ];
 
+  export const MeasuringUnitOptionsGranular = [
+    MeasuringUnit.gr,
+    MeasuringUnit.kg,
+    MeasuringUnit.dessertSpoon,
+    MeasuringUnit.tableSpoon,
+  ]
+
+  export const MeasuringUnitOptionsHardHomogeneous = [
+    MeasuringUnit.gr,
+    MeasuringUnit.kg
+  ]

@@ -9,6 +9,8 @@ import { Ingredient } from './../../models/ingredient.interface';
 import {
   MeasuringUnit,
   MeasuringUnitOptionsFluid,
+  MeasuringUnitOptionsGranular,
+  MeasuringUnitOptionsHardHomogeneous,
   MeasuringUnitOptionsHardItems,
   MeasuringUnitOptionsHerbs,
   MeasuringUnitOptionsSpice,
@@ -118,6 +120,12 @@ export class IngredientComponent implements OnInit, OnChanges {
         break;
       case ProductType.spice:
         optionsArray = MeasuringUnitOptionsSpice;
+        break;
+      case ProductType.granular:
+        optionsArray = MeasuringUnitOptionsGranular;
+        break;
+      case ProductType.hardHomogenious:
+        optionsArray = MeasuringUnitOptionsHardHomogeneous;
     }
     return optionsArray;
   }
