@@ -1,7 +1,7 @@
-<div class="ingredient-wrapper" [ngClass]="mode == RecipyMode.AddIngrToShoppingList? 'add-ingr-to-shopping-list-mode' : ''">
+<div class="ingredient-wrapper" [ngClass]="mode == AppMode.AddIngrToShoppingList? 'add-ingr-to-shopping-list-mode' : ''">
   <div class="ingredient-name">{{ getIngredientText() }}</div>
 
-  <ng-container *ngIf="mode !== RecipyMode.EditRecipy">
+  <ng-container *ngIf="mode !== AppMode.EditRecipy">
     <div class="ingredient-amount">
       {{ amountToDisplay }} 
       
@@ -20,7 +20,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="(mode == RecipyMode.EditRecipy) && !!_ingredient">
+  <ng-container *ngIf="(mode == AppMode.EditRecipy) && !!_ingredient">
     <input matInput class="edit-input" [(ngModel)]="_amountInSelectedUnit" (ngModelChange)="amountChanged()">
     <span>{{getUnitText(measuringUnit)}}</span>
     <button mat-icon-button (click)="onDeleteIngredient()">

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as _ from 'lodash';
 
-import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
+import { AppMode } from '../../containers/edit-recipy/edit-recipy.component';
 import { ProductType } from '../../models/products.interface';
 import { RecipiesService } from '../../services/recipies.service';
 import { convertAmountToSelectedUnit, transformToGr } from '../../services/recipies.utils';
@@ -31,12 +31,12 @@ export class IngredientComponent implements OnInit, OnChanges {
   actualPortionsToServe!: number;
   @Input()
   isMobile!: boolean;
-  @Input() mode: RecipyMode = RecipyMode.ViewRecipy;
+  @Input() mode: AppMode = AppMode.ViewRecipy;
 
   @Output() ingredientChanged = new EventEmitter<Ingredient>();
   @Output() deleteIngredient = new EventEmitter<Ingredient>();
 
-  RecipyMode = RecipyMode;
+  AppMode = AppMode;
   _ingredient: Ingredient | undefined;
   _amountInSelectedUnit: number = 0;
   _savedAmount: number = 0;

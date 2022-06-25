@@ -13,7 +13,7 @@ import { LayoutService } from 'src/app/shared/services/layout.service';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
-import { RecipyMode } from '../../containers/edit-recipy/edit-recipy.component';
+import { AppMode } from '../../containers/edit-recipy/edit-recipy.component';
 import {
   IngredientsByGroup,
   ingredientsByGroup,
@@ -34,8 +34,8 @@ import { RecipiesService } from '../../services/recipies.service';
 })
 export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   @Input() recipy!: NewRecipy | Recipy;
-  @Input() mode: RecipyMode = RecipyMode.ViewRecipy;
-  RecipyMode = RecipyMode;
+  @Input() mode: AppMode = AppMode.ViewRecipy;
+  AppMode = AppMode;
 
   isMobile: boolean = false;
   destroy$ = new Subject();
@@ -259,7 +259,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onEditRecipy() {
-    this.mode = RecipyMode.EditRecipy;
+    this.mode = AppMode.EditRecipy;
   }
 
   saveUpdatedRecipy() {
@@ -270,7 +270,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       );
     }
     this.portionsToServe = this.savedPortionsServed;
-    this.mode = RecipyMode.ViewRecipy;
+    this.mode = AppMode.ViewRecipy;
   }
 
   other() {

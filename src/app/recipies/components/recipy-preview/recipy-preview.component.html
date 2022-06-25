@@ -3,23 +3,23 @@
     <div class="recipy-body">
       <div class="recipy-details">
         <div class="recipy-name-wrapper">
-          <h1 *ngIf="mode !== RecipyMode.EditRecipy">{{ _clonedRecipy.name }}</h1>
-          <input matInput class="input-edit" *ngIf="mode == RecipyMode.EditRecipy" [(ngModel)]="_clonedRecipy.name"
+          <h1 *ngIf="mode !== AppMode.EditRecipy">{{ _clonedRecipy.name }}</h1>
+          <input matInput class="input-edit" *ngIf="mode == AppMode.EditRecipy" [(ngModel)]="_clonedRecipy.name"
             (ngModelChange)="isChangesSaved = false">
           <div class="recipy-action-buttons">
             <my-date-picker name="mydate" (dateChanged)="onDateChanged($event)" [options]="myDatePickerOptions"
               [(ngModel)]="datePicker" required></my-date-picker>
-            <button *ngIf="mode == RecipyMode.ViewRecipy" mat-icon-button
-              (click)="mode == RecipyMode.ViewRecipy? onEditRecipy() : other()">
+            <button *ngIf="mode == AppMode.ViewRecipy" mat-icon-button
+              (click)="mode == AppMode.ViewRecipy? onEditRecipy() : other()">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-flat-button class="action-button" *ngIf="mode == RecipyMode.EditRecipy"
+            <button mat-flat-button class="action-button" *ngIf="mode == AppMode.EditRecipy"
               (click)="saveUpdatedRecipy()" [disabled]="isChangesSaved">Save Changes</button>
           </div>
 
         </div>
         <div class="ingredients-wrapper" *ngIf="portionsToServe && !!_clonedRecipy.ingrediends">
-          <h3 *ngIf="portionsToServe && mode !==RecipyMode.EditRecipy">
+          <h3 *ngIf="portionsToServe && mode !==AppMode.EditRecipy">
             Інгридієнти на
             <select class="inline-select" [(ngModel)]="portionsToServe">
               <option *ngFor="let option of portionsOptions">
@@ -48,7 +48,7 @@
             </ng-container>
           </ng-container>
           <button mat-flat-button class="action-button add-ingredient-button"
-            *ngIf="mode == RecipyMode.EditRecipy && !isAddIngredientFormShown"
+            *ngIf="mode == AppMode.EditRecipy && !isAddIngredientFormShown"
             (click)="isAddIngredientFormShown = true">Add Ingredient</button>
           <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
             (addNewIngredient)="onaAddNewIngredient($event)" *ngIf="isAddIngredientFormShown"></app-add-ingredient>
@@ -58,13 +58,13 @@
           <table class="steps-table" *ngIf="!isSplitToGroups">
             <tr *ngFor="let step of _clonedRecipy.steps; let i = index">
               <td>
-                <p *ngIf="mode !== RecipyMode.EditRecipy">{{ i + 1 }}. {{ step.description }}</p>
-                <div *ngIf="mode == RecipyMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical"
+                <p *ngIf="mode !== AppMode.EditRecipy">{{ i + 1 }}. {{ step.description }}</p>
+                <div *ngIf="mode == AppMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical"
                     class="input-edit" [(ngModel)]="step.description"
                     (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
               </td>
               <td class="time-cell">{{ getTotalStepTime(step) }} хв.</td>
-              <td *ngIf="mode == RecipyMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
+              <td *ngIf="mode == AppMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
                   <mat-icon>delete</mat-icon>
                 </button></td>
             </tr>
@@ -76,13 +76,13 @@
                 <table class="steps-table">
                   <tr *ngFor="let step of item.value; let i = index">
                     <td>
-                      <p *ngIf="mode !== RecipyMode.EditRecipy">{{ i + 1 }}. {{ step.description }}</p>
-                      <div *ngIf="mode == RecipyMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical"
+                      <p *ngIf="mode !== AppMode.EditRecipy">{{ i + 1 }}. {{ step.description }}</p>
+                      <div *ngIf="mode == AppMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical"
                           class="input-edit" [(ngModel)]="step.description"
                           (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
                     </td>
                     <td class="time-cell">{{ getTotalStepTime(step) }} хв.</td>
-                    <td *ngIf="mode == RecipyMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
+                    <td *ngIf="mode == AppMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
                         <mat-icon>delete</mat-icon>
                       </button></td>
                   </tr>
@@ -91,9 +91,9 @@
             </ng-container>
           </ng-container>
           <button mat-flat-button class="action-button add-ingredient-button"
-            *ngIf="mode == RecipyMode.EditRecipy && !isAddStepFormShown" (click)="isAddStepFormShown = true">Add
+            *ngIf="mode == AppMode.EditRecipy && !isAddStepFormShown" (click)="isAddStepFormShown = true">Add
             Step</button>
-          <app-add-step *ngIf="mode == RecipyMode.EditRecipy && isAddStepFormShown" [index]="_clonedRecipy.steps.length"
+          <app-add-step *ngIf="mode == AppMode.EditRecipy && isAddStepFormShown" [index]="_clonedRecipy.steps.length"
             [isSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
             [groupOptions]="_clonedRecipy.isSplitIntoGroups" (addNewStep)="onAddNewStep($event)"></app-add-step>
         </div>
@@ -114,19 +114,19 @@
         </div>
         <div class="recipy-tags">
           <div><span class="bold">Теги: </span></div>
-          <div *ngIf="mode !== RecipyMode.EditRecipy">
+          <div *ngIf="mode !== AppMode.EditRecipy">
             <mat-chip-list>
               <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
             </mat-chip-list>
           </div>
-          <div *ngIf="mode == RecipyMode.EditRecipy">
+          <div *ngIf="mode == AppMode.EditRecipy">
             <app-add-tags [selected]="_clonedRecipy.type" [tags]="allTags"
               (selectedTags)="onTagsSelectionChange($event)"></app-add-tags>
           </div>
         </div>
       </div>
     </div>
-    <button mat-flat-button class="action-button" *ngIf="mode == RecipyMode.AddPreview" (click)="onAddRecipy()">Add
+    <button mat-flat-button class="action-button" *ngIf="mode == AppMode.AddPreview" (click)="onAddRecipy()">Add
       recipy</button>
   </div>
 </ng-container>
@@ -217,8 +217,8 @@
     </div>
   </div>
   <button mat-flat-button class="action-button add-recipy-mobile-button"
-    *ngIf="mode == RecipyMode.EditRecipy || mode == RecipyMode.AddPreview"
-    (click)="mode == RecipyMode.AddPreview? onAddRecipy() : saveUpdatedRecipy()">Зберегти рецепт</button>
+    *ngIf="mode == AppMode.EditRecipy || mode == AppMode.AddPreview"
+    (click)="mode == AppMode.AddPreview? onAddRecipy() : saveUpdatedRecipy()">Зберегти рецепт</button>
   <mat-button-toggle-group appearance="legacy" aria-label="Font Style" (change)="onMatToggleChange($event)">
     <mat-button-toggle value="ingredients" checked>Інгридієнти</mat-button-toggle>
     <mat-button-toggle value="preparation">Приготування</mat-button-toggle>

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatSelectionList } from '@angular/material/list';
 import * as _ from 'lodash';
-import { RecipyMode } from 'src/app/recipies/containers/edit-recipy/edit-recipy.component';
+import { AppMode } from 'src/app/recipies/containers/edit-recipy/edit-recipy.component';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 
 @Component({
@@ -11,7 +11,7 @@ import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
   styleUrls: ['./ingredients-to-list-bottomsheet.component.scss'],
 })
 export class IngredientsToListBottomsheetComponent implements AfterViewInit {
-  RecipyMode = RecipyMode;
+  AppMode = AppMode;
 
   @ViewChild('ingredients')
   ingredientsList: MatSelectionList | undefined;

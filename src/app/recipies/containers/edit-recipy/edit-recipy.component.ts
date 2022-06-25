@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { NewRecipy } from '../../models/recipy.interface';
 
-export enum RecipyMode {
+export enum AppMode {
   AddRecipy = 'add',
   AddPreview = 'add-preview',
   EditRecipy = 'edit',
@@ -18,9 +18,9 @@ export enum RecipyMode {
 })
 export class EditRecipyComponent implements OnInit {
 
-  mode: RecipyMode = RecipyMode.AddRecipy;
+  mode: AppMode = AppMode.AddRecipy;
 
-  RecipyMode = RecipyMode;
+  AppMode = AppMode;
 
   recipy: NewRecipy | undefined;
 
@@ -30,7 +30,7 @@ export class EditRecipyComponent implements OnInit {
   }
 
   previewNewRecipy(event: NewRecipy) {
-    this.mode = RecipyMode.AddPreview;
+    this.mode = AppMode.AddPreview;
     if (event) {
       this.recipy = event;
     }
