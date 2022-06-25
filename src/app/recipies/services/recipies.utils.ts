@@ -20,7 +20,7 @@ export function bunchToGr(amount: number) {
 }
 
 export function grToPinch(amount: number, density: number) {
-  const cofSp = grToCoffeeSpoons(amount, density)
+  const cofSp = grToCoffeeSpoons(amount, density);
   return cofSp * 15;
 }
 
@@ -193,7 +193,10 @@ export function convertAmountToSelectedUnit(
         );
         break;
       case MeasuringUnit.pinch:
-        amount = grToPinch(ingredient.amount, getDensity(ingredient.product, allProducts));
+        amount = grToPinch(
+          ingredient.amount,
+          getDensity(ingredient.product, allProducts)
+        );
         break;
       case MeasuringUnit.bunch:
         amount = grToBunch(ingredient.amount);
@@ -202,6 +205,12 @@ export function convertAmountToSelectedUnit(
         amount = grToItems(
           ingredient.amount,
           getGrPerItem(ingredient.product, allProducts)
+        );
+        break;
+      case MeasuringUnit.cup:
+        amount = grToGlass(
+          ingredient.amount,
+          getDensity(ingredient.product, allProducts)
         );
     }
     return amount;
@@ -259,6 +268,8 @@ export function transformToGr(
       return teaSpoonsToGr(amount, density);
     case MeasuringUnit.item:
       return itemsToGr(amount, grInOneItem);
+    case MeasuringUnit.cup:
+      return glassToGr(amount, density);
   }
 }
 

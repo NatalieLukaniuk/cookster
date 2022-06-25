@@ -9,7 +9,8 @@ export enum MeasuringUnit {
   coffeeSpoon,
   pinch,
   bunch,
-  item
+  item,
+  cup
 }
 
 export enum MeasuringUnitText {
@@ -23,7 +24,8 @@ export enum MeasuringUnitText {
   'коф.л.',
   'дрібка',
   'пучок',
-  'шт.'
+  'шт.',
+  'склянка'
 }
 
 export const MeasuringUnitOptions = [
@@ -37,7 +39,8 @@ export const MeasuringUnitOptions = [
   MeasuringUnit.coffeeSpoon,
   MeasuringUnit.pinch,
   MeasuringUnit.bunch,
-  MeasuringUnit.item
+  MeasuringUnit.item,
+  MeasuringUnit.cup
 ];
 
 export const MeasuringUnitOptionsFluid = [
@@ -48,6 +51,7 @@ export const MeasuringUnitOptionsFluid = [
     MeasuringUnit.dessertSpoon,
     MeasuringUnit.teaSpoon,
     MeasuringUnit.coffeeSpoon,
+    MeasuringUnit.cup
   ];
 
   export const MeasuringUnitOptionsSpice = [
@@ -56,13 +60,15 @@ export const MeasuringUnitOptionsFluid = [
     MeasuringUnit.tableSpoon,
     MeasuringUnit.coffeeSpoon,
     MeasuringUnit.pinch,
+    MeasuringUnit.cup
   ];
 
   export const MeasuringUnitOptionsHerbs = [
     MeasuringUnit.gr,
     MeasuringUnit.teaSpoon,
     MeasuringUnit.pinch,
-    MeasuringUnit.bunch
+    MeasuringUnit.bunch,
+    MeasuringUnit.cup
   ];
 
   export const MeasuringUnitOptionsHardItems = [
@@ -76,6 +82,7 @@ export const MeasuringUnitOptionsFluid = [
     MeasuringUnit.kg,
     MeasuringUnit.dessertSpoon,
     MeasuringUnit.tableSpoon,
+    MeasuringUnit.cup
   ]
 
   export const MeasuringUnitOptionsHardHomogeneous = [

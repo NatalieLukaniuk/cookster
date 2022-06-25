@@ -26,6 +26,13 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+      <td mat-cell *matCellDef="let product">
+        {{ product.id }}
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="density">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>density</th>
       <td mat-cell *matCellDef="let product">

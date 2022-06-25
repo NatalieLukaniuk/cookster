@@ -20,6 +20,7 @@ export class ProductsAdminComponent implements OnInit, OnChanges {
 
   displayedColumns: string[] = [
     'name',
+    'id',
     'density',
     'grInOneItem',
     'calories',
