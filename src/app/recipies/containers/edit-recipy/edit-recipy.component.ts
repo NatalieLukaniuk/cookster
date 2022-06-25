@@ -8,7 +8,8 @@ export enum AppMode {
   EditRecipy = 'edit',
   CloneRecipy = 'clone',
   ViewRecipy = 'view',
-  AddIngrToShoppingList = 'addIngredientsToShoppingList'
+  AddIngrToShoppingList = 'addIngredientsToShoppingList',
+  ShoppingList = 'shoppingList'
 }
 
 @Component({

@@ -1,4 +1,4 @@
-<div class="ingredient-wrapper" [ngClass]="mode == AppMode.AddIngrToShoppingList? 'add-ingr-to-shopping-list-mode' : ''">
+<div class="ingredient-wrapper" [ngClass]="mode == AppMode.AddIngrToShoppingList? 'add-ingr-to-shopping-list-mode' : mode == AppMode.ShoppingList? 'shopping-list-mode' : ''">
   <div class="ingredient-name">{{ getIngredientText() }}</div>
 
   <ng-container *ngIf="mode !== AppMode.EditRecipy">

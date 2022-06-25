@@ -26,14 +26,12 @@ select {
   text-align: right;
 }
 
-.add-ingr-to-shopping-list-mode{
-  
-}
-
 @media (max-width: 600px) {
   .ingredient-wrapper {
-    border-bottom: 1px solid var(--tint2);
     padding: 10px;
     align-items: center;
+    &:not(.shopping-list-mode) {
+      border-bottom: 1px solid var(--tint2);
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
+import { AppMode } from 'src/app/recipies/containers/edit-recipy/edit-recipy.component';
 import {
   MeasuringUnit,
   MeasuringUnitOptionsFluid,
@@ -28,6 +29,8 @@ export class ShoppingListItemComponent implements OnInit {
   _item: NoGroupListItem | undefined;
   _measuringUnit: MeasuringUnit | undefined;
   _amountToDisplay: number | undefined;
+
+  mode = AppMode.ShoppingList;
 
   constructor() {}
 
