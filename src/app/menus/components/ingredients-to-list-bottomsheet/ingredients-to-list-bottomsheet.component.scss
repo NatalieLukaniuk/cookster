@@ -1,6 +1,8 @@
 .list-header {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 5px;
+  padding-right: 27px;
 }
 
 .action-buttons {
@@ -20,5 +22,10 @@
 .ingredients-list {
   overflow-y: auto;
   max-height: 64vh;
-  margin: 10px -10px;
+  margin-inline: -10px;
+  padding-block: 15px;
+  max-width: 94vw;
+  .mat-list-option {
+    width: 96%;
+  }
 }

@@ -21,11 +21,11 @@ export function bunchToGr(amount: number) {
 
 export function grToPinch(amount: number, density: number) {
   const cofSp = grToCoffeeSpoons(amount, density);
-  return cofSp * 15;
+  return cofSp * 23;
 }
 
 export function pinchToGr(amount: number, density: number) {
-  const conSp = coffeeSpoonsToGr(amount, density) / 15;
+  const conSp = coffeeSpoonsToGr(amount, density) / 23;
   return conSp;
 }
 
