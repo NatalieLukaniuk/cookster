@@ -4,7 +4,6 @@ import { MatSelectionList } from '@angular/material/list';
 import * as _ from 'lodash';
 import { RecipyMode } from 'src/app/recipies/containers/edit-recipy/edit-recipy.component';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
-import { AVERAGE_PORTION } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-ingredients-to-list-bottomsheet',
@@ -39,7 +38,7 @@ export class IngredientsToListBottomsheetComponent implements AfterViewInit {
     this.data.ingredients.forEach((ingr) => {
       amount = amount + ingr.amount;
     });
-    let savedPortions = amount / AVERAGE_PORTION;
+    let savedPortions = amount / this.data.amountPerPortion;
     return savedPortions;
   }
 

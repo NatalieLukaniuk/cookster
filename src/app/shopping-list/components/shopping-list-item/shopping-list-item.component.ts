@@ -38,7 +38,6 @@ export class ShoppingListItemComponent implements OnInit {
   }
 
   onAmountChanged() {
-    debugger;
     if (this._item && this._measuringUnit && this._amountToDisplay) {
       this._item.amount = transformToGr(
         this._item,

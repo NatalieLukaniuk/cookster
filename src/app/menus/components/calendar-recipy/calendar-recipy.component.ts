@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
@@ -62,11 +63,12 @@ export class CalendarRecipyComponent implements OnInit {
     bottomSheetRef
       .afterDismissed()
       .pipe(take(1))
-      .subscribe((res) => {
+      .subscribe((res: Ingredient[]) => {
         if (!!res) {
+          let ingr = this.recalculateIngredients(res)
           let shoppingListToSave: ShoppingListItem = {
             recipyId: this.recipy.id,
-            ingredients: res,
+            ingredients: ingr,
           };
           this.saveToShoppingList.emit(shoppingListToSave);
         }
@@ -75,5 +77,18 @@ export class CalendarRecipyComponent implements OnInit {
 
   onAmountPerPortionChanged() {
     this.recipyUpdated.emit(this.recipy);
+  }
+
+  recalculateIngredients(ingredientsList: Ingredient[]): Ingredient[]{
+    let totalAmount = 0;
+    ingredientsList.forEach(ingr => {
+      totalAmount = totalAmount + ingr.amount
+    })
+    let coef = (this.recipy.portions * this.recipy.amountPerPortion) / totalAmount;
+    let ingrListToreturn = ingredientsList.map(ingr => {
+      ingr.amount = ingr.amount * coef
+      return ingr
+    })
+    return ingrListToreturn
   }
 }
