@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import * as _ from 'lodash';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { Product } from 'src/app/recipies/models/products.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
@@ -16,6 +17,8 @@ export class NoGroupListComponent implements OnChanges {
   @Input() allProducts!: Product[];
   _lists: ShoppingListItem[] = [];
   listToDisplay: NoGroupListItem[] = [];
+
+  @Output() listsUpdated = new EventEmitter<ShoppingListItem[]>()
 
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
@@ -64,5 +67,14 @@ export class NoGroupListComponent implements OnChanges {
       });
     });
     console.log(this.listToDisplay);
+  }
+
+  onRemoveIngredient(event: NoGroupListItem){
+    this._lists = this._lists.map(list => {
+      let _list = _.cloneDeep(list)
+      _list.ingredients = _list.ingredients.filter(item => item.product !== event.product)
+      return _list
+    })
+    this.listsUpdated.emit(this._lists)
   }
 }

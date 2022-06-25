@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
 import { AppMode } from 'src/app/recipies/containers/edit-recipy/edit-recipy.component';
 import {
@@ -31,6 +31,8 @@ export class ShoppingListItemComponent implements OnInit {
   _amountToDisplay: number | undefined;
 
   mode = AppMode.ShoppingList;
+
+  @Output() removeIngredient = new EventEmitter<NoGroupListItem>()
 
   constructor() {}
 
@@ -121,5 +123,9 @@ export class ShoppingListItemComponent implements OnInit {
 
   getUnitText(unit: MeasuringUnit) {
     return MeasuringUnitText[unit];
+  }
+
+  removeIngr(){
+    this.removeIngredient.emit(this.item)
   }
 }

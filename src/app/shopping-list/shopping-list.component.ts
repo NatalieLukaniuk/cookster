@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import * as _ from 'lodash';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/recipies/models/products.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
@@ -8,6 +9,7 @@ import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { User } from '../auth/models/user.interface';
 import { RecipiesService } from '../recipies/services/recipies.service';
 import { IAppState } from '../store/reducers';
+import * as UserActions from './../store/actions/user.actions';
 import { ShoppingListMode } from './models';
 import { ShoppingListService } from './services/shopping-list.service';
 
@@ -58,6 +60,14 @@ export class ShoppingListComponent implements OnInit {
     // confirmation dialog needs to be added here
     if (this.currentUser) {
       this.shoppingListService.removeShoppingLists(this.currentUser);
+    }
+  }
+
+  onListsUpdated(event: ShoppingListItem[]){
+    if (this.currentUser){
+      let updatedUser = _.cloneDeep(this.currentUser);
+      updatedUser.shoppingLists = event;
+      this.store.dispatch(new UserActions.UpdateUserAction(updatedUser));
     }
   }
 }
