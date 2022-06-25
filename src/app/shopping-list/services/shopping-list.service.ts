@@ -15,7 +15,7 @@ export class ShoppingListService {
 
   addList(currentUser: User, listToSave: ShoppingListItem) {
     let _currentUser = _.cloneDeep(currentUser);
-    if (!('shoppingLists' in _currentUser)) {
+    if (!('shoppingLists' in _currentUser) || !_currentUser.shoppingLists) {
       _currentUser.shoppingLists = [];
     }
     if ('shoppingLists' in _currentUser) {
