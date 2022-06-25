@@ -35,6 +35,9 @@ export class ShoppingListItemComponent implements OnInit {
       this._item,
       this.allProducts
     );
+    if (this._amountToDisplay % 1) {
+      this._amountToDisplay = +this._amountToDisplay.toFixed(2);
+    }
   }
 
   onAmountChanged() {
