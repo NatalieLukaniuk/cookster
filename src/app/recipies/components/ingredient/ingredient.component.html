@@ -3,7 +3,7 @@
 
   <ng-container *ngIf="mode !== AppMode.EditRecipy">
     <div class="ingredient-amount">
-      {{ amountToDisplay }} 
+      {{ NormalizeDisplayedAmount(amountToDisplay, measuringUnit) }}
       
       <ng-container *ngIf="!savedPortionsToServe && !this.actualPortionsToServe && !isMobile">
         {{getUnitText(ingredient.defaultUnit)}}

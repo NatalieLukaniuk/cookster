@@ -12,7 +12,11 @@ import {
   MeasuringUnitText,
 } from 'src/app/recipies/models/measuring-units.enum';
 import { Product, ProductType } from 'src/app/recipies/models/products.interface';
-import { convertAmountToSelectedUnit, transformToGr } from 'src/app/recipies/services/recipies.utils';
+import {
+  convertAmountToSelectedUnit,
+  NormalizeDisplayedAmount,
+  transformToGr,
+} from 'src/app/recipies/services/recipies.utils';
 
 import { NoGroupListItem } from '../no-group-list/no-group-list.component';
 import {
@@ -59,7 +63,7 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
       this.allProducts
     );
     if (this._amountToDisplay % 1) {
-      this._amountToDisplay = +this._amountToDisplay.toFixed(2);
+      this._amountToDisplay = NormalizeDisplayedAmount(this._amountToDisplay, this._measuringUnit);
     }
     this.itemChanged$
       .pipe(takeUntil(this.destroyed$), debounceTime(700))

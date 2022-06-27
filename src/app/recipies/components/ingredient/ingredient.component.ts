@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { AppMode } from '../../containers/edit-recipy/edit-recipy.component';
 import { ProductType } from '../../models/products.interface';
 import { RecipiesService } from '../../services/recipies.service';
-import { convertAmountToSelectedUnit, transformToGr } from '../../services/recipies.utils';
+import { convertAmountToSelectedUnit, NormalizeDisplayedAmount, transformToGr } from '../../services/recipies.utils';
 import { Ingredient } from './../../models/ingredient.interface';
 import {
   MeasuringUnit,
@@ -42,6 +42,8 @@ export class IngredientComponent implements OnInit, OnChanges {
   _savedAmount: number = 0;
 
   measuringUnit: MeasuringUnit = MeasuringUnit.gr;
+
+  NormalizeDisplayedAmount = NormalizeDisplayedAmount;
   constructor(private recipiesService: RecipiesService) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.mode) {

@@ -298,3 +298,60 @@ export function getIngredientText(
   }
   return productName;
 }
+
+export function NormalizeDisplayedAmount(
+  weirdAmount: number,
+  unit: MeasuringUnit
+): number {
+  switch (unit) {
+    case MeasuringUnit.bunch:
+      return normalizeDecimal(weirdAmount, 1);
+    case MeasuringUnit.coffeeSpoon:
+      return getNiceDecimal(weirdAmount);
+    case MeasuringUnit.cup:
+      return normalizeDecimal(weirdAmount, 1);
+    case MeasuringUnit.dessertSpoon:
+      return getNiceDecimal(weirdAmount);
+    case MeasuringUnit.gr:
+      return roundToNoDecimals(weirdAmount);
+    case MeasuringUnit.item:
+      return getNiceDecimal(weirdAmount);
+    case MeasuringUnit.kg:
+      return normalizeDecimal(weirdAmount, 2);
+    case MeasuringUnit.l:
+      return normalizeDecimal(weirdAmount, 2);
+    case MeasuringUnit.ml:
+      return roundToNoDecimals(weirdAmount);
+    case MeasuringUnit.pinch:
+      return roundToNoDecimals(weirdAmount);
+    case MeasuringUnit.tableSpoon:
+      return getNiceDecimal(weirdAmount);
+    case MeasuringUnit.teaSpoon:
+      return getNiceDecimal(weirdAmount);
+  }
+}
+
+export function roundToNoDecimals(amount: number): number {
+  if (amount >= 1) {
+    return Math.round(amount);
+  } else return 1;
+}
+
+export function normalizeDecimal(amount: number, places: number): number {
+  if ((amount * Math.pow(10, places)) % 0.5) {
+    return Math.round(amount * Math.pow(10, places)) / Math.pow(10, places);
+  } else return amount;
+}
+
+export function getNiceDecimal(amount: number): number {
+  if ((amount * 10) % 10) {
+    let remainder = (amount * 10) % 10;
+    if (remainder > 0 && remainder < 3) {
+      return Math.floor(amount) > 0? Math.floor(amount) : 0.5;
+    } else if (remainder >= 3 && remainder < 7) {
+      return Math.floor(amount) + 0.5;
+    } else {
+      return Math.ceil(amount);
+    }
+  } else return amount;
+}
