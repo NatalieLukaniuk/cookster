@@ -1,6 +1,6 @@
 <div *ngIf="!!listToDisplay.length && !!allProducts.length; else noContent">
     <ng-container *ngFor="let item of listToDisplay">
-        <app-shopping-list-item [item]="item" [allProducts]="allProducts" (removeIngredient)="onRemoveIngredient($event)"></app-shopping-list-item>
+        <app-shopping-list-item [item]="item" [allProducts]="allProducts" (removeIngredient)="onRemoveIngredient($event)" (amountChanged)="onAmountChanged($event)" (measuringUnitChanged)="onMeasuringUnitChanged($event)"></app-shopping-list-item>
         
     </ng-container>
 </div>

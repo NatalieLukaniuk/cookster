@@ -20,10 +20,10 @@ export class ShoppingListService {
     }
     if ('shoppingLists' in _currentUser) {
       let listExists: ShoppingListItem | undefined;
-      if ('recipyId' in listToSave && 'day' in listToSave) {
+      if ('recipyId' in listToSave && 'day' in listToSave && 'meal' in listToSave) {
         listExists = _currentUser.shoppingLists!.find(
           (item) =>
-            item.recipyId == listToSave.recipyId && item.day == listToSave.day
+            item.recipyId == listToSave.recipyId && item.day == listToSave.day && item.meal == listToSave.meal
         );
       } else if ('recipyId' in listToSave && !('day' in listToSave)) {
         listExists = _currentUser.shoppingLists!.find(

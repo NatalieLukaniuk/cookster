@@ -22,7 +22,7 @@
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'breakfastRecipies')"
           (recipyUpdated)="updateRecipy($event, 'breakfastRecipies')"
-          (saveToShoppingList)="onSaveToShoppingList($event)"
+          (saveToShoppingList)="onSaveToShoppingList($event, 'breakfast')"
         ></app-calendar-recipy>
       </ng-container>
     </ng-container>
@@ -47,7 +47,7 @@
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'lunchRecipies')"
           (recipyUpdated)="updateRecipy($event, 'lunchRecipies')"
-          (saveToShoppingList)="onSaveToShoppingList($event)"
+          (saveToShoppingList)="onSaveToShoppingList($event, 'lunch')"
         ></app-calendar-recipy>
       </ng-container>
     </ng-container>
@@ -75,7 +75,7 @@
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'dinnerRecipies')"
           (recipyUpdated)="updateRecipy($event, 'dinnerRecipies')"
-          (saveToShoppingList)="onSaveToShoppingList($event)"
+          (saveToShoppingList)="onSaveToShoppingList($event, 'dinner')"
         ></app-calendar-recipy>
       </ng-container>
     </ng-container>

@@ -179,8 +179,9 @@ export class DayComponent implements OnInit {
     } else return null;
   }
 
-  onSaveToShoppingList(event: ShoppingListItem) {
+  onSaveToShoppingList(event: ShoppingListItem, meal: string) {
     event.day = this.day.details.day;
+    event.meal = meal;
     this.saveToShoppingList.emit(event);
   }
 }

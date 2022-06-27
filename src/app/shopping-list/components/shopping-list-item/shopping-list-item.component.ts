@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AppMode } from 'src/app/recipies/containers/edit-recipy/edit-recipy.component';
 import {
   MeasuringUnit,
@@ -18,23 +20,35 @@ import {
   MeasuringUnitOptionsHardHomogeneous,
 } from './../../../recipies/models/measuring-units.enum';
 
+enum ChangeType {
+  amount,
+  measuringUnit,
+}
 @Component({
   selector: 'app-shopping-list-item',
   templateUrl: './shopping-list-item.component.html',
   styleUrls: ['./shopping-list-item.component.scss'],
 })
-export class ShoppingListItemComponent implements OnInit {
+export class ShoppingListItemComponent implements OnInit, OnDestroy {
   @Input() item!: NoGroupListItem;
   @Input() allProducts!: Product[];
   _item: NoGroupListItem | undefined;
   _measuringUnit: MeasuringUnit | undefined;
-  _amountToDisplay: number | undefined;
+  _amountToDisplay: number = 0;
 
   mode = AppMode.ShoppingList;
+  itemChanged$ = new Subject<{ item: NoGroupListItem; change: ChangeType }>();
+  destroyed$ = new Subject();
 
-  @Output() removeIngredient = new EventEmitter<NoGroupListItem>()
+  @Output() removeIngredient = new EventEmitter<NoGroupListItem>();
+  @Output() amountChanged = new EventEmitter<NoGroupListItem>();
+  @Output() measuringUnitChanged = new EventEmitter<NoGroupListItem>();
 
   constructor() {}
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 
   ngOnInit(): void {
     this._item = _.cloneDeep(this.item);
@@ -47,6 +61,17 @@ export class ShoppingListItemComponent implements OnInit {
     if (this._amountToDisplay % 1) {
       this._amountToDisplay = +this._amountToDisplay.toFixed(2);
     }
+    this.itemChanged$
+      .pipe(takeUntil(this.destroyed$), debounceTime(700))
+      .subscribe((update: { item: NoGroupListItem; change: ChangeType }) => {
+        switch (update.change) {
+          case ChangeType.amount:
+            this.amountChanged.emit(update.item);
+            break;
+          case ChangeType.measuringUnit:
+            this.measuringUnitChanged.emit(update.item);
+        }
+      });
   }
 
   onAmountChanged() {
@@ -57,14 +82,15 @@ export class ShoppingListItemComponent implements OnInit {
         this._measuringUnit,
         this.allProducts
       );
-      this._amountToDisplay = convertAmountToSelectedUnit(
-        this._measuringUnit,
-        this._item,
-        this.allProducts
-      );
-      if (this._amountToDisplay % 1) {
-        this._amountToDisplay = +this._amountToDisplay.toFixed(2);
-      }
+      this.itemChanged$.next({ item: this._item, change: ChangeType.amount });
+      // this._amountToDisplay = convertAmountToSelectedUnit(
+      //   this._measuringUnit,
+      //   this._item,
+      //   this.allProducts
+      // );
+      // if (this._amountToDisplay % 1) {
+      //   this._amountToDisplay = +this._amountToDisplay.toFixed(2);
+      // }
     }
   }
 
@@ -72,15 +98,16 @@ export class ShoppingListItemComponent implements OnInit {
     if (this._item) {
       this._item = _.cloneDeep(this._item);
       this._item.defaultUnit = event;
-      this._measuringUnit = event;
-      this._amountToDisplay = convertAmountToSelectedUnit(
-        this._measuringUnit,
-        this._item,
-        this.allProducts
-      );
-      if (this._amountToDisplay % 1) {
-        this._amountToDisplay = +this._amountToDisplay.toFixed(2);
-      }
+      this.itemChanged$.next({item: this._item, change: ChangeType.measuringUnit});
+      // this._measuringUnit = event;
+      // this._amountToDisplay = convertAmountToSelectedUnit(
+      //   this._measuringUnit,
+      //   this._item,
+      //   this.allProducts
+      // );
+      // if (this._amountToDisplay % 1) {
+      //   this._amountToDisplay = +this._amountToDisplay.toFixed(2);
+      // }
     }
   }
 
@@ -125,7 +152,7 @@ export class ShoppingListItemComponent implements OnInit {
     return MeasuringUnitText[unit];
   }
 
-  removeIngr(){
-    this.removeIngredient.emit(this.item)
+  removeIngr() {
+    this.removeIngredient.emit(this.item);
   }
 }
