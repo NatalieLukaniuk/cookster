@@ -34,41 +34,42 @@ export class NoGroupListComponent implements OnChanges {
   buildListToDisplay() {
     this.listToDisplay = [];
     this._lists.forEach((item: ShoppingListItem) => {
-      if(item.ingredients){
+      if (item.ingredients) {
         item.ingredients.forEach((ingr: Ingredient) => {
-        let itemToPush: NoGroupListItem = { ...ingr, lists: [] };
-        if ('recipyId' in item) {
-          let id = item.recipyId + SEPARATOR + item.day + SEPARATOR + item.meal
-          itemToPush.lists!.push(id);
-        } else if ('listName' in item) {
-          itemToPush.lists!.push(item.listName!);
-        }
-        if (
-          !this.listToDisplay.find(
-            (listItem) => listItem.product == itemToPush.product
-          )
-        ) {
-          this.listToDisplay.push(itemToPush);
-        } else {
-          this.listToDisplay = this.listToDisplay.map((listItem) => {
-            if (listItem.product == itemToPush.product) {
-              let updated: NoGroupListItem = {
-                product: listItem.product,
-                defaultUnit: listItem.defaultUnit,
-                amount: listItem.amount + itemToPush.amount,
-                lists: listItem.lists,
-              };
-              itemToPush.lists.forEach((list) => {
-                if (!listItem.lists.includes(list)) {
-                  updated.lists.push(list);
-                }
-              });
-              return updated;
-            } else return listItem;
-          });
-        }
-      });
-      }      
+          let itemToPush: NoGroupListItem = { ...ingr, lists: [] };
+          if ('recipyId' in item) {
+            let id =
+              item.recipyId + SEPARATOR + item.day + SEPARATOR + item.meal;
+            itemToPush.lists!.push(id);
+          } else if ('listName' in item) {
+            itemToPush.lists!.push(item.listName!);
+          }
+          if (
+            !this.listToDisplay.find(
+              (listItem) => listItem.product == itemToPush.product
+            )
+          ) {
+            this.listToDisplay.push(itemToPush);
+          } else {
+            this.listToDisplay = this.listToDisplay.map((listItem) => {
+              if (listItem.product == itemToPush.product) {
+                let updated: NoGroupListItem = {
+                  product: listItem.product,
+                  defaultUnit: listItem.defaultUnit,
+                  amount: listItem.amount + itemToPush.amount,
+                  lists: listItem.lists,
+                };
+                itemToPush.lists.forEach((list) => {
+                  if (!listItem.lists.includes(list)) {
+                    updated.lists.push(list);
+                  }
+                });
+                return updated;
+              } else return listItem;
+            });
+          }
+        });
+      }
     });
   }
 
@@ -87,9 +88,15 @@ export class NoGroupListComponent implements OnChanges {
     let itemBeforeChange = this.listToDisplay.find(
       (item) => item.product == event.product
     );
-    let amountDifference =
-      this.round(itemBeforeChange!.amount) - this.round(event.amount);
-    if (this.round(amountDifference)) {
+    let amountDifference: number;
+    if (itemBeforeChange!.amount > 1 && event.amount > 1) {
+      amountDifference =
+        this.round(itemBeforeChange!.amount) - this.round(event.amount);
+    } else {
+      amountDifference = itemBeforeChange!.amount - event.amount;
+    }
+
+    if (amountDifference) {
       if (this.isAmountIncreased(amountDifference)) {
         //amount increased, the difference should be added to the general list - increased amount is processed properly
 
@@ -124,10 +131,10 @@ export class NoGroupListComponent implements OnChanges {
             //if the list general exists, the ingredient should be added to it
             this._lists = this._lists.map((list) => {
               if (this.isGeneralList(list)) {
-                let _list = _.cloneDeep(list)
+                let _list = _.cloneDeep(list);
 
-                if(!_list.ingredients){
-                  _list.ingredients = []
+                if (!_list.ingredients) {
+                  _list.ingredients = [];
                 }
                 _list.ingredients.push(ingrToAdd);
                 return _list;
@@ -146,14 +153,18 @@ export class NoGroupListComponent implements OnChanges {
         }
       } else {
         //amount decreased
-        let amountToProcess = Math.abs(this.round(amountDifference));
+        let amountToProcess = Math.abs(amountDifference);
         if (itemBeforeChange!.lists.includes('general')) {
           //there is a list general with the ingredient in it
           if (
             this._lists.find(
               (list) =>
                 this.isGeneralList(list) &&
-                list.ingredients.find((ingr) => (ingr.product == event.product && ingr.amount > amountToProcess))
+                list.ingredients.find(
+                  (ingr) =>
+                    ingr.product == event.product &&
+                    ingr.amount > amountToProcess
+                )
             )
           ) {
             // the amount of the ingredient in the general list is bigger than the amount to process, the amount should be decreased
@@ -178,7 +189,11 @@ export class NoGroupListComponent implements OnChanges {
             this._lists.find(
               (list) =>
                 this.isGeneralList(list) &&
-                list.ingredients.find((ingr) => (ingr.product == event.product && ingr.amount == amountToProcess))
+                list.ingredients.find(
+                  (ingr) =>
+                    ingr.product == event.product &&
+                    ingr.amount == amountToProcess
+                )
             )
           ) {
             // the amount of the ingredient in the general list is equal to the amount to process, the ingredient should be removed from the general list
@@ -190,14 +205,14 @@ export class NoGroupListComponent implements OnChanges {
             this._lists.forEach((list) => {
               if (this.isGeneralList(list)) {
                 let ingrToRemove = list.ingredients.find(
-                  (ingr) => (ingr.product == event.product)
+                  (ingr) => ingr.product == event.product
                 );
                 amountToProcess = amountToProcess - ingrToRemove!.amount;
               }
             });
             this._lists = this.removeIngredientFromGeneralList(event);
             if (amountToProcess) {
-              this.findAndProcessInList(amountToProcess, event, 0)
+              this.findAndProcessInList(amountToProcess, event, 0);
             } else {
               //save lists
               this.listsUpdated.emit(this._lists);
@@ -205,7 +220,7 @@ export class NoGroupListComponent implements OnChanges {
           }
         } else {
           //there is no ingr in general list, needs to be decreased in recipies - the names are in event.lists[]
-          this.findAndProcessInList(amountToProcess, event, 0)
+          this.findAndProcessInList(amountToProcess, event, 0);
         }
       }
     }
@@ -216,9 +231,14 @@ export class NoGroupListComponent implements OnChanges {
   }
 
   isListById(list: ShoppingListItem, id: string): boolean {
-    let split = id.split(SEPARATOR)
+    let split = id.split(SEPARATOR);
 
-    return 'recipyId' in list && list.recipyId == split[0] && list.day == split[1] && list.meal == split[2];
+    return (
+      'recipyId' in list &&
+      list.recipyId == split[0] &&
+      list.day == split[1] &&
+      list.meal == split[2]
+    );
   }
 
   findAndProcessInList(
@@ -230,7 +250,10 @@ export class NoGroupListComponent implements OnChanges {
       this._lists.find(
         (list) =>
           this.isListById(list, event.lists[recipyIndex]) &&
-          list.ingredients.find((ingr) => (ingr.product == event.product && ingr.amount > amountToProcess))
+          list.ingredients.find(
+            (ingr) =>
+              ingr.product == event.product && ingr.amount > amountToProcess
+          )
       )
     ) {
       // the amount of the ingredient in the list is bigger than the amount to process, the amount should be decreased
@@ -255,7 +278,10 @@ export class NoGroupListComponent implements OnChanges {
       this._lists.find(
         (list) =>
           this.isListById(list, event.lists[recipyIndex]) &&
-          list.ingredients.find((ingr) => (ingr.product == event.product && ingr.amount == amountToProcess))
+          list.ingredients.find(
+            (ingr) =>
+              ingr.product == event.product && ingr.amount == amountToProcess
+          )
       )
     ) {
       // the amount of the ingredient in the  list is equal to the amount to process, the ingredient should be removed from the list
@@ -267,17 +293,17 @@ export class NoGroupListComponent implements OnChanges {
       this._lists.forEach((list) => {
         if (this.isListById(list, event.lists[recipyIndex])) {
           let ingrToRemove = list.ingredients.find(
-            (ingr) => (ingr.product == event.product)
+            (ingr) => ingr.product == event.product
           );
-          if(ingrToRemove){
-            amountToProcess = amountToProcess - ingrToRemove!.amount;            
-          }          
+          if (ingrToRemove) {
+            amountToProcess = amountToProcess - ingrToRemove!.amount;
+          }
         }
       });
       this._lists = this.removeFromListById(event, event.lists[recipyIndex]);
       this.listsUpdated.emit(this._lists);
-      if (amountToProcess) {
-        this.findAndProcessInList(amountToProcess, event, recipyIndex + 1)
+      if (amountToProcess && recipyIndex < event.lists.length) {
+        this.findAndProcessInList(amountToProcess, event, recipyIndex + 1);
       } else {
         //save lists
         this.listsUpdated.emit(this._lists);

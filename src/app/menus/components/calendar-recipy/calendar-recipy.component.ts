@@ -23,13 +23,16 @@ export class CalendarRecipyComponent implements OnInit {
   @Output() recipyUpdated = new EventEmitter<RecipyForCalendar>();
   @Output() saveToShoppingList = new EventEmitter<ShoppingListItem>();
 
+  coef: number = 1;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private _bottomSheet: MatBottomSheet
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getCoef()
+  }
   viewRecipy() {
     this.router.navigate(
       ['cookster', 'recipies', 'full-recipy', this.recipy.id],
@@ -79,14 +82,17 @@ export class CalendarRecipyComponent implements OnInit {
     this.recipyUpdated.emit(this.recipy);
   }
 
-  recalculateIngredients(ingredientsList: Ingredient[]): Ingredient[]{
+  getCoef(){
     let totalAmount = 0;
-    ingredientsList.forEach(ingr => {
+    this.recipy.ingrediends.forEach(ingr => {
       totalAmount = totalAmount + ingr.amount
     })
-    let coef = (this.recipy.portions * this.recipy.amountPerPortion) / totalAmount;
+    this.coef = (this.recipy.portions * this.recipy.amountPerPortion) / totalAmount;
+  }
+
+  recalculateIngredients(ingredientsList: Ingredient[]): Ingredient[]{
     let ingrListToreturn = ingredientsList.map(ingr => {
-      ingr.amount = ingr.amount * coef
+      ingr.amount = ingr.amount * this.coef
       return ingr
     })
     return ingrListToreturn
