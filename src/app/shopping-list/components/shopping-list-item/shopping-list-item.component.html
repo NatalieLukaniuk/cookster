@@ -12,7 +12,7 @@
           <button
             mat-icon-button
             (click)="
-              this._amountToDisplay = this._amountToDisplay - 1;
+              this._amountToDisplay > 1? this._amountToDisplay = this._amountToDisplay - 1 : this._amountToDisplay = 0;
               onAmountChanged()
             "
           >

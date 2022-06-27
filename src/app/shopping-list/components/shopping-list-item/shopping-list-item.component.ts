@@ -79,7 +79,7 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
   }
 
   onAmountChanged() {
-    if (this._item && this._measuringUnit && this._amountToDisplay) {
+    if (this._item && this._measuringUnit) {
       this._item.amount = transformToGr(
         this._item,
         this._amountToDisplay,

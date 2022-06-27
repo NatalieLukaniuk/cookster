@@ -7,6 +7,7 @@ import { ShoppingListItem } from 'src/app/shopping-list/models';
 
 export interface NoGroupListItem extends Ingredient {
   lists: string[];
+  order?: number;
 }
 @Component({
   selector: 'app-no-group-list',
@@ -71,6 +72,9 @@ export class NoGroupListComponent implements OnChanges {
         });
       }
     });
+
+    console.log(this.listToDisplay);
+    // this.listToDisplay.sort((a, b) => a.product.localeCompare(b.product))
   }
 
   onRemoveIngredient(event: NoGroupListItem) {
@@ -85,6 +89,7 @@ export class NoGroupListComponent implements OnChanges {
   }
 
   onAmountChanged(event: NoGroupListItem) {
+    debugger;
     let itemBeforeChange = this.listToDisplay.find(
       (item) => item.product == event.product
     );
@@ -231,14 +236,16 @@ export class NoGroupListComponent implements OnChanges {
   }
 
   isListById(list: ShoppingListItem, id: string): boolean {
-    let split = id.split(SEPARATOR);
+    if (id.includes('/')) {
+      let split = id.split(SEPARATOR);
 
-    return (
-      'recipyId' in list &&
-      list.recipyId == split[0] &&
-      list.day == split[1] &&
-      list.meal == split[2]
-    );
+      return (
+        'recipyId' in list &&
+        list.recipyId == split[0] &&
+        list.day == split[1] &&
+        list.meal == split[2]
+      );
+    } else return false;
   }
 
   findAndProcessInList(
