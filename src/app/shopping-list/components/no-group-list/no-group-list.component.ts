@@ -79,11 +79,13 @@ export class NoGroupListComponent implements OnChanges {
 
   onRemoveIngredient(event: NoGroupListItem) {
     this._lists = this._lists.map((list) => {
-      let _list = _.cloneDeep(list);
-      _list.ingredients = _list.ingredients.filter(
-        (item) => item.product !== event.product
-      );
-      return _list;
+      if (list.ingredients?.length) {
+        let _list = _.cloneDeep(list);
+        _list.ingredients = _list.ingredients.filter(
+          (item) => item.product !== event.product
+        );
+        return _list;
+      } else return list;
     });
     this.listsUpdated.emit(this._lists);
   }
@@ -366,10 +368,6 @@ export class NoGroupListComponent implements OnChanges {
 
   isAmountIncreased(amount: number): boolean {
     return amount < 0;
-  }
-
-  normalizeDecimals(amount: number): number {
-    return Math.fround(amount);
   }
 
   round(amount: number): number {
