@@ -64,9 +64,9 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
       this._item,
       this.allProducts
     );
-    // if (this._amountToDisplay % 1) {
-    //   this._amountToDisplay = NormalizeDisplayedAmount(this._amountToDisplay, this._measuringUnit);
-    // }
+    if (this._amountToDisplay % 1) {
+      this._amountToDisplay = NormalizeDisplayedAmount(this._amountToDisplay, this._measuringUnit);
+    }
     this.itemChanged$
       .pipe(takeUntil(this.destroyed$), debounceTime(700))
       .subscribe((update: { item: NoGroupListItem; change: ChangeType, isSmallAmount: boolean }) => {
