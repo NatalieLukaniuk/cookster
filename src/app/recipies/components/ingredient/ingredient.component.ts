@@ -46,19 +46,6 @@ export class IngredientComponent implements OnInit, OnChanges {
   NormalizeDisplayedAmount = NormalizeDisplayedAmount;
   constructor(private recipiesService: RecipiesService) {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.mode) {
-      this._ingredient = _.cloneDeep(this.ingredient);
-      this._amountInSelectedUnit = convertAmountToSelectedUnit(
-        this._ingredient.defaultUnit,
-        this._ingredient,
-        this.recipiesService.products$.value
-      );
-      this._savedAmount = convertAmountToSelectedUnit(
-        this._ingredient.defaultUnit,
-        this._ingredient,
-        this.recipiesService.products$.value
-      );
-    }
     if (changes.ingredient) {
       this._ingredient = _.cloneDeep(this.ingredient);
       this._amountInSelectedUnit = convertAmountToSelectedUnit(

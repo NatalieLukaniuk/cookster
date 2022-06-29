@@ -86,27 +86,29 @@ export class NoGroupListComponent implements OnChanges {
         );
         return _list;
       } else return list;
-    });
+    }); 
+    this._lists = this._lists.filter((list) => list.ingredients.length)
     this.listsUpdated.emit(this._lists);
   }
 
-  onAmountChanged(event: NoGroupListItem) {
+  onAmountChanged(event: {item: NoGroupListItem, isSmallAmount: boolean}) {
     let itemBeforeChange = this.listToDisplay.find(
-      (item) => item.product == event.product
+      (item) => item.product == event.item.product
     );
     let amountDifference: number = this.getAmountDifference(
       itemBeforeChange!.amount,
-      event.amount
+      event.item.amount,
+      event.isSmallAmount
     );
 
     if (amountDifference) {
       if (this.isAmountIncreased(amountDifference)) {
         //amount increased, the difference should be added to the general list - increased amount is processed properly
 
-        this.onAmountIncreased(itemBeforeChange!, event, amountDifference);
+        this.onAmountIncreased(itemBeforeChange!, event.item, amountDifference);
       } else {
         //amount decreased
-        this.onAmountDecreased(itemBeforeChange!, event, amountDifference);
+        this.onAmountDecreased(itemBeforeChange!, event.item, amountDifference);
       }
     }
   }
@@ -245,8 +247,8 @@ export class NoGroupListComponent implements OnChanges {
     }
   }
 
-  getAmountDifference(originalAmount: number, updatedAmount: number): number {
-    if (originalAmount > 1 && updatedAmount > 1) {
+  getAmountDifference(originalAmount: number, updatedAmount: number, isSmallAmount: boolean): number {
+    if (originalAmount > 1 && updatedAmount > 1 && !isSmallAmount) {
       return this.round(originalAmount) - this.round(updatedAmount);
     } else {
       return originalAmount - updatedAmount;
