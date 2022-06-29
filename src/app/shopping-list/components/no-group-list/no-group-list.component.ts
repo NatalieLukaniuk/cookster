@@ -89,145 +89,165 @@ export class NoGroupListComponent implements OnChanges {
   }
 
   onAmountChanged(event: NoGroupListItem) {
-    debugger;
     let itemBeforeChange = this.listToDisplay.find(
       (item) => item.product == event.product
     );
-    let amountDifference: number;
-    if (itemBeforeChange!.amount > 1 && event.amount > 1) {
-      amountDifference =
-        this.round(itemBeforeChange!.amount) - this.round(event.amount);
-    } else {
-      amountDifference = itemBeforeChange!.amount - event.amount;
-    }
+    let amountDifference: number = this.getAmountDifference(
+      itemBeforeChange!.amount,
+      event.amount
+    );
 
     if (amountDifference) {
       if (this.isAmountIncreased(amountDifference)) {
         //amount increased, the difference should be added to the general list - increased amount is processed properly
 
-        if (itemBeforeChange!.lists.includes('general')) {
-          //there is list general with the ingredient in it, amount should be changed there
-          this._lists = this._lists.map((list) => {
-            if (this.isGeneralList(list)) {
-              let _list = _.cloneDeep(list);
-
-              _list.ingredients = _list.ingredients.map((ingr) => {
-                if (ingr.product == event.product) {
-                  let ingrToReturn: Ingredient = {
-                    product: event.product,
-                    defaultUnit: event.defaultUnit,
-                    amount: ingr.amount + Math.abs(amountDifference),
-                  };
-                  return ingrToReturn;
-                } else return ingr;
-              });
-              return _list;
-            } else return list;
-          });
-          this.listsUpdated.emit(this._lists);
-        } else {
-          //the ingredient is not included in list general
-          let ingrToAdd: Ingredient = {
-            product: event.product,
-            amount: Math.abs(amountDifference),
-            defaultUnit: event.defaultUnit,
-          };
-          if (this._lists.find((list) => this.isGeneralList(list))) {
-            //if the list general exists, the ingredient should be added to it
-            this._lists = this._lists.map((list) => {
-              if (this.isGeneralList(list)) {
-                let _list = _.cloneDeep(list);
-
-                if (!_list.ingredients) {
-                  _list.ingredients = [];
-                }
-                _list.ingredients.push(ingrToAdd);
-                return _list;
-              } else return list;
-            });
-            this.listsUpdated.emit(this._lists);
-          } else {
-            // if the list general doesn't exist, it should be created and the ingredient should be added to it
-            let newList: ShoppingListItem = {
-              ingredients: [ingrToAdd],
-              listName: 'general',
-            };
-            this._lists.push(newList);
-            this.listsUpdated.emit(this._lists);
-          }
-        }
+        this.onAmountIncreased(itemBeforeChange!, event, amountDifference);
       } else {
         //amount decreased
-        let amountToProcess = Math.abs(amountDifference);
-        if (itemBeforeChange!.lists.includes('general')) {
-          //there is a list general with the ingredient in it
-          if (
-            this._lists.find(
-              (list) =>
-                this.isGeneralList(list) &&
-                list.ingredients.find(
-                  (ingr) =>
-                    ingr.product == event.product &&
-                    ingr.amount > amountToProcess
-                )
-            )
-          ) {
-            // the amount of the ingredient in the general list is bigger than the amount to process, the amount should be decreased
-            this._lists = this._lists.map((list) => {
-              if (this.isGeneralList(list)) {
-                let _list = _.cloneDeep(list);
-                _list.ingredients = _list.ingredients.map((ingr) => {
-                  if (ingr.product == event.product) {
-                    let ingrToReturn: Ingredient = {
-                      product: event.product,
-                      defaultUnit: event.defaultUnit,
-                      amount: ingr.amount - amountToProcess,
-                    };
-                    return ingrToReturn;
-                  } else return ingr;
-                });
-                return _list;
-              } else return list;
-            });
-            this.listsUpdated.emit(this._lists);
-          } else if (
-            this._lists.find(
-              (list) =>
-                this.isGeneralList(list) &&
-                list.ingredients.find(
-                  (ingr) =>
-                    ingr.product == event.product &&
-                    ingr.amount == amountToProcess
-                )
-            )
-          ) {
-            // the amount of the ingredient in the general list is equal to the amount to process, the ingredient should be removed from the general list
-            this._lists = this.removeIngredientFromGeneralList(event);
-            this.listsUpdated.emit(this._lists);
-          } else {
-            // the amount of the ingredient in the general list is smaller than the amount to process,
-            //the ingredient should be removed from the general list and the remaining difference processed further
-            this._lists.forEach((list) => {
-              if (this.isGeneralList(list)) {
-                let ingrToRemove = list.ingredients.find(
-                  (ingr) => ingr.product == event.product
-                );
-                amountToProcess = amountToProcess - ingrToRemove!.amount;
-              }
-            });
-            this._lists = this.removeIngredientFromGeneralList(event);
-            if (amountToProcess) {
-              this.findAndProcessInList(amountToProcess, event, 0);
-            } else {
-              //save lists
-              this.listsUpdated.emit(this._lists);
+        this.onAmountDecreased(itemBeforeChange!, event, amountDifference);
+      }
+    }
+  }
+
+  onAmountIncreased(
+    originalItem: NoGroupListItem,
+    updatedItem: NoGroupListItem,
+    amountDifference: number
+  ) {
+    if (originalItem.lists.includes('general')) {
+      //there is list general with the ingredient in it, amount should be changed there
+      this._lists = this._lists.map((list) => {
+        if (this.isGeneralList(list)) {
+          let _list = _.cloneDeep(list);
+
+          _list.ingredients = _list.ingredients.map((ingr) => {
+            if (ingr.product == updatedItem.product) {
+              let ingrToReturn: Ingredient = {
+                product: updatedItem.product,
+                defaultUnit: updatedItem.defaultUnit,
+                amount: ingr.amount + Math.abs(amountDifference),
+              };
+              return ingrToReturn;
+            } else return ingr;
+          });
+          return _list;
+        } else return list;
+      });
+      this.listsUpdated.emit(this._lists);
+    } else {
+      //the ingredient is not included in list general
+      let ingrToAdd: Ingredient = {
+        product: updatedItem.product,
+        amount: Math.abs(amountDifference),
+        defaultUnit: updatedItem.defaultUnit,
+      };
+      if (this._lists.find((list) => this.isGeneralList(list))) {
+        //if the list general exists, the ingredient should be added to it
+        this._lists = this._lists.map((list) => {
+          if (this.isGeneralList(list)) {
+            let _list = _.cloneDeep(list);
+
+            if (!_list.ingredients) {
+              _list.ingredients = [];
             }
+            _list.ingredients.push(ingrToAdd);
+            return _list;
+          } else return list;
+        });
+        this.listsUpdated.emit(this._lists);
+      } else {
+        // if the list general doesn't exist, it should be created and the ingredient should be added to it
+        let newList: ShoppingListItem = {
+          ingredients: [ingrToAdd],
+          listName: 'general',
+        };
+        this._lists.push(newList);
+        this.listsUpdated.emit(this._lists);
+      }
+    }
+  }
+
+  onAmountDecreased(
+    originalItem: NoGroupListItem,
+    updatedItem: NoGroupListItem,
+    amountDifference: number
+  ) {
+    let amountToProcess = Math.abs(amountDifference);
+    if (originalItem.lists.includes('general')) {
+      //there is a list general with the ingredient in it
+      if (
+        this._lists.find(
+          (list) =>
+            this.isGeneralList(list) &&
+            list.ingredients.find(
+              (ingr) =>
+                ingr.product == updatedItem.product &&
+                ingr.amount > amountToProcess
+            )
+        )
+      ) {
+        // the amount of the ingredient in the general list is bigger than the amount to process, the amount should be decreased
+        this._lists = this._lists.map((list) => {
+          if (this.isGeneralList(list)) {
+            let _list = _.cloneDeep(list);
+            _list.ingredients = _list.ingredients.map((ingr) => {
+              if (ingr.product == updatedItem.product) {
+                let ingrToReturn: Ingredient = {
+                  product: updatedItem.product,
+                  defaultUnit: updatedItem.defaultUnit,
+                  amount: ingr.amount - amountToProcess,
+                };
+                return ingrToReturn;
+              } else return ingr;
+            });
+            return _list;
+          } else return list;
+        });
+        this.listsUpdated.emit(this._lists);
+      } else if (
+        this._lists.find(
+          (list) =>
+            this.isGeneralList(list) &&
+            list.ingredients.find(
+              (ingr) =>
+                ingr.product == updatedItem.product &&
+                ingr.amount == amountToProcess
+            )
+        )
+      ) {
+        // the amount of the ingredient in the general list is equal to the amount to process, the ingredient should be removed from the general list
+        this._lists = this.removeIngredientFromGeneralList(updatedItem);
+        this.listsUpdated.emit(this._lists);
+      } else {
+        // the amount of the ingredient in the general list is smaller than the amount to process,
+        //the ingredient should be removed from the general list and the remaining difference processed further
+        this._lists.forEach((list) => {
+          if (this.isGeneralList(list)) {
+            let ingrToRemove = list.ingredients.find(
+              (ingr) => ingr.product == updatedItem.product
+            );
+            amountToProcess = amountToProcess - ingrToRemove!.amount;
           }
+        });
+        this._lists = this.removeIngredientFromGeneralList(updatedItem);
+        if (amountToProcess) {
+          this.findAndProcessInList(amountToProcess, updatedItem, 0);
         } else {
-          //there is no ingr in general list, needs to be decreased in recipies - the names are in event.lists[]
-          this.findAndProcessInList(amountToProcess, event, 0);
+          //save lists
+          this.listsUpdated.emit(this._lists);
         }
       }
+    } else {
+      //there is no ingr in general list, needs to be decreased in recipies - the names are in event.lists[]
+      this.findAndProcessInList(amountToProcess, updatedItem, 0);
+    }
+  }
+
+  getAmountDifference(originalAmount: number, updatedAmount: number): number {
+    if (originalAmount > 1 && updatedAmount > 1) {
+      return this.round(originalAmount) - this.round(updatedAmount);
+    } else {
+      return originalAmount - updatedAmount;
     }
   }
 

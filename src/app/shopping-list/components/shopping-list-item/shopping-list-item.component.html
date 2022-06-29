@@ -18,7 +18,7 @@
           >
             <mat-icon>remove</mat-icon>
           </button>
-          <mat-form-field appearance="outline">
+          <!-- <mat-form-field appearance="outline">
             <mat-label>Amount</mat-label>
             <input
               matInput
@@ -26,7 +26,8 @@
               type="number"
               (ngModelChange)="onAmountChanged()"
             />
-          </mat-form-field>
+          </mat-form-field> -->
+          <span>{{NormalizeDisplayedAmount(this._amountToDisplay, this._measuringUnit!)}}</span>
           <button
             mat-icon-button
             (click)="
@@ -36,6 +37,7 @@
           >
             <mat-icon>add</mat-icon>
           </button>
+          {{this._amountToDisplay}}
         </div>
         <div mat-list-item>
           <mat-radio-group

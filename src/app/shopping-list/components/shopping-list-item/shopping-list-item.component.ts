@@ -44,6 +44,8 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
   itemChanged$ = new Subject<{ item: NoGroupListItem; change: ChangeType }>();
   destroyed$ = new Subject();
 
+  NormalizeDisplayedAmount = NormalizeDisplayedAmount;
+
   @Output() removeIngredient = new EventEmitter<NoGroupListItem>();
   @Output() amountChanged = new EventEmitter<NoGroupListItem>();
   @Output() measuringUnitChanged = new EventEmitter<NoGroupListItem>();
@@ -62,9 +64,9 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
       this._item,
       this.allProducts
     );
-    if (this._amountToDisplay % 1) {
-      this._amountToDisplay = NormalizeDisplayedAmount(this._amountToDisplay, this._measuringUnit);
-    }
+    // if (this._amountToDisplay % 1) {
+    //   this._amountToDisplay = NormalizeDisplayedAmount(this._amountToDisplay, this._measuringUnit);
+    // }
     this.itemChanged$
       .pipe(takeUntil(this.destroyed$), debounceTime(700))
       .subscribe((update: { item: NoGroupListItem; change: ChangeType }) => {
