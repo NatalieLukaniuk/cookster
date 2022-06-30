@@ -249,4 +249,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.shoppingListService.addList(this.currentUser, event);
     }
   }
+
+  addAllToShoppingList(event: Day) {
+    console.log(event);
+  }
 }
