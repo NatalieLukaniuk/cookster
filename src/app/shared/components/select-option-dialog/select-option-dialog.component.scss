@@ -29,11 +29,17 @@
         justify-content: space-between !important;
         .mat-radio-button {
             margin: 5px !important;
-            padding: 15px 20px 15px 10px !important;
+            padding: 15px 10px 15px 5px !important;
             flex-grow: 1;
             .mat-radio-label {
                 justify-content: center;
             }
+        }
+    }
+    .action-buttons{
+        justify-content: flex-end;
+        .action-button{
+            margin-left: 15px;
         }
     }
 }

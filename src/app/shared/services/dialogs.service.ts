@@ -16,7 +16,7 @@ export class DialogsService {
             const dialogRef = this.dialog.open(SelectOptionDialogComponent, {
                 width: '320px',
                 maxWidth: '99vw',
-                data: { title: 'Select meal time', mealOptions: ['breakfast', 'lunch', 'dinner'] },
+                data: { title: '', mealOptions: ['breakfast', 'lunch', 'dinner'] },
             });
 
             dialogRef.afterClosed().subscribe((result: {meal: string, portions: number, amountPerPortion: number} | undefined) => {

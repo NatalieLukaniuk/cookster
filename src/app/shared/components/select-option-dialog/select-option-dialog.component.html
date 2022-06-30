@@ -1,28 +1,71 @@
-<h1 mat-dialog-title>{{data.title}}</h1>
+<h1 mat-dialog-title *ngIf="data.title.length">{{ data.title }}</h1>
 <div mat-dialog-content>
+  <div>
+    <h5>Meal time</h5>
     <mat-radio-group class="cookster-radio-group" [(ngModel)]="selectedOption">
-        <mat-radio-button class="example-radio-button" *ngFor="let unit of data.mealOptions"
-            [value]="unit">
-            {{unit}}
-        </mat-radio-button>
+      <mat-radio-button
+        class="example-radio-button"
+        *ngFor="let unit of data.mealOptions"
+        [value]="unit"
+      >
+        {{ unit }}
+      </mat-radio-button>
     </mat-radio-group>
-    <mat-radio-group class="cookster-radio-group" [(ngModel)]="selectedPortionOption">
-        <mat-radio-button class="example-radio-button" *ngFor="let unit of portionsOptions"
-            [value]="unit">
-            {{unit}}
-        </mat-radio-button>
-    </mat-radio-group>
-    <div class="amount-wrapper">
-        <button mat-icon-button (click)="amountPerPortion = amountPerPortion - 50"><mat-icon>remove</mat-icon></button>
-        <mat-form-field appearance="outline">
-        <mat-label>Amount per portion (in gramms)</mat-label>
-        <input matInput [(ngModel)]="amountPerPortion" type="number">
-      </mat-form-field>
-      <button mat-icon-button (click)="amountPerPortion = amountPerPortion + 50"><mat-icon>add</mat-icon></button>
-    </div>
-    
-</div>
-<div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button [mat-dialog-close]="{meal: selectedOption, portions: selectedPortionOption, amountPerPortion }" cdkFocusInitial>Ok</button>
   </div>
+  <div>
+    <h5>Number of portions</h5>
+    <div class="amount-wrapper">
+        <button
+          mat-icon-button
+          (click)="selectedPortionOption = selectedPortionOption - 1"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+        <mat-form-field appearance="outline">
+          <mat-label>Number of portions to serve</mat-label>
+          <input matInput [(ngModel)]="selectedPortionOption" type="number" />
+        </mat-form-field>
+        <button
+          mat-icon-button
+          (click)="selectedPortionOption = selectedPortionOption + 1"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+  </div>
+  <div>
+    <h5>Amount per portion</h5>
+    <div class="amount-wrapper">
+      <button
+        mat-icon-button
+        (click)="amountPerPortion = amountPerPortion - 50"
+      >
+        <mat-icon>remove</mat-icon>
+      </button>
+      <mat-form-field appearance="outline">
+        <mat-label>Amount per portion (in gramms)</mat-label>
+        <input matInput [(ngModel)]="amountPerPortion" type="number" />
+      </mat-form-field>
+      <button
+        mat-icon-button
+        (click)="amountPerPortion = amountPerPortion + 50"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions class="action-buttons">
+  <button mat-button class="secondary-button" (click)="onNoClick()">Discard</button>
+  <button
+    mat-button class="action-button"
+    [mat-dialog-close]="{
+      meal: selectedOption,
+      portions: selectedPortionOption,
+      amountPerPortion: this.amountPerPortion
+    }"
+    cdkFocusInitial
+  >
+    Ok
+  </button>
+</div>

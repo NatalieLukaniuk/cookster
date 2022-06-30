@@ -104,7 +104,7 @@ button.action-button {
 }
 
 button.secondary-button {
-  background-color: var(--background-color);
+  background-color: transparent;
   color: var(--text-color);
   font-family: "Montserrat", sans-serif;
   &:not(:disabled) {
