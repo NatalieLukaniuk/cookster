@@ -63,7 +63,7 @@
                     class="input-edit" [(ngModel)]="step.description"
                     (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
               </td>
-              <td class="time-cell">{{ getTotalStepTime(step) }} хв.</td>
+              <td class="time-cell">{{ getTotalStepTime(step) | normalizeTime }}</td>
               <td *ngIf="mode == AppMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
                   <mat-icon>delete</mat-icon>
                 </button></td>
@@ -81,7 +81,7 @@
                           class="input-edit" [(ngModel)]="step.description"
                           (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
                     </td>
-                    <td class="time-cell">{{ getTotalStepTime(step) }} хв.</td>
+                    <td class="time-cell">{{ getTotalStepTime(step) | normalizeTime }}</td>
                     <td *ngIf="mode == AppMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
                         <mat-icon>delete</mat-icon>
                       </button></td>
@@ -107,9 +107,9 @@
         <div class="recipy-time" *ngIf="!!_clonedRecipy.steps.length">
           <div><span class="bold">Час приготування: </span></div>
           <div>
-            <p>{{ activeTime + passiveTime }} хвилин</p>
-            <p>Активний: {{ activeTime }} хвилин</p>
-            <p>Пасивний: {{ passiveTime }} хвилин</p>
+            <p>{{ activeTime + passiveTime | normalizeTime }}</p>
+            <p>Активний: {{ activeTime | normalizeTime }}</p>
+            <p>Пасивний: {{ passiveTime | normalizeTime }}</p>
           </div>
         </div>
         <div class="recipy-tags">
@@ -173,7 +173,7 @@
         <td>
           <p>{{ step.id }}. {{ step.description }}</p>
         </td>
-        <td>{{ getTotalStepTime(step) }} хв.</td>
+        <td>{{ getTotalStepTime(step) | normalizeTime}}</td>
       </tr>
     </table>
     <ng-container *ngIf="isSplitToGroups">
@@ -185,7 +185,7 @@
               <td>
                 <p>{{ step.id }}. {{ step.description }}</p>
               </td>
-              <td>{{ getTotalStepTime(step) }} хв.</td>
+              <td>{{ getTotalStepTime(step) | normalizeTime }}</td>
             </tr>
           </table>
         </ng-container>
@@ -207,9 +207,9 @@
     <div class="recipy-time">
 
       <div>
-        <p>Загальний час приготування: <b>{{ activeTime + passiveTime }} хвилин</b></p>
-        <p>Активний: {{ activeTime }} хвилин</p>
-        <p>Пасивний: {{ passiveTime }} хвилин</p>
+        <p>Загальний час приготування: <b>{{ activeTime + passiveTime | normalizeTime }}</b></p>
+        <p>Активний: {{ activeTime | normalizeTime }}</p>
+        <p>Пасивний: {{ passiveTime | normalizeTime }}</p>
       </div>
     </div>
     <div class="recipy-tags">

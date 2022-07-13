@@ -31,6 +31,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { SelectOptionDialogComponent } from './components/select-option-dialog/select-option-dialog.component';
 import { HeaderComponent } from './containers/header/header.component';
+import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { HeaderComponent } from './containers/header/header.component';
     HeaderComponent,
     NavigationComponent,
     SelectOptionDialogComponent,
+    NormalizeTimePipe 
   ],
   exports: [
     HeaderComponent,
@@ -99,7 +101,8 @@ import { HeaderComponent } from './containers/header/header.component';
     MyDatePickerModule,
     SelectOptionDialogComponent,
     MatBottomSheetModule,
-    MatTabsModule
+    MatTabsModule,
+    NormalizeTimePipe
   ],
   providers: []
 })
