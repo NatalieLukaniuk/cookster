@@ -39,6 +39,7 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
   _item: NoGroupListItem | undefined;
   _measuringUnit: MeasuringUnit | undefined;
   _amountToDisplay: number = 0;
+  MeasuringUnit = MeasuringUnit;
 
   mode = AppMode.ShoppingList;
   itemChanged$ = new Subject<{ item: NoGroupListItem; change: ChangeType; isSmallAmount: boolean }>();
@@ -70,6 +71,7 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
     this.itemChanged$
       .pipe(takeUntil(this.destroyed$), debounceTime(700))
       .subscribe((update: { item: NoGroupListItem; change: ChangeType, isSmallAmount: boolean }) => {
+        debugger
         switch (update.change) {
           case ChangeType.amount:
             this.amountChanged.emit({item: update.item, isSmallAmount: update.isSmallAmount});
@@ -82,6 +84,7 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
 
   onAmountChanged() {
     if (this._item && this._measuringUnit) {
+      debugger
       this._item.amount = transformToGr(
         this._item,
         this._amountToDisplay,

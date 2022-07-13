@@ -8,7 +8,7 @@
       </mat-expansion-panel-header>
       <mat-action-list>
         <!-- Commented out due to wrong behaviour - the value of input should be displayed converted to selected unit, not in gramms as it is now; when value changes, it should change in selected value -->
-        <div mat-list-item>
+        <div mat-list-item *ngIf="_item.defaultUnit !== MeasuringUnit.none">
           <button
             mat-icon-button
             (click)="

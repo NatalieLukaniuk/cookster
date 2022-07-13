@@ -10,7 +10,8 @@ export enum MeasuringUnit {
   pinch,
   bunch,
   item,
-  cup
+  cup,
+  none
 }
 
 export enum MeasuringUnitText {
@@ -25,7 +26,8 @@ export enum MeasuringUnitText {
   'дрібка',
   'пучок',
   'шт.',
-  'склянка'
+  'склянка',
+  'за смаком'
 }
 
 export const MeasuringUnitOptions = [
@@ -40,7 +42,8 @@ export const MeasuringUnitOptions = [
   MeasuringUnit.pinch,
   MeasuringUnit.bunch,
   MeasuringUnit.item,
-  MeasuringUnit.cup
+  MeasuringUnit.cup,
+  MeasuringUnit.none
 ];
 
 export const MeasuringUnitOptionsFluid = [

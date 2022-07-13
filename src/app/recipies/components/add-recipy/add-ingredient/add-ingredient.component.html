@@ -35,6 +35,6 @@
     </mat-radio-button>
   </mat-radio-group>
 
-  <button class="action-button" mat-flat-button [disabled]="ingredientsForm.invalid" class="action-button"
+  <button class="action-button" mat-flat-button [disabled]="ingredientsForm.invalid && !(ingredientsForm.controls.ingredient.valid && ingredientsForm.controls.defaultUnit.value == MeasuringUnit.none)" class="action-button"
     type="submit">Add</button>
 </form>

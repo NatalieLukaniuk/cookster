@@ -1,5 +1,5 @@
-import { Component, EventEmitter, forwardRef, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
 import { GetUkrIngredientsGroup, Ingredient, IngredientsGroupOptions } from 'src/app/recipies/models/ingredient.interface';
@@ -21,6 +21,7 @@ export class AddIngredientComponent implements OnInit, OnChanges {
 
   filteredOptions: Observable<string[]> | undefined;
   noFilteredOptions: boolean = false;
+  MeasuringUnit = MeasuringUnit;
 
   GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
@@ -98,6 +99,9 @@ export class AddIngredientComponent implements OnInit, OnChanges {
   }
 
   addIngredient() {
+    if(this.ingredientsForm.controls.defaultUnit.value == MeasuringUnit.none){
+      this.ingredientsForm.controls.amount.setValue(0)
+    }
     this.addNewIngredient.emit(this.ingredientsForm.value)
   }
 

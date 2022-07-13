@@ -110,7 +110,10 @@ export class AddRecipyComponent implements OnInit {
       amount: event.amount,
       defaultUnit: event.defaultUnit,
     };
-    ingr.amount = this.recipiesService.transformToGr(ingr, event.amount);
+    if (event.amount) {
+      ingr.amount = this.recipiesService.transformToGr(ingr, event.amount);
+    }
+
     if ('group' in event && event.group) {
       ingr.group = event.group;
       if (!this.newRecipy.isSplitIntoGroups.includes(ingr.group)) {

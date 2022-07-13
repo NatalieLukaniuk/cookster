@@ -270,6 +270,7 @@ export function transformToGr(
       return itemsToGr(amount, grInOneItem);
     case MeasuringUnit.cup:
       return glassToGr(amount, density);
+      default: return 0
   }
 }
 
@@ -328,6 +329,7 @@ export function NormalizeDisplayedAmount(
       return getNiceDecimal(weirdAmount);
     case MeasuringUnit.teaSpoon:
       return getNiceDecimal(weirdAmount);
+      default: return 0
   }
 }
 
