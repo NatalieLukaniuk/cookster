@@ -24,6 +24,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 import { MyDatePickerModule } from 'mydatepicker';
@@ -64,7 +65,8 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatSliderModule,
     MyDatePickerModule,
     MatBottomSheetModule,
-    MatTabsModule
+    MatTabsModule,
+    MatTooltipModule
   ],
   declarations: [
     HeaderComponent,
@@ -102,7 +104,8 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     SelectOptionDialogComponent,
     MatBottomSheetModule,
     MatTabsModule,
-    NormalizeTimePipe
+    NormalizeTimePipe,
+    MatTooltipModule
   ],
   providers: []
 })

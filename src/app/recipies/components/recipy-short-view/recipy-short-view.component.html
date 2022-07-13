@@ -2,8 +2,12 @@
   <!-- <img class="recipy-photo" [src]="recipy.photo" /> -->
   <div class="recipy-info">
     <div class="recipy-upper-part">
-      <p>{{ complexity }}</p>
-      <p>{{ preparationTime | normalizeTime }} </p>
+      <p>{{ complexity }}</p>      
+      <mat-icon #tooltip="matTooltip"
+      matTooltip="Потребує попередньої підготовки"
+      matTooltipPosition="above"
+      *ngIf="showNeedsAdvancePreparation">av_timer</mat-icon>
+      <p> {{ preparationTime | normalizeTime }} </p>
     </div>
     <div class="title-part">
       <p>{{ recipy.name }}</p>

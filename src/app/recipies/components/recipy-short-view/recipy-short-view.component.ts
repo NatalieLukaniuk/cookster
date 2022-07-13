@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/auth/models/user.interface';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
+import { DishType } from '../../models/dishType.enum';
 import { Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
 import { UserService } from './../../../auth/services/user.service';
@@ -19,6 +20,7 @@ export class RecipyShortViewComponent implements OnInit {
   @Input()
   currentUser!: User;
   currentPath: string;
+  showNeedsAdvancePreparation: boolean = false;
   constructor(
     public dialog: MatDialog,
     private router: Router,
@@ -31,6 +33,7 @@ export class RecipyShortViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showNeedsAdvancePreparation = this.recipy.type.includes(DishType['потребує попередньої підготовки'])
   }
   goFullRecipy() {
     this.router.navigate(['full-recipy/', this.recipy.id], {
