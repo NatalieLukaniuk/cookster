@@ -5,7 +5,7 @@ import { AVERAGE_PORTION } from './../../constants';
 
 export interface DialogData {
   title: string;
-  mealOptions: string[];
+  mealOptions?: string[];
 }
 
 @Component({
@@ -14,14 +14,18 @@ export interface DialogData {
   styleUrls: ['./select-option-dialog.component.scss'],
 })
 export class SelectOptionDialogComponent implements OnInit {
-  selectedOption: string = this.data.mealOptions[0];
+  selectedOption: string = ''; 
   selectedPortionOption: number = 4;
   amountPerPortion: number = AVERAGE_PORTION;
 
   constructor(
     public dialogRef: MatDialogRef<SelectOptionDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  ) {
+    if(this.data.mealOptions){
+      this.selectedOption = this.data.mealOptions[0];
+    }
+  }
 
   ngOnInit(): void {}
 

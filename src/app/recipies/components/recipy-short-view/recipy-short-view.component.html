@@ -30,7 +30,7 @@
       </div>
     </div>
   </div>
-  <button mat-icon-button class="add-to-calendar-btn" (click)="addToCalendar()">
+  <button mat-icon-button *ngIf="!isMobile" class="add-to-calendar-btn" (click)="onAddToCalendar()">
     <mat-icon>event</mat-icon>
   </button>
 </div>

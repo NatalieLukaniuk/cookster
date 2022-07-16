@@ -43,6 +43,9 @@
         margin-bottom: 10px;
         background-color: var(--tint1);
         padding-inline: 0;
+        &.disabled{
+          display: none;
+        }
       }
     }
     .day-header{
@@ -57,4 +60,9 @@
   }
   }
   
-
+.calendar-wrapper.side-pane{
+  .calendar-week .calendar-day{
+    padding-block: 10px;
+    margin-bottom: 20px;
+  }
+}

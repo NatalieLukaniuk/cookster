@@ -1,6 +1,6 @@
 <h1 mat-dialog-title *ngIf="data.title.length">{{ data.title }}</h1>
 <div mat-dialog-content>
-  <div>
+  <div *ngIf="!!data.mealOptions">
     <h5>Meal time</h5>
     <mat-radio-group class="cookster-radio-group" [(ngModel)]="selectedOption">
       <mat-radio-button

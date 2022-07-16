@@ -25,4 +25,21 @@ export class DialogsService {
             });
         })
     }
+
+    openPortionsDialog(): Observable<{portions: number, amountPerPortion: number}>{
+        return new Observable(observer => {
+            const dialogRef = this.dialog.open(SelectOptionDialogComponent, {
+                width: '320px',
+                maxWidth: '99vw',
+                data: { title: ''},
+            });
+
+            dialogRef.afterClosed().subscribe((result: {meal: string, portions: number, amountPerPortion: number} | undefined) => {
+                if(result){
+                    observer.next({portions: result.portions, amountPerPortion: result.amountPerPortion})                }
+                
+                observer.complete()
+            });
+        })
+    } 
 }

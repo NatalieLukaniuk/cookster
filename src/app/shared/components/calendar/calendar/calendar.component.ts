@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
@@ -49,11 +49,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
   @Input() isMobile: boolean = false;
   @Input()
   isSidePane!: boolean;
+  @Input()
+  isRecipySelected!: boolean;
   calendar: Week[] = [];
   userCalendarData: IDayDetails[] = [];
   destroyed$ = new Subject();
 
   currentUser: User | undefined;
+
+  @Output() daySelected = new EventEmitter<{day: Day, meal: string}>();
 
   constructor(
     private dateService: DateService,
@@ -256,5 +260,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   addAllToShoppingList(event: Day) {
     console.log(event);
+  }
+  onDaySelected(event: {day: Day, meal: string}){
+    this.daySelected.emit(event)
   }
 }

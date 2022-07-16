@@ -16,9 +16,12 @@ export class DayComponent implements OnInit {
   @Input() isMobile: boolean = false;
   @Input()
   isSidePane!: boolean;
+  @Input()
+  isRecipySelected!: boolean;
 
   @Output() updateDay = new EventEmitter<IDayDetails>();
   @Output() saveToShoppingList = new EventEmitter<ShoppingListItem>();
+  @Output() daySelected = new EventEmitter<{day: Day, meal: string}>()
 
   constructor() {}
 
@@ -185,5 +188,9 @@ export class DayComponent implements OnInit {
     event.day = this.day.details.day;
     event.meal = meal;
     this.saveToShoppingList.emit(event);
+  }
+
+  onAddRecipy(mealtime: string){
+    this.daySelected.emit({day: this.day, meal: mealtime})
   }
 }

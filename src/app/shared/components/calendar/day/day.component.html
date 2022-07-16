@@ -1,10 +1,20 @@
-<div *ngIf="!!day.details" class="day-wrapper">
+<div *ngIf="!!day.details" class="day-wrapper" [class.side-panel]="isSidePane">
   <div
     *ngIf="!!day.details.breakfastRecipies.length || isMobile || isSidePane"
     class="meal-time"
   >
-    <h5>
-      <span>Breakfast</span>
+    <div class="meal-header" [class.side-pane]="isSidePane">
+      <div>
+        <span>Breakfast</span>
+        <button
+          mat-icon-button
+          (click)="onAddRecipy('breakfast')"
+          *ngIf="isSidePane && isRecipySelected"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+        </button>
+      </div>
+
       <div>
         <span *ngIf="!!getPortions('breakfast')">
           {{ getPortions("breakfast") }} персони
@@ -14,7 +24,7 @@
           {{ getAmountPerPerson("breakfast") }} гр/чол
         </span>
       </div>
-    </h5>
+    </div>
     <ng-container *ngIf="!!day.details.breakfastRecipies">
       <ng-container *ngFor="let item of day.details.breakfastRecipies">
         <app-calendar-recipy
@@ -28,9 +38,22 @@
       </ng-container>
     </ng-container>
   </div>
-  <div *ngIf="!!day.details.lunchRecipies.length || isMobile || isSidePane" class="meal-time">
-    <h5>
-      <span>Lunch</span>
+  <div
+    *ngIf="!!day.details.lunchRecipies.length || isMobile || isSidePane"
+    class="meal-time"
+  >
+    <div class="meal-header" [class.side-pane]="isSidePane">
+      <div>
+        <span>Lunch</span>
+        <button
+          mat-icon-button
+          (click)="onAddRecipy('lunch')"
+          *ngIf="isSidePane && isRecipySelected"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+        </button>
+      </div>
+
       <div>
         <span *ngIf="!!getPortions('lunch')">
           {{ getPortions("lunch") }} персони
@@ -40,7 +63,7 @@
           {{ getAmountPerPerson("lunch") }} гр/чол
         </span>
       </div>
-    </h5>
+    </div>
     <ng-container *ngIf="!!day.details.lunchRecipies">
       <ng-container *ngFor="let item of day.details.lunchRecipies">
         <app-calendar-recipy
@@ -58,8 +81,17 @@
     *ngIf="!!day.details.dinnerRecipies.length || isMobile || isSidePane"
     class="meal-time"
   >
-    <h5>
-      <span>Dinner</span>
+    <div class="meal-header" [class.side-pane]="isSidePane">
+      <div>
+        <span>Dinner</span>
+        <button
+          mat-icon-button
+          (click)="onAddRecipy('dinner')"
+          *ngIf="isSidePane && isRecipySelected"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+        </button>
+      </div>
       <div>
         <span *ngIf="!!getPortions('dinner')">
           {{ getPortions("dinner") }} персони
@@ -69,7 +101,7 @@
           {{ getAmountPerPerson("dinner") }} гр/чол
         </span>
       </div>
-    </h5>
+    </div>
     <ng-container *ngIf="!!day.details.dinnerRecipies">
       <ng-container *ngFor="let item of day.details.dinnerRecipies">
         <app-calendar-recipy

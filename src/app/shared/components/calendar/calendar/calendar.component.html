@@ -1,4 +1,4 @@
-<div class="calendar-wrapper" [class.narrow]="isMobile || isSidePane">
+<div class="calendar-wrapper" [class.narrow]="isMobile || isSidePane" [class.side-pane]="isSidePane">
   <div class="calendar-week" *ngIf="!isMobile && !isSidePane">
     <div class="calendar-day">Неділя</div>
     <div class="calendar-day">Понеділок</div>
@@ -13,7 +13,7 @@
       <div
         [id]="day.details.day"
         class="calendar-day"
-        *ngIf="!isMobile || !day.disabled"
+        *ngIf="!isMobile || !day.disabled || !isSidePane"
         [class.disabled]="day.disabled"
         [class.selected]="day.selected"
         [class.active]="day.active"
@@ -22,7 +22,7 @@
         <div *ngIf="isMobile || isSidePane" class="day-header">
           <span>{{ day.value | moment: "dddd, Do MMMM" }}</span>
           <div>
-            <button mat-icon-button (click)="addRecipy(day)">
+            <button mat-icon-button (click)="addRecipy(day)" *ngIf="!isSidePane">
               <mat-icon>add_circle_outline</mat-icon>
             </button>
             <!-- <button mat-icon-button (click)="addAllToShoppingList(day)">
@@ -34,8 +34,10 @@
           [day]="day"
           [isMobile]="isMobile"
           [isSidePane]="isSidePane"
+          [isRecipySelected]="isRecipySelected"
           (updateDay)="onUpdateDay($event)"
           (saveToShoppingList)="onSaveToShoppingList($event)"
+          (daySelected)="onDaySelected($event)"
         ></app-day>
       </div>
     </ng-container>

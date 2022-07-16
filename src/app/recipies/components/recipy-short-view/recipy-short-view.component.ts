@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/auth/models/user.interface';
@@ -19,14 +19,16 @@ export class RecipyShortViewComponent implements OnInit {
   recipy!: Recipy;
   @Input()
   currentUser!: User;
+  @Input()
+  isMobile!: boolean;
   currentPath: string;
   showNeedsAdvancePreparation: boolean = false;
+  @Output() addToCalendar = new EventEmitter<Recipy>();
   constructor(
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
     private recipiesService: RecipiesService,
-    private userService: UserService
   ) {
     const path = window.location.pathname.split('/');
     this.currentPath = path[path.length - 1];
@@ -65,7 +67,7 @@ export class RecipyShortViewComponent implements OnInit {
     return this.recipiesService.getRecipyCreatedOn(this.recipy)
   }
 
-  addToCalendar(){
-    console.log(this.recipy)
+  onAddToCalendar(){
+    this.addToCalendar.emit(this.recipy);
   }
 }
