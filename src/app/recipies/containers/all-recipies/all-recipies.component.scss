@@ -26,6 +26,13 @@
     display: flex;
 }
 
+.show-basic-btn {
+    position: fixed;
+    top: 15px;
+    right: 100px;
+    z-index: 100;
+}
+
 @media (max-width: 600px){
     .recipy{
         width: 100%;

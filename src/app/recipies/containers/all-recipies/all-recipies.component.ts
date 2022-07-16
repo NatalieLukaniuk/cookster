@@ -2,7 +2,7 @@ import { DialogsService } from './../../../shared/services/dialogs.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
-import { combineLatest, Subject } from 'rxjs';
+import { combineLatest, Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { Day } from 'src/app/shared/components/calendar/calendar/calendar.component';
@@ -31,6 +31,9 @@ export class AllRecipiesComponent implements OnInit, OnDestroy {
   isShowSidePane: boolean = false;
   isRecipySelected: boolean = false;
 
+  showBasicRecipies: boolean = false;
+  showBasicRecipies$ = new BehaviorSubject<boolean>(false);
+
   daySelected$ = new Subject<{ day: Day; meal: string }>();
   constructor(
     private recipies: RecipiesService,
@@ -52,10 +55,13 @@ export class AllRecipiesComponent implements OnInit, OnDestroy {
       select(getFilters),
       takeUntil(this.destroy$)
     );
-    combineLatest([recipies$, filters$]).subscribe((res) => {
-      let [recipies, filters] = res;
+    combineLatest([recipies$, filters$, this.showBasicRecipies$]).subscribe((res) => {
+      let [recipies, filters, showBasicRecipies] = res;
       let _recipies = recipies.map((recipy) => recipy);
-      _recipies = _recipies.filter((recipy) => !recipy.isBaseRecipy);
+      if (!showBasicRecipies) {
+        _recipies = _recipies.filter((recipy) => !recipy.isBaseRecipy);
+      }
+
       if (!!filters.ingredientsToInclude.length) {
         _recipies = _recipies.filter((recipy) => {
           let recipyIngredientsIds = recipy.ingrediends.map(
@@ -139,5 +145,11 @@ export class AllRecipiesComponent implements OnInit, OnDestroy {
 
   onDaySelected(event: { day: Day; meal: string }) {
     this.daySelected$.next(event);
+  }
+
+  
+  toggleShpwBasicRecipies(){
+    this.showBasicRecipies = !this.showBasicRecipies;
+    this.showBasicRecipies$.next(this.showBasicRecipies)
   }
 }
