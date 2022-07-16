@@ -64,4 +64,8 @@ export class RecipyShortViewComponent implements OnInit {
   get createdOn(){
     return this.recipiesService.getRecipyCreatedOn(this.recipy)
   }
+
+  addToCalendar(){
+    console.log(this.recipy)
+  }
 }
