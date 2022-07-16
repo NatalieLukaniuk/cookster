@@ -28,10 +28,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 import { MyDatePickerModule } from 'mydatepicker';
+import { CalendarRecipyComponent } from './components/calendar/calendar-recipy/calendar-recipy.component';
+import { CalendarSelectorComponent } from './components/calendar/calendar-selector/calendar-selector.component';
+import { CalendarComponent } from './components/calendar/calendar/calendar.component';
+import { DayComponent } from './components/calendar/day/day.component';
+import { IngredientsToListBottomsheetComponent } from './components/calendar/ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
+import { RecipiesBottomsheetComponent } from './components/calendar/recipies-bottomsheet/recipies-bottomsheet.component';
 
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { SelectOptionDialogComponent } from './components/select-option-dialog/select-option-dialog.component';
+import { CalendarContainerComponent } from './containers/calendar-container/calendar-container.component';
 import { HeaderComponent } from './containers/header/header.component';
+import { MomentPipe } from './pipes/moment.pipe';
 import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
 
 
@@ -72,7 +80,15 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     HeaderComponent,
     NavigationComponent,
     SelectOptionDialogComponent,
-    NormalizeTimePipe 
+    NormalizeTimePipe,
+    CalendarComponent,
+    CalendarContainerComponent,
+    CalendarSelectorComponent,
+    MomentPipe,
+    DayComponent,
+    CalendarRecipyComponent,
+    RecipiesBottomsheetComponent,
+    IngredientsToListBottomsheetComponent,
   ],
   exports: [
     HeaderComponent,
@@ -105,7 +121,8 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatBottomSheetModule,
     MatTabsModule,
     NormalizeTimePipe,
-    MatTooltipModule
+    MatTooltipModule,
+    CalendarContainerComponent
   ],
   providers: []
 })

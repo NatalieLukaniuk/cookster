@@ -18,6 +18,8 @@ import {
 export class CalendarRecipyComponent implements OnInit {
   @Input() isMobile: boolean = false;
   @Input() recipy!: RecipyForCalendar;
+  @Input()
+  isSidePane!: boolean;
 
   @Output() removeRecipy = new EventEmitter<RecipyForCalendar>();
   @Output() recipyUpdated = new EventEmitter<RecipyForCalendar>();

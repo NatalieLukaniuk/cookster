@@ -376,5 +376,7 @@ export class NoGroupListComponent implements OnChanges {
     return Math.round(amount);
   }
 
-  onMeasuringUnitChanged(event: NoGroupListItem) {}
+  onMeasuringUnitChanged(event: NoGroupListItem) {
+    
+  }
 }

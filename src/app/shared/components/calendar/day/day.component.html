@@ -1,6 +1,6 @@
 <div *ngIf="!!day.details" class="day-wrapper">
   <div
-    *ngIf="!!day.details.breakfastRecipies.length || isMobile"
+    *ngIf="!!day.details.breakfastRecipies.length || isMobile || isSidePane"
     class="meal-time"
   >
     <h5>
@@ -19,6 +19,7 @@
       <ng-container *ngFor="let item of day.details.breakfastRecipies">
         <app-calendar-recipy
           [isMobile]="isMobile"
+          [isSidePane]="isSidePane"
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'breakfastRecipies')"
           (recipyUpdated)="updateRecipy($event, 'breakfastRecipies')"
@@ -27,7 +28,7 @@
       </ng-container>
     </ng-container>
   </div>
-  <div *ngIf="!!day.details.lunchRecipies.length || isMobile" class="meal-time">
+  <div *ngIf="!!day.details.lunchRecipies.length || isMobile || isSidePane" class="meal-time">
     <h5>
       <span>Lunch</span>
       <div>
@@ -44,6 +45,7 @@
       <ng-container *ngFor="let item of day.details.lunchRecipies">
         <app-calendar-recipy
           [isMobile]="isMobile"
+          [isSidePane]="isSidePane"
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'lunchRecipies')"
           (recipyUpdated)="updateRecipy($event, 'lunchRecipies')"
@@ -53,7 +55,7 @@
     </ng-container>
   </div>
   <div
-    *ngIf="!!day.details.dinnerRecipies.length || isMobile"
+    *ngIf="!!day.details.dinnerRecipies.length || isMobile || isSidePane"
     class="meal-time"
   >
     <h5>
@@ -72,6 +74,7 @@
       <ng-container *ngFor="let item of day.details.dinnerRecipies">
         <app-calendar-recipy
           [isMobile]="isMobile"
+          [isSidePane]="isSidePane"
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'dinnerRecipies')"
           (recipyUpdated)="updateRecipy($event, 'dinnerRecipies')"

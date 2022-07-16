@@ -6,7 +6,7 @@ import { IMyDpOptions } from 'mydatepicker';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
-import { CalendarService } from 'src/app/menus/services/calendar.service';
+import { CalendarService } from 'src/app/shared/services/calendar.service';
 import { AVERAGE_PORTION } from 'src/app/shared/constants';
 import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { LayoutService } from 'src/app/shared/services/layout.service';

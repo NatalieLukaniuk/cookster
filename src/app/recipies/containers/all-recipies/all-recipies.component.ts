@@ -24,6 +24,8 @@ export class AllRecipiesComponent implements OnInit, OnDestroy {
   isMobile: boolean = false;
   currentUser: User | undefined;
   destroy$ = new Subject();
+
+  isShowSidePane: boolean = true;
   constructor(
     private recipies: RecipiesService,
     private layoutService: LayoutService,

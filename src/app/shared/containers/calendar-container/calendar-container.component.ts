@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from 'src/app/shared/services/layout.service';
@@ -10,6 +10,7 @@ import { LayoutService } from 'src/app/shared/services/layout.service';
 })
 export class CalendarContainerComponent implements OnInit, OnDestroy {
   isMobile: boolean = false;
+  @Input() isSidePane = false;
   destroy$ = new Subject();
   constructor(private layoutService: LayoutService) { }
 

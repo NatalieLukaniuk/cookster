@@ -1,5 +1,5 @@
-<div class="calendar-wrapper">
-  <div class="calendar-week" *ngIf="!isMobile">
+<div class="calendar-wrapper" [class.narrow]="isMobile || isSidePane">
+  <div class="calendar-week" *ngIf="!isMobile && !isSidePane">
     <div class="calendar-day">Неділя</div>
     <div class="calendar-day">Понеділок</div>
     <div class="calendar-day">Вівторок</div>
@@ -18,8 +18,8 @@
         [class.selected]="day.selected"
         [class.active]="day.active"
       >
-        <span *ngIf="!isMobile">{{ day.value | moment: "D" }}</span>
-        <div *ngIf="isMobile" class="day-header">
+        <span *ngIf="!isMobile && !isSidePane">{{ day.value | moment: "D" }}</span>
+        <div *ngIf="isMobile || isSidePane" class="day-header">
           <span>{{ day.value | moment: "dddd, Do MMMM" }}</span>
           <div>
             <button mat-icon-button (click)="addRecipy(day)">
@@ -33,6 +33,7 @@
         <app-day
           [day]="day"
           [isMobile]="isMobile"
+          [isSidePane]="isSidePane"
           (updateDay)="onUpdateDay($event)"
           (saveToShoppingList)="onSaveToShoppingList($event)"
         ></app-day>

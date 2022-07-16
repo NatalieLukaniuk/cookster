@@ -14,17 +14,19 @@ import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import {
+  RecipiesBottomsheetComponent,
+} from '../recipies-bottomsheet/recipies-bottomsheet.component';
+import {
   CalendarRecipyInDatabase,
   DayDetails,
   DayDetailsExtended,
   EmptyDayDetailsExtended,
   IDayDetails,
-} from '../../models/calendar';
-import { CalendarService } from '../../services/calendar.service';
-import { RecipiesBottomsheetComponent } from '../recipies-bottomsheet/recipies-bottomsheet.component';
-import { ShoppingListService } from './../../../shopping-list/services/shopping-list.service';
-import * as FiltersActions from './../../../store/actions/filters.actions';
-import { DateService } from './../../services/date.service';
+} from '../../../models/calendar';
+import { CalendarService } from '../../../services/calendar.service';
+import { DateService } from '../../../services/date.service';
+import { ShoppingListService } from '../../../../shopping-list/services/shopping-list.service';
+import * as FiltersActions from '../../../../store/actions/filters.actions';
 
 export interface Day {
   value: moment.Moment;
@@ -45,6 +47,8 @@ interface Week {
 })
 export class CalendarComponent implements OnInit, OnDestroy {
   @Input() isMobile: boolean = false;
+  @Input()
+  isSidePane!: boolean;
   calendar: Week[] = [];
   userCalendarData: IDayDetails[] = [];
   destroyed$ = new Subject();

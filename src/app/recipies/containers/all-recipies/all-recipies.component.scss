@@ -2,6 +2,7 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    height: fit-content;
 }
 .recipy{
     width: 30%;
@@ -9,6 +10,14 @@
     min-width: 250px;
     max-width: 300px;
     margin: 1vw;
+}
+
+.side-pane{
+    max-width: 30vw;
+}
+
+.page-container{
+    display: flex;
 }
 
 @media (max-width: 600px){

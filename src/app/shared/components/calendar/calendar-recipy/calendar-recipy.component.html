@@ -1,7 +1,7 @@
-<div *ngIf="!isMobile" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
+<div *ngIf="!isMobile && !isSidePane" class="recipy-name" [matMenuTriggerFor]="recipyMenu">
   <span>{{ recipy.name }}</span>
 </div>
-<div *ngIf="isMobile" class="recipy-name">
+<div *ngIf="isMobile || isSidePane" class="recipy-name">
   <mat-expansion-panel hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>

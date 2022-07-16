@@ -1,8 +1,11 @@
-<div *ngIf="!!allRecipies">
+<div *ngIf="!!allRecipies" class="page-container">
   <div *ngIf="!!allRecipies.length && currentUser" class="user-recipies-wrapper">
     <div class="recipy" *ngFor="let recipy of allRecipies">
       <app-recipy-short-view [recipy]="recipy" [currentUser]="currentUser"></app-recipy-short-view>
     </div>
+  </div>
+  <div *ngIf="isShowSidePane" class="side-pane">
+    <app-calendar-container [isSidePane]="true"></app-calendar-container>
   </div>
   <div *ngIf="!allRecipies.length" class="no-recipies-message">There are no recipies in the database that match your filters</div>
 </div>

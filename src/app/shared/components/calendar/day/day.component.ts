@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Recipy, RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
-import { CalendarRecipyInDatabase, IDayDetails } from '../../models/calendar';
+import { CalendarRecipyInDatabase, IDayDetails } from '../../../models/calendar';
 import { Day } from '../calendar/calendar.component';
 
 @Component({
@@ -14,6 +14,8 @@ export class DayComponent implements OnInit {
   @Input() day!: Day;
 
   @Input() isMobile: boolean = false;
+  @Input()
+  isSidePane!: boolean;
 
   @Output() updateDay = new EventEmitter<IDayDetails>();
   @Output() saveToShoppingList = new EventEmitter<ShoppingListItem>();
