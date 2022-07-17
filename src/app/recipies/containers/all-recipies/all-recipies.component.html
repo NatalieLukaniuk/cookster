@@ -11,5 +11,5 @@
   <div *ngIf="!allRecipies.length" class="no-recipies-message">There are no recipies in the database that match your filters</div>
 </div>
 
-<button mat-flat-button class="action-button show-basic-btn" (click)="toggleShpwBasicRecipies()"><span *ngIf="!showBasicRecipies">Показати базові рецепти</span><span *ngIf="showBasicRecipies">Сховати базові рецепти</span></button>
+<button *ngIf="!isMobile" mat-flat-button class="action-button show-basic-btn" (click)="toggleShpwBasicRecipies()"><span *ngIf="!showBasicRecipies">Показати базові рецепти</span><span *ngIf="showBasicRecipies">Сховати базові рецепти</span></button>
 <div *ngIf="!allRecipies">Loading</div>
