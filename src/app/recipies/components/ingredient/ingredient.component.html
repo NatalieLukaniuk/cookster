@@ -15,15 +15,45 @@
       <span *ngIf="amountToDisplay > 0">{{
         NormalizeDisplayedAmount(amountToDisplay, measuringUnit)
       }}</span>
-
-      <ng-container
-        *ngIf="
-          !savedPortionsToServe && !this.actualPortionsToServe && !isMobile
-        "
-      >
-        {{ getUnitText(ingredient.defaultUnit) }}
+      <ng-container *ngIf="!isMobile">
+        <ng-container
+          *ngIf="!savedPortionsToServe && !this.actualPortionsToServe"
+        >
+          {{ getUnitText(ingredient.defaultUnit) }}
+        </ng-container>
+        <ng-container
+          *ngIf="!!savedPortionsToServe && !!this.actualPortionsToServe"
+        >
+          <select
+            *ngIf="amountToDisplay > 0"
+            (change)="onValueChange($event)"
+            class="inline-select"
+          >
+            <option
+              *ngFor="let unit of measurementUnits"
+              [value]="unit"
+              [selected]="unit === measuringUnit"
+            >
+              {{ getUnitText(unit) }}
+            </option>
+          </select>
+        </ng-container>
       </ng-container>
-      <ng-container
+
+      <ng-container *ngIf="isMobile">
+        <ng-container
+          *ngIf="!savedPortionsToServe && !this.actualPortionsToServe"
+        >
+          {{ getUnitText(ingredient.defaultUnit) }}
+        </ng-container>
+        <ng-container
+          *ngIf="!!savedPortionsToServe && !!this.actualPortionsToServe"
+        >
+          <span>{{ getUnitText(measuringUnit) }}</span>
+        </ng-container>
+      </ng-container>
+
+      <!-- <ng-container
         *ngIf="!!savedPortionsToServe && !!this.actualPortionsToServe"
       >
         <select
@@ -40,7 +70,7 @@
           </option>
         </select>
         <span *ngIf="isMobile">{{ getUnitText(measuringUnit) }}</span>
-      </ng-container>
+      </ng-container> -->
     </div>
   </ng-container>
 
@@ -57,28 +87,32 @@
       <mat-icon>delete</mat-icon>
     </button>
   </ng-container>
-  <div class="actions" *ngIf="isMobile && _ingredient">
-    <button
-      mat-icon-button
-      [matMenuTriggerFor]="unitMenu"
-      *ngIf="_ingredient.amount > 0"
-    >
-      <mat-icon svgIcon="edit"></mat-icon>
-    </button>
-    <mat-menu #unitMenu="matMenu">
+
+  <div class="actions" *ngIf="_ingredient">
+    <ng-container *ngIf="!isMobile && mode !== AppMode.EditRecipy"
+      ><span *ngIf="!(_ingredient.amount > 0)">{{
+        getUnitText(_ingredient.defaultUnit)
+      }}</span>
+    </ng-container>
+
+    <ng-container *ngIf="isMobile">
       <button
-        mat-menu-item
-        *ngFor="let unit of measurementUnits"
-        [value]="unit"
-        (click)="onValueChangeMatMenu(unit)"
+        mat-icon-button
+        [matMenuTriggerFor]="unitMenu"
+        *ngIf="_ingredient.amount > 0"
       >
-        {{ getUnitText(unit) }}
+        <mat-icon svgIcon="edit"></mat-icon>
       </button>
-    </mat-menu>
-  </div>
-  <div class="actions" *ngIf="!isMobile && _ingredient && mode !== AppMode.EditRecipy">
-    <span *ngIf="!(_ingredient.amount > 0)">{{
-      getUnitText(_ingredient.defaultUnit)
-    }}</span>
+      <mat-menu #unitMenu="matMenu">
+        <button
+          mat-menu-item
+          *ngFor="let unit of measurementUnits"
+          [value]="unit"
+          (click)="onValueChangeMatMenu(unit)"
+        >
+          {{ getUnitText(unit) }}
+        </button>
+      </mat-menu>
+    </ng-container>
   </div>
 </div>
