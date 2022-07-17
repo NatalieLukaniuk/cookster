@@ -22,7 +22,6 @@ export class NavigationComponent implements OnDestroy {
     { path: 'recipies/user-recipies', name: 'Мої рецепти' },
     // { path: 'friends-feed', name: 'Стрічка друзів' },
     // { path: 'shopping-list', name: 'Список покупок' },
-    // { path: 'user-menus', name: 'Мої меню' },
   ];
 
   mobileNavigation = [

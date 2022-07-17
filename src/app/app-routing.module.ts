@@ -4,14 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './auth/components/login/login.component';
 import { RegistrationComponent } from './auth/components/registration/registration.component';
+import { CalendarContainerComponent } from './calendar/containers/calendar-container/calendar-container.component';
 import { CooksterComponent } from './cookster/cookster.component';
 import { FriendsFeedComponent } from './layout/containers/friends-feed/friends-feed.component';
-import { MenusComponent } from './menus/menus.component';
 import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
 import { EditRecipyComponent } from './recipies/containers/edit-recipy/edit-recipy.component';
 import { RecipyFullViewComponent } from './recipies/containers/recipy-full-view/recipy-full-view.component';
 import { UserRecipiesComponent } from './recipies/containers/user-recipies/user-recipies.component';
-import { CalendarContainerComponent } from './shared/containers/calendar-container/calendar-container.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 export const routes: Routes = [
@@ -30,16 +29,17 @@ export const routes: Routes = [
             component: RecipyFullViewComponent,
             pathMatch: 'full',
           },
-          { path: 'all-recipies', component: AllRecipiesComponent },
+          { path: 'all-recipies', component: AllRecipiesComponent, children: [
+            { path: 'calendar', component: CalendarContainerComponent, data: {isSidePane: true} },
+          ] },
           { path: 'edit-recipy', component: EditRecipyComponent }
         ],
       },
       { path: 'friends-feed', component: FriendsFeedComponent },
       
-      { path: 'user-menus', component: MenusComponent },
     ],
   },
-  { path: 'calendar', component: CalendarContainerComponent },
+  { path: 'calendar', component: CalendarContainerComponent, data: {isSidePane: false} },
   { path: 'shopping-list', component: ShoppingListComponent },
   { path: 'admin-panel', component: AdminComponent },
   { path: 'login', component: LoginComponent },

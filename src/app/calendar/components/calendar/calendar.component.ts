@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
@@ -13,20 +13,20 @@ import { IAppState } from 'src/app/store/reducers';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
-import {
-  RecipiesBottomsheetComponent,
-} from '../recipies-bottomsheet/recipies-bottomsheet.component';
+import { ShoppingListService } from '../../../shopping-list/services/shopping-list.service';
+import * as FiltersActions from '../../../store/actions/filters.actions';
 import {
   CalendarRecipyInDatabase,
   DayDetails,
   DayDetailsExtended,
   EmptyDayDetailsExtended,
   IDayDetails,
-} from '../../../models/calendar';
-import { CalendarService } from '../../../services/calendar.service';
-import { DateService } from '../../../services/date.service';
-import { ShoppingListService } from '../../../../shopping-list/services/shopping-list.service';
-import * as FiltersActions from '../../../../store/actions/filters.actions';
+} from '../../models/calendar';
+import { CalendarService } from '../../services/calendar.service';
+import { DateService } from '../../services/date.service';
+import { RecipiesBottomsheetComponent } from '../recipies-bottomsheet/recipies-bottomsheet.component';
+import * as CalendarActions from './../../../store/actions/calendar.actions';
+import { getSelectedRecipy } from './../../../store/selectors/calendar.selectors';
 
 export interface Day {
   value: moment.Moment;
@@ -49,15 +49,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
   @Input() isMobile: boolean = false;
   @Input()
   isSidePane!: boolean;
-  @Input()
-  isRecipySelected!: boolean;
+
+  isRecipySelected: boolean = false;
   calendar: Week[] = [];
   userCalendarData: IDayDetails[] = [];
   destroyed$ = new Subject();
 
   currentUser: User | undefined;
-
-  @Output() daySelected = new EventEmitter<{day: Day, meal: string}>();
 
   constructor(
     private dateService: DateService,
@@ -66,12 +64,20 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private dialogsService: DialogsService,
     private calendarService: CalendarService,
     private shoppingListService: ShoppingListService
-  ) {}
+  ) {
+   
+  }
   ngOnDestroy(): void {
     this.destroyed$.next();
   }
 
   ngOnInit() {
+    if(this.isSidePane){
+      this.store.pipe(select(getSelectedRecipy), takeUntil(this.destroyed$)).subscribe((res: Recipy | null) => {
+        this.isRecipySelected = !!res;
+        console.log(this.isRecipySelected)
+      })
+    }
     this.dateService.date.subscribe((res) => {
       this.generate(res);
     });
@@ -91,11 +97,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.userCalendarData = currentUser.details;
       }
       this.calendar.forEach((week: Week) =>
-        week.days.forEach((day: Day) => {
+      week.days = week.days.map((day: Day) => {
           let foundDay = this.userCalendarData.find(
             (item: IDayDetails) => item.day == day.details.day
           );
           if (!!foundDay) {
+            let _day = _.cloneDeep(day)
             if ('breakfast' in foundDay && !!foundDay.breakfast.length) {
               foundDay.breakfast.forEach((rec: CalendarRecipyInDatabase) => {
                 let foundRecipy = recipies.find(
@@ -107,7 +114,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
                     portions: rec.portions,
                     amountPerPortion: rec.amountPerPortion,
                   };
-                  day.details.breakfastRecipies.push(recipy);
+                  _day.details.breakfastRecipies.push(recipy);
                 }
               });
             }
@@ -122,7 +129,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
                     portions: rec.portions,
                     amountPerPortion: rec.amountPerPortion,
                   };
-                  day.details.lunchRecipies.push(recipy);
+                  _day.details.lunchRecipies.push(recipy);
                 }
               });
             }
@@ -137,11 +144,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
                     portions: rec.portions,
                     amountPerPortion: rec.amountPerPortion,
                   };
-                  day.details.dinnerRecipies.push(recipy);
+                  _day.details.dinnerRecipies.push(recipy);
                 }
               });
             }
-          }
+            return _day
+          } else return day
         })
       );
     });
@@ -149,10 +157,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   cleanCalendarRecipies() {
     this.calendar.forEach((week: Week) =>
-      week.days.forEach((day) => {
+    week.days = week.days.map((day) => {
         if (day.details) {
-          day.details = new EmptyDayDetailsExtended(day.details.day);
-        }
+          let _day = _.cloneDeep(day)
+          _day.details = new EmptyDayDetailsExtended(day.details.day);
+          return _day
+        } else return day
       })
     );
   }
@@ -262,6 +272,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     console.log(event);
   }
   onDaySelected(event: {day: Day, meal: string}){
-    this.daySelected.emit(event)
+    this.store.dispatch(new CalendarActions.SetDaySelectedAction(event))
   }
 }

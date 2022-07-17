@@ -72,11 +72,24 @@ export class CalendarService {
   }
 
   updateDay(userToSave: User, updatedDetails: IDayDetails) {
-    let details = userToSave.details?.map((item) => {
-      if (item.day == updatedDetails.day) {
-        return updatedDetails;
-      } else return item;
-    });
+    debugger;
+    let details;
+    if (
+      !updatedDetails.breakfast.length &&
+      !updatedDetails.dinner.length &&
+      !updatedDetails.lunch.length
+    ) {
+      details = userToSave.details?.filter(
+        (item) => item.day !== updatedDetails.day
+      );
+    } else {
+      details = userToSave.details?.map((item) => {
+        if (item.day == updatedDetails.day) {
+          return updatedDetails;
+        } else return item;
+      });
+    }
+
     let updatedUser = {
       ...userToSave,
       details: details,

@@ -1,4 +1,4 @@
-import { DayDetails } from 'src/app/shared/models/calendar';
+import { DayDetails } from 'src/app/calendar/models/calendar';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
 export interface User {

@@ -12,10 +12,10 @@ import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
+import { CalendarModule } from './calendar/calendar.module';
 import { CooksterModule } from './cookster/cookster.module';
 import { FiltersModule } from './filters/filters.module';
 import { LayoutModule } from './layout/layout.module';
-import { MenusModule } from './menus/menus.module';
 import { RecipiesModule } from './recipies/recipies.module';
 import { SharedModule } from './shared/shared.module';
 import { ShoppingListModule } from './shopping-list/shopping-list.module';
@@ -36,7 +36,7 @@ import { reducers } from './store/reducers';
     LayoutModule,
     RecipiesModule,
     HttpClientModule,
-    MenusModule,
+    CalendarModule,
     AdminModule,
     CooksterModule,
     AuthModule,
