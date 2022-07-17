@@ -63,6 +63,7 @@ export class IngredientComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    debugger
     this.measuringUnit = this.getDefaultMeasuringUnit();
   }
 
