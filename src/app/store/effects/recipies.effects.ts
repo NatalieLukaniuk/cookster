@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, switchMap } from "rxjs/operators";
-import { RecipiesApiService } from "src/app/recipies/services/recipies-api.service";
-import { RecipiesService } from "src/app/recipies/services/recipies.service";
-import { RecipiesActionTypes } from "../actions/recipies.actions";
-import * as RecipiesActions from "../actions/recipies.actions";
-import { Recipy } from "src/app/recipies/models/recipy.interface";
-import { of } from "rxjs";
-import * as UiActions from '../actions/ui.actions'
-import { Router } from "@angular/router";
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { Recipy } from 'src/app/recipies/models/recipy.interface';
+import { RecipiesApiService } from 'src/app/recipies/services/recipies-api.service';
+
+import { RecipiesActionTypes } from '../actions/recipies.actions';
+import * as RecipiesActions from '../actions/recipies.actions';
+import * as UiActions from '../actions/ui.actions';
 
 @Injectable()
 
@@ -55,6 +55,23 @@ export class RecipiesEffects {
         ofType(RecipiesActionTypes.UPDATE_RECIPY),
         switchMap((action: RecipiesActions.UpdateRecipyAction) => this.recipiesService.updateRecipy(action.recipy.id, action.recipy).pipe(
             map((res: any) => new RecipiesActions.UpdateRecipySuccessAction(res)),
+            catchError(error => of(new UiActions.ErrorAction(error)))
+        ))
+    ))
+
+    loadNewIngredients$ = createEffect(() => this.actions$.pipe(
+        ofType(RecipiesActionTypes.GET_NEW_INGREDIENTS_ACTION),
+        switchMap((action: RecipiesActions.LoadNewIngredientsAction) => this.recipiesService.getIngredientsToAdd().pipe(
+            map((res:any) => Object.values(res) as string[]),
+            map((res: string[]) => new RecipiesActions.NewIngredientsLoadedAction(res)),
+            catchError(error => of(new UiActions.ErrorAction(error)))
+        ))
+    ))
+
+    saveUnknownIngredient$ = createEffect(() => this.actions$.pipe(
+        ofType(RecipiesActionTypes.ADD_NEW_INGREDIENT),
+        switchMap((action: RecipiesActions.AddNewIngredientAction) => this.recipiesService.saveToIngredientsToAddArray(action.ingredientName).pipe(
+            map(res => new RecipiesActions.NewIngredientSavedAction()),
             catchError(error => of(new UiActions.ErrorAction(error)))
         ))
     ))

@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs/operators';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
@@ -93,5 +92,9 @@ export class RecipiesAdminComponent implements OnInit {
 
   getIsClone(recipy: Recipy): boolean{
     return Boolean(recipy.clonedBy)
+  }
+
+  getIsIngredientNotInDB(recipy: Recipy): boolean{
+    return !!recipy.notApproved;
   }
 }

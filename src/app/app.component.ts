@@ -13,7 +13,7 @@ import { AuthService } from './auth/services/auth.service';
 import { UserService } from './auth/services/user.service';
 import { RecipiesService } from './recipies/services/recipies.service';
 import { LayoutService } from './shared/services/layout.service';
-import { GetRecipiesAction } from './store/actions/recipies.actions';
+import * as RecipiesActions from './store/actions/recipies.actions';
 import * as UiActions from './store/actions/ui.actions';
 import { IAppState } from './store/reducers';
 import { getIsError, getIsSidebarOpen, getIsSuccessMessage } from './store/selectors/ui.selectors';
@@ -95,7 +95,8 @@ export class AppComponent implements OnInit, AfterViewInit {
           this.router.navigate(['login']);
         }
       });
-    this.store.dispatch(new GetRecipiesAction())
+    this.store.dispatch(new RecipiesActions.GetRecipiesAction());
+    this.store.dispatch(new RecipiesActions.LoadNewIngredientsAction())
 
     this.store.pipe(select(getIsError)).subscribe(error => {
       if (!!error) {

@@ -41,6 +41,8 @@ export class IngredientComponent implements OnInit, OnChanges {
   _amountInSelectedUnit: number = 0;
   _savedAmount: number = 0;
 
+  isProductInDB: boolean = false;
+
   measuringUnit: MeasuringUnit = MeasuringUnit.gr;
 
   NormalizeDisplayedAmount = NormalizeDisplayedAmount;
@@ -63,7 +65,7 @@ export class IngredientComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    debugger
+    this.isProductInDB = !!this.recipiesService.getIsIngredientInDB(this.ingredient.product);
     this.measuringUnit = this.getDefaultMeasuringUnit();
   }
 

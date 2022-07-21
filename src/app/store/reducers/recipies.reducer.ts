@@ -1,13 +1,16 @@
-import { Recipy } from "src/app/recipies/models/recipy.interface";
-import { RecipiesActions, RecipiesActionTypes } from "../actions/recipies.actions";
+import { Recipy } from 'src/app/recipies/models/recipy.interface';
+
+import { RecipiesActions, RecipiesActionTypes } from '../actions/recipies.actions';
 
 
 export interface IRecipiesState {
     allRecipies: Recipy[];
+    ingredientsToAdd: string[]
 }
 
 export const InitialRecipiesState: IRecipiesState = {
-    allRecipies: []
+    allRecipies: [],
+    ingredientsToAdd: []
 }
 
 export function RecipiesReducers(state: IRecipiesState = InitialRecipiesState, action: RecipiesActions): IRecipiesState {
@@ -30,6 +33,13 @@ export function RecipiesReducers(state: IRecipiesState = InitialRecipiesState, a
             return {
                 ...state,
                 allRecipies: updateRecipy(state.allRecipies, action.recipy)
+            }
+        }
+
+        case RecipiesActionTypes.NEW_INGREDIENTS_LOADED: {
+            return {
+                ...state,
+                ingredientsToAdd: action.nameArray
             }
         }
         default: return { ...state }

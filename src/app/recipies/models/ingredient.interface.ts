@@ -4,7 +4,8 @@ export interface Ingredient {
     product: string;
     amount: number; // gramm
     defaultUnit: MeasuringUnit;
-    group?: IngredientsGroup
+    group?: IngredientsGroup;
+    ingredient?: string;
 }
 
 export enum IngredientsGroup {

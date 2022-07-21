@@ -142,4 +142,8 @@ export class RecipiesService {
   transformToGr(ingr: Ingredient, amount: number) {
     return transformToGr(ingr, amount, ingr.defaultUnit, this.products$.value);
   }
+
+  getIsIngredientInDB(id: string){
+    return this.products$.value.find(ingr => ingr.id == id)
+  }
 }

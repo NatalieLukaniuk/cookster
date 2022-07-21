@@ -9,6 +9,7 @@ import { NewRecipy, Recipy } from './../models/recipy.interface';
 })
 export class RecipiesApiService {
   url = `https://cookster-12ac8-default-rtdb.firebaseio.com/recipies`;
+  ingredsToAddUrl = `https://cookster-12ac8-default-rtdb.firebaseio.com/ingredientsToAdd`;
 
   constructor(private http: HttpClient) {}
 
@@ -30,5 +31,13 @@ export class RecipiesApiService {
 
   deleteRecipy(id: string) {
     return this.http.delete<Recipy>(`${this.url}/${id}.json`);
+  }
+
+  saveToIngredientsToAddArray(name: string){
+    return this.http.post<any>(`${this.ingredsToAddUrl}.json`, JSON.stringify(name));
+  }
+
+  getIngredientsToAdd():Observable<any>{
+    return this.http.get<any>(`${this.ingredsToAddUrl}.json`);
   }
 }

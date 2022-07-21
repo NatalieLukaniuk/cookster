@@ -66,6 +66,7 @@ export class AllRecipiesComponent implements OnInit, OnDestroy {
         if (!showBasicRecipies) {
           _recipies = _recipies.filter((recipy) => !recipy.isBaseRecipy);
         }
+        _recipies = _recipies.filter((recipy) => !recipy.notApproved);
 
         if (!!filters.ingredientsToInclude.length) {
           _recipies = _recipies.filter((recipy) => {

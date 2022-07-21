@@ -8,6 +8,7 @@ import { LayoutService } from 'src/app/shared/services/layout.service';
 import { IUserState } from 'src/app/store/reducers/user.reducer';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
+import * as RecipiesActions from '../../../store/actions/recipies.actions';
 import {
   IngredientsByGroup,
   ingredientsByGroup,
@@ -110,7 +111,11 @@ export class AddRecipyComponent implements OnInit {
       amount: event.amount,
       defaultUnit: event.defaultUnit,
     };
-    if (event.amount) {
+    if (!ingr.product.length && event.ingredient) {
+      // no id returned, the ingr is not in the db - save amount as it was entered by the user
+      ingr.product = event.ingredient;
+      this.store.dispatch( new RecipiesActions.AddNewIngredientAction(ingr.product))
+    } else if (ingr.product.length && event.amount) {
       ingr.amount = this.recipiesService.transformToGr(ingr, event.amount);
     }
 
@@ -126,6 +131,7 @@ export class AddRecipyComponent implements OnInit {
     }
     this.addIngredientFrom.resetForm();
     this.isAddIngredientFormShown = false;
+    console.log(this.newRecipy);
   }
 
   getTotalStepTime(step: PreparationStep) {

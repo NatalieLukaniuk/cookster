@@ -7,10 +7,11 @@
       <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
         {{option}}
       </mat-option>
+      <mat-option *ngIf="noFilteredOptions && ingredientsForm.controls.ingredient.value.length" [value]="ingredientsForm.controls.ingredient.value">+ {{ingredientsForm.controls.ingredient.value}}</mat-option>
     </mat-autocomplete>
     <mat-icon matSuffix svgIcon="done" *ngIf="ingredientsForm.controls.ingredient.valid && !noFilteredOptions">
     </mat-icon>
-    <mat-hint *ngIf="noFilteredOptions">Такого інгридієнту немає</mat-hint>
+    <mat-hint *ngIf="noFilteredOptions">Рецепти з новими інгридієнтами, яких немає в базі даних, публікуються тільки після схвалення модератора</mat-hint>
   </mat-form-field>
 
   <mat-form-field appearance="outline">

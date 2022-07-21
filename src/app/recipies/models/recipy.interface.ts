@@ -40,6 +40,7 @@ export interface NewRecipy {
   originalRecipy?: string;
   isSplitIntoGroups: IngredientsGroup[];
   isBaseRecipy: boolean;
+  notApproved?: boolean;
 }
 
 export class emptyRecipy implements NewRecipy {
