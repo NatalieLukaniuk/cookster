@@ -138,13 +138,15 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     if (this._clonedRecipy) {
       let amount = 0;
       for (let ingr of this._clonedRecipy.ingrediends) {
-        if(this.recipiesService.getIsIngredientInDB(ingr.product)){
+        if (this.recipiesService.getIsIngredientInDB(ingr.product)) {
           amount = ingr.amount + amount;
-        }        
+        }
       }
       portions = Math.floor(amount / this.portionSize);
     }
-
+    if (portions < 1) {
+      portions = 1;
+    }
     return portions;
   }
 
@@ -254,7 +256,12 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   onAddRecipy() {
     if (this._clonedRecipy) {
       this._clonedRecipy.createdOn = Date.now();
-      if(this._clonedRecipy.ingrediends.find(ingredient => !this.recipiesService.getIsIngredientInDB(ingredient.product))){
+      if (
+        this._clonedRecipy.ingrediends.find(
+          (ingredient) =>
+            !this.recipiesService.getIsIngredientInDB(ingredient.product)
+        )
+      ) {
         this._clonedRecipy.notApproved = true;
       }
       this.store.dispatch(

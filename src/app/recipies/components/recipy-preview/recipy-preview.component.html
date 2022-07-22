@@ -50,7 +50,7 @@
           <button mat-flat-button class="action-button add-ingredient-button"
             *ngIf="mode == AppMode.EditRecipy && !isAddIngredientFormShown"
             (click)="isAddIngredientFormShown = true">Add Ingredient</button>
-          <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
+          <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups?.length'
             (addNewIngredient)="onaAddNewIngredient($event)" *ngIf="isAddIngredientFormShown"></app-add-ingredient>
         </div>
         <div class="preparation-wrapper" *ngIf="!!_clonedRecipy.steps">
