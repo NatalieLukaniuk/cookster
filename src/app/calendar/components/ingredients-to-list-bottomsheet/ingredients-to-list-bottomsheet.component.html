@@ -17,14 +17,14 @@
       *ngFor="let ingredient of data.ingredients"
       [value]="ingredient.product"
     >
-      <!-- <app-ingredient
+      <app-ingredient
         [ingredient]="ingredient"
         [actualPortionsToServe]="data.portions"
         [savedPortionsToServe]="getSavedPortions()"
         [mode]="AppMode.AddIngrToShoppingList"
         [isMobile]="data.isMobile"
         (ingredientChanged)="onIngrChanged($event)"
-      ></app-ingredient> -->
+      ></app-ingredient>
     </mat-list-option>
   </mat-selection-list>
   <div class="action-buttons">
