@@ -1,0 +1,54 @@
+.tabs{
+    display: flex;
+    padding-block: 15px;
+}
+
+::ng-deep .cookster-radio-group {
+    .mat-radio-button {
+        padding: 5px 15px 5px 5px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        &:not(:last-child) {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .mat-radio-container {
+            display: none;
+        }
+        &.mat-radio-checked {
+            background-color: var(--tint1);
+            border-color: var(--tint6);
+        }
+    }
+  }
+  
+  @media (max-width: 600px){
+    ::ng-deep.cookster-radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between !important;
+      .mat-radio-button {
+          margin: 5px !important;
+          padding: 15px 10px 15px 5px !important;
+          flex-grow: 1;
+          .mat-radio-label {
+              justify-content: center;
+          }
+      }
+  }
+  }
+
+  .user-recipies-wrapper{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    height: fit-content;
+}
+.recipy{
+    width: 30%;
+    position: relative;
+    min-width: 250px;
+    max-width: 300px;
+    margin: 1vw;
+}
+

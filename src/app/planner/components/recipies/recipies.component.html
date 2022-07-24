@@ -1,0 +1,16 @@
+<div class="tabs">
+  <mat-radio-group class="cookster-radio-group" [(ngModel)]="selectedCategory">
+    <mat-radio-button *ngFor="let category of categories" [value]="category">
+      {{category}}
+    </mat-radio-button>
+  </mat-radio-group>
+</div>
+<div>
+  <div *ngIf="getIsTabWithRecipies(selectedCategory)">
+    <div *ngIf="!!allRecipies && currentUser" class="user-recipies-wrapper">
+      <div class="recipy" *ngFor="let recipy of getRecipiesToDispay(selectedCategory)">
+        <app-recipy-short-view [recipy]="recipy" [currentUser]="currentUser" [isMobile]="isMobile" (addToCalendar)="onAddToCalendar($event)" (recipyClicked)="onRecipyClicked($event)"></app-recipy-short-view>
+      </div>
+    </div>
+  </div>
+</div>

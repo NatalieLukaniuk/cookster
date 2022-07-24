@@ -164,4 +164,10 @@ export class AllRecipiesComponent implements OnInit, OnDestroy {
     this.showBasicRecipies = !this.showBasicRecipies;
     this.showBasicRecipies$.next(this.showBasicRecipies);
   }
+
+  goFullRecipy(event: Recipy){
+    this.router.navigate(['full-recipy/', event.id], {
+      relativeTo: this.route.parent,
+    });
+  }
 }

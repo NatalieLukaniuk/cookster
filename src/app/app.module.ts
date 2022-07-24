@@ -16,6 +16,7 @@ import { CalendarModule } from './calendar/calendar.module';
 import { CooksterModule } from './cookster/cookster.module';
 import { FiltersModule } from './filters/filters.module';
 import { LayoutModule } from './layout/layout.module';
+import { PlannerModule } from './planner/planner.module';
 import { RecipiesModule } from './recipies/recipies.module';
 import { SharedModule } from './shared/shared.module';
 import { ShoppingListModule } from './shopping-list/shopping-list.module';
@@ -43,6 +44,7 @@ import { reducers } from './store/reducers';
     FiltersModule,
     FlexLayoutModule,
     ShoppingListModule,
+    PlannerModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([RecipiesEffects, UserEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),

@@ -7,24 +7,29 @@ import { LayoutService } from 'src/app/shared/services/layout.service';
 @Component({
   selector: 'app-calendar-container',
   templateUrl: './calendar-container.component.html',
-  styleUrls: ['./calendar-container.component.scss']
+  styleUrls: ['./calendar-container.component.scss'],
 })
 export class CalendarContainerComponent implements OnInit, OnDestroy {
   isMobile: boolean = false;
   isSidePane = false;
+  @Input() isPlanner = false;
   @Input() isRecipySelected: boolean = false;
   destroy$ = new Subject();
-  constructor(private layoutService: LayoutService, private route: ActivatedRoute) {
-    
-   }
+  constructor(
+    private layoutService: LayoutService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
-      this.route
-      .data
-      .subscribe(result => this.isSidePane = result.isSidePane);
+    this.route.data.subscribe(
+      (result) => (this.isSidePane = result.isSidePane)
+    );
+    if (this.isPlanner) {
+      this.isSidePane = true;
+    }
   }
   ngOnDestroy(): void {
     this.destroy$.next();

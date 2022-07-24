@@ -7,7 +7,6 @@ import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
 import { Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
-import { UserService } from './../../../auth/services/user.service';
 
 @Component({
   selector: 'app-recipy-short-view',
@@ -24,6 +23,7 @@ export class RecipyShortViewComponent implements OnInit {
   currentPath: string;
   showNeedsAdvancePreparation: boolean = false;
   @Output() addToCalendar = new EventEmitter<Recipy>();
+  @Output() recipyClicked = new EventEmitter<Recipy>();
   constructor(
     public dialog: MatDialog,
     private router: Router,
@@ -38,9 +38,7 @@ export class RecipyShortViewComponent implements OnInit {
     this.showNeedsAdvancePreparation = this.recipy.type.includes(DishType['потребує попередньої підготовки'])
   }
   goFullRecipy() {
-    this.router.navigate(['full-recipy/', this.recipy.id], {
-      relativeTo: this.route.parent,
-    });
+    this.recipyClicked.emit(this.recipy)
   }
 
   get complexity() {

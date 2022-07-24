@@ -1,0 +1,12 @@
+.planner-container {
+  display: flex;
+}
+
+.calendar {
+  min-width: 400px;
+}
+
+.side-tabs {
+  flex-grow: 1;
+  padding-left: 30px;
+}
