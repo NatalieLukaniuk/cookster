@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { CalendarModule } from './../calendar/calendar.module';
 import { RecipiesModule } from './../recipies/recipies.module';
@@ -14,7 +15,8 @@ import { PlannerComponent } from './planner.component';
     RecipiesModule,
     CalendarModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ],
   declarations: [PlannerComponent, RecipiesComponent]
 })

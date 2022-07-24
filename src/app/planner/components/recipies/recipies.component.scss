@@ -52,3 +52,19 @@
     margin: 1vw;
 }
 
+.content-wrapper{
+    display: flex;
+}
+
+.recipy-preview{
+    min-width: 490px;
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+.all-recipies{
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+// TODO fix scrolls and elements height

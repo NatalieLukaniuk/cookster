@@ -1,12 +1,15 @@
 .planner-container {
   display: flex;
+  padding-top: 10px;
 }
 
 .calendar {
-  min-width: 400px;
+  min-width: 370px;
+  max-height: 87vh;
+  overflow-y: auto;
 }
 
 .side-tabs {
   flex-grow: 1;
-  padding-left: 30px;
+  padding-inline: 20px;
 }

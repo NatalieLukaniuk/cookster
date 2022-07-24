@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/auth/services/user.service';
@@ -55,7 +56,8 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
   constructor(
     private recipiesService: RecipiesService,
     public dialog: MatDialog,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {
     const path = window.location.pathname.split('/');
     this.recipyId = path[path.length - 1];
@@ -66,9 +68,20 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getRecipy(this.recipyId);
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
+      if (event instanceof NavigationEnd ){
+        let splitUrl = event.url.split('/');
+        let newId = splitUrl[splitUrl.length - 1];
+        if(newId !== this.recipyId){
+          this.recipyId = newId;
+          this.getRecipy(this.recipyId)
+        }
+      }
+    })
   }
 
   getRecipy(recipyId: string) {
+    //TODO recipy can be passed as router data, not need for api request
     this.recipiesService
       .getRecipyById(recipyId)
       .pipe(take(1))

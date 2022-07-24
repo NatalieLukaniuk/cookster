@@ -30,26 +30,47 @@ export const routes: Routes = [
             component: RecipyFullViewComponent,
             pathMatch: 'full',
           },
-          { path: 'all-recipies', component: AllRecipiesComponent, children: [
-            { path: 'calendar', component: CalendarContainerComponent, data: {isSidePane: true} },
-          ] },
-          { path: 'edit-recipy', component: EditRecipyComponent }
+          {
+            path: 'all-recipies',
+            component: AllRecipiesComponent,
+            children: [
+              {
+                path: 'calendar',
+                component: CalendarContainerComponent,
+                data: { isSidePane: true }, // TODO remove the isSidepane and the related logic, in css as well, there's no sidepane anymore
+              },
+            ],
+          },
+          { path: 'edit-recipy', component: EditRecipyComponent },
         ],
       },
       { path: 'friends-feed', component: FriendsFeedComponent },
-      
     ],
   },
-  {path: 'calendar-planner', component: PlannerComponent},
-  { path: 'calendar', component: CalendarContainerComponent, data: {isSidePane: false} },
+  {
+    path: 'calendar-planner',
+    component: PlannerComponent,
+    children: [
+      {
+        path: 'full-recipy/:id',
+        component: RecipyFullViewComponent,
+        pathMatch: 'full',
+      },
+    ],
+  },
+  {
+    path: 'calendar',
+    component: CalendarContainerComponent,
+    data: { isSidePane: false },
+  },
   { path: 'shopping-list', component: ShoppingListComponent },
   { path: 'admin-panel', component: AdminComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegistrationComponent }
+  { path: 'register', component: RegistrationComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

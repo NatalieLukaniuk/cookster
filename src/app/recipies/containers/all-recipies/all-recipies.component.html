@@ -1,7 +1,7 @@
 <div *ngIf="!!allRecipies" class="page-container">
   <div *ngIf="!!allRecipies.length && currentUser" class="user-recipies-wrapper">
     <div class="recipy" *ngFor="let recipy of allRecipies">
-      <app-recipy-short-view [recipy]="recipy" [currentUser]="currentUser" [isMobile]="isMobile" (addToCalendar)="onAddToCalendar($event)" (recipyClicked)="goFullRecipy($event)"></app-recipy-short-view>
+      <app-recipy-short-view [recipy]="recipy" [currentUser]="currentUser" [isMobile]="isMobile" (recipyClicked)="goFullRecipy($event)"></app-recipy-short-view>
     </div>
   </div>
   <div *ngIf="isShowSidePane" class="side-pane">

@@ -20,6 +20,7 @@ export class RecipyShortViewComponent implements OnInit {
   currentUser!: User;
   @Input()
   isMobile!: boolean;
+  @Input() isPlanner = false;
   currentPath: string;
   showNeedsAdvancePreparation: boolean = false;
   @Output() addToCalendar = new EventEmitter<Recipy>();

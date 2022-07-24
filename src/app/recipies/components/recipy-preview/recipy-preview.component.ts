@@ -74,7 +74,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     private recipiesService: RecipiesService,
     private dialogsService: DialogsService,
     private calendarService: CalendarService,
-    private location: Location
+    private location: Location,
+    
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
@@ -88,10 +89,32 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       this.getIngredientsByGroup();
       this.getStepsByGroup();
     }
+    
+    if(changes.recipy.currentValue){
+      this.initRecipy()
+    }
+
   }
 
   ngOnInit(): void {
     console.log(this.location.getState());
+    
+     
+
+    this.layoutService.isMobile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bool) => (this.isMobile = bool));
+    
+    this.store
+      .pipe(select(getCurrentUser), takeUntil(this.destroy$))
+      .subscribe((user) => {
+        if (user) {
+          this.currentUser = user;
+        }
+      });
+      this.initRecipy()    }
+
+  initRecipy(){
     let navigationData = this.location.getState() as {
       portions?: number;
       amountPerportion?: number;
@@ -105,10 +128,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this._clonedRecipy = _.cloneDeep(this.recipy);
-
-    this.layoutService.isMobile$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((bool) => (this.isMobile = bool));
     if (!!this._clonedRecipy.ingrediends.length && !navigationData.portions) {
       this.portionsToServe = this.savedPortionsServed;
     }
@@ -120,13 +139,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       this.getIngredientsByGroup();
       this.getStepsByGroup();
     }
-    this.store
-      .pipe(select(getCurrentUser), takeUntil(this.destroy$))
-      .subscribe((user) => {
-        if (user) {
-          this.currentUser = user;
-        }
-      });
   }
 
   ngOnDestroy(): void {

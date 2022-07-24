@@ -44,6 +44,7 @@ export class RecipiesComponent implements OnInit, OnDestroy {
   isMobile: boolean = false;
   currentUser: User | undefined;
   destroy$ = new Subject();
+  showRecipyPreview: boolean = false; //TODO check the route url, if there's recipy id, open the tab
 
   categories = Object.values(PlannerRecipyCategories).filter(
     (value) => typeof value === 'string'
@@ -209,6 +210,9 @@ export class RecipiesComponent implements OnInit, OnDestroy {
   }
 
   onRecipyClicked(event: Recipy) {
-    console.log(event);
+    this.showRecipyPreview = true;
+    this.router.navigate(['full-recipy/', event.id], {
+      relativeTo: this.route,
+    });
   }
 }

@@ -152,14 +152,6 @@ export class AllRecipiesComponent implements OnInit, OnDestroy {
       });
   }
 
-  onAddToCalendar(event: Recipy) {
-    if (!this.isMobile) {
-      this.store.dispatch(new CalendarActions.SetRecipySelectedAction(event));
-      this.isShowSidePane = true;
-      this.router.navigate(['calendar'], { relativeTo: this.route });
-    }
-  }
-
   toggleShpwBasicRecipies() {
     this.showBasicRecipies = !this.showBasicRecipies;
     this.showBasicRecipies$.next(this.showBasicRecipies);

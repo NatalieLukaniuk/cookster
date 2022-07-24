@@ -5,12 +5,17 @@
     </mat-radio-button>
   </mat-radio-group>
 </div>
-<div>
-  <div *ngIf="getIsTabWithRecipies(selectedCategory)">
+
+<div class="content-wrapper">
+  <div *ngIf="getIsTabWithRecipies(selectedCategory)" class="all-recipies">
     <div *ngIf="!!allRecipies && currentUser" class="user-recipies-wrapper">
       <div class="recipy" *ngFor="let recipy of getRecipiesToDispay(selectedCategory)">
-        <app-recipy-short-view [recipy]="recipy" [currentUser]="currentUser" [isMobile]="isMobile" (addToCalendar)="onAddToCalendar($event)" (recipyClicked)="onRecipyClicked($event)"></app-recipy-short-view>
+        <app-recipy-short-view [recipy]="recipy" [isPlanner]="true" [currentUser]="currentUser" [isMobile]="isMobile" (addToCalendar)="onAddToCalendar($event)" (recipyClicked)="onRecipyClicked($event)"></app-recipy-short-view>
       </div>
     </div>
+  </div>
+  <div class="recipy-preview" *ngIf="showRecipyPreview">
+    <!-- TODO add button to close the preview -->
+    <router-outlet></router-outlet>
   </div>
 </div>
