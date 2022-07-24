@@ -64,7 +64,13 @@ export class NavigationComponent implements OnDestroy {
     this.router.navigate(['/'], { relativeTo: this.route })
    }
    goCalendar(){
-     this.router.navigate(['calendar'])
+    let route: string;
+    if(this.isMobile){
+      route = 'calendar';
+    } else {
+      route = 'calendar-planner';
+    }
+     this.router.navigate([route])
    }
 
    goShoppingLists(){

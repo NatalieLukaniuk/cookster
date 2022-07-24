@@ -8,6 +8,7 @@ import { CalendarContainerComponent } from './calendar/containers/calendar-conta
 import { CooksterComponent } from './cookster/cookster.component';
 import { FriendsFeedComponent } from './layout/containers/friends-feed/friends-feed.component';
 import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
+import { CalendarPlannerComponent } from './recipies/containers/calendar-planner/calendar-planner.component';
 import { EditRecipyComponent } from './recipies/containers/edit-recipy/edit-recipy.component';
 import { RecipyFullViewComponent } from './recipies/containers/recipy-full-view/recipy-full-view.component';
 import { UserRecipiesComponent } from './recipies/containers/user-recipies/user-recipies.component';
@@ -39,6 +40,7 @@ export const routes: Routes = [
       
     ],
   },
+  {path: 'calendar-planner', component: CalendarPlannerComponent},
   { path: 'calendar', component: CalendarContainerComponent, data: {isSidePane: false} },
   { path: 'shopping-list', component: ShoppingListComponent },
   { path: 'admin-panel', component: AdminComponent },

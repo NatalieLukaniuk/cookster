@@ -15,6 +15,7 @@ import { IngredientComponent } from './components/ingredient/ingredient.componen
 import { RecipyPreviewComponent } from './components/recipy-preview/recipy-preview.component';
 import { RecipyShortViewComponent } from './components/recipy-short-view/recipy-short-view.component';
 import { AllRecipiesComponent } from './containers/all-recipies/all-recipies.component';
+import { CalendarPlannerComponent } from './containers/calendar-planner/calendar-planner.component';
 import { EditRecipyComponent } from './containers/edit-recipy/edit-recipy.component';
 import { RecipyFullViewComponent } from './containers/recipy-full-view/recipy-full-view.component';
 import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.component';
@@ -40,7 +41,8 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     AddStepComponent,
     AddTagsComponent,
     RecipyPreviewComponent,
-    EditRecipyComponent
+    EditRecipyComponent,
+    CalendarPlannerComponent
   ],
   exports: [IngredientComponent],
 })
