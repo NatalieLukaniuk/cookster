@@ -42,6 +42,6 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     RecipyPreviewComponent,
     EditRecipyComponent,
   ],
-  exports: [IngredientComponent, RecipyShortViewComponent],
+  exports: [IngredientComponent, RecipyShortViewComponent, RecipyPreviewComponent],
 })
 export class RecipiesModule {}

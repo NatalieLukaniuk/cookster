@@ -7,6 +7,7 @@ import { take, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
 import { CalendarService } from 'src/app/calendar/services/calendar.service';
+import { AppMode } from 'src/app/recipies/containers/edit-recipy/edit-recipy.component';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { DialogsService } from 'src/app/shared/services/dialogs.service';
@@ -45,6 +46,8 @@ export class RecipiesComponent implements OnInit, OnDestroy {
   currentUser: User | undefined;
   destroy$ = new Subject();
   showRecipyPreview: boolean = false; //TODO check the route url, if there's recipy id, open the tab
+  recipyForPreview: Recipy | undefined;
+  AppMode = AppMode;
 
   categories = Object.values(PlannerRecipyCategories).filter(
     (value) => typeof value === 'string'
@@ -160,7 +163,6 @@ export class RecipiesComponent implements OnInit, OnDestroy {
             );
         }
       });
-    console.log(this.categories);
   }
 
   onAddToCalendar(event: Recipy) {
@@ -211,8 +213,10 @@ export class RecipiesComponent implements OnInit, OnDestroy {
 
   onRecipyClicked(event: Recipy) {
     this.showRecipyPreview = true;
-    this.router.navigate(['full-recipy/', event.id], {
-      relativeTo: this.route,
-    });
+    this.recipyForPreview = event;
+  }
+
+  closeRecipyPreview(){
+    this.showRecipyPreview = false;
   }
 }

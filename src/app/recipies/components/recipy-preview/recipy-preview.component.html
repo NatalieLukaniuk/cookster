@@ -7,7 +7,7 @@
           <input matInput class="input-edit" *ngIf="mode == AppMode.EditRecipy" [(ngModel)]="_clonedRecipy.name"
             (ngModelChange)="isChangesSaved = false">
           <div class="recipy-action-buttons">
-            <my-date-picker name="mydate" (dateChanged)="onDateChanged($event)" [options]="myDatePickerOptions"
+            <my-date-picker name="mydate" *ngIf="mode !== AppMode.Planner" (dateChanged)="onDateChanged($event)" [options]="myDatePickerOptions"
               [(ngModel)]="datePicker" required></my-date-picker>
             <button *ngIf="mode == AppMode.ViewRecipy" mat-icon-button
               (click)="mode == AppMode.ViewRecipy? onEditRecipy() : other()">

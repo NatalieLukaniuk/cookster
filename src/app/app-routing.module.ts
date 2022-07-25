@@ -49,14 +49,7 @@ export const routes: Routes = [
   },
   {
     path: 'calendar-planner',
-    component: PlannerComponent,
-    children: [
-      {
-        path: 'full-recipy/:id',
-        component: RecipyFullViewComponent,
-        pathMatch: 'full',
-      },
-    ],
+    component: PlannerComponent
   },
   {
     path: 'calendar',
