@@ -188,7 +188,7 @@ export class RecipiesComponent implements OnInit, OnDestroy {
               recipy.type.includes(8)
           );
         case PlannerRecipyCategories.Meat:
-          return this.allRecipies.filter((recipy) => recipy.type.includes(15));
+          return this.allRecipies.filter((recipy) => recipy.type.includes(15) && !recipy.type.includes(3));
         case PlannerRecipyCategories.Garnish:
           return this.allRecipies.filter((recipy) => recipy.type.includes(23));
         case PlannerRecipyCategories.FishAndSeafood:
@@ -220,3 +220,4 @@ export class RecipiesComponent implements OnInit, OnDestroy {
     this.showRecipyPreview = false;
   }
 }
+
