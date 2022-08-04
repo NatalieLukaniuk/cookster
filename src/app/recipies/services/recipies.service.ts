@@ -11,7 +11,12 @@ import { Ingredient } from './../models/ingredient.interface';
 import { NewRecipy, Recipy } from './../models/recipy.interface';
 import { ProductsApiService } from './products-api.service';
 import { RecipiesApiService } from './recipies-api.service';
-import { getIngredientIdFromName, getIngredientText, transformToGr } from './recipies.utils';
+import {
+  getIngredientIdFromName,
+  getIngredientText,
+  isIngrIncludedInAmountCalculation,
+  transformToGr,
+} from './recipies.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -141,15 +146,21 @@ export class RecipiesService {
     }
   }
 
-  checkIsRecipyApproved(recipy: Recipy | NewRecipy): boolean{
-    return !recipy.ingrediends.find(ingr => this.getIsIngredientInDB(ingr.product));    
+  checkIsRecipyApproved(recipy: Recipy | NewRecipy): boolean {
+    return !recipy.ingrediends.find((ingr) =>
+      this.getIsIngredientInDB(ingr.product)
+    );
   }
 
   transformToGr(ingr: Ingredient, amount: number) {
     return transformToGr(ingr, amount, ingr.defaultUnit, this.products$.value);
   }
 
-  getIsIngredientInDB(id: string){
-    return this.products$.value.find(ingr => ingr.id == id)
+  getIsIngredientInDB(id: string) {
+    return this.products$.value.find((ingr) => ingr.id == id);
+  }
+
+  getIsIngredientIncludedInAmountCalculation(ingr: Ingredient): boolean {
+    return isIngrIncludedInAmountCalculation(ingr, this.products$.value);
   }
 }

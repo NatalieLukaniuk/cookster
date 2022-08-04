@@ -1,7 +1,7 @@
 import { MeasuringUnit } from './measuring-units.enum';
 
 export interface Ingredient {
-    product: string;
+    product: string; // product id in the firebase db
     amount: number; // gramm
     defaultUnit: MeasuringUnit;
     group?: IngredientsGroup;

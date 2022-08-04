@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
+import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
 import {
@@ -29,11 +30,12 @@ export class CalendarRecipyComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private _bottomSheet: MatBottomSheet
+    private _bottomSheet: MatBottomSheet,
+    private recipiesService: RecipiesService
   ) {}
 
   ngOnInit(): void {
-    this.getCoef()
+    this.getCoef();
   }
   viewRecipy() {
     this.router.navigate(
@@ -70,7 +72,7 @@ export class CalendarRecipyComponent implements OnInit {
       .pipe(take(1))
       .subscribe((res: Ingredient[]) => {
         if (!!res) {
-          let ingr = this.recalculateIngredients(res)
+          let ingr = this.recalculateIngredients(res);
           let shoppingListToSave: ShoppingListItem = {
             recipyId: this.recipy.id,
             ingredients: ingr,
@@ -84,19 +86,24 @@ export class CalendarRecipyComponent implements OnInit {
     this.recipyUpdated.emit(this.recipy);
   }
 
-  getCoef(){
+  getCoef() {
     let totalAmount = 0;
-    this.recipy.ingrediends.forEach(ingr => {
-      totalAmount = totalAmount + ingr.amount
-    })
-    this.coef = (this.recipy.portions * this.recipy.amountPerPortion) / totalAmount;
+    this.recipy.ingrediends.forEach((ingr) => {
+      if (
+        this.recipiesService.getIsIngredientIncludedInAmountCalculation(ingr)
+      ) {
+        totalAmount = totalAmount + ingr.amount;
+      }
+    });
+    this.coef =
+      (this.recipy.portions * this.recipy.amountPerPortion) / totalAmount;
   }
 
-  recalculateIngredients(ingredientsList: Ingredient[]): Ingredient[]{
-    let ingrListToreturn = ingredientsList.map(ingr => {
-      ingr.amount = ingr.amount * this.coef
-      return ingr
-    })
-    return ingrListToreturn
+  recalculateIngredients(ingredientsList: Ingredient[]): Ingredient[] {
+    let ingrListToreturn = ingredientsList.map((ingr) => {
+      ingr.amount = ingr.amount * this.coef;
+      return ingr;
+    });
+    return ingrListToreturn;
   }
 }

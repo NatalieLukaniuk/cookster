@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 
 import { environment } from '../environments/environment';
 import { AdminModule } from './admin/admin.module';
@@ -49,7 +50,7 @@ import { reducers } from './store/reducers';
     EffectsModule.forRoot([RecipiesEffects, UserEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
-  providers: [],
+  providers: [RecipiesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

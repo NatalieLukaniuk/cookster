@@ -1,4 +1,4 @@
-import { Product } from 'src/app/recipies/models/products.interface';
+import { Product, ProductType } from 'src/app/recipies/models/products.interface';
 
 import { Ingredient } from '../models/ingredient.interface';
 import { MeasuringUnit } from '../models/measuring-units.enum';
@@ -285,6 +285,35 @@ export function getIngredientIdFromName(
     }
   }
   return productId;
+}
+
+export function isIngrIncludedInAmountCalculation(
+  ingr: any,
+  allProducts: Product[]
+): boolean{
+  return getIngrCalories(ingr, allProducts) > 10;
+}
+
+export function getIngrCalories(ingr: Ingredient,
+  allProducts: Product[]): number {
+    let calories: number = 0;
+    for (let product of allProducts) {
+      if (product.id === ingr.product) {
+        calories = product.calories;
+      }
+    }
+    return calories;
+}
+
+export function getIngrType(ingr: any,
+  allProducts: Product[]): ProductType {
+    let type: ProductType = ProductType.fluid;
+    for (let product of allProducts) {
+      if (product.id === ingr.product) {
+        type = product.type;
+      }
+    }
+    return type;
 }
 
 export function getIngredientText(

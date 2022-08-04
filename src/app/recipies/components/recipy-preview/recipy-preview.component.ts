@@ -150,7 +150,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     if (this._clonedRecipy) {
       let amount = 0;
       for (let ingr of this._clonedRecipy.ingrediends) {
-        if (this.recipiesService.getIsIngredientInDB(ingr.product)) {
+        if (this.recipiesService.getIsIngredientInDB(ingr.product) && this.recipiesService.getIsIngredientIncludedInAmountCalculation(ingr)) {
           amount = ingr.amount + amount;
         }
       }
