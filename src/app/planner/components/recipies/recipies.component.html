@@ -10,7 +10,7 @@
   <div *ngIf="getIsTabWithRecipies(selectedCategory)" class="all-recipies">
     <div *ngIf="!!allRecipies && currentUser" class="user-recipies-wrapper" cdkDropList>
       <div class="recipy" cdkDrag [id]="recipy.id" *ngFor="let recipy of getRecipiesToDispay(selectedCategory)">
-        <app-recipy-short-view [recipy]="recipy" [isPlanner]="true" [currentUser]="currentUser" [isMobile]="isMobile" [mode]="appMode" (addToCalendar)="onAddToCalendar($event)"></app-recipy-short-view>
+        <app-recipy-short-view [recipy]="recipy" [isPlanner]="true" [currentUser]="currentUser" [isMobile]="isMobile" [mode]="appMode" (addToCalendar)="onAddToCalendar($event)" (recipyClicked)="onRecipyClicked($event)"></app-recipy-short-view>
       </div>
     </div>
   </div>
