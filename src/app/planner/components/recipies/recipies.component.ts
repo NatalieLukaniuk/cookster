@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
 import { combineLatest, Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { skip, take, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
 import { CalendarService } from 'src/app/calendar/services/calendar.service';
@@ -48,6 +48,7 @@ export class RecipiesComponent implements OnInit, OnDestroy {
   showRecipyPreview: boolean = false; //TODO check the route url, if there's recipy id, open the tab
   recipyForPreview: Recipy | undefined;
   AppMode = AppMode;
+  appMode: AppMode = AppMode.Planner;
 
   categories = Object.values(PlannerRecipyCategories).filter(
     (value) => typeof value === 'string'
@@ -133,18 +134,24 @@ export class RecipiesComponent implements OnInit, OnDestroy {
     this.store
       .pipe(select(getSelectedDay), takeUntil(this.destroy$))
       .subscribe((selectedDay: { day: Day; meal: string } | null) => {
+        console.log(selectedDay)
         if (selectedDay) {
-          this.dialogsService
-            .openPortionsDialog()
-            .pipe(take(1))
-            .subscribe(
-              (amount: { portions: number; amountPerPortion: number }) => {
-                if (!!this.currentUser) {
-                  let userToSave: User = _.cloneDeep(this.currentUser);
-                  this.store
-                    .pipe(select(getSelectedRecipy), take(1))
-                    .subscribe((selectedRecipy) => {
-                      if (selectedRecipy) {
+          this.appMode = AppMode.SelectRecipy;
+          this.store
+            .pipe(select(getSelectedRecipy), skip(1), take(1))
+            .subscribe((selectedRecipy) => {
+              console.log(selectedRecipy)
+              if (selectedRecipy) {
+                this.dialogsService
+                  .openPortionsDialog()
+                  .pipe(take(1))
+                  .subscribe(
+                    (amount: {
+                      portions: number;
+                      amountPerPortion: number;
+                    }) => {
+                      if (!!this.currentUser) {
+                        let userToSave: User = _.cloneDeep(this.currentUser);
                         this.calendarService.saveRecipyToCalendar(
                           userToSave,
                           selectedDay.day.details.day,
@@ -153,14 +160,16 @@ export class RecipiesComponent implements OnInit, OnDestroy {
                           amount.portions,
                           amount.amountPerPortion
                         );
+                        this.store.dispatch(
+                          new CalendarActions.ResetCalendarStateAction()
+                        );
                       }
-                      this.store.dispatch(
-                        new CalendarActions.ResetCalendarStateAction()
-                      );
-                    });
-                }
+                    }
+                  );
               }
-            );
+            });
+        } else {
+          this.appMode = AppMode.Planner;
         }
       });
   }
@@ -188,7 +197,9 @@ export class RecipiesComponent implements OnInit, OnDestroy {
               recipy.type.includes(8)
           );
         case PlannerRecipyCategories.Meat:
-          return this.allRecipies.filter((recipy) => recipy.type.includes(15) && !recipy.type.includes(3));
+          return this.allRecipies.filter(
+            (recipy) => recipy.type.includes(15) && !recipy.type.includes(3)
+          );
         case PlannerRecipyCategories.Garnish:
           return this.allRecipies.filter((recipy) => recipy.type.includes(23));
         case PlannerRecipyCategories.FishAndSeafood:
@@ -216,8 +227,9 @@ export class RecipiesComponent implements OnInit, OnDestroy {
     this.recipyForPreview = event;
   }
 
-  closeRecipyPreview(){
+  closeRecipyPreview() {
     this.showRecipyPreview = false;
   }
-}
 
+
+}

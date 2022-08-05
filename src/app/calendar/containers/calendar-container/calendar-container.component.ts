@@ -11,7 +11,7 @@ import { LayoutService } from 'src/app/shared/services/layout.service';
 })
 export class CalendarContainerComponent implements OnInit, OnDestroy {
   isMobile: boolean = false;
-  isSidePane = false;
+  _isPlanner = false;
   @Input() isPlanner = false;
   @Input() isRecipySelected: boolean = false;
   destroy$ = new Subject();
@@ -25,10 +25,10 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
     this.route.data.subscribe(
-      (result) => (this.isSidePane = result.isSidePane)
+      (result) => (this._isPlanner = result.isPlanner)
     );
     if (this.isPlanner) {
-      this.isSidePane = true;
+      this._isPlanner = true;
     }
   }
   ngOnDestroy(): void {

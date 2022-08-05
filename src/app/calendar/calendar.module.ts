@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -5,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { FiltersModule } from '../filters/filters.module';
 import { RecipiesModule } from '../recipies/recipies.module';
 import { SharedModule } from '../shared/shared.module';
+import { CalendarByMonthComponent } from './components/calendar-by-month/calendar-by-month.component';
 import { CalendarRecipyComponent } from './components/calendar-recipy/calendar-recipy.component';
 import { CalendarSelectorComponent } from './components/calendar-selector/calendar-selector.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
@@ -23,6 +25,7 @@ import { MomentPipe } from './pipes/moment.pipe';
     FiltersModule,
     FormsModule,
     RecipiesModule,
+    DragDropModule
   ],
   declarations: [
     CalendarComponent,
@@ -33,6 +36,7 @@ import { MomentPipe } from './pipes/moment.pipe';
     CalendarRecipyComponent,
     RecipiesBottomsheetComponent,
     IngredientsToListBottomsheetComponent,
+    CalendarByMonthComponent
   ],
   exports: [CalendarContainerComponent],
 })

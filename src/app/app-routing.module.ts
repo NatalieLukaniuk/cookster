@@ -37,7 +37,7 @@ export const routes: Routes = [
               {
                 path: 'calendar',
                 component: CalendarContainerComponent,
-                data: { isSidePane: true }, // TODO remove the isSidepane and the related logic, in css as well, there's no sidepane anymore
+                data: { isPlanner: true }, // TODO remove the isPlanner and the related logic, in css as well, there's no sidepane anymore
               },
             ],
           },
@@ -54,7 +54,7 @@ export const routes: Routes = [
   {
     path: 'calendar',
     component: CalendarContainerComponent,
-    data: { isSidePane: false },
+    data: { isPlanner: false },
   },
   { path: 'shopping-list', component: ShoppingListComponent },
   { path: 'admin-panel', component: AdminComponent },

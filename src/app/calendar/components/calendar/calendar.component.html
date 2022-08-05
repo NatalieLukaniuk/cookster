@@ -1,5 +1,5 @@
-<div class="calendar-wrapper" [class.narrow]="isMobile || isSidePane" [class.side-pane]="isSidePane">
-  <div class="calendar-week" *ngIf="!isMobile && !isSidePane">
+<div class="calendar-wrapper" [class.narrow]="isMobile || isPlanner" [class.side-pane]="isPlanner">
+  <div class="calendar-week" *ngIf="!isMobile && !isPlanner">
     <div class="calendar-day">Неділя</div>
     <div class="calendar-day">Понеділок</div>
     <div class="calendar-day">Вівторок</div>
@@ -13,16 +13,16 @@
       <div
         [id]="day.details.day"
         class="calendar-day"
-        *ngIf="!isMobile || !day.disabled || !isSidePane"
+        *ngIf="!isMobile || !day.disabled || !isPlanner"
         [class.disabled]="day.disabled"
         [class.selected]="day.selected"
         [class.active]="day.active"
       >
-        <span *ngIf="!isMobile && !isSidePane">{{ day.value | moment: "D" }}</span>
-        <div *ngIf="isMobile || isSidePane" class="day-header">
+        <span *ngIf="!isMobile && !isPlanner">{{ day.value | moment: "D" }}</span>
+        <div *ngIf="isMobile || isPlanner" class="day-header">
           <span>{{ day.value | moment: "dddd, Do MMMM" }}</span>
           <div>
-            <button mat-icon-button (click)="addRecipy(day)" *ngIf="!isSidePane">
+            <button mat-icon-button (click)="addRecipy(day)" *ngIf="!isPlanner">
               <mat-icon>add_circle_outline</mat-icon>
             </button>
             <!-- <button mat-icon-button (click)="addAllToShoppingList(day)">
@@ -33,7 +33,7 @@
         <app-day
           [day]="day"
           [isMobile]="isMobile"
-          [isSidePane]="isSidePane"
+          [isPlanner]="isPlanner"
           [isRecipySelected]="isRecipySelected"
           (updateDay)="onUpdateDay($event)"
           (saveToShoppingList)="onSaveToShoppingList($event)"

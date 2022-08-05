@@ -3,7 +3,8 @@
     <app-calendar-selector></app-calendar-selector>
   </div>
   <div class="calendar-body">
-    <app-calendar [isMobile]="isMobile" [isSidePane]="isSidePane"></app-calendar>
+    <app-calendar [isMobile]="isMobile" *ngIf="!_isPlanner"></app-calendar>
+    <app-calendar-by-month [isMobile]="isMobile" *ngIf="_isPlanner"></app-calendar-by-month>
   </div>
   <div class="optional"></div>
 </div>

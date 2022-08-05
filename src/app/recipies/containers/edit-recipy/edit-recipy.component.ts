@@ -10,7 +10,8 @@ export enum AppMode {
   ViewRecipy = 'view',
   AddIngrToShoppingList = 'addIngredientsToShoppingList',
   ShoppingList = 'shoppingList',
-  Planner = 'planner'
+  Planner = 'planner',
+  SelectRecipy = 'select-recipy'
 }
 
 @Component({

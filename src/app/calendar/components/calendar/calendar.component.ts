@@ -48,7 +48,7 @@ interface Week {
 export class CalendarComponent implements OnInit, OnDestroy {
   @Input() isMobile: boolean = false;
   @Input()
-  isSidePane!: boolean;
+  isPlanner!: boolean;
 
   isRecipySelected: boolean = false;
   calendar: Week[] = [];
@@ -72,7 +72,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if(this.isSidePane){
+    if(this.isPlanner){
       this.store.pipe(select(getSelectedRecipy), takeUntil(this.destroyed$)).subscribe((res: Recipy | null) => {
         this.isRecipySelected = !!res;
         console.log(this.isRecipySelected)

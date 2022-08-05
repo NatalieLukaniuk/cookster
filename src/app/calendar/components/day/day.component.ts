@@ -15,13 +15,16 @@ export class DayComponent implements OnInit {
 
   @Input() isMobile: boolean = false;
   @Input()
-  isSidePane!: boolean;
+  isPlanner!: boolean;
   @Input()
   isRecipySelected!: boolean;
 
   @Output() updateDay = new EventEmitter<IDayDetails>();
   @Output() saveToShoppingList = new EventEmitter<ShoppingListItem>();
   @Output() daySelected = new EventEmitter<{day: Day, meal: string}>()
+  @Output() addRecipy = new EventEmitter<{day: Day, meal: string, recipyId: string}>()
+
+  selectedMeal: string = '';
 
   constructor() {}
 
@@ -142,6 +145,11 @@ export class DayComponent implements OnInit {
     } else return null;
   }
 
+  drop(event: any){
+    this.addRecipy.emit({day: this.day, meal:event.container.id, recipyId: event.item.element.nativeElement.id})  
+
+  }
+
   getAmountPerPerson(mealtime: string) {
     if (this.day.details) {
       switch (mealtime) {
@@ -190,7 +198,7 @@ export class DayComponent implements OnInit {
     this.saveToShoppingList.emit(event);
   }
 
-  onAddRecipy(mealtime: string){
-    this.daySelected.emit({day: this.day, meal: mealtime})
+  onAddRecipy(){
+    this.daySelected.emit({day: this.day, meal: this.selectedMeal})
   }
 }

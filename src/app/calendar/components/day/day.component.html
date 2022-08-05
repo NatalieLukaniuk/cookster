@@ -1,15 +1,16 @@
-<div *ngIf="!!day.details" class="day-wrapper" [class.side-panel]="isSidePane">
-  <div
-    *ngIf="!!day.details.breakfastRecipies.length || isMobile || isSidePane"
+<div *ngIf="!!day.details" class="day-wrapper" [class.side-panel]="isPlanner"  [id]="day.details.day">
+  <div cdkDropList id="breakfast"  (cdkDropListDropped)="drop($event)"
+    *ngIf="!!day.details.breakfastRecipies.length || isMobile || isPlanner"
     class="meal-time"
   >
-    <div class="meal-header" [class.side-pane]="isSidePane">
+    <div class="meal-header" [class.side-pane]="isPlanner">
       <div>
         <span>Breakfast</span>
         <button
           mat-icon-button
-          (click)="onAddRecipy('breakfast')"
-          *ngIf="isSidePane && isRecipySelected"
+          (click)="this.selectedMeal = 'breakfast'"
+          [matMenuTriggerFor]="addToDay"
+          *ngIf="isPlanner"
         >
           <mat-icon>add_circle_outline</mat-icon>
         </button>
@@ -29,7 +30,6 @@
       <ng-container *ngFor="let item of day.details.breakfastRecipies">
         <app-calendar-recipy
           [isMobile]="isMobile"
-          [isSidePane]="isSidePane"
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'breakfastRecipies')"
           (recipyUpdated)="updateRecipy($event, 'breakfastRecipies')"
@@ -38,17 +38,18 @@
       </ng-container>
     </ng-container>
   </div>
-  <div
-    *ngIf="!!day.details.lunchRecipies.length || isMobile || isSidePane"
+  <div  cdkDropList id="lunch"  (cdkDropListDropped)="drop($event)"
+    *ngIf="!!day.details.lunchRecipies.length || isMobile || isPlanner"
     class="meal-time"
   >
-    <div class="meal-header" [class.side-pane]="isSidePane">
+    <div class="meal-header" [class.side-pane]="isPlanner">
       <div>
         <span>Lunch</span>
         <button
           mat-icon-button
-          (click)="onAddRecipy('lunch')"
-          *ngIf="isSidePane && isRecipySelected"
+          [matMenuTriggerFor]="addToDay"
+          (click)="this.selectedMeal = 'lunch'"
+          *ngIf="isPlanner"
         >
           <mat-icon>add_circle_outline</mat-icon>
         </button>
@@ -68,7 +69,6 @@
       <ng-container *ngFor="let item of day.details.lunchRecipies">
         <app-calendar-recipy
           [isMobile]="isMobile"
-          [isSidePane]="isSidePane"
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'lunchRecipies')"
           (recipyUpdated)="updateRecipy($event, 'lunchRecipies')"
@@ -77,17 +77,18 @@
       </ng-container>
     </ng-container>
   </div>
-  <div
-    *ngIf="!!day.details.dinnerRecipies.length || isMobile || isSidePane"
+  <div  cdkDropList id="dinner"  (cdkDropListDropped)="drop($event)"
+    *ngIf="!!day.details.dinnerRecipies.length || isMobile || isPlanner"
     class="meal-time"
   >
-    <div class="meal-header" [class.side-pane]="isSidePane">
+    <div class="meal-header" [class.side-pane]="isPlanner">
       <div>
         <span>Dinner</span>
         <button
           mat-icon-button
-          (click)="onAddRecipy('dinner')"
-          *ngIf="isSidePane && isRecipySelected"
+          [matMenuTriggerFor]="addToDay"
+          (click)="this.selectedMeal = 'dinner'"
+          *ngIf="isPlanner"
         >
           <mat-icon>add_circle_outline</mat-icon>
         </button>
@@ -106,7 +107,6 @@
       <ng-container *ngFor="let item of day.details.dinnerRecipies">
         <app-calendar-recipy
           [isMobile]="isMobile"
-          [isSidePane]="isSidePane"
           [recipy]="item"
           (removeRecipy)="removeRecipy($event, 'dinnerRecipies')"
           (recipyUpdated)="updateRecipy($event, 'dinnerRecipies')"
@@ -116,3 +116,10 @@
     </ng-container>
   </div>
 </div>
+
+<mat-menu #addToDay="matMenu">
+  <button mat-menu-item (click)="onAddRecipy()">Додати рецепт</button>
+  <button mat-menu-item>Додати салат</button>
+  <button mat-menu-item>Додати овочі</button>
+  <button mat-menu-item>Додати напій</button>
+</mat-menu>

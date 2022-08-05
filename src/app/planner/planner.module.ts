@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +17,8 @@ import { PlannerComponent } from './planner.component';
     CalendarModule,
     SharedModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    DragDropModule
   ],
   declarations: [PlannerComponent, RecipiesComponent]
 })

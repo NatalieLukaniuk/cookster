@@ -7,6 +7,7 @@ import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
 import { Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
+import { AppMode } from './../../containers/edit-recipy/edit-recipy.component';
 
 @Component({
   selector: 'app-recipy-short-view',
@@ -21,6 +22,8 @@ export class RecipyShortViewComponent implements OnInit {
   @Input()
   isMobile!: boolean;
   @Input() isPlanner = false;
+  @Input() mode: AppMode = AppMode.Planner;
+  AppMode = AppMode;
   currentPath: string;
   showNeedsAdvancePreparation: boolean = false;
   @Output() addToCalendar = new EventEmitter<Recipy>();

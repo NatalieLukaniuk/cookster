@@ -1,0 +1,30 @@
+<div >
+  <ng-container *ngFor="let day of calendar">
+    <div cdkDrag
+      [id]="day.details.day"
+      class="calendar-day"
+      *ngIf="!day.disabled"
+      [class.disabled]="day.disabled"
+      [class.selected]="day.selected"
+      [class.active]="day.active"
+    >
+      <div class="day-header">
+        <span>{{ day.value | moment: "dddd, Do MMMM" }}</span>
+        <div>
+          <button mat-icon-button (click)="addAllToShoppingList(day)">
+            <mat-icon>add_shopping_cart</mat-icon>
+          </button>
+        </div>
+      </div>
+      <app-day
+        [day]="day"
+        [isMobile]="isMobile"
+        [isPlanner]="true"
+        (updateDay)="onUpdateDay($event)"
+        (saveToShoppingList)="onSaveToShoppingList($event)"
+        (addRecipy)="onAddRecipy($event)"
+        (daySelected)="onDaySelected($event)"
+      ></app-day>
+    </div>
+  </ng-container>
+</div>

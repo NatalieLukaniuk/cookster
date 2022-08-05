@@ -6,7 +6,7 @@
   </div>
   <div *ngIf="isShowSidePane" class="side-pane">
     <router-outlet></router-outlet>
-    <!-- <app-calendar-container [isSidePane]="true" [isRecipySelected]="isRecipySelected" (daySelected)="onDaySelected($event)"></app-calendar-container> -->
+    <!-- <app-calendar-container [isPlanner]="true" [isRecipySelected]="isRecipySelected" (daySelected)="onDaySelected($event)"></app-calendar-container> -->
   </div>
   <div *ngIf="!allRecipies.length" class="no-recipies-message">There are no recipies in the database that match your filters</div>
 </div>
