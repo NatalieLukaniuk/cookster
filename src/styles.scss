@@ -52,6 +52,7 @@ body {
   --primary: 	hsla(105, 100%, 25%, 1);
   --background-color: hsla(105, 100%, 98%, 1);
   --text-color: hsla(105, 100%, 10%, 1);
+  --tint-very-light: hsla(105, 100%, 95%, 0.5);
   --tint1: hsla(105, 100%, 90%, 1);
   --tint2: hsla(105, 70%, 80%, 1);
   --tint3: hsla(105, 70%, 70%, 1);
@@ -306,6 +307,12 @@ button.mat-menu-item {
 .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
 .mat-checkbox-checked.mat-accent .mat-checkbox-background {
   background: var(--primary);
+}
+
+.edit-input {
+  border-bottom: 1px solid var(--text-color) !important;
+  max-width: 50px !important;
+  text-align: right !important;
 }
 
 // --- Auth-forms

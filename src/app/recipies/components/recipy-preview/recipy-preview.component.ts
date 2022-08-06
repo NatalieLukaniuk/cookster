@@ -207,14 +207,14 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   getTotalStepTime(step: PreparationStep) {
-    return step.timeActive + step.timePassive;
+    return +step.timeActive + +step.timePassive;
   }
 
   get activeTime() {
     let time = 0;
     if (this._clonedRecipy) {
       for (let step of this._clonedRecipy.steps) {
-        time = time + step.timeActive;
+        time = time + +step.timeActive;
       }
     }
 
@@ -225,7 +225,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     let time = 0;
     if (this._clonedRecipy) {
       for (let step of this._clonedRecipy.steps) {
-        time = time + step.timePassive;
+        time = time + +step.timePassive;
       }
     }
 
@@ -421,5 +421,9 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
           }
         }
       );
+  }
+
+  onStepEdited(step: PreparationStep){
+    console.log(step)
   }
 }

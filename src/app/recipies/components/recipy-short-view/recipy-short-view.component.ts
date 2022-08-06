@@ -52,7 +52,7 @@ export class RecipyShortViewComponent implements OnInit {
   get preparationTime() {
     let time = 0;
     for (let step of this.recipy.steps) {
-      time = time + step.timeActive + step.timePassive;
+      time = time + +step.timeActive + +step.timePassive;
     }
     return time;
   }

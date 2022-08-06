@@ -45,6 +45,26 @@
   }
 }
 
+.steps-row{
+  display: flex;
+  justify-content: space-between;
+  ::ng-deep .mat-list-item-content{
+    width: 100%;
+    align-items: baseline;
+  }
+  
+  input{
+    max-width: 50px;
+    margin-inline: 5px;
+  }
+}
+
+.step-description{
+  flex-grow: 1;
+  .mat-form-field{
+    width: 100%;
+  }
+}
 .time-cell {
   min-width: 50px;
 }
@@ -65,15 +85,13 @@
 }
 
 .steps-table {
-  td:first-child {
-    width: 87%;
-  }
-  td:last-child {
-    width: 9%;
-    text-align: end;
-  }
-  p {
-    margin: 6px 0;
+  ::ng-deep .mat-list-item {
+    height: auto;
+    border: 1px solid var(--tint2);
+    border-radius: 2px;
+    margin-block: 10px;
+    padding: 10px;
+    background: var(--tint-very-light);
   }
 }
 

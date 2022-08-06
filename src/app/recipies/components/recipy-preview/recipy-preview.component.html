@@ -50,52 +50,91 @@
           <button mat-flat-button class="action-button add-ingredient-button"
             *ngIf="mode == AppMode.EditRecipy && !isAddIngredientFormShown"
             (click)="isAddIngredientFormShown = true">Add Ingredient</button>
-          <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups?.length'
+          <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
             (addNewIngredient)="onaAddNewIngredient($event)" *ngIf="isAddIngredientFormShown"></app-add-ingredient>
         </div>
         <div class="preparation-wrapper" *ngIf="!!_clonedRecipy.steps">
           <h3>Приготування</h3>
-          <table class="steps-table" *ngIf="!isSplitToGroups">
-            <tr *ngFor="let step of _clonedRecipy.steps; let i = index">
-              <td>
-                <p *ngIf="mode !== AppMode.EditRecipy">{{ i + 1 }}. {{ step.description }}</p>
-                <div *ngIf="mode == AppMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical"
-                    class="input-edit" [(ngModel)]="step.description"
-                    (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
-              </td>
-              <td class="time-cell">{{ getTotalStepTime(step) | normalizeTime }}</td>
-              <td *ngIf="mode == AppMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
-                  <mat-icon>delete</mat-icon>
-                </button></td>
-            </tr>
-          </table>
-          <ng-container *ngIf="isSplitToGroups">
-            <ng-container *ngFor="let item of stepsByGroup | keyvalue">
-              <ng-container *ngIf="item.value.length > 0">
-                <h4>{{item.key}}</h4>
-                <table class="steps-table">
-                  <tr *ngFor="let step of item.value; let i = index">
-                    <td>
-                      <p *ngIf="mode !== AppMode.EditRecipy">{{ i + 1 }}. {{ step.description }}</p>
-                      <div *ngIf="mode == AppMode.EditRecipy">{{ i + 1 }}. <textarea matInput resize="vertical"
-                          class="input-edit" [(ngModel)]="step.description"
-                          (ngModelChange)="onStepDescriptionEdited(step)"></textarea> </div>
-                    </td>
-                    <td class="time-cell">{{ getTotalStepTime(step) | normalizeTime }}</td>
-                    <td *ngIf="mode == AppMode.EditRecipy"><button mat-icon-button (click)="onDeleteStep(step)">
-                        <mat-icon>delete</mat-icon>
-                      </button></td>
-                  </tr>
-                </table>
+          <ng-container *ngIf="mode !== AppMode.EditRecipy">
+            <div class="steps-table" *ngIf="!isSplitToGroups">
+              <div class="steps-row" *ngFor="let step of _clonedRecipy.steps; let i = index">
+                <div>{{ i + 1 }}. {{ step.description }}</div>
+                <div class="time-cell">{{ getTotalStepTime(step) | normalizeTime }}</div>
+              </div>
+            </div>
+            <ng-container *ngIf="isSplitToGroups">
+              <ng-container *ngFor="let item of stepsByGroup | keyvalue">
+                <ng-container *ngIf="item.value.length > 0">
+                  <h4>{{item.key}}</h4>
+                  <div class="steps-table">
+                    <div class="steps-row" *ngFor="let step of item.value; let i = index">
+                      <div>{{ i + 1 }}. {{ step.description }}</div>
+                      <div class="time-cell">{{ getTotalStepTime(step) | normalizeTime }}</div>
+                    </div>
+                  </div>
+                </ng-container>                
               </ng-container>
             </ng-container>
           </ng-container>
-          <button mat-flat-button class="action-button add-ingredient-button"
-            *ngIf="mode == AppMode.EditRecipy && !isAddStepFormShown" (click)="isAddStepFormShown = true">Add
+          <ng-container *ngIf="mode == AppMode.EditRecipy">
+            <mat-list class="steps-table" *ngIf="!isSplitToGroups">
+              <mat-list-item class="steps-row" *ngFor="let step of _clonedRecipy.steps; let i = index">
+                <div class="step-description">
+                  <mat-form-field>
+                    <textarea matInput resize="vertical"
+                    rows="3"
+                    [(ngModel)]="step.description"
+                    (ngModelChange)="onStepDescriptionEdited(step)">
+                  </textarea> 
+                  </mat-form-field>
+                  
+                </div>
+                <div>
+                  <input class="edit-input" matInput [(ngModel)]="step.timeActive" (ngModelChange)="onStepDescriptionEdited(step)">хв
+                </div>
+                <div><input class="edit-input" matInput [(ngModel)]="step.timePassive" (ngModelChange)="onStepDescriptionEdited(step)">хв</div>
+                <button mat-icon-button (click)="onDeleteStep(step)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
+
+            <ng-container *ngIf="isSplitToGroups">
+              <ng-container *ngFor="let item of stepsByGroup | keyvalue">
+                <ng-container *ngIf="item.value.length > 0">
+                  <h4>{{item.key}}</h4>
+                  <mat-list class="steps-table">
+              <mat-list-item class="steps-row" *ngFor="let step of item.value; let i = index">
+                <div class="step-description">
+                  <mat-form-field>
+                    <textarea matInput resize="vertical"
+                    rows="2"
+                    [(ngModel)]="step.description"
+                    (ngModelChange)="onStepDescriptionEdited(step)">
+                  </textarea> 
+                  </mat-form-field>
+                  
+                </div>
+                <div>
+                  <input class="edit-input" matInput [(ngModel)]="step.timeActive" (ngModelChange)="onStepDescriptionEdited(step)">хв
+                </div>
+                <div><input class="edit-input" matInput [(ngModel)]="step.timePassive" (ngModelChange)="onStepDescriptionEdited(step)">хв</div>
+                <button mat-icon-button (click)="onDeleteStep(step)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
+                </ng-container>                
+              </ng-container>
+            </ng-container>
+            <button mat-flat-button class="action-button add-ingredient-button"
+            *ngIf="!isAddStepFormShown" (click)="isAddStepFormShown = true">Add
             Step</button>
-          <app-add-step *ngIf="mode == AppMode.EditRecipy && isAddStepFormShown" [index]="_clonedRecipy.steps.length"
+          <app-add-step *ngIf="isAddStepFormShown" [index]="_clonedRecipy.steps.length"
             [isSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
             [groupOptions]="_clonedRecipy.isSplitIntoGroups" (addNewStep)="onAddNewStep($event)"></app-add-step>
+          </ng-container>         
+        
         </div>
 
       </div>
