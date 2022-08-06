@@ -1,4 +1,4 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { DatePipe, Location } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { select, Store } from '@ngrx/store';
@@ -75,8 +75,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     private recipiesService: RecipiesService,
     private dialogsService: DialogsService,
     private calendarService: CalendarService,
-    private location: Location,
-    
+    private location: Location
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
@@ -90,22 +89,19 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       this.getIngredientsByGroup();
       this.getStepsByGroup();
     }
-    
-    if(changes.recipy.currentValue){
-      this.initRecipy()
-    }
 
+    if (changes.recipy.currentValue) {
+      this.initRecipy();
+    }
   }
 
   ngOnInit(): void {
     console.log(this.location.getState());
-    
-     
 
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
-    
+
     this.store
       .pipe(select(getCurrentUser), takeUntil(this.destroy$))
       .subscribe((user) => {
@@ -113,9 +109,10 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
           this.currentUser = user;
         }
       });
-      this.initRecipy()    }
+    this.initRecipy();
+  }
 
-  initRecipy(){
+  initRecipy() {
     let navigationData = this.location.getState() as {
       portions?: number;
       amountPerportion?: number;
@@ -151,7 +148,10 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     if (this._clonedRecipy) {
       let amount = 0;
       for (let ingr of this._clonedRecipy.ingrediends) {
-        if (this.recipiesService.getIsIngredientInDB(ingr.product) && this.recipiesService.getIsIngredientIncludedInAmountCalculation(ingr)) {
+        if (
+          this.recipiesService.getIsIngredientInDB(ingr.product) &&
+          this.recipiesService.getIsIngredientIncludedInAmountCalculation(ingr)
+        ) {
           amount = ingr.amount + amount;
         }
       }
@@ -424,8 +424,52 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       );
   }
 
-  drop(event: CdkDragDrop<PreparationStep[]>, list: PreparationStep[]){
-    moveItemInArray(list, event.previousIndex, event.currentIndex);
+  drop(event: CdkDragDrop<PreparationStep[]>) {
+    if (this._clonedRecipy) {
+      moveItemInArray(
+        this._clonedRecipy.steps,
+        event.previousIndex,
+        event.currentIndex
+      );
+      this.isChangesSaved = false;
+    }
+  }
+
+  dropSplitToGroups(event: CdkDragDrop<PreparationStep[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
+    let changedStepsByGroup: StepsByGroup = {
+      main: this.mapStepsByGroup('main'),
+      filling: this.mapStepsByGroup('filling'),
+      souce: this.mapStepsByGroup('souce'),
+      dough: this.mapStepsByGroup('dough'),
+      decoration: this.mapStepsByGroup('decoration'),
+    };
+    if (this._clonedRecipy) {
+      let updatedSteps: PreparationStep[] = [];
+      Object.values(changedStepsByGroup).forEach(
+        (ar) => (updatedSteps = updatedSteps.concat(ar))
+      );
+      this._clonedRecipy.steps = updatedSteps;
+    }
     this.isChangesSaved = false;
+  }
+
+  mapStepsByGroup(key: string): PreparationStep[] {
+    return this.stepsByGroup[key].map(
+      (item: PreparationStep) => ({ ...item, group: key } as PreparationStep)
+    );
   }
 }

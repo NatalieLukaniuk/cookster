@@ -79,7 +79,7 @@
             </ng-container>
           </ng-container>
           <ng-container *ngIf="mode == AppMode.EditRecipy">
-            <mat-list class="steps-table" *ngIf="!isSplitToGroups" cdkDropList (cdkDropListDropped)="drop($event, _clonedRecipy.steps)">
+            <mat-list class="steps-table" *ngIf="!isSplitToGroups" cdkDropList (cdkDropListDropped)="drop($event)">
               <mat-list-item cdkDrag class="steps-row" *ngFor="let step of _clonedRecipy.steps; let i = index">
                 <div class="step-description">
                   <mat-form-field>
@@ -101,12 +101,12 @@
               </mat-list-item>
             </mat-list>
 
-            <ng-container *ngIf="isSplitToGroups">
+            <ng-container *ngIf="isSplitToGroups" cdkDropListGroup>
               <ng-container *ngFor="let item of stepsByGroup | keyvalue">
                 <ng-container *ngIf="item.value.length > 0">
                   <h4>{{item.key}}</h4>
-                  <mat-list class="steps-table">
-              <mat-list-item class="steps-row" *ngFor="let step of item.value; let i = index">
+                  <mat-list class="steps-table" cdkDropList [cdkDropListData]="item.value" (cdkDropListDropped)="dropSplitToGroups($event)">
+              <mat-list-item class="steps-row" cdkDrag *ngFor="let step of item.value; let i = index">
                 <div class="step-description">
                   <mat-form-field>
                     <textarea matInput resize="vertical"

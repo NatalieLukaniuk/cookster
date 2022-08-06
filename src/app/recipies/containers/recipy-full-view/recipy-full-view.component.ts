@@ -18,7 +18,7 @@ export interface IngredientsByGroup {
   decoration: Ingredient[];
 }
 
-export interface StepsByGroup {
+export interface StepsByGroup extends Record<string, any> {
   main: PreparationStep[];
   filling: PreparationStep[];
   souce: PreparationStep[];
