@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DatePipe, Location } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { select, Store } from '@ngrx/store';
@@ -423,7 +424,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       );
   }
 
-  onStepEdited(step: PreparationStep){
-    console.log(step)
+  drop(event: CdkDragDrop<PreparationStep[]>, list: PreparationStep[]){
+    moveItemInArray(list, event.previousIndex, event.currentIndex);
+    this.isChangesSaved = false;
   }
 }

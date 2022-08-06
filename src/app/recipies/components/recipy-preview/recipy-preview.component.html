@@ -53,6 +53,8 @@
           <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
             (addNewIngredient)="onaAddNewIngredient($event)" *ngIf="isAddIngredientFormShown"></app-add-ingredient>
         </div>
+
+
         <div class="preparation-wrapper" *ngIf="!!_clonedRecipy.steps">
           <h3>Приготування</h3>
           <ng-container *ngIf="mode !== AppMode.EditRecipy">
@@ -77,8 +79,8 @@
             </ng-container>
           </ng-container>
           <ng-container *ngIf="mode == AppMode.EditRecipy">
-            <mat-list class="steps-table" *ngIf="!isSplitToGroups">
-              <mat-list-item class="steps-row" *ngFor="let step of _clonedRecipy.steps; let i = index">
+            <mat-list class="steps-table" *ngIf="!isSplitToGroups" cdkDropList (cdkDropListDropped)="drop($event, _clonedRecipy.steps)">
+              <mat-list-item cdkDrag class="steps-row" *ngFor="let step of _clonedRecipy.steps; let i = index">
                 <div class="step-description">
                   <mat-form-field>
                     <textarea matInput resize="vertical"
