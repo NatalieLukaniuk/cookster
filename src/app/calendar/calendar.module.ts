@@ -1,7 +1,7 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FiltersModule } from '../filters/filters.module';
 import { RecipiesModule } from '../recipies/recipies.module';
@@ -25,7 +25,8 @@ import { MomentPipe } from './pipes/moment.pipe';
     FiltersModule,
     FormsModule,
     RecipiesModule,
-    DragDropModule
+    DragDropModule,
+    ReactiveFormsModule 
   ],
   declarations: [
     CalendarComponent,

@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -64,7 +65,8 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatSliderModule,
     MatBottomSheetModule,
     MatTabsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDatepickerModule
   ],
   declarations: [
     HeaderComponent,
@@ -104,7 +106,7 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatTabsModule,
     NormalizeTimePipe,
     MatTooltipModule,
-    
+    MatDatepickerModule    
   ],
   providers: []
 })

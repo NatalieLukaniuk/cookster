@@ -1,10 +1,37 @@
 <div class="calendar-container">
   <div class="calendar-header">
+    <div *ngIf="showDatePicker" class="date-selection">
+      <mat-form-field appearance="fill">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [formGroup]="datePickerRange" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Start date" />
+        <input matEndDate formControlName="end" placeholder="End date" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <button mat-icon-button class="action-button"
+              (click)="onAddToCart()" [disabled]="false"><mat-icon>add</mat-icon></button>
+    </div>
+    
     <app-calendar-selector></app-calendar-selector>
   </div>
   <div class="calendar-body">
     <app-calendar [isMobile]="isMobile" *ngIf="!_isPlanner"></app-calendar>
-    <app-calendar-by-month [isMobile]="isMobile" *ngIf="_isPlanner"></app-calendar-by-month>
+    <app-calendar-by-month
+      [isMobile]="isMobile"
+      *ngIf="_isPlanner"
+    ></app-calendar-by-month>
   </div>
   <div class="optional"></div>
+  <div class="add-shopping-cart-wrapper">
+    <button
+      *ngIf="!showDatePicker"
+      mat-icon-button
+      (click)="showDatePicker = true"
+    >
+      <mat-icon>add_shopping_cart</mat-icon>
+    </button>
+    
+  </div>
 </div>

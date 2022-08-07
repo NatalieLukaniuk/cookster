@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,6 +16,13 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
   @Input() isPlanner = false;
   @Input() isRecipySelected: boolean = false;
   destroy$ = new Subject();
+
+  showDatePicker: boolean = false;
+
+  datePickerRange = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
   constructor(
     private layoutService: LayoutService,
     private route: ActivatedRoute
@@ -33,5 +41,28 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.destroy$.next();
+  }
+
+  log(stuff: any){
+    console.log(stuff)
+  }
+
+  onAddToCart(){
+    if(this.datePickerRange.value.start && this.datePickerRange.value.end){
+      const startDate = this.transformDate(this.datePickerRange.value.start);
+      const endDate = this.transformDate(this.datePickerRange.value.end);
+      this.log(startDate);
+      this.log(endDate)
+    }
+  }
+
+  getTwoDigitValue(value: string): string{
+    if(value.length < 2){
+      return '0' + value;
+    } else return value
+  }
+
+  transformDate(date: Date): string{
+    return this.getTwoDigitValue(date.getDate().toString()) + this.getTwoDigitValue(date.getMonth().toString()) + date.getFullYear().toString();
   }
 }

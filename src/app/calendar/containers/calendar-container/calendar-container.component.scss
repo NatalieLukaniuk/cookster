@@ -1,6 +1,25 @@
 @media (max-width: 600px) {
-    .calendar-container {
-        padding-top: 13vh;
-        background-color: var(--gray)
-    }
+  .calendar-container {
+    padding-top: 13vh;
+    background-color: var(--gray);
+  }
+}
+
+.calendar-container {
+  position: relative;
+}
+
+.add-shopping-cart-wrapper {
+  position: absolute;
+  top: 0;
+}
+
+.date-selection {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: baseline;
+  .action-button {
+    margin-inline: 10px;
+  }
 }
