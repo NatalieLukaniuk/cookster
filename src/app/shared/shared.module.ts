@@ -1,4 +1,3 @@
-import { FiltersModule } from './../filters/filters.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -28,7 +27,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
-import { MyDatePickerModule } from 'mydatepicker';
 
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { SelectOptionDialogComponent } from './components/select-option-dialog/select-option-dialog.component';
@@ -64,7 +62,6 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatSnackBarModule,
     MatExpansionModule,
     MatSliderModule,
-    MyDatePickerModule,
     MatBottomSheetModule,
     MatTabsModule,
     MatTooltipModule
@@ -102,7 +99,6 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatSnackBarModule,
     MatExpansionModule,
     MatSliderModule,
-    MyDatePickerModule,
     SelectOptionDialogComponent,
     MatBottomSheetModule,
     MatTabsModule,

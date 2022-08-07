@@ -3,7 +3,6 @@ import { DatePipe, Location } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
-import { IMyDpOptions } from 'mydatepicker';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
@@ -60,14 +59,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   portionSize: number = AVERAGE_PORTION;
 
-  public myDatePickerOptions: IMyDpOptions = {
-    // other options...
-    dateFormat: 'dd.mm.yyyy',
-    showInputField: false,
-    showClearDateBtn: false,
-  };
-
-  datePicker: any;
 
   constructor(
     private layoutService: LayoutService,
