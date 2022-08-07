@@ -1,9 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from 'src/app/shared/services/layout.service';
+
+import * as CalendarActions from '../../../store/actions/calendar.actions';
 
 @Component({
   selector: 'app-calendar-container',
@@ -25,7 +28,8 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
   });
   constructor(
     private layoutService: LayoutService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store
   ) {}
 
   ngOnInit() {
@@ -53,6 +57,7 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
       const endDate = this.transformDate(this.datePickerRange.value.end);
       this.log(startDate);
       this.log(endDate)
+      this.store.dispatch(new CalendarActions.SetAddToCartRangeSelected({startDate: startDate, endDate: endDate}))
     }
   }
 

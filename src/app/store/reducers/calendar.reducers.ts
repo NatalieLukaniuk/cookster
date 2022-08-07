@@ -6,11 +6,13 @@ import { CalendarActions, CalendarActionTypes } from '../actions/calendar.action
 export interface CalendarState {
   selectedRecipy: Recipy | null;
   selectedDay: { day: Day; meal: string } | null;
+  addToCartDateRange: { startDate: string; endDate: string } | null;
 }
 
 export const InitialCalendarState: CalendarState = {
   selectedRecipy: null,
   selectedDay: null,
+  addToCartDateRange: null
 };
 
 export function CalendarReducers(
@@ -18,6 +20,13 @@ export function CalendarReducers(
   action: CalendarActions
 ): CalendarState {
   switch (action.type) {
+    case CalendarActionTypes.SET_ADD_TO_CART_DATE_RANGE: {
+      return {
+        ...state,
+        addToCartDateRange: action.date
+      }
+    }
+
     case CalendarActionTypes.SET_RECIPY_SELECTED: {
       return {
         ...state,
