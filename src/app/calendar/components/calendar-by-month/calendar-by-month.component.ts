@@ -16,6 +16,7 @@ import { IAppState } from 'src/app/store/reducers';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
+import * as UserActions from '../../../store/actions/user.actions';
 import {
   CalendarRecipyInDatabase,
   DayDetails,
@@ -301,5 +302,44 @@ export class CalendarByMonthComponent implements OnInit, OnDestroy {
 
   onDaySelected(event: { day: Day; meal: string }) {
     this.store.dispatch(new CalendarActions.SetDaySelectedAction(event));
+  }
+
+  onRecipyWasMoved() {
+    this.mapCalendar();
+  }
+
+  mapCalendar() {
+    let updatedDetails: DayDetails[] = [];
+    this.calendar.forEach((day: Day) => {
+      let _day: DayDetails = {
+        day: day.details.day,
+        breakfast: day.details.breakfastRecipies.map(
+          (item: RecipyForCalendar) => ({
+            recipyId: item.id,
+            portions: item.portions,
+            amountPerPortion: item.amountPerPortion,
+          })
+        ),
+        lunch: day.details.lunchRecipies.map((item: RecipyForCalendar) => ({
+          recipyId: item.id,
+          portions: item.portions,
+          amountPerPortion: item.amountPerPortion,
+        })),
+        dinner: day.details.dinnerRecipies.map((item: RecipyForCalendar) => ({
+          recipyId: item.id,
+          portions: item.portions,
+          amountPerPortion: item.amountPerPortion,
+        })),
+      };
+      updatedDetails.push(_day);
+    });
+    if (this.currentUser) {
+      let userToSave: User = _.cloneDeep(this.currentUser);
+      let updatedUser = {
+        ...userToSave,
+        details: updatedDetails,
+      };
+      this.store.dispatch(new UserActions.UpdateUserAction(updatedUser));
+    }
   }
 }

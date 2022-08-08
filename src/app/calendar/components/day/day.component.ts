@@ -1,3 +1,4 @@
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Recipy, RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
@@ -21,8 +22,13 @@ export class DayComponent implements OnInit {
 
   @Output() updateDay = new EventEmitter<IDayDetails>();
   @Output() saveToShoppingList = new EventEmitter<ShoppingListItem[]>();
-  @Output() daySelected = new EventEmitter<{day: Day, meal: string}>()
-  @Output() addRecipy = new EventEmitter<{day: Day, meal: string, recipyId: string}>()
+  @Output() daySelected = new EventEmitter<{ day: Day; meal: string }>();
+  @Output() addRecipy = new EventEmitter<{
+    day: Day;
+    meal: string;
+    recipyId: string;
+  }>();
+  @Output() recipyWasMoved = new EventEmitter<null>();
 
   selectedMeal: string = '';
 
@@ -145,9 +151,22 @@ export class DayComponent implements OnInit {
     } else return null;
   }
 
-  drop(event: any){
-    this.addRecipy.emit({day: this.day, meal:event.container.id, recipyId: event.item.element.nativeElement.id})  
-
+  drop(event: CdkDragDrop<Recipy[]> | CdkDragDrop<RecipyForCalendar[]>) {
+    if (event.previousContainer.id.includes('cdk-drop-list')) {
+      this.addRecipy.emit({
+        day: this.day,
+        meal: event.container.id,
+        recipyId: event.item.element.nativeElement.id,
+      });
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+      this.recipyWasMoved.emit();
+    }
   }
 
   getAmountPerPerson(mealtime: string) {
@@ -193,11 +212,11 @@ export class DayComponent implements OnInit {
   }
 
   onSaveToShoppingList(event: ShoppingListItem, meal: string) {
-    event.day = [{day: this.day.details.day, meal: meal}];
+    event.day = [{ day: this.day.details.day, meal: meal }];
     this.saveToShoppingList.emit([event]);
   }
 
-  onAddRecipy(){
-    this.daySelected.emit({day: this.day, meal: this.selectedMeal})
+  onAddRecipy() {
+    this.daySelected.emit({ day: this.day, meal: this.selectedMeal });
   }
 }

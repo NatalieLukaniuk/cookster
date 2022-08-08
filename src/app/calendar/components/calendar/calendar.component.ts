@@ -261,7 +261,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSaveToShoppingList(event: ShoppingListItem) {
+  onSaveToShoppingList(event: ShoppingListItem[]) { // currently adding for a single day is disabled
     if (this.currentUser) {
       // this.shoppingListService.addList(this.currentUser, event);
     }

@@ -1,5 +1,5 @@
 <div *ngIf="!!day.details" class="day-wrapper" [class.side-panel]="isPlanner"  [id]="day.details.day">
-  <div cdkDropList id="breakfast"  (cdkDropListDropped)="drop($event)"
+  <div cdkDropList id="breakfast" [cdkDropListData]="day.details.breakfastRecipies" (cdkDropListDropped)="drop($event)"
     *ngIf="!!day.details.breakfastRecipies.length || isMobile || isPlanner"
     class="meal-time"
   >
@@ -27,7 +27,7 @@
       </div>
     </div>
     <ng-container *ngIf="!!day.details.breakfastRecipies">
-      <ng-container *ngFor="let item of day.details.breakfastRecipies">
+      <div cdkDrag *ngFor="let item of day.details.breakfastRecipies">
         <app-calendar-recipy
           [isMobile]="isMobile"
           [recipy]="item"
@@ -35,10 +35,10 @@
           (recipyUpdated)="updateRecipy($event, 'breakfastRecipies')"
           (saveToShoppingList)="onSaveToShoppingList($event, 'breakfast')"
         ></app-calendar-recipy>
-      </ng-container>
+      </div>
     </ng-container>
   </div>
-  <div  cdkDropList id="lunch"  (cdkDropListDropped)="drop($event)"
+  <div  cdkDropList id="lunch"  [cdkDropListData]="day.details.lunchRecipies" (cdkDropListDropped)="drop($event)"
     *ngIf="!!day.details.lunchRecipies.length || isMobile || isPlanner"
     class="meal-time"
   >
@@ -66,7 +66,7 @@
       </div>
     </div>
     <ng-container *ngIf="!!day.details.lunchRecipies">
-      <ng-container *ngFor="let item of day.details.lunchRecipies">
+      <div cdkDrag *ngFor="let item of day.details.lunchRecipies">
         <app-calendar-recipy
           [isMobile]="isMobile"
           [recipy]="item"
@@ -74,10 +74,10 @@
           (recipyUpdated)="updateRecipy($event, 'lunchRecipies')"
           (saveToShoppingList)="onSaveToShoppingList($event, 'lunch')"
         ></app-calendar-recipy>
-      </ng-container>
+      </div>
     </ng-container>
   </div>
-  <div  cdkDropList id="dinner"  (cdkDropListDropped)="drop($event)"
+  <div  cdkDropList [cdkDropListData]="day.details.dinnerRecipies" id="dinner" (cdkDropListDropped)="drop($event)"
     *ngIf="!!day.details.dinnerRecipies.length || isMobile || isPlanner"
     class="meal-time"
   >
@@ -104,7 +104,7 @@
       </div>
     </div>
     <ng-container *ngIf="!!day.details.dinnerRecipies">
-      <ng-container *ngFor="let item of day.details.dinnerRecipies">
+      <div cdkDrag *ngFor="let item of day.details.dinnerRecipies">
         <app-calendar-recipy
           [isMobile]="isMobile"
           [recipy]="item"
@@ -112,7 +112,7 @@
           (recipyUpdated)="updateRecipy($event, 'dinnerRecipies')"
           (saveToShoppingList)="onSaveToShoppingList($event, 'dinner')"
         ></app-calendar-recipy>
-      </ng-container>
+      </div>
     </ng-container>
   </div>
 </div>
