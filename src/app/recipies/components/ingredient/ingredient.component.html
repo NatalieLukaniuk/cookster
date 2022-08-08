@@ -17,14 +17,7 @@
           NormalizeDisplayedAmount(amountToDisplay, measuringUnit)
         }}</span>
         <ng-container *ngIf="!isMobile">
-          <ng-container
-            *ngIf="!savedPortionsToServe && !this.actualPortionsToServe"
-          >
-            {{ getUnitText(ingredient.defaultUnit) }}
-          </ng-container>
-          <ng-container
-            *ngIf="!!savedPortionsToServe && !!this.actualPortionsToServe"
-          >
+          <ng-container>
             <select
               *ngIf="amountToDisplay > 0"
               (change)="onValueChange($event)"
@@ -42,20 +35,13 @@
         </ng-container>
 
         <ng-container *ngIf="isMobile">
-          <ng-container
-            *ngIf="!savedPortionsToServe && !this.actualPortionsToServe"
-          >
-            {{ getUnitText(ingredient.defaultUnit) }}
-          </ng-container>
-          <ng-container
-            *ngIf="!!savedPortionsToServe && !!this.actualPortionsToServe"
-          >
+          <ng-container>
             <span>{{ getUnitText(measuringUnit) }}</span>
           </ng-container>
         </ng-container>
 
         <!-- <ng-container
-        *ngIf="!!savedPortionsToServe && !!this.actualPortionsToServe"
+        *ngIf="!!savedPortionsToServe"
       >
         <select
           *ngIf="amountToDisplay > 0 && !isMobile"
@@ -123,7 +109,11 @@
       {{ _ingredient.amount }}
     </div>
     <div>{{ getUnitText(_ingredient.defaultUnit) }}</div>
-    <button *ngIf="mode == AppMode.EditRecipy" mat-icon-button (click)="onDeleteIngredient()">
+    <button
+      *ngIf="mode == AppMode.EditRecipy"
+      mat-icon-button
+      (click)="onDeleteIngredient()"
+    >
       <mat-icon>delete</mat-icon>
     </button>
   </ng-container>

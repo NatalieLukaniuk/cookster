@@ -4,22 +4,43 @@
       <div class="recipy-details">
         <div class="recipy-name-wrapper">
           <h1 *ngIf="mode !== AppMode.EditRecipy">{{ _clonedRecipy.name }}</h1>
-          <input matInput class="input-edit" *ngIf="mode == AppMode.EditRecipy" [(ngModel)]="_clonedRecipy.name"
-            (ngModelChange)="isChangesSaved = false">
+          <input
+            matInput
+            class="input-edit"
+            *ngIf="mode == AppMode.EditRecipy"
+            [(ngModel)]="_clonedRecipy.name"
+            (ngModelChange)="isChangesSaved = false"
+          />
           <div class="recipy-action-buttons">
-            <button *ngIf="mode == AppMode.ViewRecipy" mat-icon-button
-              (click)="mode == AppMode.ViewRecipy? onEditRecipy() : other()">
+            <button
+              *ngIf="mode == AppMode.ViewRecipy"
+              mat-icon-button
+              (click)="mode == AppMode.ViewRecipy ? onEditRecipy() : other()"
+            >
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-flat-button class="action-button" *ngIf="mode == AppMode.EditRecipy"
-              (click)="saveUpdatedRecipy()" [disabled]="isChangesSaved">Save Changes</button>
+            <button
+              mat-flat-button
+              class="action-button"
+              *ngIf="mode == AppMode.EditRecipy"
+              (click)="saveUpdatedRecipy()"
+              [disabled]="isChangesSaved"
+            >
+              Save Changes
+            </button>
           </div>
-
         </div>
-        <div class="ingredients-wrapper" *ngIf="portionsToServe && !!_clonedRecipy.ingrediends">
-          <h3 *ngIf="portionsToServe && mode !==AppMode.EditRecipy">
+        <div
+          class="ingredients-wrapper"
+          *ngIf="portionsToServe && !!_clonedRecipy.ingrediends"
+        >
+          <h3 *ngIf="portionsToServe && mode !== AppMode.EditRecipy">
             Інгридієнти на
-            <select class="inline-select" [(ngModel)]="portionsToServe">
+            <select
+              class="inline-select"
+              [(ngModel)]="portionsToServe"
+              (ngModelChange)="onPortionsNumberChanged($event)"
+            >
               <option *ngFor="let option of portionsOptions">
                 {{ option }}
               </option>
@@ -27,72 +48,125 @@
             {{ portionsText }}
           </h3>
           <div class="ingredients-table" *ngIf="!isSplitToGroups">
-            <app-ingredient (ingredientChanged)="onIngredientChanged($event)"
+            <app-ingredient
+              (ingredientChanged)="onIngredientChanged($event)"
               (deleteIngredient)="onDeleteIngredient($event)"
-              *ngFor="let ingredient of _clonedRecipy.ingrediends; let i = index" [ingredient]="ingredient"
-              [mode]="mode" [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"
-              [isMobile]="isMobile"></app-ingredient>
+              *ngFor="
+                let ingredient of _clonedRecipy.ingrediends;
+                let i = index
+              "
+              [ingredient]="ingredient"
+              [mode]="mode"
+              [coeficientOfAmount]="coeficient"
+              [isMobile]="isMobile"
+            ></app-ingredient>
           </div>
           <ng-container *ngIf="isSplitToGroups">
             <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
               <ng-container *ngIf="item.value.length > 0">
-                <h4>{{item.key}}</h4>
-                <app-ingredient (ingredientChanged)="onIngredientChanged($event)"
-                  (deleteIngredient)="onDeleteIngredient($event)" [mode]="mode"
-                  *ngFor="let ingredient of item.value; let i = index" [ingredient]="ingredient"
-                  [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"
-                  [isMobile]="isMobile"></app-ingredient>
+                <h4>{{ item.key }}</h4>
+                <app-ingredient
+                  (ingredientChanged)="onIngredientChanged($event)"
+                  (deleteIngredient)="onDeleteIngredient($event)"
+                  [mode]="mode"
+                  [coeficientOfAmount]="coeficient"
+                  *ngFor="let ingredient of item.value; let i = index"
+                  [ingredient]="ingredient"
+                  [isMobile]="isMobile"
+                ></app-ingredient>
               </ng-container>
             </ng-container>
           </ng-container>
-          <button mat-flat-button class="action-button add-ingredient-button"
+          <button
+            mat-flat-button
+            class="action-button add-ingredient-button"
             *ngIf="mode == AppMode.EditRecipy && !isAddIngredientFormShown"
-            (click)="isAddIngredientFormShown = true">Add Ingredient</button>
-          <app-add-ingredient [isIngredientsSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
-            (addNewIngredient)="onaAddNewIngredient($event)" *ngIf="isAddIngredientFormShown"></app-add-ingredient>
+            (click)="isAddIngredientFormShown = true"
+          >
+            Add Ingredient
+          </button>
+          <app-add-ingredient
+            [isIngredientsSplitToGroups]="
+              !!_clonedRecipy.isSplitIntoGroups.length
+            "
+            (addNewIngredient)="onaAddNewIngredient($event)"
+            *ngIf="isAddIngredientFormShown"
+          ></app-add-ingredient>
         </div>
-
 
         <div class="preparation-wrapper" *ngIf="!!_clonedRecipy.steps">
           <h3>Приготування</h3>
           <ng-container *ngIf="mode !== AppMode.EditRecipy">
             <div class="steps-table" *ngIf="!isSplitToGroups">
-              <div class="steps-row" *ngFor="let step of _clonedRecipy.steps; let i = index">
+              <div
+                class="steps-row"
+                *ngFor="let step of _clonedRecipy.steps; let i = index"
+              >
                 <div>{{ i + 1 }}. {{ step.description }}</div>
-                <div class="time-cell">{{ getTotalStepTime(step) | normalizeTime }}</div>
+                <div class="time-cell">
+                  {{ getTotalStepTime(step) | normalizeTime }}
+                </div>
               </div>
             </div>
             <ng-container *ngIf="isSplitToGroups">
               <ng-container *ngFor="let item of stepsByGroup | keyvalue">
                 <ng-container *ngIf="item.value.length > 0">
-                  <h4>{{item.key}}</h4>
+                  <h4>{{ item.key }}</h4>
                   <div class="steps-table">
-                    <div class="steps-row" *ngFor="let step of item.value; let i = index">
+                    <div
+                      class="steps-row"
+                      *ngFor="let step of item.value; let i = index"
+                    >
                       <div>{{ i + 1 }}. {{ step.description }}</div>
-                      <div class="time-cell">{{ getTotalStepTime(step) | normalizeTime }}</div>
+                      <div class="time-cell">
+                        {{ getTotalStepTime(step) | normalizeTime }}
+                      </div>
                     </div>
                   </div>
-                </ng-container>                
+                </ng-container>
               </ng-container>
             </ng-container>
           </ng-container>
           <ng-container *ngIf="mode == AppMode.EditRecipy">
-            <mat-list class="steps-table" *ngIf="!isSplitToGroups" cdkDropList (cdkDropListDropped)="drop($event)">
-              <mat-list-item cdkDrag class="steps-row" *ngFor="let step of _clonedRecipy.steps; let i = index">
+            <mat-list
+              class="steps-table"
+              *ngIf="!isSplitToGroups"
+              cdkDropList
+              (cdkDropListDropped)="drop($event)"
+            >
+              <mat-list-item
+                cdkDrag
+                class="steps-row"
+                *ngFor="let step of _clonedRecipy.steps; let i = index"
+              >
                 <div class="step-description">
                   <mat-form-field>
-                    <textarea matInput resize="vertical"
-                    rows="3"
-                    [(ngModel)]="step.description"
-                    (ngModelChange)="onStepDescriptionEdited(step)">
-                  </textarea> 
+                    <textarea
+                      matInput
+                      resize="vertical"
+                      rows="3"
+                      [(ngModel)]="step.description"
+                      (ngModelChange)="onStepDescriptionEdited(step)"
+                    >
+                    </textarea>
                   </mat-form-field>
-                  
                 </div>
                 <div>
-                  <input class="edit-input" matInput [(ngModel)]="step.timeActive" (ngModelChange)="onStepDescriptionEdited(step)">хв
+                  <input
+                    class="edit-input"
+                    matInput
+                    [(ngModel)]="step.timeActive"
+                    (ngModelChange)="onStepDescriptionEdited(step)"
+                  />хв
                 </div>
-                <div><input class="edit-input" matInput [(ngModel)]="step.timePassive" (ngModelChange)="onStepDescriptionEdited(step)">хв</div>
+                <div>
+                  <input
+                    class="edit-input"
+                    matInput
+                    [(ngModel)]="step.timePassive"
+                    (ngModelChange)="onStepDescriptionEdited(step)"
+                  />хв
+                </div>
                 <button mat-icon-button (click)="onDeleteStep(step)">
                   <mat-icon>delete</mat-icon>
                 </button>
@@ -102,41 +176,71 @@
             <ng-container *ngIf="isSplitToGroups" cdkDropListGroup>
               <ng-container *ngFor="let item of stepsByGroup | keyvalue">
                 <ng-container *ngIf="item.value.length > 0">
-                  <h4>{{item.key}}</h4>
-                  <mat-list class="steps-table" cdkDropList [cdkDropListData]="item.value" (cdkDropListDropped)="dropSplitToGroups($event)">
-              <mat-list-item class="steps-row" cdkDrag *ngFor="let step of item.value; let i = index">
-                <div class="step-description">
-                  <mat-form-field>
-                    <textarea matInput resize="vertical"
-                    rows="2"
-                    [(ngModel)]="step.description"
-                    (ngModelChange)="onStepDescriptionEdited(step)">
-                  </textarea> 
-                  </mat-form-field>
-                  
-                </div>
-                <div>
-                  <input class="edit-input" matInput [(ngModel)]="step.timeActive" (ngModelChange)="onStepDescriptionEdited(step)">хв
-                </div>
-                <div><input class="edit-input" matInput [(ngModel)]="step.timePassive" (ngModelChange)="onStepDescriptionEdited(step)">хв</div>
-                <button mat-icon-button (click)="onDeleteStep(step)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </mat-list-item>
-            </mat-list>
-                </ng-container>                
+                  <h4>{{ item.key }}</h4>
+                  <mat-list
+                    class="steps-table"
+                    cdkDropList
+                    [cdkDropListData]="item.value"
+                    (cdkDropListDropped)="dropSplitToGroups($event)"
+                  >
+                    <mat-list-item
+                      class="steps-row"
+                      cdkDrag
+                      *ngFor="let step of item.value; let i = index"
+                    >
+                      <div class="step-description">
+                        <mat-form-field>
+                          <textarea
+                            matInput
+                            resize="vertical"
+                            rows="2"
+                            [(ngModel)]="step.description"
+                            (ngModelChange)="onStepDescriptionEdited(step)"
+                          >
+                          </textarea>
+                        </mat-form-field>
+                      </div>
+                      <div>
+                        <input
+                          class="edit-input"
+                          matInput
+                          [(ngModel)]="step.timeActive"
+                          (ngModelChange)="onStepDescriptionEdited(step)"
+                        />хв
+                      </div>
+                      <div>
+                        <input
+                          class="edit-input"
+                          matInput
+                          [(ngModel)]="step.timePassive"
+                          (ngModelChange)="onStepDescriptionEdited(step)"
+                        />хв
+                      </div>
+                      <button mat-icon-button (click)="onDeleteStep(step)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </mat-list-item>
+                  </mat-list>
+                </ng-container>
               </ng-container>
             </ng-container>
-            <button mat-flat-button class="action-button add-ingredient-button"
-            *ngIf="!isAddStepFormShown" (click)="isAddStepFormShown = true">Add
-            Step</button>
-          <app-add-step *ngIf="isAddStepFormShown" [index]="_clonedRecipy.steps.length"
-            [isSplitToGroups]='!!_clonedRecipy.isSplitIntoGroups.length'
-            [groupOptions]="_clonedRecipy.isSplitIntoGroups" (addNewStep)="onAddNewStep($event)"></app-add-step>
-          </ng-container>         
-        
+            <button
+              mat-flat-button
+              class="action-button add-ingredient-button"
+              *ngIf="!isAddStepFormShown"
+              (click)="isAddStepFormShown = true"
+            >
+              Add Step
+            </button>
+            <app-add-step
+              *ngIf="isAddStepFormShown"
+              [index]="_clonedRecipy.steps.length"
+              [isSplitToGroups]="!!_clonedRecipy.isSplitIntoGroups.length"
+              [groupOptions]="_clonedRecipy.isSplitIntoGroups"
+              (addNewStep)="onAddNewStep($event)"
+            ></app-add-step>
+          </ng-container>
         </div>
-
       </div>
       <div class="recipy-info">
         <!-- <img class="recipy-photo" [src]="recipy.photo" /> -->
@@ -159,50 +263,75 @@
             </mat-chip-list>
           </div>
           <div *ngIf="mode == AppMode.EditRecipy">
-            <app-add-tags [selected]="_clonedRecipy.type" [tags]="allTags"
-              (selectedTags)="onTagsSelectionChange($event)"></app-add-tags>
+            <app-add-tags
+              [selected]="_clonedRecipy.type"
+              [tags]="allTags"
+              (selectedTags)="onTagsSelectionChange($event)"
+            ></app-add-tags>
           </div>
         </div>
       </div>
     </div>
-    <button mat-flat-button class="action-button" *ngIf="mode == AppMode.AddPreview" (click)="onAddRecipy()">Add
-      recipy</button>
+    <button
+      mat-flat-button
+      class="action-button"
+      *ngIf="mode == AppMode.AddPreview"
+      (click)="onAddRecipy()"
+    >
+      Add recipy
+    </button>
   </div>
 </ng-container>
-
-
 
 <ng-container *ngIf="isMobile && _clonedRecipy">
   <header class="mobile-header">
     {{ _clonedRecipy.name }}
   </header>
-  <div class="tab-content" *ngIf="currentTab === 'ingredients' && portionsToServe">
+  <div
+    class="tab-content"
+    *ngIf="currentTab === 'ingredients' && portionsToServe"
+  >
     <div class="portions-selector">
-      <span>Кількість порцій: {{portionsToServe}}</span>
-      <button mat-icon-button [matMenuTriggerFor]="unitMenu" class="edit-button">
+      <span>Кількість порцій: {{ portionsToServe }}</span>
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="unitMenu"
+        class="edit-button"
+      >
         <mat-icon svgIcon="edit"></mat-icon>
       </button>
       <mat-menu #unitMenu="matMenu">
-        <button mat-menu-item *ngFor="let option of portionsOptions" (click)="onPortionsChange(option)">{{ option
-          }}</button>
+        <button
+          mat-menu-item
+          *ngFor="let option of portionsOptions"
+          (click)="onPortionsChange(option)"
+        >
+          {{ option }}
+        </button>
       </mat-menu>
     </div>
     <ng-container *ngIf="!isSplitToGroups">
-      <app-ingredient *ngFor="let ingredient of _clonedRecipy.ingrediends" [ingredient]="ingredient"
-        [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe" [isMobile]="isMobile">
+      <app-ingredient
+        *ngFor="let ingredient of _clonedRecipy.ingrediends"
+        [ingredient]="ingredient"
+        [coeficientOfAmount]="coeficient"
+        [isMobile]="isMobile"
+      >
       </app-ingredient>
     </ng-container>
     <ng-container *ngIf="isSplitToGroups">
       <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
         <ng-container *ngIf="item.value.length > 0">
-          <h4>{{item.key}}</h4>
-          <app-ingredient *ngFor="let ingredient of item.value" [ingredient]="ingredient"
-            [savedPortionsToServe]="savedPortionsServed" [actualPortionsToServe]="portionsToServe"
-            [isMobile]="isMobile"></app-ingredient>
+          <h4>{{ item.key }}</h4>
+          <app-ingredient
+            *ngFor="let ingredient of item.value"
+            [ingredient]="ingredient"
+            [coeficientOfAmount]="coeficient"
+            [isMobile]="isMobile"
+          ></app-ingredient>
         </ng-container>
       </ng-container>
     </ng-container>
-
   </div>
   <div class="tab-content" *ngIf="currentTab === 'preparation'">
     <table class="steps-table" *ngIf="!isSplitToGroups">
@@ -210,13 +339,13 @@
         <td>
           <p>{{ step.id }}. {{ step.description }}</p>
         </td>
-        <td>{{ getTotalStepTime(step) | normalizeTime}}</td>
+        <td>{{ getTotalStepTime(step) | normalizeTime }}</td>
       </tr>
     </table>
     <ng-container *ngIf="isSplitToGroups">
       <ng-container *ngFor="let item of stepsByGroup | keyvalue">
         <ng-container *ngIf="item.value.length > 0">
-          <h4>{{item.key}}</h4>
+          <h4>{{ item.key }}</h4>
           <table class="steps-table">
             <tr *ngFor="let step of item.value; let i = index">
               <td>
@@ -229,7 +358,11 @@
       </ng-container>
     </ng-container>
   </div>
-  <div class="tab-content" *ngIf="currentTab === 'details'" class="mobile-details-wrapper">
+  <div
+    class="tab-content"
+    *ngIf="currentTab === 'details'"
+    class="mobile-details-wrapper"
+  >
     <div>
       <mat-chip-list>
         <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
@@ -242,22 +375,33 @@
       <span>Складність: </span> <b>{{ complexity }}</b>
     </div>
     <div class="recipy-time">
-
       <div>
-        <p>Загальний час приготування: <b>{{ activeTime + passiveTime | normalizeTime }}</b></p>
+        <p>
+          Загальний час приготування:
+          <b>{{ activeTime + passiveTime | normalizeTime }}</b>
+        </p>
         <p>Активний: {{ activeTime | normalizeTime }}</p>
         <p>Пасивний: {{ passiveTime | normalizeTime }}</p>
       </div>
     </div>
-    <div class="recipy-tags">
-
-    </div>
+    <div class="recipy-tags"></div>
   </div>
-  <button mat-flat-button class="action-button add-recipy-mobile-button"
+  <button
+    mat-flat-button
+    class="action-button add-recipy-mobile-button"
     *ngIf="mode == AppMode.EditRecipy || mode == AppMode.AddPreview"
-    (click)="mode == AppMode.AddPreview? onAddRecipy() : saveUpdatedRecipy()">Зберегти рецепт</button>
-  <mat-button-toggle-group appearance="legacy" aria-label="Font Style" (change)="onMatToggleChange($event)">
-    <mat-button-toggle value="ingredients" checked>Інгридієнти</mat-button-toggle>
+    (click)="mode == AppMode.AddPreview ? onAddRecipy() : saveUpdatedRecipy()"
+  >
+    Зберегти рецепт
+  </button>
+  <mat-button-toggle-group
+    appearance="legacy"
+    aria-label="Font Style"
+    (change)="onMatToggleChange($event)"
+  >
+    <mat-button-toggle value="ingredients" checked
+      >Інгридієнти</mat-button-toggle
+    >
     <mat-button-toggle value="preparation">Приготування</mat-button-toggle>
     <mat-button-toggle value="details">Деталі</mat-button-toggle>
   </mat-button-toggle-group>

@@ -26,12 +26,9 @@ export class IngredientComponent implements OnInit, OnChanges {
   @Input()
   ingredient!: Ingredient;
   @Input()
-  savedPortionsToServe!: number;
-  @Input()
-  actualPortionsToServe!: number;
-  @Input()
   isMobile!: boolean;
   @Input() mode: AppMode = AppMode.ViewRecipy;
+  @Input() coeficientOfAmount: number = 1;
 
   @Output() ingredientChanged = new EventEmitter<Ingredient>();
   @Output() deleteIngredient = new EventEmitter<Ingredient>();
@@ -65,7 +62,9 @@ export class IngredientComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.isProductInDB = !!this.recipiesService.getIsIngredientInDB(this.ingredient.product);
+    this.isProductInDB = !!this.recipiesService.getIsIngredientInDB(
+      this.ingredient.product
+    );
     this.measuringUnit = this.getDefaultMeasuringUnit();
   }
 
@@ -74,15 +73,7 @@ export class IngredientComponent implements OnInit, OnChanges {
   }
 
   getAmount(amount: number) {
-    if (!!this.savedPortionsToServe && !!this.actualPortionsToServe) {
-      if (this.savedPortionsToServe == this.actualPortionsToServe) {
-        return amount;
-      } else {
-        const amountPerPortion = amount / this.savedPortionsToServe;
-        const actualAmount = amountPerPortion * this.actualPortionsToServe;
-        return actualAmount;
-      }
-    } else return amount;
+    return amount * this.coeficientOfAmount;
   }
 
   getDefaultMeasuringUnit() {

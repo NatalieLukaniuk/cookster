@@ -59,6 +59,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   portionSize: number = AVERAGE_PORTION;
 
+  coeficient: number = 1;
 
   constructor(
     private layoutService: LayoutService,
@@ -83,6 +84,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
     if (changes.recipy.currentValue) {
       this.initRecipy();
+      this.getCoeficient()
     }
   }
 
@@ -101,6 +103,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
         }
       });
     this.initRecipy();
+    this.getCoeficient()
   }
 
   initRecipy() {
@@ -154,6 +157,21 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     return portions;
   }
 
+  getCoeficient() {
+    if (this._clonedRecipy && this.portionsToServe) {
+      let amount = 0;
+      for (let ingr of this._clonedRecipy.ingrediends) {
+        if (
+          this.recipiesService.getIsIngredientInDB(ingr.product) &&
+          this.recipiesService.getIsIngredientIncludedInAmountCalculation(ingr)
+        ) {
+          amount = ingr.amount + amount; // amount of ingreds with calories
+        }
+      }
+      this.coeficient = (this.portionsToServe * this.portionSize) / amount;
+    } 
+  }
+
   get portionsOptions() {
     let portionsArray = [];
     if (this.recipy) {
@@ -162,6 +180,10 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
     return portionsArray;
+  }
+
+  onPortionsNumberChanged(event: any){
+    this.getCoeficient()
   }
 
   getIngredientsByGroup() {
