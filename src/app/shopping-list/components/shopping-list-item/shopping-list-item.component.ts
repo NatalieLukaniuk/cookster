@@ -17,8 +17,8 @@ import {
   NormalizeDisplayedAmount,
   transformToGr,
 } from 'src/app/recipies/services/recipies.utils';
+import { ShoppingListItem } from 'src/app/shopping-list/models';
 
-import { NoGroupListItem } from '../no-group-list/no-group-list.component';
 import {
   MeasuringUnitOptionsGranular,
   MeasuringUnitOptionsHardHomogeneous,
@@ -34,22 +34,29 @@ enum ChangeType {
   styleUrls: ['./shopping-list-item.component.scss'],
 })
 export class ShoppingListItemComponent implements OnInit, OnDestroy {
-  @Input() item!: NoGroupListItem;
+  @Input() item!: ShoppingListItem;
   @Input() allProducts!: Product[];
-  _item: NoGroupListItem | undefined;
+  _item: ShoppingListItem | undefined;
   _measuringUnit: MeasuringUnit | undefined;
   _amountToDisplay: number = 0;
   MeasuringUnit = MeasuringUnit;
 
   mode = AppMode.ShoppingList;
-  itemChanged$ = new Subject<{ item: NoGroupListItem; change: ChangeType; isSmallAmount: boolean }>();
+  itemChanged$ = new Subject<{
+    item: ShoppingListItem;
+    change: ChangeType;
+    isSmallAmount: boolean;
+  }>();
   destroyed$ = new Subject();
 
   NormalizeDisplayedAmount = NormalizeDisplayedAmount;
 
-  @Output() removeIngredient = new EventEmitter<NoGroupListItem>();
-  @Output() amountChanged = new EventEmitter<{item: NoGroupListItem, isSmallAmount: boolean}>();
-  @Output() measuringUnitChanged = new EventEmitter<NoGroupListItem>();
+  @Output() removeIngredient = new EventEmitter<ShoppingListItem>();
+  @Output() amountChanged = new EventEmitter<{
+    item: ShoppingListItem;
+    isSmallAmount: boolean;
+  }>();
+  @Output() measuringUnitChanged = new EventEmitter<ShoppingListItem>();
 
   constructor() {}
   ngOnDestroy(): void {
@@ -66,19 +73,31 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
       this.allProducts
     );
     if (this._amountToDisplay % 1) {
-      this._amountToDisplay = NormalizeDisplayedAmount(this._amountToDisplay, this._measuringUnit);
+      this._amountToDisplay = NormalizeDisplayedAmount(
+        this._amountToDisplay,
+        this._measuringUnit
+      );
     }
     this.itemChanged$
       .pipe(takeUntil(this.destroyed$), debounceTime(700))
-      .subscribe((update: { item: NoGroupListItem; change: ChangeType, isSmallAmount: boolean }) => {
-        switch (update.change) {
-          case ChangeType.amount:
-            this.amountChanged.emit({item: update.item, isSmallAmount: update.isSmallAmount});
-            break;
-          case ChangeType.measuringUnit:
-            this.measuringUnitChanged.emit(update.item);
+      .subscribe(
+        (update: {
+          item: ShoppingListItem;
+          change: ChangeType;
+          isSmallAmount: boolean;
+        }) => {
+          switch (update.change) {
+            case ChangeType.amount:
+              this.amountChanged.emit({
+                item: update.item,
+                isSmallAmount: update.isSmallAmount,
+              });
+              break;
+            case ChangeType.measuringUnit:
+              this.measuringUnitChanged.emit(update.item);
+          }
         }
-      });
+      );
   }
 
   onAmountChanged() {
@@ -89,20 +108,34 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
         this._measuringUnit,
         this.allProducts
       );
-      let isSmallAmount = this.getIsSmallAmount()
-      this.itemChanged$.next({ item: this._item, change: ChangeType.amount, isSmallAmount: isSmallAmount  });
+      let isSmallAmount = this.getIsSmallAmount();
+      this.itemChanged$.next({
+        item: this._item,
+        change: ChangeType.amount,
+        isSmallAmount: isSmallAmount,
+      });
     }
   }
 
-  getIsSmallAmount(): boolean{
-    return (this._measuringUnit == MeasuringUnit.pinch || this._measuringUnit == MeasuringUnit.teaSpoon || this._measuringUnit == MeasuringUnit.coffeeSpoon || (this._item!.amount < 1 || this._amountToDisplay < 1))
+  getIsSmallAmount(): boolean {
+    return (
+      this._measuringUnit == MeasuringUnit.pinch ||
+      this._measuringUnit == MeasuringUnit.teaSpoon ||
+      this._measuringUnit == MeasuringUnit.coffeeSpoon ||
+      this._item!.amount < 1 ||
+      this._amountToDisplay < 1
+    );
   }
 
   onMeasurementUnitChanged(event: MeasuringUnit) {
     if (this._item) {
       this._item = _.cloneDeep(this._item);
       this._item.defaultUnit = event;
-      this.itemChanged$.next({item: this._item, change: ChangeType.measuringUnit, isSmallAmount: this.getIsSmallAmount()});
+      this.itemChanged$.next({
+        item: this._item,
+        change: ChangeType.measuringUnit,
+        isSmallAmount: this.getIsSmallAmount(),
+      });
       // this._measuringUnit = event;
       // this._amountToDisplay = convertAmountToSelectedUnit(
       //   this._measuringUnit,

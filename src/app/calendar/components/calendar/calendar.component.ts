@@ -75,7 +75,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if(this.isPlanner){
       this.store.pipe(select(getSelectedRecipy), takeUntil(this.destroyed$)).subscribe((res: Recipy | null) => {
         this.isRecipySelected = !!res;
-        console.log(this.isRecipySelected)
       })
     }
     this.dateService.date.subscribe((res) => {
@@ -264,7 +263,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   onSaveToShoppingList(event: ShoppingListItem) {
     if (this.currentUser) {
-      this.shoppingListService.addList(this.currentUser, event);
+      // this.shoppingListService.addList(this.currentUser, event);
     }
   }
 

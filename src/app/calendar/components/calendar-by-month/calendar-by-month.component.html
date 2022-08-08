@@ -10,11 +10,6 @@
     >
       <div class="day-header">
         <span>{{ day.value | moment: "dddd, Do MMMM" }}</span>
-        <div>
-          <button *ngIf="false" mat-icon-button (click)="addAllToShoppingList(day)">
-            <mat-icon>add_shopping_cart</mat-icon>
-          </button>
-        </div>
       </div>
       <app-day
         [day]="day"

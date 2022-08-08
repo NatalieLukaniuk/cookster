@@ -23,10 +23,10 @@
       <button mat-list-item (click)="viewRecipy()">
         <mat-icon>zoom_in</mat-icon>Переглянути рецепт
       </button>
-      <button mat-list-item (click)="addToShoppingList()">
+      <!-- <button mat-list-item (click)="addToShoppingList()">
         <mat-icon>add_shopping_cart</mat-icon>Додати інгридієнти в список
         покупок
-      </button>
+      </button> -->
       <button mat-list-item (click)="onRemoveRecipy()">
         <mat-icon>delete_outline</mat-icon>Видалити
       </button>
@@ -37,8 +37,8 @@
 
 <mat-menu #recipyMenu="matMenu">
   <button mat-menu-item (click)="viewRecipy()">Переглянути рецепт</button>
-  <button mat-menu-item (click)="addToShoppingList()">
+  <!-- <button mat-menu-item (click)="addToShoppingList()">
     Додати інгридієнти в список покупок
-  </button>
+  </button> -->
   <button mat-menu-item (click)="onRemoveRecipy()">Видалити</button>
 </mat-menu>

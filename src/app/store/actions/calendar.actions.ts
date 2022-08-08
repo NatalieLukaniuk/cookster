@@ -8,8 +8,13 @@ export enum CalendarActionTypes {
   SET_DAY_SELECTED = '[CALENDAR] Set Day Selected',
   RESET_CALENDAR_STATE = '[CALENDAR] Reset Calendar State',
   SET_ADD_TO_CART_DATE_RANGE = '[CALENDAR] Set Add To Cart Range Selected',
+  RESET_ADD_TO_CART_DATE_RANGE = '[CALENDAR] Add To Cart Range Reset',
 }
 
+export class AddToCartRangeResetAction implements Action {
+  readonly type = CalendarActionTypes.RESET_ADD_TO_CART_DATE_RANGE;
+  constructor() {}
+}
 export class SetAddToCartRangeSelected implements Action {
   readonly type = CalendarActionTypes.SET_ADD_TO_CART_DATE_RANGE;
   constructor(public date: { startDate: string; endDate: string }) {}
@@ -34,4 +39,5 @@ export type CalendarActions =
   | SetDaySelectedAction
   | SetRecipySelectedAction
   | ResetCalendarStateAction
-  | SetAddToCartRangeSelected;
+  | SetAddToCartRangeSelected
+  | AddToCartRangeResetAction;

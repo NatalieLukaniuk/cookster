@@ -8,7 +8,7 @@ import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
 import {
-  IngredientsToListBottomsheetComponent,
+    IngredientsToListBottomsheetComponent,
 } from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 
 @Component({
@@ -71,11 +71,11 @@ export class CalendarRecipyComponent implements OnInit {
       .subscribe((res: Ingredient[]) => {
         if (!!res) {
           let ingr = this.recalculateIngredients(res);
-          let shoppingListToSave: ShoppingListItem = {
-            recipyId: this.recipy.id,
-            ingredients: ingr,
-          };
-          this.saveToShoppingList.emit(shoppingListToSave);
+          // let shoppingListToSave: ShoppingListItem = {
+          //   recipyId: this.recipy.id,
+          //   ingredients: ingr,
+          // };
+          // this.saveToShoppingList.emit(shoppingListToSave);
         }
       });
   }

@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from 'src/app/shared/services/layout.service';
+import { IAppState } from 'src/app/store/reducers';
 
 import * as CalendarActions from '../../../store/actions/calendar.actions';
 
@@ -29,16 +30,14 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
   constructor(
     private layoutService: LayoutService,
     private route: ActivatedRoute,
-    private store: Store
+    private store: Store<IAppState>
   ) {}
 
   ngOnInit() {
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
-    this.route.data.subscribe(
-      (result) => (this._isPlanner = result.isPlanner)
-    );
+    this.route.data.subscribe((result) => (this._isPlanner = result.isPlanner));
     if (this.isPlanner) {
       this._isPlanner = true;
     }
@@ -47,27 +46,30 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
     this.destroy$.next();
   }
 
-  log(stuff: any){
-    console.log(stuff)
-  }
-
-  onAddToCart(){
-    if(this.datePickerRange.value.start && this.datePickerRange.value.end){
+  onAddToCart() {
+    if (this.datePickerRange.value.start && this.datePickerRange.value.end) {
       const startDate = this.transformDate(this.datePickerRange.value.start);
       const endDate = this.transformDate(this.datePickerRange.value.end);
-      this.log(startDate);
-      this.log(endDate)
-      this.store.dispatch(new CalendarActions.SetAddToCartRangeSelected({startDate: startDate, endDate: endDate}))
+      this.store.dispatch(
+        new CalendarActions.SetAddToCartRangeSelected({
+          startDate: startDate,
+          endDate: endDate,
+        })
+      );
     }
   }
 
-  getTwoDigitValue(value: string): string{
-    if(value.length < 2){
+  getTwoDigitValue(value: string): string {
+    if (value.length < 2) {
       return '0' + value;
-    } else return value
+    } else return value;
   }
 
-  transformDate(date: Date): string{
-    return this.getTwoDigitValue(date.getDate().toString()) + this.getTwoDigitValue(date.getMonth().toString()) + date.getFullYear().toString();
+  transformDate(date: Date): string {
+    return (
+      this.getTwoDigitValue(date.getDate().toString()) +
+      this.getTwoDigitValue((date.getMonth() + 1).toString()) +
+      date.getFullYear().toString()
+    );
   }
 }

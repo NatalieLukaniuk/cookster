@@ -1,12 +1,12 @@
 <div class="bottomsheet-wrapper">
-  <div *ngIf="!!ingredients" class="list-header">
+  <div *ngIf="!!listToDisplay" class="list-header">
     <mat-checkbox
       [checked]="
-        ingredients.selectedOptions.selected.length == data.ingredients.length
+        ingredients.selectedOptions.selected.length == listToDisplay.length
       "
       [indeterminate]="
         ingredients.selectedOptions.selected.length > 0 &&
-        ingredients.selectedOptions.selected.length < data.ingredients.length
+        ingredients.selectedOptions.selected.length < listToDisplay.length
       "
       (change)="toggleAllSelected($event.checked)"
     >
@@ -14,17 +14,13 @@
   </div>
   <mat-selection-list #ingredients class="ingredients-list" color="primary">
     <mat-list-option
-      *ngFor="let ingredient of data.ingredients"
+      *ngFor="let ingredient of listToDisplay"
       [value]="ingredient.product"
     >
-      <app-ingredient
+      <app-bottomsheet-ingredient
         [ingredient]="ingredient"
-        [actualPortionsToServe]="data.portions"
-        [savedPortionsToServe]="getSavedPortions()"
-        [mode]="AppMode.AddIngrToShoppingList"
         [isMobile]="data.isMobile"
-        (ingredientChanged)="onIngrChanged($event)"
-      ></app-ingredient>
+      ></app-bottomsheet-ingredient>
     </mat-list-option>
   </mat-selection-list>
   <div class="action-buttons">

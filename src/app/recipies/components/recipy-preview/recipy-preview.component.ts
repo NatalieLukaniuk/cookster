@@ -84,13 +84,11 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
     if (changes.recipy.currentValue) {
       this.initRecipy();
-      this.getCoeficient()
+      this.getCoeficient();
     }
   }
 
   ngOnInit(): void {
-    console.log(this.location.getState());
-
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
       .subscribe((bool) => (this.isMobile = bool));
@@ -103,7 +101,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
         }
       });
     this.initRecipy();
-    this.getCoeficient()
+    this.getCoeficient();
   }
 
   initRecipy() {
@@ -169,7 +167,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
       this.coeficient = (this.portionsToServe * this.portionSize) / amount;
-    } 
+    }
   }
 
   get portionsOptions() {
@@ -182,8 +180,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     return portionsArray;
   }
 
-  onPortionsNumberChanged(event: any){
-    this.getCoeficient()
+  onPortionsNumberChanged(event: any) {
+    this.getCoeficient();
   }
 
   getIngredientsByGroup() {

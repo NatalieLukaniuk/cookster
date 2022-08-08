@@ -20,6 +20,13 @@ export function CalendarReducers(
   action: CalendarActions
 ): CalendarState {
   switch (action.type) {
+    case CalendarActionTypes.RESET_ADD_TO_CART_DATE_RANGE: {
+      return {
+        ...state,
+        addToCartDateRange: null
+      }
+    }
+
     case CalendarActionTypes.SET_ADD_TO_CART_DATE_RANGE: {
       return {
         ...state,

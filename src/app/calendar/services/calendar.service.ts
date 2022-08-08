@@ -72,7 +72,6 @@ export class CalendarService {
   }
 
   updateDay(userToSave: User, updatedDetails: IDayDetails) {
-    debugger;
     let details;
     if (
       !updatedDetails.breakfast.length &&

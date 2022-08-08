@@ -12,6 +12,9 @@ import { CalendarSelectorComponent } from './components/calendar-selector/calend
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { DayComponent } from './components/day/day.component';
 import {
+  BottomsheetIngredientComponent,
+} from './components/ingredients-to-list-bottomsheet/bottomsheet-ingredient/bottomsheet-ingredient.component';
+import {
   IngredientsToListBottomsheetComponent,
 } from './components/ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 import { RecipiesBottomsheetComponent } from './components/recipies-bottomsheet/recipies-bottomsheet.component';
@@ -37,7 +40,8 @@ import { MomentPipe } from './pipes/moment.pipe';
     CalendarRecipyComponent,
     RecipiesBottomsheetComponent,
     IngredientsToListBottomsheetComponent,
-    CalendarByMonthComponent
+    CalendarByMonthComponent,
+    BottomsheetIngredientComponent
   ],
   exports: [CalendarContainerComponent],
 })

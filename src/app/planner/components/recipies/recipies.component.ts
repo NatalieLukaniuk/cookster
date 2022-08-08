@@ -134,13 +134,11 @@ export class RecipiesComponent implements OnInit, OnDestroy {
     this.store
       .pipe(select(getSelectedDay), takeUntil(this.destroy$))
       .subscribe((selectedDay: { day: Day; meal: string } | null) => {
-        console.log(selectedDay)
         if (selectedDay) {
           this.appMode = AppMode.SelectRecipy;
           this.store
             .pipe(select(getSelectedRecipy), skip(1), take(1))
             .subscribe((selectedRecipy) => {
-              console.log(selectedRecipy)
               if (selectedRecipy) {
                 this.dialogsService
                   .openPortionsDialog()

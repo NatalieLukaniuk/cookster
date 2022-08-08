@@ -20,7 +20,7 @@ export class DayComponent implements OnInit {
   isRecipySelected!: boolean;
 
   @Output() updateDay = new EventEmitter<IDayDetails>();
-  @Output() saveToShoppingList = new EventEmitter<ShoppingListItem>();
+  @Output() saveToShoppingList = new EventEmitter<ShoppingListItem[]>();
   @Output() daySelected = new EventEmitter<{day: Day, meal: string}>()
   @Output() addRecipy = new EventEmitter<{day: Day, meal: string, recipyId: string}>()
 
@@ -193,9 +193,8 @@ export class DayComponent implements OnInit {
   }
 
   onSaveToShoppingList(event: ShoppingListItem, meal: string) {
-    event.day = this.day.details.day;
-    event.meal = meal;
-    this.saveToShoppingList.emit(event);
+    event.day = [{day: this.day.details.day, meal: meal}];
+    this.saveToShoppingList.emit([event]);
   }
 
   onAddRecipy(){

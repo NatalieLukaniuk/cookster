@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import * as _ from 'lodash';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { Product } from 'src/app/recipies/models/products.interface';
-import { SEPARATOR } from 'src/app/shared/constants';
+import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
 export interface NoGroupListItem extends Ingredient {
@@ -18,11 +17,11 @@ export class NoGroupListComponent implements OnChanges {
   @Input() lists!: ShoppingListItem[];
   @Input() allProducts!: Product[];
   _lists: ShoppingListItem[] = [];
-  listToDisplay: NoGroupListItem[] = [];
+  listToDisplay: ShoppingListItem[] = [];
 
   @Output() listsUpdated = new EventEmitter<ShoppingListItem[]>();
 
-  constructor() {}
+  constructor(private recipiesService: RecipiesService) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.lists && changes.lists.currentValue) {
       this._lists = this.lists.map((item) => item);
@@ -34,64 +33,44 @@ export class NoGroupListComponent implements OnChanges {
 
   buildListToDisplay() {
     this.listToDisplay = [];
-    this._lists.forEach((item: ShoppingListItem) => {
-      if (item.ingredients) {
-        item.ingredients.forEach((ingr: Ingredient) => {
-          let itemToPush: NoGroupListItem = { ...ingr, lists: [] };
-          if ('recipyId' in item) {
-            let id =
-              item.recipyId + SEPARATOR + item.day + SEPARATOR + item.meal;
-            itemToPush.lists!.push(id);
-          } else if ('listName' in item) {
-            itemToPush.lists!.push(item.listName!);
-          }
-          if (
-            !this.listToDisplay.find(
-              (listItem) => listItem.product == itemToPush.product
-            )
-          ) {
-            this.listToDisplay.push(itemToPush);
-          } else {
-            this.listToDisplay = this.listToDisplay.map((listItem) => {
-              if (listItem.product == itemToPush.product) {
-                let updated: NoGroupListItem = {
-                  product: listItem.product,
-                  defaultUnit: listItem.defaultUnit,
-                  amount: listItem.amount + itemToPush.amount,
-                  lists: listItem.lists,
-                };
-                itemToPush.lists.forEach((list) => {
-                  if (!listItem.lists.includes(list)) {
-                    updated.lists.push(list);
-                  }
-                });
-                return updated;
-              } else return listItem;
-            });
-          }
+    this.lists.forEach((item) => {
+      if (
+        !this.listToDisplay.find((element) => element.product === item.product)
+      ) {
+        this.listToDisplay.push(item);
+      } else {
+        this.listToDisplay = this.listToDisplay.map((element) => {
+          if (element.product === item.product) {
+            return {
+              product: element.product,
+              amount: element.amount + item.amount,
+              defaultUnit: element.defaultUnit,
+              recipyId: item.recipyId
+                ? element.recipyId!.concat(item.recipyId)
+                : element.recipyId,
+              day: item.day ? element.day!.concat(item.day) : element.day,
+            };
+          } else return element;
         });
       }
     });
-
-    console.log(this.listToDisplay);
-    // this.listToDisplay.sort((a, b) => a.product.localeCompare(b.product))
+    this.listToDisplay = this.listToDisplay.map((item) => ({
+      ...item,
+      productName: this.recipiesService.getIngredientText(item),
+    }));
+    this.listToDisplay.sort((a, b) =>
+      a.productName!.localeCompare(b.productName!)
+    );
   }
 
-  onRemoveIngredient(event: NoGroupListItem) {
-    this._lists = this._lists.map((list) => {
-      if (list.ingredients?.length) {
-        let _list = _.cloneDeep(list);
-        _list.ingredients = _list.ingredients.filter(
-          (item) => item.product !== event.product
-        );
-        return _list;
-      } else return list;
-    }); 
-    this._lists = this._lists.filter((list) => list.ingredients.length)
-    this.listsUpdated.emit(this._lists);
+  onRemoveIngredient(event: ShoppingListItem) {
+    this.listToDisplay = this.listToDisplay.filter(
+      (item) => item.product !== event.product
+    );
+    this.listsUpdated.emit(this.listToDisplay);
   }
 
-  onAmountChanged(event: {item: NoGroupListItem, isSmallAmount: boolean}) {
+  onAmountChanged(event: { item: ShoppingListItem; isSmallAmount: boolean }) {
     let itemBeforeChange = this.listToDisplay.find(
       (item) => item.product == event.item.product
     );
@@ -103,269 +82,101 @@ export class NoGroupListComponent implements OnChanges {
 
     if (amountDifference) {
       if (this.isAmountIncreased(amountDifference)) {
-        //amount increased, the difference should be added to the general list - increased amount is processed properly
-
-        this.onAmountIncreased(itemBeforeChange!, event.item, amountDifference);
+        this.onAmountIncreased(itemBeforeChange!, amountDifference);
       } else {
-        //amount decreased
-        this.onAmountDecreased(itemBeforeChange!, event.item, amountDifference);
+        this.onAmountDecreased(itemBeforeChange!, amountDifference);
       }
     }
   }
 
-  onAmountIncreased(
-    originalItem: NoGroupListItem,
-    updatedItem: NoGroupListItem,
-    amountDifference: number
-  ) {
-    if (originalItem.lists.includes('general')) {
-      //there is list general with the ingredient in it, amount should be changed there
-      this._lists = this._lists.map((list) => {
-        if (this.isGeneralList(list)) {
-          let _list = _.cloneDeep(list);
-
-          _list.ingredients = _list.ingredients.map((ingr) => {
-            if (ingr.product == updatedItem.product) {
-              let ingrToReturn: Ingredient = {
-                product: updatedItem.product,
-                defaultUnit: updatedItem.defaultUnit,
-                amount: ingr.amount + Math.abs(amountDifference),
-              };
-              return ingrToReturn;
-            } else return ingr;
-          });
-          return _list;
-        } else return list;
+  onAmountIncreased(originalItem: ShoppingListItem, amountDifference: number) {
+    if (
+      this.listToDisplay.find(
+        (item) =>
+          item.product == originalItem.product && item.listName == 'general'
+      )
+    ) {
+      this.listToDisplay = this.listToDisplay.map((item) => {
+        if (
+          item.product == originalItem.product &&
+          item.listName == 'general'
+        ) {
+          return {
+            product: originalItem.product,
+            amount: item.amount + Math.abs(amountDifference),
+            defaultUnit: originalItem.defaultUnit,
+            listName: item.listName,
+            productName: item.productName,
+          };
+        } else return item;
       });
-      this.listsUpdated.emit(this._lists);
     } else {
-      //the ingredient is not included in list general
-      let ingrToAdd: Ingredient = {
-        product: updatedItem.product,
+      this.listToDisplay.push({
+        product: originalItem.product,
         amount: Math.abs(amountDifference),
-        defaultUnit: updatedItem.defaultUnit,
-      };
-      if (this._lists.find((list) => this.isGeneralList(list))) {
-        //if the list general exists, the ingredient should be added to it
-        this._lists = this._lists.map((list) => {
-          if (this.isGeneralList(list)) {
-            let _list = _.cloneDeep(list);
-
-            if (!_list.ingredients) {
-              _list.ingredients = [];
-            }
-            _list.ingredients.push(ingrToAdd);
-            return _list;
-          } else return list;
-        });
-        this.listsUpdated.emit(this._lists);
-      } else {
-        // if the list general doesn't exist, it should be created and the ingredient should be added to it
-        let newList: ShoppingListItem = {
-          ingredients: [ingrToAdd],
-          listName: 'general',
-        };
-        this._lists.push(newList);
-        this.listsUpdated.emit(this._lists);
-      }
+        defaultUnit: originalItem.defaultUnit,
+        listName: 'general',
+      });
+      this.listsUpdated.emit(this.listToDisplay);
     }
   }
 
   onAmountDecreased(
-    originalItem: NoGroupListItem,
-    updatedItem: NoGroupListItem,
+    originalItem: ShoppingListItem,
     amountDifference: number
   ) {
     let amountToProcess = Math.abs(amountDifference);
-    if (originalItem.lists.includes('general')) {
-      //there is a list general with the ingredient in it
-      if (
-        this._lists.find(
-          (list) =>
-            this.isGeneralList(list) &&
-            list.ingredients.find(
-              (ingr) =>
-                ingr.product == updatedItem.product &&
-                ingr.amount > amountToProcess
-            )
-        )
-      ) {
-        // the amount of the ingredient in the general list is bigger than the amount to process, the amount should be decreased
-        this._lists = this._lists.map((list) => {
-          if (this.isGeneralList(list)) {
-            let _list = _.cloneDeep(list);
-            _list.ingredients = _list.ingredients.map((ingr) => {
-              if (ingr.product == updatedItem.product) {
-                let ingrToReturn: Ingredient = {
-                  product: updatedItem.product,
-                  defaultUnit: updatedItem.defaultUnit,
-                  amount: ingr.amount - amountToProcess,
-                };
-                return ingrToReturn;
-              } else return ingr;
-            });
-            return _list;
-          } else return list;
-        });
-        this.listsUpdated.emit(this._lists);
-      } else if (
-        this._lists.find(
-          (list) =>
-            this.isGeneralList(list) &&
-            list.ingredients.find(
-              (ingr) =>
-                ingr.product == updatedItem.product &&
-                ingr.amount == amountToProcess
-            )
-        )
-      ) {
-        // the amount of the ingredient in the general list is equal to the amount to process, the ingredient should be removed from the general list
-        this._lists = this.removeIngredientFromGeneralList(updatedItem);
-        this.listsUpdated.emit(this._lists);
+    let itemInGeneralList = this.listToDisplay.find(
+      (item) =>
+        item.product == originalItem.product && item.listName == 'general'
+    )
+    if(itemInGeneralList){
+      let index = this.listToDisplay.findIndex((item) =>
+      item.product == originalItem.product && item.listName == 'general');
+      if(this.listToDisplay[index].amount > amountToProcess){
+        this.listToDisplay[index].amount = this.listToDisplay[index].amount - amountToProcess;
+      } else if (this.listToDisplay[index].amount == amountToProcess){
+        this.listToDisplay.splice(index,1);
       } else {
-        // the amount of the ingredient in the general list is smaller than the amount to process,
-        //the ingredient should be removed from the general list and the remaining difference processed further
-        this._lists.forEach((list) => {
-          if (this.isGeneralList(list)) {
-            let ingrToRemove = list.ingredients.find(
-              (ingr) => ingr.product == updatedItem.product
-            );
-            amountToProcess = amountToProcess - ingrToRemove!.amount;
-          }
-        });
-        this._lists = this.removeIngredientFromGeneralList(updatedItem);
-        if (amountToProcess) {
-          this.findAndProcessInList(amountToProcess, updatedItem, 0);
-        } else {
-          //save lists
-          this.listsUpdated.emit(this._lists);
-        }
+        amountToProcess = amountToProcess - this.listToDisplay[index].amount;
+        this.listToDisplay.splice(index, 1);
+        this.listToDisplay = this.deleteProductRecursively(this.listToDisplay, originalItem, amountToProcess)
       }
-    } else {
-      //there is no ingr in general list, needs to be decreased in recipies - the names are in event.lists[]
-      this.findAndProcessInList(amountToProcess, updatedItem, 0);
-    }
+    } else this.listToDisplay = this.deleteProductRecursively(this.listToDisplay, originalItem, amountToProcess);
+    this.listsUpdated.emit(this.listToDisplay);
   }
 
-  getAmountDifference(originalAmount: number, updatedAmount: number, isSmallAmount: boolean): number {
+  deleteProductRecursively(
+    list: ShoppingListItem[],
+    originalItem: ShoppingListItem,
+    amountToProcess: number
+  ): ShoppingListItem[] {
+    let index = list.findIndex((item) => item.product == originalItem.product);
+    let listToReturn: ShoppingListItem[] = [];
+    if (list[index].amount > amountToProcess) {
+      list[index].amount = list[index].amount - amountToProcess;
+      listToReturn = list
+    } else if (list[index].amount == amountToProcess) {
+      list.splice(index, 1);
+      listToReturn = list
+    } else if (list[index].amount < amountToProcess) {
+      amountToProcess = amountToProcess - list[index].amount;
+      list.splice(index, 1);
+      listToReturn = this.deleteProductRecursively(list, originalItem, amountToProcess);
+    }
+    return listToReturn;
+  }
+
+  getAmountDifference(
+    originalAmount: number,
+    updatedAmount: number,
+    isSmallAmount: boolean
+  ): number {
     if (originalAmount > 1 && updatedAmount > 1 && !isSmallAmount) {
       return this.round(originalAmount) - this.round(updatedAmount);
     } else {
       return originalAmount - updatedAmount;
     }
-  }
-
-  isGeneralList(list: ShoppingListItem): boolean {
-    return 'listName' in list && list.listName == 'general';
-  }
-
-  isListById(list: ShoppingListItem, id: string): boolean {
-    if (id.includes('/')) {
-      let split = id.split(SEPARATOR);
-
-      return (
-        'recipyId' in list &&
-        list.recipyId == split[0] &&
-        list.day == split[1] &&
-        list.meal == split[2]
-      );
-    } else return false;
-  }
-
-  findAndProcessInList(
-    amountToProcess: number,
-    event: NoGroupListItem,
-    recipyIndex: number
-  ) {
-    if (
-      this._lists.find(
-        (list) =>
-          this.isListById(list, event.lists[recipyIndex]) &&
-          list.ingredients.find(
-            (ingr) =>
-              ingr.product == event.product && ingr.amount > amountToProcess
-          )
-      )
-    ) {
-      // the amount of the ingredient in the list is bigger than the amount to process, the amount should be decreased
-      this._lists = this._lists.map((list) => {
-        if (this.isListById(list, event.lists[recipyIndex])) {
-          let _list = _.cloneDeep(list);
-          _list.ingredients = _list.ingredients.map((ingr) => {
-            if (ingr.product == event.product) {
-              let ingrToReturn: Ingredient = {
-                product: event.product,
-                defaultUnit: event.defaultUnit,
-                amount: ingr.amount - amountToProcess,
-              };
-              return ingrToReturn;
-            } else return ingr;
-          });
-          return _list;
-        } else return list;
-      });
-      this.listsUpdated.emit(this._lists);
-    } else if (
-      this._lists.find(
-        (list) =>
-          this.isListById(list, event.lists[recipyIndex]) &&
-          list.ingredients.find(
-            (ingr) =>
-              ingr.product == event.product && ingr.amount == amountToProcess
-          )
-      )
-    ) {
-      // the amount of the ingredient in the  list is equal to the amount to process, the ingredient should be removed from the list
-      this._lists = this.removeFromListById(event, event.lists[recipyIndex]);
-      this.listsUpdated.emit(this._lists);
-    } else {
-      // the amount of the ingredient in the list is smaller than the amount to process,
-      //the ingredient should be removed from the list and the remaining difference processed further
-      this._lists.forEach((list) => {
-        if (this.isListById(list, event.lists[recipyIndex])) {
-          let ingrToRemove = list.ingredients.find(
-            (ingr) => ingr.product == event.product
-          );
-          if (ingrToRemove) {
-            amountToProcess = amountToProcess - ingrToRemove!.amount;
-          }
-        }
-      });
-      this._lists = this.removeFromListById(event, event.lists[recipyIndex]);
-      this.listsUpdated.emit(this._lists);
-      if (amountToProcess && recipyIndex < event.lists.length) {
-        this.findAndProcessInList(amountToProcess, event, recipyIndex + 1);
-      } else {
-        //save lists
-        this.listsUpdated.emit(this._lists);
-      }
-    }
-  }
-
-  removeFromListById(event: Ingredient, recipyId: string): ShoppingListItem[] {
-    let listsToReturn = this._lists.map((list) => {
-      if (this.isListById(list, recipyId)) {
-        let _list = _.cloneDeep(list);
-        _list.ingredients = _list.ingredients.filter(
-          (ingr) => ingr.product !== event.product
-        );
-        return _list;
-      } else return list;
-    });
-    return listsToReturn;
-  }
-
-  removeIngredientFromGeneralList(event: Ingredient): ShoppingListItem[] {
-    let listsToReturn = this._lists.map((list) => {
-      if (this.isGeneralList(list)) {
-        let _list = _.cloneDeep(list);
-        _list.ingredients = _list.ingredients.filter(
-          (ingr) => ingr.product !== event.product
-        );
-        return _list;
-      } else return list;
-    });
-    return listsToReturn;
   }
 
   isAmountIncreased(amount: number): boolean {
@@ -376,7 +187,5 @@ export class NoGroupListComponent implements OnChanges {
     return Math.round(amount);
   }
 
-  onMeasuringUnitChanged(event: NoGroupListItem) {
-    
-  }
+  onMeasuringUnitChanged(event: ShoppingListItem) {}
 }
