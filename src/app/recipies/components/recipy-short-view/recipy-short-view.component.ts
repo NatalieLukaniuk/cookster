@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/auth/models/user.interface';
+import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
@@ -28,6 +29,8 @@ export class RecipyShortViewComponent implements OnInit {
   showNeedsAdvancePreparation: boolean = false;
   @Output() addToCalendar = new EventEmitter<Recipy>();
   @Output() recipyClicked = new EventEmitter<Recipy>();
+
+  ingredientsToSkip = ['-Mu5TNCG6N8Q_nwkPmNb', '-Mu5UmO24kMVyKveKjah', '-MuzaMFzts_yzcBtPRyt', '-Muzb3OfJhqdsrleyz2a']
   constructor(
     public dialog: MatDialog,
     private router: Router,
@@ -71,5 +74,9 @@ export class RecipyShortViewComponent implements OnInit {
 
   onAddToCalendar(){
     this.addToCalendar.emit(this.recipy);
+  }
+
+  getIngredientText(ingredient: Ingredient): string {
+    return this.recipiesService.getIngredientText(ingredient);
   }
 }

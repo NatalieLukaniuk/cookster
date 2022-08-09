@@ -2,39 +2,57 @@
   <app-image [imagePath]="recipy.photo"></app-image>
 </div>
 <div class="recipy-wrapper" [class.photo-background]="!!recipy.photo">
-  
-  <!-- <img class="recipy-photo" [src]="recipy.photo" /> -->
   <div class="recipy-info" (click)="goFullRecipy()">
-    <div class="recipy-upper-part">
-      <p>{{ complexity }}</p>
-      <mat-icon
-        #tooltip="matTooltip"
-        matTooltip="Потребує попередньої підготовки"
-        matTooltipPosition="above"
-        *ngIf="showNeedsAdvancePreparation"
-        >av_timer</mat-icon
-      >
-      <p>{{ preparationTime | normalizeTime }}</p>
+    <div class="recipy-details" [class.overlay]="!!recipy.photo">
+      <div class="recipy-upper-part">
+        <p>{{ complexity }}</p>
+        <mat-icon
+          #tooltip="matTooltip"
+          matTooltip="Потребує попередньої підготовки"
+          matTooltipPosition="above"
+          *ngIf="showNeedsAdvancePreparation"
+          >av_timer</mat-icon
+        >
+        <p>{{ preparationTime | normalizeTime }}</p>
+      </div>
+      <div class="ingredients-wrapper">
+        <h6>Інгридієнти</h6>
+        <div>
+          <ng-container *ngFor="let ingredient of recipy.ingrediends">
+            <span
+              class="ingredient-text"
+              *ngIf="!ingredientsToSkip.includes(ingredient.product)"
+              >{{ getIngredientText(ingredient).toLowerCase() }}</span
+            >
+          </ng-container>
+        </div>
+      </div>
+      <div class="recipy-bottom-part">
+        <div class="likes-wrapper" style="display: none">
+          <mat-icon svgIcon="heart"></mat-icon>
+          <p>20</p>
+        </div>
+        <div class="author-wrapper">
+          <p style="display: none">{{ author }}</p>
+          <img
+            class="author-photo"
+            style="display: none"
+            src="/assets/images/user.jpg"
+          />
+        </div>
+      </div>
     </div>
+
     <div class="title-part">
       <p>{{ recipy.name }}</p>
     </div>
-    <div class="recipy-bottom-part">
-      <div class="likes-wrapper" style="display: none">
-        <mat-icon svgIcon="heart"></mat-icon>
-        <p>20</p>
-      </div>
-      <div class="author-wrapper">
-        <p>{{ author }}</p>
-        <img
-          class="author-photo"
-          style="display: none"
-          src="/assets/images/user.jpg"
-        />
-      </div>
-    </div>
   </div>
-  <button mat-icon-button *ngIf="!isMobile && isPlanner && mode == AppMode.SelectRecipy" class="add-to-calendar-btn" (click)="onAddToCalendar()">
+  <button
+    mat-icon-button
+    *ngIf="!isMobile && isPlanner && mode == AppMode.SelectRecipy"
+    class="add-to-calendar-btn"
+    (click)="onAddToCalendar()"
+  >
     <mat-icon>add_circle</mat-icon>
   </button>
 </div>
