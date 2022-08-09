@@ -19,6 +19,6 @@ import { SplashComponent } from './components/splash/splash.component';
     StoreModule.forFeature('user', UserReducers)
   ],
   declarations: [AuthComponent, LoginComponent, RegistrationComponent, SplashComponent],
-  exports: [LoginComponent]
+  exports: [LoginComponent, SplashComponent]
 })
 export class AuthModule { }

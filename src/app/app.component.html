@@ -1,11 +1,17 @@
 <mat-drawer-container class="example-container" [hasBackdrop]="true">
-    <mat-drawer #drawer [mode]="'over'" position="end">
-        <app-filters></app-filters>
-    </mat-drawer>
-    <mat-drawer-content>
-        <app-header></app-header>
-        <section>
-            <router-outlet></router-outlet>
-        </section>
-    </mat-drawer-content>
+  <mat-drawer #drawer [mode]="'over'" position="end">
+    <app-filters></app-filters>
+  </mat-drawer>
+  <mat-drawer-content>
+    <ng-container *ngIf="isAuthCheckPerformed$ | async; else splash">
+      <app-header></app-header>
+      <section>
+        <router-outlet></router-outlet>
+      </section>
+    </ng-container>
+  </mat-drawer-content>
 </mat-drawer-container>
+
+<ng-template #splash>
+  <app-splash></app-splash>
+</ng-template>

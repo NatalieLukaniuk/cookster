@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { initializeApp } from 'firebase/app';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { AuthService } from './auth/services/auth.service';
 import { UserService } from './auth/services/user.service';
@@ -35,6 +37,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     appId: '1:755799855022:web:506cb5221a72eff4cf023f',
   };
 
+  isAuthCheckPerformed$: Observable<boolean>;
+
   @ViewChild('drawer')
   sidebar!: MatDrawer;
 
@@ -53,6 +57,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ) {
     this.addIcons();
     const app = initializeApp(this.firebaseConfig);
+    this.isAuthCheckPerformed$ = this.authService.isCheckPerformed$.pipe(tap(res => console.log(res)));
   }
   ngAfterViewInit(): void {
     this.sidebar.openedChange.subscribe(isOpen => {
