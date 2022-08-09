@@ -47,6 +47,18 @@
             </select>
             {{ portionsText }}
           </h3>
+          <h3
+            class="portion-size-selection"
+            *ngIf="portionsToServe && mode !== AppMode.EditRecipy"
+          >
+            Розмір порції
+            <input
+              matInput
+              [(ngModel)]="portionSize"
+              (ngModelChange)="onportionSizeChanged()"
+            />
+            гр.
+          </h3>
           <div class="ingredients-table" *ngIf="!isSplitToGroups">
             <app-ingredient
               (ingredientChanged)="onIngredientChanged($event)"
@@ -87,6 +99,7 @@
           </button>
           <app-add-ingredient
             [isIngredientsSplitToGroups]="
+              _clonedRecipy.isSplitIntoGroups &&
               !!_clonedRecipy.isSplitIntoGroups.length
             "
             (addNewIngredient)="onaAddNewIngredient($event)"
@@ -253,33 +266,32 @@
         </div>
         <div>
           <div class="recipy-complexity" *ngIf="!!_clonedRecipy.complexity">
-          <span class="bold">Складність:</span> {{ complexity }}
-        </div>
-        <div class="recipy-time" *ngIf="!!_clonedRecipy.steps.length">
-          <div><span class="bold">Час приготування: </span></div>
-          <div>
-            <p>{{ activeTime + passiveTime | normalizeTime }}</p>
-            <p>Активний: {{ activeTime | normalizeTime }}</p>
-            <p>Пасивний: {{ passiveTime | normalizeTime }}</p>
+            <span class="bold">Складність:</span> {{ complexity }}
+          </div>
+          <div class="recipy-time" *ngIf="!!_clonedRecipy.steps.length">
+            <div><span class="bold">Час приготування: </span></div>
+            <div>
+              <p>{{ activeTime + passiveTime | normalizeTime }}</p>
+              <p>Активний: {{ activeTime | normalizeTime }}</p>
+              <p>Пасивний: {{ passiveTime | normalizeTime }}</p>
+            </div>
+          </div>
+          <div class="recipy-tags">
+            <div><span class="bold">Теги: </span></div>
+            <div *ngIf="mode !== AppMode.EditRecipy">
+              <mat-chip-list>
+                <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
+              </mat-chip-list>
+            </div>
+            <div *ngIf="mode == AppMode.EditRecipy">
+              <app-add-tags
+                [selected]="_clonedRecipy.type"
+                [tags]="allTags"
+                (selectedTags)="onTagsSelectionChange($event)"
+              ></app-add-tags>
+            </div>
           </div>
         </div>
-        <div class="recipy-tags">
-          <div><span class="bold">Теги: </span></div>
-          <div *ngIf="mode !== AppMode.EditRecipy">
-            <mat-chip-list>
-              <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
-            </mat-chip-list>
-          </div>
-          <div *ngIf="mode == AppMode.EditRecipy">
-            <app-add-tags
-              [selected]="_clonedRecipy.type"
-              [tags]="allTags"
-              (selectedTags)="onTagsSelectionChange($event)"
-            ></app-add-tags>
-          </div>
-        </div>
-        </div>
-        
       </div>
     </div>
     <button
@@ -320,6 +332,20 @@
         </button>
       </mat-menu>
     </div>
+
+    <div
+      class="portion-size-selection"
+      *ngIf="portionsToServe && mode !== AppMode.EditRecipy"
+    >
+      Розмір порції
+      <input
+        matInput
+        [(ngModel)]="portionSize"
+        (ngModelChange)="onportionSizeChanged()"
+      />
+      гр.
+    </div>
+
     <ng-container *ngIf="!isSplitToGroups">
       <app-ingredient
         *ngFor="let ingredient of _clonedRecipy.ingrediends"

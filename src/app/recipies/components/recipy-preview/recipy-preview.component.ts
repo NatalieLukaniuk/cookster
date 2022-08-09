@@ -185,6 +185,10 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     this.getCoeficient();
   }
 
+  onportionSizeChanged(){
+    this.getCoeficient();
+  }
+
   getIngredientsByGroup() {
     if (!!this._clonedRecipy && this._clonedRecipy.isSplitIntoGroups) {
       let ingredients = this._clonedRecipy.ingrediends;
