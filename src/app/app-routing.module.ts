@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './auth/components/login/login.component';
 import { RegistrationComponent } from './auth/components/registration/registration.component';
+import { SplashComponent } from './auth/components/splash/splash.component';
 import { CalendarContainerComponent } from './calendar/containers/calendar-container/calendar-container.component';
 import { CooksterComponent } from './cookster/cookster.component';
 import { FriendsFeedComponent } from './layout/containers/friends-feed/friends-feed.component';
@@ -59,6 +60,7 @@ export const routes: Routes = [
   { path: 'shopping-list', component: ShoppingListComponent },
   { path: 'admin-panel', component: AdminComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'welcome', component: SplashComponent},
   { path: 'register', component: RegistrationComponent },
 ];
 

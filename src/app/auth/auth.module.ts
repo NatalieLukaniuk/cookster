@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
-import { UserReducers } from '../store/reducers/user.reducer';
 
+import { UserReducers } from '../store/reducers/user.reducer';
 import { SharedModule } from './../shared/shared.module';
 import { AuthComponent } from './auth.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { SplashComponent } from './components/splash/splash.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { RegistrationComponent } from './components/registration/registration.co
     SharedModule,
     StoreModule.forFeature('user', UserReducers)
   ],
-  declarations: [AuthComponent, LoginComponent, RegistrationComponent],
+  declarations: [AuthComponent, LoginComponent, RegistrationComponent, SplashComponent],
   exports: [LoginComponent]
 })
 export class AuthModule { }
