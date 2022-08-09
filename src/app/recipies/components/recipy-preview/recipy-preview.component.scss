@@ -30,6 +30,10 @@
   }
 }
 
+.file-upload{
+  margin-bottom: 20px;
+}
+
 .input-edit {
   border-bottom: 1px solid;
 }
@@ -120,7 +124,7 @@
 .recipy-info {
   font-size: 14px;
   min-width: 300px;
-  max-width: min-content;
+  max-width: 35vw;
   .bold {
     font-weight: 700;
   }

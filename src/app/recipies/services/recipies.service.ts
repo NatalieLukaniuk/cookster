@@ -121,6 +121,9 @@ export class RecipiesService {
         (updatedRecipy.clonedBy = recipy.clonedBy),
           (updatedRecipy.clonedOn = recipy.clonedOn);
       }
+      if('photo' in recipy) {
+        updatedRecipy.photo = recipy.photo
+      }
       updatedRecipy.notApproved = this.checkIsRecipyApproved(updatedRecipy);
       this.store.dispatch(
         new fromRecipiesActions.UpdateRecipyAction(updatedRecipy)
@@ -139,6 +142,9 @@ export class RecipiesService {
         clonedOn: Date.now(),
         isBaseRecipy: recipy.isBaseRecipy,
       };
+      if('photo' in recipy) {
+        clonedRecipy.photo = recipy.photo
+      }
       clonedRecipy.notApproved = this.checkIsRecipyApproved(clonedRecipy);
       this.store.dispatch(
         new fromRecipiesActions.AddNewRecipyAction(clonedRecipy)

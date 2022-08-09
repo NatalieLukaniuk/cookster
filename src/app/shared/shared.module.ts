@@ -29,6 +29,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { ImageComponent } from './components/image/image.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { SelectOptionDialogComponent } from './components/select-option-dialog/select-option-dialog.component';
 import { HeaderComponent } from './containers/header/header.component';
@@ -73,7 +75,8 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     NavigationComponent,
     SelectOptionDialogComponent,
     NormalizeTimePipe,
-    
+    FileUploadComponent,
+    ImageComponent
   ],
   exports: [
     HeaderComponent,
@@ -106,7 +109,9 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatTabsModule,
     NormalizeTimePipe,
     MatTooltipModule,
-    MatDatepickerModule    
+    MatDatepickerModule,
+    FileUploadComponent,
+    ImageComponent    
   ],
   providers: []
 })

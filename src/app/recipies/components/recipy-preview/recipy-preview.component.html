@@ -243,7 +243,14 @@
         </div>
       </div>
       <div class="recipy-info">
-        <!-- <img class="recipy-photo" [src]="recipy.photo" /> -->
+        <div *ngIf="mode == AppMode.EditRecipy" class="file-upload">
+          <app-file-upload
+            (fileUploaded)="onFileUploaded($event)"
+          ></app-file-upload>
+        </div>
+        <div *ngIf="_clonedRecipy.photo">
+          <app-image [imagePath]="_clonedRecipy.photo"></app-image>
+        </div>
         <div class="recipy-complexity" *ngIf="!!_clonedRecipy.complexity">
           <span class="bold">Складність:</span> {{ complexity }}
         </div>

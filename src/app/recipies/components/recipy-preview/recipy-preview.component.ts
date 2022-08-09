@@ -52,6 +52,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   currentUser: User | undefined;
 
   _clonedRecipy: Recipy | NewRecipy | undefined;
+  recipyId: string | undefined;
 
   GetUkrIngredientsGroup = GetUkrIngredientsGroup;
 
@@ -482,5 +483,12 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     return this.stepsByGroup[key].map(
       (item: PreparationStep) => ({ ...item, group: key } as PreparationStep)
     );
+  }
+
+  onFileUploaded(event: string) {
+    if (this._clonedRecipy) {
+      this._clonedRecipy.photo = event;
+      this.isChangesSaved = false;
+    }
   }
 }

@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     authDomain: 'cookster-12ac8.firebaseapp.com',
     databaseURL: 'https://cookster-12ac8-default-rtdb.firebaseio.com/',
     projectId: 'cookster-12ac8',
-    storageBucket: 'cookster-12ac8PROJECT_ID.appspot.com',
+    storageBucket: 'gs://cookster-12ac8.appspot.com/',
     messagingSenderId: '755799855022',
     appId: '1:755799855022:web:506cb5221a72eff4cf023f',
   };
