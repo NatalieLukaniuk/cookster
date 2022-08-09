@@ -1,4 +1,8 @@
-<div class="recipy-wrapper">
+<div class="image-wrapper" *ngIf="recipy.photo">
+  <app-image [imagePath]="recipy.photo"></app-image>
+</div>
+<div class="recipy-wrapper" [class.photo-background]="!!recipy.photo">
+  
   <!-- <img class="recipy-photo" [src]="recipy.photo" /> -->
   <div class="recipy-info" (click)="goFullRecipy()">
     <div class="recipy-upper-part">

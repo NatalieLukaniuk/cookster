@@ -248,10 +248,11 @@
             (fileUploaded)="onFileUploaded($event)"
           ></app-file-upload>
         </div>
-        <div *ngIf="_clonedRecipy.photo">
+        <div class="photo-container" *ngIf="_clonedRecipy.photo">
           <app-image [imagePath]="_clonedRecipy.photo"></app-image>
         </div>
-        <div class="recipy-complexity" *ngIf="!!_clonedRecipy.complexity">
+        <div>
+          <div class="recipy-complexity" *ngIf="!!_clonedRecipy.complexity">
           <span class="bold">Складність:</span> {{ complexity }}
         </div>
         <div class="recipy-time" *ngIf="!!_clonedRecipy.steps.length">
@@ -277,6 +278,8 @@
             ></app-add-tags>
           </div>
         </div>
+        </div>
+        
       </div>
     </div>
     <button
@@ -392,6 +395,9 @@
       </div>
     </div>
     <div class="recipy-tags"></div>
+    <div class="photo-container" *ngIf="_clonedRecipy.photo">
+      <app-image [imagePath]="_clonedRecipy.photo"></app-image>
+    </div>
   </div>
   <button
     mat-flat-button

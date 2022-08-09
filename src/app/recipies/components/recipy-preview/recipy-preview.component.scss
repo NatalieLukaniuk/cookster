@@ -10,7 +10,7 @@
 .recipy-body {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .recipy-details {
@@ -19,7 +19,6 @@
   flex-grow: 1;
   min-width: 400px;
   margin-right: 40px;
-  max-width: 550px;
   .recipy-name-wrapper {
     display: flex;
     justify-content: space-between;
@@ -30,7 +29,7 @@
   }
 }
 
-.file-upload{
+.file-upload {
   margin-bottom: 20px;
 }
 
@@ -49,23 +48,23 @@
   }
 }
 
-.steps-row{
+.steps-row {
   display: flex;
   justify-content: space-between;
-  ::ng-deep .mat-list-item-content{
+  ::ng-deep .mat-list-item-content {
     width: 100%;
     align-items: baseline;
   }
-  
-  input{
+
+  input {
     max-width: 50px;
     margin-inline: 5px;
   }
 }
 
-.step-description{
+.step-description {
   flex-grow: 1;
-  .mat-form-field{
+  .mat-form-field {
     width: 100%;
   }
 }
@@ -269,10 +268,27 @@
   .tab-content {
     padding-bottom: 5vh;
   }
-  .date-picker{
+  .date-picker {
     position: absolute;
     top: 50px;
     left: 0;
     width: min-content;
+  }
+  .photo-container{
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 870px) {
+  .recipy-body {
+    flex-direction: column-reverse;
+  }
+  .recipy-info {
+    max-width: 90vw;
+    margin-bottom: 30px;
+    display: flex;
+    .photo-container{
+      margin-right: 30px;
+    }
   }
 }
