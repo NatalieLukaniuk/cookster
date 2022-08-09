@@ -248,7 +248,7 @@
             <app-add-step
               *ngIf="isAddStepFormShown"
               [index]="_clonedRecipy.steps.length"
-              [isSplitToGroups]="!!_clonedRecipy.isSplitIntoGroups.length"
+              [isSplitToGroups]="_clonedRecipy.isSplitIntoGroups && !!_clonedRecipy.isSplitIntoGroups.length"
               [groupOptions]="_clonedRecipy.isSplitIntoGroups"
               (addNewStep)="onAddNewStep($event)"
             ></app-add-step>
