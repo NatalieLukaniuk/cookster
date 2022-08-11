@@ -1,11 +1,30 @@
-<div class="image-wrapper" *ngIf="recipy.photo">
-  <app-image [imagePath]="recipy.photo"></app-image>
-</div>
-<div class="recipy-wrapper" [class.photo-background]="!!recipy.photo">
-  <div class="recipy-info" (click)="goFullRecipy()">
-    <div class="recipy-details" [class.overlay]="!!recipy.photo">
-      <div class="recipy-upper-part">
-        <p>{{ complexity }}</p>
+<div
+  class="container"
+  (mouseenter)="isHovered = true"
+  (mouseleave)="isHovered = false"
+  (click)="onRecipyClicked()"
+>
+  <div
+    class="base"
+    [class.plain-background]="!recipy.photo"
+    [class.hovered]="isHovered || isRecipyClicked"
+  >
+    <div class="recipy-title">
+      {{ recipy.name }}
+    </div>
+  </div>
+  <div class="image-background" *ngIf="recipy.photo">
+    <app-image [imagePath]="recipy.photo"></app-image>
+  </div>
+  <div
+    class="overlay short-info"
+    [class.visible]="
+      (isMobile && isRecipyClicked) ||
+      (!isMobile && isHovered && !isRecipyClicked)
+    "
+  >
+    <div class="short-info-details-panel">
+      <div class="time-details">
         <mat-icon
           #tooltip="matTooltip"
           matTooltip="Потребує попередньої підготовки"
@@ -13,65 +32,39 @@
           *ngIf="showNeedsAdvancePreparation"
           >av_timer</mat-icon
         >
-        <p>{{ preparationTime | normalizeTime }}</p>
+        <div>{{ preparationTime | normalizeTime }}</div>
       </div>
-      <div class="ingredients-wrapper">
-        <h6>Інгридієнти</h6>
-        <div>
-          <ng-container *ngFor="let ingredient of recipy.ingrediends">
-            <span
-              class="ingredient-text"
-              *ngIf="!ingredientsToSkip.includes(ingredient.product)"
-              >{{ getIngredientText(ingredient).toLowerCase() }}</span
-            >
-          </ng-container>
-        </div>
-      </div>
-      <div class="recipy-bottom-part">
-        <div class="likes-wrapper" style="display: none">
-          <mat-icon svgIcon="heart"></mat-icon>
-          <p>20</p>
-        </div>
-        <div class="author-wrapper">
-          <p style="display: none">{{ author }}</p>
-          <img
-            class="author-photo"
-            style="display: none"
-            src="/assets/images/user.jpg"
-          />
-        </div>
+      <div>{{ complexity }} рецепт</div>
+      <div class="tags">
+        <mat-chip-list>
+          <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
+        </mat-chip-list>
       </div>
     </div>
-
-    <div class="title-part">
-      <p>{{ recipy.name }}</p>
+    <div class="side-menu-panel">
+      <button mat-icon-button (click)="goFullRecipy()">
+        <mat-icon>pageview</mat-icon>
+      </button>
+      <button mat-icon-button disabled><mat-icon>event_note</mat-icon></button>
+      <button mat-icon-button disabled><mat-icon>bookmark</mat-icon></button>
     </div>
   </div>
-  <button
-    mat-icon-button
-    *ngIf="!isMobile && isPlanner && mode == AppMode.SelectRecipy"
-    class="add-to-calendar-btn"
-    (click)="onAddToCalendar()"
-  >
-    <mat-icon>add_circle</mat-icon>
-  </button>
-</div>
 
-<div class="recipy-menu" style="display: none">
-  <button
-    mat-icon-button
-    [matMenuTriggerFor]="menu"
-    class="menu-button"
-    *ngIf="currentPath !== 'user-recipies'"
+  <div
+    class="overlay detailed-info"
+    [class.visible]="
+      (!isMobile && isRecipyClicked) || (isMobile && isDetailedInfo)
+    "
   >
-    <mat-icon svgIcon="menu"></mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <!-- <button mat-menu-item>Редагувати рецепт</button>
-          <button mat-menu-item>Додати в меню</button>
-          <button mat-menu-item>В список покупок</button> -->
-    <button mat-menu-item *ngIf="currentPath !== 'user-recipies'">
-      Додати в меню
-    </button>
-  </mat-menu>
+    <div class="ingredients-wrapper">
+      <h6>Основні інгридієнти</h6>
+      <div>
+        <ng-container *ngFor="let ingredient of topIngredients">
+          <span class="ingredient-text">{{
+            getIngredientText(ingredient).toLowerCase()
+          }}</span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/auth/models/user.interface';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 
@@ -30,11 +29,13 @@ export class RecipyShortViewComponent implements OnInit {
   @Output() addToCalendar = new EventEmitter<Recipy>();
   @Output() recipyClicked = new EventEmitter<Recipy>();
 
+  isRecipyClicked: boolean = false;
+  isHovered: boolean = false;
+  isDetailedInfo: boolean = false;
+
   ingredientsToSkip = ['-Mu5TNCG6N8Q_nwkPmNb', '-Mu5UmO24kMVyKveKjah', '-MuzaMFzts_yzcBtPRyt', '-Muzb3OfJhqdsrleyz2a']
   constructor(
     public dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute,
     private recipiesService: RecipiesService,
   ) {
     const path = window.location.pathname.split('/');
@@ -78,5 +79,37 @@ export class RecipyShortViewComponent implements OnInit {
 
   getIngredientText(ingredient: Ingredient): string {
     return this.recipiesService.getIngredientText(ingredient);
+  }
+
+  get tags() {
+    let tags: string[] = [];
+    if (this.recipy) {
+      this.recipy.type.forEach((tag: DishType) => {
+        tags.push(DishType[tag]);
+      });
+    }
+    return tags;
+  }
+
+  onRecipyClicked(){
+    if(!this.isMobile){
+      this.isRecipyClicked = !this.isRecipyClicked;
+    }else if(this.isMobile && !this.isRecipyClicked && !this.isDetailedInfo){
+      this.isRecipyClicked = true
+    } else if(this.isMobile && this.isRecipyClicked && !this.isDetailedInfo){
+      this.isRecipyClicked = false
+      this.isDetailedInfo = true
+    } else if(this.isMobile && this.isDetailedInfo){
+      this.isDetailedInfo = false;
+    }
+  }
+
+  get topIngredients(){
+    let sorted = this.recipy.ingrediends.map(ingr => ingr).sort((a, b) => b.amount - a.amount );
+    sorted = sorted.filter(ingr => !this.ingredientsToSkip.includes(ingr.product))
+    if(sorted.length >= 6){
+      sorted.splice(5)
+    }
+    return sorted
   }
 }
