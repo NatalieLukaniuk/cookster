@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { ShoppingListModule } from '../shopping-list/shopping-list.module';
 import { CalendarModule } from './../calendar/calendar.module';
 import { RecipiesModule } from './../recipies/recipies.module';
 import { SharedModule } from './../shared/shared.module';
@@ -18,7 +19,8 @@ import { PlannerComponent } from './planner.component';
     SharedModule,
     FormsModule,
     RouterModule,
-    DragDropModule
+    DragDropModule,
+    ShoppingListModule
   ],
   declarations: [PlannerComponent, RecipiesComponent]
 })

@@ -17,6 +17,7 @@ import { ShoppingListComponent } from './shopping-list.component';
     RecipiesModule,
     FormsModule
   ],
-  declarations: [ShoppingListComponent, NoGroupListComponent, NoListsPlaceholderComponent, ShoppingListItemComponent, ]
+  declarations: [ShoppingListComponent, NoGroupListComponent, NoListsPlaceholderComponent, ShoppingListItemComponent, ],
+  exports: [ShoppingListComponent]
 })
 export class ShoppingListModule { }
