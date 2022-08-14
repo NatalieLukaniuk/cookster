@@ -7,12 +7,18 @@ export interface CalendarState {
   selectedRecipy: Recipy | null;
   selectedDay: { day: Day; meal: string } | null;
   addToCartDateRange: { startDate: string; endDate: string } | null;
+  previewRecipy: {
+    recipy: Recipy;
+    portions: number;
+    amountPerPortion: number;
+  } | null;
 }
 
 export const InitialCalendarState: CalendarState = {
   selectedRecipy: null,
   selectedDay: null,
-  addToCartDateRange: null
+  addToCartDateRange: null,
+  previewRecipy: null,
 };
 
 export function CalendarReducers(
@@ -20,18 +26,36 @@ export function CalendarReducers(
   action: CalendarActions
 ): CalendarState {
   switch (action.type) {
+    case CalendarActionTypes.PREVIEW_RECIPY: {
+      return {
+        ...state,
+        previewRecipy: {
+          recipy: action.recipy,
+          portions: action.portions,
+          amountPerPortion: action.amountPerPortion,
+        },
+      };
+    }
+
+    case CalendarActionTypes.RESET_PREVIEW_RECIPY: {
+      return {
+        ...state,
+        previewRecipy: null,
+      };
+    }
+
     case CalendarActionTypes.RESET_ADD_TO_CART_DATE_RANGE: {
       return {
         ...state,
-        addToCartDateRange: null
-      }
+        addToCartDateRange: null,
+      };
     }
 
     case CalendarActionTypes.SET_ADD_TO_CART_DATE_RANGE: {
       return {
         ...state,
-        addToCartDateRange: action.date
-      }
+        addToCartDateRange: action.date,
+      };
     }
 
     case CalendarActionTypes.SET_RECIPY_SELECTED: {

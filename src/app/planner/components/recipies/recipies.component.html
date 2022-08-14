@@ -15,7 +15,6 @@
     </div>
   </div>
   <div class="recipy-preview" *ngIf="showRecipyPreview && recipyForPreview">
-    <!-- TODO add button to close the preview -->
     <button mat-button (click)="closeRecipyPreview()" class="close-preview-btn"><mat-icon>close</mat-icon></button>
     <app-recipy-preview [recipy]="recipyForPreview" [mode]="AppMode.Planner"></app-recipy-preview>
   </div>

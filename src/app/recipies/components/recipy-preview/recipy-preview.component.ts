@@ -35,6 +35,8 @@ import { RecipiesService } from '../../services/recipies.service';
 export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   @Input() recipy!: NewRecipy | Recipy;
   @Input() mode: AppMode = AppMode.ViewRecipy;
+  @Input() portions?: number;
+  @Input() amountPerPortion?: number;
   AppMode = AppMode;
 
   isMobile: boolean = false;
@@ -106,6 +108,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   initRecipy() {
+    debugger
     let navigationData = this.location.getState() as {
       portions?: number;
       amountPerportion?: number;
@@ -118,8 +121,15 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       this.portionSize = navigationData.amountPerportion;
     }
 
+    if(this.portions){
+      this.portionsToServe = this.portions
+    }
+    if(this.amountPerPortion){
+      this.portionSize = this.amountPerPortion
+    }
+
     this._clonedRecipy = _.cloneDeep(this.recipy);
-    if (!!this._clonedRecipy.ingrediends.length && !navigationData.portions) {
+    if (!!this._clonedRecipy.ingrediends.length && !navigationData.portions && !this.portions) {
       this.portionsToServe = this.savedPortionsServed;
     }
     if (

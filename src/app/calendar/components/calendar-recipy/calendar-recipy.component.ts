@@ -1,14 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
+import { IAppState } from 'src/app/store/reducers';
 
+import * as CalendarActions from '../../../store/actions/calendar.actions';
 import {
-    IngredientsToListBottomsheetComponent,
+  IngredientsToListBottomsheetComponent,
 } from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 
 @Component({
@@ -29,14 +32,16 @@ export class CalendarRecipyComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private _bottomSheet: MatBottomSheet,
-    private recipiesService: RecipiesService
+    private recipiesService: RecipiesService,
+    private store: Store<IAppState>
   ) {}
 
   ngOnInit(): void {
     this.getCoef();
   }
   viewRecipy() {
-    this.router.navigate(
+    if(this.isMobile){
+      this.router.navigate(
       ['cookster', 'recipies', 'full-recipy', this.recipy.id],
       {
         relativeTo: this.route.parent,
@@ -46,6 +51,10 @@ export class CalendarRecipyComponent implements OnInit {
         },
       }
     );
+    } else {
+      this.store.dispatch(new CalendarActions.PreviewRecipyAction(this.recipy, this.recipy.portions, this.recipy.amountPerPortion))      
+    }
+    
   }
 
   onRemoveRecipy() {
