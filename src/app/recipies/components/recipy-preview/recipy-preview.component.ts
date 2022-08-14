@@ -108,7 +108,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   initRecipy() {
-    debugger
     let navigationData = this.location.getState() as {
       portions?: number;
       amountPerportion?: number;
