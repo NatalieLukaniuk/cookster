@@ -7,7 +7,7 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-action-list>
-      <div mat-list-item>
+      <div mat-list-item class="recipy-details-item">
           <button mat-icon-button (click)="recipy.amountPerPortion = recipy.amountPerPortion - 50; onAmountPerPortionChanged()"><mat-icon>remove</mat-icon></button>
         <mat-form-field appearance="outline">
           <mat-label>Amount per portion (in gramms)</mat-label>          
@@ -20,14 +20,42 @@
         </mat-form-field>
         <button mat-icon-button (click)="recipy.amountPerPortion = recipy.amountPerPortion + 50; onAmountPerPortionChanged()"><mat-icon>add</mat-icon></button>
       </div>
-      <button mat-list-item (click)="viewRecipy()">
-        <mat-icon>zoom_in</mat-icon>Переглянути рецепт
+      <button mat-list-item class="recipy-details-item button" (click)="viewRecipy()">
+        <mat-icon>zoom_in</mat-icon>Перейти до рецепту
       </button>
+      <button mat-list-item class="recipy-details-item button" (click)="showDetails(Details.Ingredients)">
+        інгридієнти
+      </button>
+      <div *ngIf="isShowIngredients" class="additional-info">        
+        <app-ingredient *ngFor="let ingredient of recipy.ingrediends" [isMobile]="isMobile" [ingredient]="ingredient" [coeficientOfAmount]="coef"></app-ingredient>
+      </div>
+      <button mat-list-item class="recipy-details-item button" (click)="showDetails(Details.Steps)">
+        Приготування
+      </button>
+      <div *ngIf="isShowSteps" class="additional-info">
+        <ng-container *ngFor="let step of recipy.steps">
+          <div>{{step.description}}</div>
+        </ng-container>
+      </div>
+      <button mat-list-item class="recipy-details-item button" (click)="showDetails(Details.Info)">
+        Додаткова інформація
+      </button>
+      <div *ngIf="isShowDetails" class="additional-info">
+        <div class="recipy-complexity">
+          <span class="bold">Складність:</span> {{ complexity }}
+        </div>
+        <div class="recipy-time">
+          <div><span class="bold">Час приготування: </span> {{ activeTime + passiveTime | normalizeTime }}</div>
+          <div>Активний: {{ activeTime | normalizeTime }}</div>
+          <div>Пасивний: {{ passiveTime | normalizeTime }}</div>
+          
+        </div>
+      </div>
       <!-- <button mat-list-item (click)="addToShoppingList()">
         <mat-icon>add_shopping_cart</mat-icon>Додати інгридієнти в список
         покупок
       </button> -->
-      <button mat-list-item (click)="onRemoveRecipy()">
+      <button mat-list-item class="recipy-details-item button" (click)="onRemoveRecipy()">
         <mat-icon>delete_outline</mat-icon>Видалити
       </button>
     </mat-action-list>

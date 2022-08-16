@@ -3,7 +3,9 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
+import { ComplexityDescription } from 'src/app/recipies/models/complexity.enum';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
+import { PreparationStep } from 'src/app/recipies/models/preparationStep.interface';
 import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
@@ -14,6 +16,11 @@ import {
   IngredientsToListBottomsheetComponent,
 } from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 
+export enum Details {
+  Ingredients,
+  Steps,
+  Info,
+}
 @Component({
   selector: 'app-calendar-recipy',
   templateUrl: './calendar-recipy.component.html',
@@ -28,6 +35,11 @@ export class CalendarRecipyComponent implements OnInit {
   @Output() saveToShoppingList = new EventEmitter<ShoppingListItem>();
 
   coef: number = 1;
+  isShowIngredients: boolean = false;
+  isShowSteps: boolean = false;
+  isShowDetails: boolean = false;
+  Details = Details;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -40,21 +52,26 @@ export class CalendarRecipyComponent implements OnInit {
     this.getCoef();
   }
   viewRecipy() {
-    if(this.isMobile){
+    if (this.isMobile) {
       this.router.navigate(
-      ['cookster', 'recipies', 'full-recipy', this.recipy.id],
-      {
-        relativeTo: this.route.parent,
-        state: {
-          portions: this.recipy.portions,
-          amountPerportion: this.recipy.amountPerPortion,
-        },
-      }
-    );
+        ['cookster', 'recipies', 'full-recipy', this.recipy.id],
+        {
+          relativeTo: this.route.parent,
+          state: {
+            portions: this.recipy.portions,
+            amountPerportion: this.recipy.amountPerPortion,
+          },
+        }
+      );
     } else {
-      this.store.dispatch(new CalendarActions.PreviewRecipyAction(this.recipy, this.recipy.portions, this.recipy.amountPerPortion))      
+      this.store.dispatch(
+        new CalendarActions.PreviewRecipyAction(
+          this.recipy,
+          this.recipy.portions,
+          this.recipy.amountPerPortion
+        )
+      );
     }
-    
   }
 
   onRemoveRecipy() {
@@ -112,5 +129,57 @@ export class CalendarRecipyComponent implements OnInit {
       return ingr;
     });
     return ingrListToreturn;
+  }
+
+  showDetails(section: Details) {
+    switch (section) {
+      case Details.Ingredients:
+        {
+          this.isShowIngredients = !this.isShowIngredients;
+          this.isShowDetails = false;
+          this.isShowSteps = false;
+        }
+        break;
+      case Details.Info:
+        {
+          this.isShowDetails = !this.isShowDetails;
+          this.isShowIngredients = false;
+          this.isShowSteps = false;
+        }
+        break;
+      case Details.Steps: {
+        this.isShowSteps = !this.isShowSteps;
+        this.isShowIngredients = false;
+        this.isShowDetails = false;
+      }
+    }
+  }
+
+  get complexity() {
+    return ComplexityDescription[this.recipy.complexity];
+  }
+
+  getTotalStepTime(step: PreparationStep) {
+    return +step.timeActive + +step.timePassive;
+  }
+
+  get activeTime() {
+    let time = 0;
+
+    for (let step of this.recipy.steps) {
+      time = time + +step.timeActive;
+    }
+
+    return time;
+  }
+
+  get passiveTime() {
+    let time = 0;
+
+    for (let step of this.recipy.steps) {
+      time = time + +step.timePassive;
+    }
+
+    return time;
   }
 }
