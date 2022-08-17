@@ -1,0 +1,17 @@
+<div>
+  <app-date-picker-range (dateSelected)="onDateSelected($event)"></app-date-picker-range>
+</div>
+<div *ngIf="suggestions.length; else NoSuggestions">
+  <div *ngFor="let suggestion of suggestions">
+    <span>{{suggestion.productName}}</span>
+    <span>{{NormalizeDisplayedAmount(suggestion.amount, suggestion.unit)}}</span>
+    <span>{{getUnitText(suggestion.unit)}}</span>
+    <span>{{suggestion.prepDescription}}</span>
+    <span>{{suggestion.recipyTitle}}</span>
+    <span>{{suggestion.day | date}}</span>
+  </div>
+</div>
+
+<ng-template #NoSuggestions>
+  <div>{{dateRange? 'No preparation options for your date range' : 'Please select the date range'}}</div>
+</ng-template>

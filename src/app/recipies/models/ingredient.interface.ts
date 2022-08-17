@@ -6,6 +6,7 @@ export interface Ingredient {
     defaultUnit: MeasuringUnit;
     group?: IngredientsGroup;
     ingredient?: string;
+    prep?: string[]
 }
 
 export enum IngredientsGroup {

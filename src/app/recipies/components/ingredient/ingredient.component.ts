@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as _ from 'lodash';
+import { take } from 'rxjs/operators';
 
 import { AppMode } from '../../containers/edit-recipy/edit-recipy.component';
 import { ProductType } from '../../models/products.interface';
 import { RecipiesService } from '../../services/recipies.service';
 import { convertAmountToSelectedUnit, NormalizeDisplayedAmount, transformToGr } from '../../services/recipies.utils';
+import { DialogsService } from './../../../shared/services/dialogs.service';
 import { Ingredient } from './../../models/ingredient.interface';
 import {
   MeasuringUnit,
@@ -43,7 +45,10 @@ export class IngredientComponent implements OnInit, OnChanges {
   measuringUnit: MeasuringUnit = MeasuringUnit.gr;
 
   NormalizeDisplayedAmount = NormalizeDisplayedAmount;
-  constructor(private recipiesService: RecipiesService) {}
+  constructor(
+    private recipiesService: RecipiesService,
+    private dialogsService: DialogsService
+  ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.ingredient) {
       this._ingredient = _.cloneDeep(this.ingredient);
@@ -177,5 +182,21 @@ export class IngredientComponent implements OnInit, OnChanges {
       amountPerSelectedPortions = +amountPerSelectedPortions.toFixed(2);
     }
     return amountPerSelectedPortions;
+  }
+  onAddPrep() {
+    this.dialogsService
+      .openAddPrepInstructionsDialog()
+      .pipe(take(1))
+      .subscribe((res) => {
+        if (this._ingredient) {
+          let cloned = _.cloneDeep(this._ingredient);
+          if (cloned.prep) {
+            cloned.prep.push(res);
+          } else {
+            cloned.prep = [res];
+          }
+          this.ingredientChanged.emit(cloned);
+        }
+      });
   }
 }

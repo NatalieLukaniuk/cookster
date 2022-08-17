@@ -8,6 +8,7 @@ import { ShoppingListModule } from '../shopping-list/shopping-list.module';
 import { CalendarModule } from './../calendar/calendar.module';
 import { RecipiesModule } from './../recipies/recipies.module';
 import { SharedModule } from './../shared/shared.module';
+import { AdvancePreparationComponent } from './components/advance-preparation/advance-preparation.component';
 import { RecipiesComponent } from './components/recipies/recipies.component';
 import { PlannerComponent } from './planner.component';
 
@@ -20,8 +21,8 @@ import { PlannerComponent } from './planner.component';
     FormsModule,
     RouterModule,
     DragDropModule,
-    ShoppingListModule
+    ShoppingListModule,
   ],
-  declarations: [PlannerComponent, RecipiesComponent]
+  declarations: [PlannerComponent, RecipiesComponent, AdvancePreparationComponent]
 })
 export class PlannerModule { }

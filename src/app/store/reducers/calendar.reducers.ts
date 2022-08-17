@@ -12,6 +12,7 @@ export interface CalendarState {
     portions: number;
     amountPerPortion: number;
   } | null;
+  calendar: Day[] | null;
 }
 
 export const InitialCalendarState: CalendarState = {
@@ -19,6 +20,7 @@ export const InitialCalendarState: CalendarState = {
   selectedDay: null,
   addToCartDateRange: null,
   previewRecipy: null,
+  calendar: null,
 };
 
 export function CalendarReducers(
@@ -26,6 +28,13 @@ export function CalendarReducers(
   action: CalendarActions
 ): CalendarState {
   switch (action.type) {
+    case CalendarActionTypes.LOAD_CALENDAR: {
+      return {
+        ...state,
+        calendar: action.calendar,
+      };
+    }
+
     case CalendarActionTypes.PREVIEW_RECIPY: {
       return {
         ...state,

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,10 +29,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 
+import { DatePickerRangeComponent } from './components/date-picker-range/date-picker-range.component';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { ImageComponent } from './components/image/image.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { SelectOptionDialogComponent } from './components/select-option-dialog/select-option-dialog.component';
+import { TextInputDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
 
@@ -68,7 +70,8 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatBottomSheetModule,
     MatTabsModule,
     MatTooltipModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    ReactiveFormsModule
   ],
   declarations: [
     HeaderComponent,
@@ -76,7 +79,9 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     SelectOptionDialogComponent,
     NormalizeTimePipe,
     FileUploadComponent,
-    ImageComponent
+    ImageComponent,
+    TextInputDialogComponent,
+    DatePickerRangeComponent
   ],
   exports: [
     HeaderComponent,
@@ -111,7 +116,9 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatTooltipModule,
     MatDatepickerModule,
     FileUploadComponent,
-    ImageComponent    
+    ImageComponent,
+    TextInputDialogComponent,
+    DatePickerRangeComponent
   ],
   providers: []
 })

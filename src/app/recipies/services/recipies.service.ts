@@ -121,8 +121,8 @@ export class RecipiesService {
         (updatedRecipy.clonedBy = recipy.clonedBy),
           (updatedRecipy.clonedOn = recipy.clonedOn);
       }
-      if('photo' in recipy) {
-        updatedRecipy.photo = recipy.photo
+      if ('photo' in recipy) {
+        updatedRecipy.photo = recipy.photo;
       }
       updatedRecipy.notApproved = this.checkIsRecipyApproved(updatedRecipy);
       this.store.dispatch(
@@ -142,8 +142,8 @@ export class RecipiesService {
         clonedOn: Date.now(),
         isBaseRecipy: recipy.isBaseRecipy,
       };
-      if('photo' in recipy) {
-        clonedRecipy.photo = recipy.photo
+      if ('photo' in recipy) {
+        clonedRecipy.photo = recipy.photo;
       }
       clonedRecipy.notApproved = this.checkIsRecipyApproved(clonedRecipy);
       this.store.dispatch(
@@ -168,5 +168,22 @@ export class RecipiesService {
 
   getIsIngredientIncludedInAmountCalculation(ingr: Ingredient): boolean {
     return isIngrIncludedInAmountCalculation(ingr, this.products$.value);
+  }
+
+  getCoeficient(
+    ingredients: Ingredient[],
+    portionsToServe: number,
+    portionSize: number
+  ) {
+    let amount = 0;
+    for (let ingr of ingredients) {
+      if (
+        this.getIsIngredientInDB(ingr.product) &&
+        this.getIsIngredientIncludedInAmountCalculation(ingr)
+      ) {
+        amount = ingr.amount + amount; // amount of ingreds with calories
+      }
+    }
+    return (portionsToServe * portionSize) / amount;
   }
 }

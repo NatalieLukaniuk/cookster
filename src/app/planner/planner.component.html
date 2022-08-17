@@ -3,7 +3,11 @@
     <app-calendar-container [isPlanner]="true"></app-calendar-container>
   </div>
   <div class="side-tabs">
-    <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab.value" (selectedIndexChange)="selectedTab.setValue($event)">
+    <mat-tab-group
+      mat-align-tabs="start"
+      [selectedIndex]="selectedTab.value"
+      (selectedIndexChange)="selectedTab.setValue($event)"
+    >
       <mat-tab label="Recipies">
         <app-planner-recipies></app-planner-recipies>
       </mat-tab>
@@ -17,6 +21,9 @@
       </mat-tab>
       <mat-tab label="Shopping list">
         <app-shopping-list></app-shopping-list>
+      </mat-tab>
+      <mat-tab label="Попереднє приготування">
+        <app-advance-preparation></app-advance-preparation>
       </mat-tab>
     </mat-tab-group>
   </div>

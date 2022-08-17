@@ -11,6 +11,12 @@ export enum CalendarActionTypes {
   RESET_ADD_TO_CART_DATE_RANGE = '[CALENDAR] Add To Cart Range Reset',
   PREVIEW_RECIPY = '[CLANEDAR] Preview Recipy',
   RESET_PREVIEW_RECIPY = '[CLANEDAR] Reset Preview Recipy',
+  LOAD_CALENDAR = '[CLANEDAR] Load Calendar',
+}
+
+export class LoadCalendarAction implements Action {
+  readonly type = CalendarActionTypes.LOAD_CALENDAR;
+  constructor(public calendar: Day[]){}
 }
 
 export class PreviewRecipyAction implements Action {
@@ -57,4 +63,4 @@ export type CalendarActions =
   | SetAddToCartRangeSelected
   | AddToCartRangeResetAction
   | PreviewRecipyAction
-  | ResetPreviewRecipyAction;
+  | ResetPreviewRecipyAction | LoadCalendarAction;
