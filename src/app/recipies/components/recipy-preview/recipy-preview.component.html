@@ -39,7 +39,7 @@
             <select
               class="inline-select"
               [(ngModel)]="portionsToServe"
-              (ngModelChange)="onPortionsNumberChanged($event)"
+              (ngModelChange)="onPortionsNumberChanged()"
             >
               <option *ngFor="let option of portionsOptions">
                 {{ option }}

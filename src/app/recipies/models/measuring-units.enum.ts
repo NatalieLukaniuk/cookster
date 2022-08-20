@@ -14,6 +14,20 @@ export enum MeasuringUnit {
   none
 }
 
+export const degradable = [MeasuringUnit.coffeeSpoon, MeasuringUnit.dessertSpoon, MeasuringUnit.item, MeasuringUnit.tableSpoon, MeasuringUnit.teaSpoon]
+
+export const isDegradable = (unit: MeasuringUnit) => degradable.includes(unit)
+
+export const degradeToSmallerUnit = (unit: MeasuringUnit) => {
+  switch(unit){
+    case MeasuringUnit.coffeeSpoon: return MeasuringUnit.pinch;
+    case MeasuringUnit.dessertSpoon: return MeasuringUnit.teaSpoon;
+    case MeasuringUnit.tableSpoon: return MeasuringUnit.teaSpoon;
+    case MeasuringUnit.teaSpoon: return MeasuringUnit.pinch;
+    default: return MeasuringUnit.gr
+  }
+}
+
 export enum MeasuringUnitText {
   'гр' = 1,
   'кг',

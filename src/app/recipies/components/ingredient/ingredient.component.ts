@@ -9,6 +9,8 @@ import { convertAmountToSelectedUnit, NormalizeDisplayedAmount, transformToGr } 
 import { DialogsService } from './../../../shared/services/dialogs.service';
 import { Ingredient } from './../../models/ingredient.interface';
 import {
+  degradeToSmallerUnit,
+  isDegradable,
   MeasuringUnit,
   MeasuringUnitOptionsFluid,
   MeasuringUnitOptionsGranular,
@@ -180,6 +182,9 @@ export class IngredientComponent implements OnInit, OnChanges {
     let amountPerSelectedPortions = this.getAmount(convertedToSelectedUnit);
     if (amountPerSelectedPortions % 1) {
       amountPerSelectedPortions = +amountPerSelectedPortions.toFixed(2);
+    }
+    if(amountPerSelectedPortions < 0.4 && isDegradable(this.measuringUnit)){
+      this.measuringUnit = degradeToSmallerUnit(this.measuringUnit)
     }
     return amountPerSelectedPortions;
   }

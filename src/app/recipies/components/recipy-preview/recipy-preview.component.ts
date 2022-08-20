@@ -190,7 +190,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     return portionsArray;
   }
 
-  onPortionsNumberChanged(event: any) {
+  onPortionsNumberChanged() {
     this.getCoeficient();
   }
 
@@ -281,6 +281,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   onPortionsChange(option: number) {
     this.portionsToServe = option;
+    this.onPortionsNumberChanged()
   }
 
   get complexity() {
