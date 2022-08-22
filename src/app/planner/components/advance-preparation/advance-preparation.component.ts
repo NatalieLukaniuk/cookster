@@ -1,3 +1,4 @@
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -24,6 +25,35 @@ export interface Suggestion {
   day: Date;
 }
 
+export interface ISuggestionList {
+  date: string;
+  day: Date;
+  suggestions: Suggestion[];
+}
+
+export class SuggestionList implements ISuggestionList {
+  date: string;
+  day: Date;
+  suggestions: Suggestion[];
+  constructor(day: Date) {
+    this.day = day;
+    this.suggestions = [];
+    this.date = transformDate(day);
+  }
+}
+
+export function transformDate(date: Date): string {
+  return (
+    getTwoDigitValue(date.getDate().toString()) +
+    getTwoDigitValue((date.getMonth() + 1).toString()) +
+    date.getFullYear().toString()
+  );
+}
+export function getTwoDigitValue(value: string): string {
+  if (value.length < 2) {
+    return '0' + value;
+  } else return value;
+}
 @Component({
   selector: 'app-advance-preparation',
   templateUrl: './advance-preparation.component.html',
@@ -36,6 +66,9 @@ export class AdvancePreparationComponent implements OnInit, OnDestroy {
   calendar: Day[] | undefined;
   dateRange: { startDate: string; endDate: string } | undefined;
   NormalizeDisplayedAmount = NormalizeDisplayedAmount;
+
+  prepDate: any | undefined;
+  lists: SuggestionList[] = [];
 
   constructor(
     private store: Store<IAppState>,
@@ -164,5 +197,20 @@ export class AdvancePreparationComponent implements OnInit, OnDestroy {
 
   getUnitText(unit: MeasuringUnit) {
     return MeasuringUnitText[unit];
+  }
+
+  createPrepList(event: any) {
+    let newList = new SuggestionList(event);
+    this.lists.push(newList);
+    console.log(newList);
+  }
+  drop(event: CdkDragDrop<Suggestion[]>) {
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+    console.log(this.lists)
   }
 }

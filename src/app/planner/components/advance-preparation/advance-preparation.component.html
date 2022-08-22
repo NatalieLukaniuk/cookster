@@ -1,17 +1,72 @@
-<div>
-  <app-date-picker-range (dateSelected)="onDateSelected($event)"></app-date-picker-range>
-</div>
-<div *ngIf="suggestions.length; else NoSuggestions">
-  <div *ngFor="let suggestion of suggestions">
-    <span>{{suggestion.productName}}</span>
-    <span>{{NormalizeDisplayedAmount(suggestion.amount, suggestion.unit)}}</span>
-    <span>{{getUnitText(suggestion.unit)}}</span>
-    <span>{{suggestion.prepDescription}}</span>
-    <span>{{suggestion.recipyTitle}}</span>
-    <span>{{suggestion.day | date}}</span>
+<div class="advance-preparation-planner">
+  <div>
+    <div>
+      <app-date-picker-range
+        (dateSelected)="onDateSelected($event)"
+      ></app-date-picker-range>
+    </div>
+    <div cdkDropList [cdkDropListData]="suggestions"
+      class="suggestions-list"
+      *ngIf="suggestions.length; else NoSuggestions"
+    >
+      <div cdkDrag class="suggestions-list-item" *ngFor="let suggestion of suggestions">
+        <div class="suggestions-list-item-ingredient">
+          <span>{{ suggestion.productName }}</span>
+          <span
+            >{{ NormalizeDisplayedAmount(suggestion.amount, suggestion.unit) }}
+            {{ getUnitText(suggestion.unit) }}</span
+          >
+        </div>
+        <div class="suggestions-list-item-prep">
+          <span>{{ suggestion.prepDescription }}</span>
+        </div>
+        <div class="suggestions-list-item-details">
+          <span>{{ suggestion.recipyTitle }}</span>
+          <span>{{ suggestion.day | date }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="picker-wrapper">
+      <mat-form-field style="width: 0;">
+        <input matInput class="date-selection" [matDatepicker]="picker" [(ngModel)]="prepDate" (ngModelChange)="createPrepList($event)">
+      <mat-datepicker class="picker" #picker></mat-datepicker>
+
+      </mat-form-field>
+      
+    <button mat-flat-button class="action-button" (click)="picker.open()">Add date</button>
+    </div>
+    <div *ngIf="lists.length">
+      <div class="suggestions-list" *ngFor="let list of lists" cdkDropList [cdkDropListData]="list.suggestions" (cdkDropListDropped)="drop($event)">
+        <div>{{list.day | date}}</div>
+        <div class="suggestions-list-item" cdkDrag *ngFor="let suggestion of list.suggestions">
+          <div class="suggestions-list-item-ingredient">
+            <span>{{ suggestion.productName }}</span>
+            <span
+              >{{ NormalizeDisplayedAmount(suggestion.amount, suggestion.unit) }}
+              {{ getUnitText(suggestion.unit) }}</span
+            >
+          </div>
+          <div class="suggestions-list-item-prep">
+            <span>{{ suggestion.prepDescription }}</span>
+          </div>
+          <div class="suggestions-list-item-details">
+            <span>{{ suggestion.recipyTitle }}</span>
+            <span>{{ suggestion.day | date }}</span>
+          </div>
+        </div>
+      </div>
+    </div>      
   </div>
 </div>
 
 <ng-template #NoSuggestions>
-  <div>{{dateRange? 'No preparation options for your date range' : 'Please select the date range'}}</div>
+  <div>
+    {{
+      dateRange
+        ? "No preparation options for your date range"
+        : "Please select the date range"
+    }}
+  </div>
 </ng-template>

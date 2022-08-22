@@ -1,0 +1,43 @@
+.advance-preparation-planner{
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.suggestions-list-item{
+    margin-bottom: 25px;
+    max-width: 340px;
+    & > div {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+    .suggestions-list--ingredient{
+        font-weight: 600;
+    }
+    .suggestions-list-item-details{
+        font-size: 10px;
+        opacity: 0.4;
+    }
+}
+
+.date-selection{
+    display: none;
+}
+
+.picker-wrapper{
+    position: relative;
+}
+
+.picker{
+    position: absolute;
+}
+
+.suggestions-list{
+    min-width: 350px;
+    border: 1px solid var(--tint1);
+    background: var(--tint-very-light);
+    min-height: 100px;
+    margin-bottom: 15px;
+}
