@@ -2,6 +2,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 
@@ -27,6 +28,7 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    MatTooltipModule,
     DragDropModule,    
     StoreModule.forFeature('recipies', RecipiesReducers),
   ],

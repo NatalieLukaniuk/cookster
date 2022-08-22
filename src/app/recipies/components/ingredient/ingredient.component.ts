@@ -204,4 +204,14 @@ export class IngredientComponent implements OnInit, OnChanges {
         }
       });
   }
+
+  getTooltip(){
+    let tooltip = 'Приготування заздалегіть: '
+    if(this._ingredient && this._ingredient.prep){
+      this._ingredient.prep.forEach(suggestion => {
+        tooltip = tooltip.concat(suggestion + ' | ')
+      })
+    }
+    return tooltip
+  }
 }
