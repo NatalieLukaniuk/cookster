@@ -1,4 +1,5 @@
 import { DayDetails } from 'src/app/calendar/models/calendar';
+import { SuggestionList } from 'src/app/planner/components/advance-preparation/advance-preparation.component';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
 export interface User {
@@ -7,4 +8,5 @@ export interface User {
   details?: DayDetails[];
   id?: string;
   shoppingLists?: ShoppingListItem[];
+  prepLists?: SuggestionList[]
 }

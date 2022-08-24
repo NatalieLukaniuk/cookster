@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
@@ -15,7 +15,6 @@ import { LayoutService } from 'src/app/shared/services/layout.service';
 import { IAppState } from 'src/app/store/reducers';
 import { getFilters } from 'src/app/store/selectors/filters.selectors';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
-import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import * as CalendarActions from './../../../store/actions/calendar.actions';
 import * as FiltersActions from './../../../store/actions/filters.actions';
@@ -43,7 +42,7 @@ export enum PlannerRecipyCategories {
 export class RecipiesComponent implements OnInit, OnDestroy {
   allRecipies: Recipy[] | undefined;
   isMobile: boolean = false;
-  currentUser: User | undefined;
+  
   destroy$ = new Subject();
   showRecipyPreview: boolean = false; //TODO check the route url, if there's recipy id, open the tab
   recipyForPreview: Recipy | undefined;
@@ -56,6 +55,8 @@ export class RecipiesComponent implements OnInit, OnDestroy {
 
   selectedCategory = this.categories[0];
 
+  @Input() currentUser: User | null | undefined;
+
   constructor(
     private recipies: RecipiesService,
     private layoutService: LayoutService,
@@ -65,11 +66,6 @@ export class RecipiesComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.store.pipe(select(getCurrentUser)).subscribe((res: any) => {
-      if (!!res) {
-        this.currentUser = res;
-      }
-    });
     let recipies$ = this.store.pipe(
       select(getAllRecipies),
       takeUntil(this.destroy$)

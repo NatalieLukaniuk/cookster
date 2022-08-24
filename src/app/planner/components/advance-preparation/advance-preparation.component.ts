@@ -1,8 +1,10 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { User } from 'src/app/auth/models/user.interface';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { MeasuringUnit, MeasuringUnitText } from 'src/app/recipies/models/measuring-units.enum';
@@ -11,6 +13,7 @@ import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { NormalizeDisplayedAmount } from 'src/app/recipies/services/recipies.utils';
 import { IAppState } from 'src/app/store/reducers';
 
+import * as UserActions from '../../../store/actions/user.actions';
 import { DayDetails } from './../../../calendar/models/calendar';
 import { getCalendar } from './../../../store/selectors/calendar.selectors';
 
@@ -59,7 +62,10 @@ export function getTwoDigitValue(value: string): string {
   templateUrl: './advance-preparation.component.html',
   styleUrls: ['./advance-preparation.component.scss'],
 })
-export class AdvancePreparationComponent implements OnInit, OnDestroy {
+export class AdvancePreparationComponent
+  implements OnInit, OnDestroy, OnChanges
+{
+  @Input() currentUser: User | null | undefined;
   destroyed$ = new Subject();
   plannedRecipies: DayDetails[] = [];
   suggestions: Suggestion[] = [];
@@ -74,6 +80,11 @@ export class AdvancePreparationComponent implements OnInit, OnDestroy {
     private store: Store<IAppState>,
     private recipiesService: RecipiesService
   ) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.currentUser && this.currentUser?.prepLists) {
+      this.lists = _.cloneDeep(this.currentUser.prepLists);
+    }
+  }
   ngOnDestroy(): void {
     this.destroyed$.next();
   }
@@ -211,6 +222,25 @@ export class AdvancePreparationComponent implements OnInit, OnDestroy {
       event.previousIndex,
       event.currentIndex
     );
-    console.log(this.lists)
+    console.log(this.lists);
+  }
+  saveLists() {
+    if (this.currentUser) {
+      let updatedUser: User = {
+        ...this.currentUser,
+        prepLists: this.lists,
+      };
+      this.store.dispatch(new UserActions.UpdateUserAction(updatedUser));
+    }
+  }
+  deleteList(list: SuggestionList) {
+    this.lists = this.lists.filter((item) => item.date !== list.date);
+    if (this.currentUser) {
+      let updatedUser: User = {
+        ...this.currentUser,
+        prepLists: this.lists,
+      };
+      this.store.dispatch(new UserActions.UpdateUserAction(updatedUser));
+    }
   }
 }

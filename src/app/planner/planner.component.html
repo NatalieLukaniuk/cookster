@@ -9,7 +9,7 @@
       (selectedIndexChange)="selectedTab.setValue($event)"
     >
       <mat-tab label="Recipies">
-        <app-planner-recipies></app-planner-recipies>
+        <app-planner-recipies [currentUser]="currentUser$ | async"></app-planner-recipies>
       </mat-tab>
       <mat-tab label="Preview recipy">
         <app-recipy-preview
@@ -23,7 +23,7 @@
         <app-shopping-list></app-shopping-list>
       </mat-tab>
       <mat-tab label="Попереднє приготування">
-        <app-advance-preparation></app-advance-preparation>
+        <app-advance-preparation [currentUser]="currentUser$ | async"></app-advance-preparation>
       </mat-tab>
     </mat-tab-group>
   </div>

@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import { IAppState } from '../store/reducers';
 import * as CalendarSelectors from '../store/selectors/calendar.selectors';
@@ -21,6 +22,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
 
   selectedTab = new FormControl(0);
 
+  currentUser$ = this.store.pipe(select(getCurrentUser), takeUntil(this.destroy$));
+
   constructor(private store: Store<IAppState>) {
     this.store
       .pipe(
@@ -35,6 +38,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
           this.selectedTab.setValue(1);
         }
       });
+      
   }
   ngOnDestroy(): void {
     this.destroy$.next();
