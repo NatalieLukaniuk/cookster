@@ -34,6 +34,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 import { ImageComponent } from './components/image/image.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { SelectOptionDialogComponent } from './components/select-option-dialog/select-option-dialog.component';
+import { SuggestionComponent } from './components/suggestion/suggestion.component';
 import { TextInputDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
@@ -81,7 +82,8 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     FileUploadComponent,
     ImageComponent,
     TextInputDialogComponent,
-    DatePickerRangeComponent
+    DatePickerRangeComponent,
+    SuggestionComponent
   ],
   exports: [
     HeaderComponent,
@@ -118,7 +120,8 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     FileUploadComponent,
     ImageComponent,
     TextInputDialogComponent,
-    DatePickerRangeComponent
+    DatePickerRangeComponent,
+    SuggestionComponent
   ],
   providers: []
 })

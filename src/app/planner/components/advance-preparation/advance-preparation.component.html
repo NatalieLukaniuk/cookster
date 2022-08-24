@@ -11,25 +11,8 @@
       class="suggestions-list"
       *ngIf="suggestions.length; else NoSuggestions"
     >
-      <div
-        cdkDrag
-        class="suggestions-list-item"
-        *ngFor="let suggestion of suggestions"
-      >
-        <div class="suggestions-list-item-ingredient">
-          <span>{{ suggestion.productName }}</span>
-          <span
-            >{{ NormalizeDisplayedAmount(suggestion.amount, suggestion.unit) }}
-            {{ getUnitText(suggestion.unit) }}</span
-          >
-        </div>
-        <div class="suggestions-list-item-prep">
-          <span>{{ suggestion.prepDescription }}</span>
-        </div>
-        <div class="suggestions-list-item-details">
-          <span>{{ suggestion.recipyTitle }}</span>
-          <span>{{ suggestion.day | date }}</span>
-        </div>
+      <div cdkDrag *ngFor="let suggestion of suggestions">
+        <app-suggestion [suggestion]="suggestion"></app-suggestion>
       </div>
     </div>
   </div>
@@ -52,7 +35,12 @@
         </button>
       </div>
       <div>
-        <button mat-flat-button class="action-button" (click)="saveLists()">
+        <button
+          [disabled]="!isListsChanged"
+          mat-flat-button
+          class="action-button"
+          (click)="saveLists()"
+        >
           Save
         </button>
       </div>
@@ -70,27 +58,8 @@
           <span>{{ list.day | date }}</span
           ><mat-icon (click)="deleteList(list)">delete_outline</mat-icon>
         </div>
-        <div
-          class="suggestions-list-item"
-          cdkDrag
-          *ngFor="let suggestion of list.suggestions"
-        >
-          <div class="suggestions-list-item-ingredient">
-            <span>{{ suggestion.productName }}</span>
-            <span
-              >{{
-                NormalizeDisplayedAmount(suggestion.amount, suggestion.unit)
-              }}
-              {{ getUnitText(suggestion.unit) }}</span
-            >
-          </div>
-          <div class="suggestions-list-item-prep">
-            <span>{{ suggestion.prepDescription }}</span>
-          </div>
-          <div class="suggestions-list-item-details">
-            <span>{{ suggestion.recipyTitle }}</span>
-            <span>{{ suggestion.day | date }}</span>
-          </div>
+        <div cdkDrag *ngFor="let suggestion of list.suggestions">
+          <app-suggestion [suggestion]="suggestion"></app-suggestion>
         </div>
       </div>
     </div>

@@ -1,5 +1,26 @@
-<div *ngIf="!!day.details" class="day-wrapper" [class.side-panel]="isPlanner"  [id]="day.details.day">
-  <div cdkDropList id="breakfast" [cdkDropListData]="day.details.breakfastRecipies" (cdkDropListDropped)="drop($event)"
+<div
+  *ngIf="!!day.details"
+  class="day-wrapper"
+  [class.side-panel]="isPlanner"
+  [id]="day.details.day"
+>
+<div class="prep-plan" *ngIf="!!day.preps">
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>alarm</mat-icon> Приготувати заздалегіть
+      </mat-panel-title>      
+    </mat-expansion-panel-header>
+    <div class="prep-plan-item" *ngFor="let suggestion of day.preps.suggestions">
+      <app-suggestion [suggestion]="suggestion"></app-suggestion>
+    </div>
+  </mat-expansion-panel>
+</div>
+  <div
+    cdkDropList
+    id="breakfast"
+    [cdkDropListData]="day.details.breakfastRecipies"
+    (cdkDropListDropped)="drop($event)"
     *ngIf="!!day.details.breakfastRecipies.length || isMobile || isPlanner"
     class="meal-time"
   >
@@ -38,7 +59,11 @@
       </div>
     </ng-container>
   </div>
-  <div  cdkDropList id="lunch"  [cdkDropListData]="day.details.lunchRecipies" (cdkDropListDropped)="drop($event)"
+  <div
+    cdkDropList
+    id="lunch"
+    [cdkDropListData]="day.details.lunchRecipies"
+    (cdkDropListDropped)="drop($event)"
     *ngIf="!!day.details.lunchRecipies.length || isMobile || isPlanner"
     class="meal-time"
   >
@@ -77,7 +102,11 @@
       </div>
     </ng-container>
   </div>
-  <div  cdkDropList [cdkDropListData]="day.details.dinnerRecipies" id="dinner" (cdkDropListDropped)="drop($event)"
+  <div
+    cdkDropList
+    [cdkDropListData]="day.details.dinnerRecipies"
+    id="dinner"
+    (cdkDropListDropped)="drop($event)"
     *ngIf="!!day.details.dinnerRecipies.length || isMobile || isPlanner"
     class="meal-time"
   >

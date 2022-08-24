@@ -142,6 +142,20 @@ export class CalendarByMonthComponent implements OnInit, OnDestroy {
             return _day;
           } else return day;
         });
+        if (!!this.currentUser?.prepLists) {
+          this.calendar = this.calendar.map((day: Day) => {
+            let foundDay = this.currentUser?.prepLists?.find(
+              (list) => list.date == day.details.day
+            );
+            if (foundDay) {
+              return {
+                ...day,
+                preps: foundDay,
+              };
+            } else return day;
+          });
+        }
+
         this.store.dispatch(
           new CalendarActions.LoadCalendarAction(this.calendar)
         );

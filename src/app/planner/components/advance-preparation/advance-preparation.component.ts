@@ -7,10 +7,9 @@ import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
-import { MeasuringUnit, MeasuringUnitText } from 'src/app/recipies/models/measuring-units.enum';
+import { MeasuringUnit } from 'src/app/recipies/models/measuring-units.enum';
 import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
-import { NormalizeDisplayedAmount } from 'src/app/recipies/services/recipies.utils';
 import { IAppState } from 'src/app/store/reducers';
 
 import * as UserActions from '../../../store/actions/user.actions';
@@ -71,10 +70,12 @@ export class AdvancePreparationComponent
   suggestions: Suggestion[] = [];
   calendar: Day[] | undefined;
   dateRange: { startDate: string; endDate: string } | undefined;
-  NormalizeDisplayedAmount = NormalizeDisplayedAmount;
+
 
   prepDate: any | undefined;
   lists: SuggestionList[] = [];
+
+  isListsChanged = false;
 
   constructor(
     private store: Store<IAppState>,
@@ -206,9 +207,7 @@ export class AdvancePreparationComponent
     }
   }
 
-  getUnitText(unit: MeasuringUnit) {
-    return MeasuringUnitText[unit];
-  }
+
 
   createPrepList(event: any) {
     let newList = new SuggestionList(event);
@@ -222,6 +221,7 @@ export class AdvancePreparationComponent
       event.previousIndex,
       event.currentIndex
     );
+    this.isListsChanged = true;
     console.log(this.lists);
   }
   saveLists() {
@@ -230,6 +230,7 @@ export class AdvancePreparationComponent
         ...this.currentUser,
         prepLists: this.lists,
       };
+      this.isListsChanged = false;
       this.store.dispatch(new UserActions.UpdateUserAction(updatedUser));
     }
   }
@@ -239,7 +240,7 @@ export class AdvancePreparationComponent
       let updatedUser: User = {
         ...this.currentUser,
         prepLists: this.lists,
-      };
+      };      
       this.store.dispatch(new UserActions.UpdateUserAction(updatedUser));
     }
   }

@@ -1,0 +1,16 @@
+.suggestions-list-item {
+    margin-bottom: 25px;
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .suggestions-list--ingredient {
+      font-weight: 600;
+    }
+    .suggestions-list-item-details {
+      font-size: 10px;
+      opacity: 0.4;
+    }
+  }
