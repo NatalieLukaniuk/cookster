@@ -1,0 +1,25 @@
+<div>
+  <h3>Update amount of grams in unit</h3>
+  <div>
+    <form [formGroup]="ingredientsForm">
+      <mat-form-field appearance="outline">
+      <mat-label>Інгридієнт</mat-label>
+      <input matInput formControlName="ingredient" placeholder="Напр.: картопля" type="text" [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+        <mat-option *ngIf="noFilteredOptions && ingredientsForm.controls.ingredient.value.length" [value]="ingredientsForm.controls.ingredient.value">+ {{ingredientsForm.controls.ingredient.value}}</mat-option>
+      </mat-autocomplete>
+      <mat-icon matSuffix svgIcon="done" *ngIf="ingredientsForm.controls.ingredient.valid && !noFilteredOptions">
+      </mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Нова кількість грамів в одній шт.</mat-label>
+      <input matInput formControlName="newValue" placeholder="Напр. 300" type="number">        
+    </mat-form-field>
+    </form>
+    
+    <button mat-flat-button class="action-button" (click)="apply()">apply</button>
+  </div>
+</div>

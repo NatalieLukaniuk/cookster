@@ -61,6 +61,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     const TREE_DATA: NavigationNode[] = [
       { name: 'Recipies', path: `recipies` },
       { name: 'Products', path: 'products' },
+      { name: 'Update Products', path: 'update-products' },
     ];
 
     this.dataSource.data = TREE_DATA;

@@ -25,4 +25,8 @@ export class ProductsApiService {
   getProducts(){
     return this.http.get(`${this.url}.json`);
   }
+
+  updateProduct(id: string, data: any){
+    return this.http.patch<Product>(`${this.url}/${id}.json`, data);
+  }
 }

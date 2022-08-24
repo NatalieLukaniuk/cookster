@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { Product } from 'src/app/recipies/models/products.interface';
 import { NewRecipy, Recipy } from 'src/app/recipies/models/recipy.interface';
 
 export enum RecipiesActionTypes {
@@ -12,11 +13,23 @@ export enum RecipiesActionTypes {
   NEW_INGREDIENT_SAVED = '[INGREDIENT] New Ingredient Has Been Saved',
   GET_NEW_INGREDIENTS_ACTION = '[INGREDIENT] Load New Ingredients',
   NEW_INGREDIENTS_LOADED = '[INGREDIENT] New Ingredients Loaded',
+  UPDATE_PRODUCT = '[RECIPIES] Update Ingredient',
+  UPDATE_PRODUCT_SUCCESS = '[RECIPIES] Ingredient Has Been Updated',
 }
+export class UpdateProductAction implements Action {
+  readonly type = RecipiesActionTypes.UPDATE_PRODUCT;
+  constructor(public product: Product) {}
+}
+
+export class UpdateProductSuccessAction implements Action {
+  readonly type = RecipiesActionTypes.UPDATE_PRODUCT_SUCCESS;
+  constructor(public product: Product) {}
+}
+
 export class NewIngredientsLoadedAction implements Action {
-    readonly type = RecipiesActionTypes.NEW_INGREDIENTS_LOADED;
-    constructor(public nameArray: string[]) {}
-  }
+  readonly type = RecipiesActionTypes.NEW_INGREDIENTS_LOADED;
+  constructor(public nameArray: string[]) {}
+}
 export class LoadNewIngredientsAction implements Action {
   readonly type = RecipiesActionTypes.GET_NEW_INGREDIENTS_ACTION;
   constructor() {}
@@ -68,4 +81,7 @@ export type RecipiesActions =
   | UpdateRecipySuccessAction
   | AddNewIngredientAction
   | NewIngredientSavedAction
-  | LoadNewIngredientsAction | NewIngredientsLoadedAction;
+  | LoadNewIngredientsAction
+  | NewIngredientsLoadedAction
+  | UpdateProductAction
+  | UpdateProductSuccessAction;
