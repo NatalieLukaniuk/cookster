@@ -35,7 +35,7 @@ export interface Day {
   selected: boolean;
   disabled: boolean;
   details: DayDetailsExtended;
-  preps?: SuggestionList
+  preps?: SuggestionList;
 }
 
 interface Week {
@@ -66,18 +66,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private dialogsService: DialogsService,
     private calendarService: CalendarService,
     private shoppingListService: ShoppingListService
-  ) {
-   
-  }
+  ) {}
   ngOnDestroy(): void {
     this.destroyed$.next();
   }
 
   ngOnInit() {
-    if(this.isPlanner){
-      this.store.pipe(select(getSelectedRecipy), takeUntil(this.destroyed$)).subscribe((res: Recipy | null) => {
-        this.isRecipySelected = !!res;
-      })
+    if (this.isPlanner) {
+      this.store
+        .pipe(select(getSelectedRecipy), takeUntil(this.destroyed$))
+        .subscribe((res: Recipy | null) => {
+          this.isRecipySelected = !!res;
+        });
     }
     this.dateService.date.subscribe((res) => {
       this.generate(res);
@@ -97,74 +97,91 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.currentUser = currentUser;
         this.userCalendarData = currentUser.details;
       }
-      this.calendar.forEach((week: Week) =>
-      week.days = week.days.map((day: Day) => {
-          let foundDay = this.userCalendarData.find(
-            (item: IDayDetails) => item.day == day.details.day
-          );
-          if (!!foundDay) {
-            let _day = _.cloneDeep(day)
-            if ('breakfast' in foundDay && !!foundDay.breakfast.length) {
-              foundDay.breakfast.forEach((rec: CalendarRecipyInDatabase) => {
-                let foundRecipy = recipies.find(
-                  (recipy) => recipy.id == rec.recipyId
-                );
-                if (foundRecipy) {
-                  let recipy: RecipyForCalendar = {
-                    ...foundRecipy,
-                    portions: rec.portions,
-                    amountPerPortion: rec.amountPerPortion,
-                  };
-                  _day.details.breakfastRecipies.push(recipy);
-                }
-              });
-            }
-            if ('lunch' in foundDay && !!foundDay.lunch.length) {
-              foundDay.lunch.forEach((rec: CalendarRecipyInDatabase) => {
-                let foundRecipy = recipies.find(
-                  (recipy) => recipy.id == rec.recipyId
-                );
-                if (foundRecipy) {
-                  let recipy: RecipyForCalendar = {
-                    ...foundRecipy,
-                    portions: rec.portions,
-                    amountPerPortion: rec.amountPerPortion,
-                  };
-                  _day.details.lunchRecipies.push(recipy);
-                }
-              });
-            }
-            if ('dinner' in foundDay && !!foundDay.dinner.length) {
-              foundDay.dinner.forEach((rec: CalendarRecipyInDatabase) => {
-                let foundRecipy = recipies.find(
-                  (recipy) => recipy.id == rec.recipyId
-                );
-                if (foundRecipy) {
-                  let recipy: RecipyForCalendar = {
-                    ...foundRecipy,
-                    portions: rec.portions,
-                    amountPerPortion: rec.amountPerPortion,
-                  };
-                  _day.details.dinnerRecipies.push(recipy);
-                }
-              });
-            }
-            return _day
-          } else return day
-        })
+      this.calendar.forEach(
+        (week: Week) =>
+          (week.days = week.days.map((day: Day) => {
+            let foundDay = this.userCalendarData.find(
+              (item: IDayDetails) => item.day == day.details.day
+            );
+            if (!!foundDay) {
+              let _day = _.cloneDeep(day);
+              if ('breakfast' in foundDay && !!foundDay.breakfast.length) {
+                foundDay.breakfast.forEach((rec: CalendarRecipyInDatabase) => {
+                  let foundRecipy = recipies.find(
+                    (recipy) => recipy.id == rec.recipyId
+                  );
+                  if (foundRecipy) {
+                    let recipy: RecipyForCalendar = {
+                      ...foundRecipy,
+                      portions: rec.portions,
+                      amountPerPortion: rec.amountPerPortion,
+                    };
+                    _day.details.breakfastRecipies.push(recipy);
+                  }
+                });
+              }
+              if ('lunch' in foundDay && !!foundDay.lunch.length) {
+                foundDay.lunch.forEach((rec: CalendarRecipyInDatabase) => {
+                  let foundRecipy = recipies.find(
+                    (recipy) => recipy.id == rec.recipyId
+                  );
+                  if (foundRecipy) {
+                    let recipy: RecipyForCalendar = {
+                      ...foundRecipy,
+                      portions: rec.portions,
+                      amountPerPortion: rec.amountPerPortion,
+                    };
+                    _day.details.lunchRecipies.push(recipy);
+                  }
+                });
+              }
+              if ('dinner' in foundDay && !!foundDay.dinner.length) {
+                foundDay.dinner.forEach((rec: CalendarRecipyInDatabase) => {
+                  let foundRecipy = recipies.find(
+                    (recipy) => recipy.id == rec.recipyId
+                  );
+                  if (foundRecipy) {
+                    let recipy: RecipyForCalendar = {
+                      ...foundRecipy,
+                      portions: rec.portions,
+                      amountPerPortion: rec.amountPerPortion,
+                    };
+                    _day.details.dinnerRecipies.push(recipy);
+                  }
+                });
+              }
+              return _day;
+            } else return day;
+          }))
       );
+      if (currentUser?.prepLists) {
+        this.calendar.forEach((week: Week) => {
+          week.days = week.days.map((day: Day) => {
+            let foundDay = this.currentUser?.prepLists?.find(
+              (list) => list.date == day.details.day
+            );
+            if (foundDay) {
+              return {
+                ...day,
+                preps: foundDay,
+              };
+            } else return day;
+          });
+        });
+      }
     });
   }
 
   cleanCalendarRecipies() {
-    this.calendar.forEach((week: Week) =>
-    week.days = week.days.map((day) => {
-        if (day.details) {
-          let _day = _.cloneDeep(day)
-          _day.details = new EmptyDayDetailsExtended(day.details.day);
-          return _day
-        } else return day
-      })
+    this.calendar.forEach(
+      (week: Week) =>
+        (week.days = week.days.map((day) => {
+          if (day.details) {
+            let _day = _.cloneDeep(day);
+            _day.details = new EmptyDayDetailsExtended(day.details.day);
+            return _day;
+          } else return day;
+        }))
     );
   }
 
@@ -263,7 +280,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSaveToShoppingList(event: ShoppingListItem[]) { // currently adding for a single day is disabled
+  onSaveToShoppingList(event: ShoppingListItem[]) {
+    // currently adding for a single day is disabled
     if (this.currentUser) {
       // this.shoppingListService.addList(this.currentUser, event);
     }
@@ -272,7 +290,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   addAllToShoppingList(event: Day) {
     console.log(event);
   }
-  onDaySelected(event: {day: Day, meal: string}){
-    this.store.dispatch(new CalendarActions.SetDaySelectedAction(event))
+  onDaySelected(event: { day: Day; meal: string }) {
+    this.store.dispatch(new CalendarActions.SetDaySelectedAction(event));
   }
 }
