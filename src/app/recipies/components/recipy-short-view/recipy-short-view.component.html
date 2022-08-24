@@ -35,11 +35,13 @@
         <div>{{ preparationTime | normalizeTime }}</div>
       </div>
       <div>{{ complexity }} рецепт</div>
+      <div class="advance-prep" *ngIf="hasPrepSuggestions"><mat-icon>whatshot</mat-icon> дещо можна приготувати заздалегіть</div>
       <div class="tags">
         <mat-chip-list>
           <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
         </mat-chip-list>
       </div>
+      
     </div>
     <div class="side-menu-panel">
       <button mat-icon-button (click)="goFullRecipy()">

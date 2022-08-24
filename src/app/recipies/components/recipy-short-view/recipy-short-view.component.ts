@@ -33,6 +33,8 @@ export class RecipyShortViewComponent implements OnInit {
   isHovered: boolean = false;
   isDetailedInfo: boolean = false;
 
+  hasPrepSuggestions: boolean = false;
+
   ingredientsToSkip = ['-Mu5TNCG6N8Q_nwkPmNb', '-Mu5UmO24kMVyKveKjah', '-MuzaMFzts_yzcBtPRyt', '-Muzb3OfJhqdsrleyz2a']
   constructor(
     public dialog: MatDialog,
@@ -43,7 +45,8 @@ export class RecipyShortViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showNeedsAdvancePreparation = this.recipy.type.includes(DishType['потребує попередньої підготовки'])
+    this.showNeedsAdvancePreparation = this.recipy.type.includes(DishType['потребує попередньої підготовки']);
+    this.hasPrepSuggestions = !!this.recipy.ingrediends.find(ingr => !!ingr.prep)
   }
   goFullRecipy() {
     this.recipyClicked.emit(this.recipy)
