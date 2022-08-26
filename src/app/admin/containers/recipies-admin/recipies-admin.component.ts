@@ -16,17 +16,19 @@ export class RecipiesAdminComponent implements OnInit {
   @Input()
   recipies!: Recipy[];
 
-  displayedColumns: string[] = [
-    'name',
-    'complexity',
-    'type',
-    'author',
-    'createdOn',
-    'editedBy',
-    'lastEdited',
-    'isClone',
-    'actions',
-  ];
+  displayedColumns: string[] = [];
+
+  allColumns = [
+    {name: 'name', displayed: true, selectDisabled: true},
+    {name: 'complexity', displayed: true, selectDisabled: false},
+    {name: 'type', displayed: true, selectDisabled: false},
+    {name: 'author', displayed: false, selectDisabled: false},
+    {name: 'createdOn', displayed: true, selectDisabled: false},
+    {name: 'editedBy', displayed: false, selectDisabled: false},
+    {name: 'lastEdited', displayed: false, selectDisabled: false},
+    {name: 'isClone', displayed: false, selectDisabled: false},
+    {name: 'actions', displayed: true, selectDisabled: true},
+  ]
 
   dataSource!: MatTableDataSource<Recipy>;
 
@@ -47,6 +49,7 @@ export class RecipiesAdminComponent implements OnInit {
 
   ngOnInit() {
     this.initTable();
+    this.displayedColumns = this.allColumns.filter(column => column.displayed).map(column => column.name)
   }
 
   initTable(): void {
@@ -96,5 +99,9 @@ export class RecipiesAdminComponent implements OnInit {
 
   getIsIngredientNotInDB(recipy: Recipy): boolean{
     return !!recipy.notApproved;
+  }
+
+  onselectionChange(event: any){
+    console.log(this.displayedColumns)
   }
 }

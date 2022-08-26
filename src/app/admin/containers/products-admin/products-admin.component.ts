@@ -17,17 +17,18 @@ import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 export class ProductsAdminComponent implements OnInit, OnChanges {
   @Input()
   products!: Product[];
+  allColumns = [
+    {name: 'name', displayed: true, selectDisabled: true},
+    {name: 'id', displayed: false, selectDisabled: false},
+    {name: 'density', displayed: true, selectDisabled: false},
+    {name: 'grInOneItem', displayed: true, selectDisabled: false},
+    {name: 'calories', displayed: true, selectDisabled: false},
+    {name: 'defaultUnit', displayed: false, selectDisabled: false},
+    {name: 'type', displayed: false, selectDisabled: false},
+    {name: 'actions', displayed: true, selectDisabled: true},
+  ]
 
-  displayedColumns: string[] = [
-    'name',
-    'id',
-    'density',
-    'grInOneItem',
-    'calories',
-    'defaultUnit',
-    'type',
-    'actions',
-  ];
+  displayedColumns: string[] = [];
   dataSource!: MatTableDataSource<Product>;
 
   @ViewChild(MatPaginator)
@@ -42,6 +43,7 @@ export class ProductsAdminComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.initTable();
+    this.displayedColumns = this.allColumns.filter(column => column.displayed).map(column => column.name)
   }
 
   initTable(): void {

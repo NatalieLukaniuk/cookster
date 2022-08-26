@@ -14,6 +14,14 @@
         <mat-icon matSuffix svgIcon="search-small"></mat-icon>
       </mat-form-field>
     </div>
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Displayed columns</mat-label>
+        <mat-select [(ngModel)]="displayedColumns" multiple>
+          <mat-option *ngFor="let column of allColumns" [disabled]="column.selectDisabled" [value]="column.name">{{column.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <button mat-flat-button class="primary" (click)="addProduct()">
       Add product
     </button>
