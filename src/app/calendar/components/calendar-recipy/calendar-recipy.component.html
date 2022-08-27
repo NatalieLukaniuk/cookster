@@ -2,8 +2,17 @@
   <mat-expansion-panel hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <span>{{ recipy.name }}</span
-        ><span>{{ recipy.portions }} порцій</span>
+        <div class="title-wrapper">
+          <span>{{ recipy.name }}</span>
+          <div class="icons">
+            <mat-icon *ngIf="showNeedsAdvancePreparation"
+                  >av_timer</mat-icon
+                >
+            <mat-icon *ngIf="hasPrepSuggestions">whatshot</mat-icon>
+            <mat-icon *ngIf="recipy.isCheckedAndApproved" class="color-primary" matSuffix svgIcon="approved"></mat-icon>
+          </div>
+        </div>
+        <span class="portions">{{ recipy.portions }} порцій</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-action-list>

@@ -31,6 +31,31 @@
     margin-bottom: 10px;
   }
 }
+.title-wrapper{
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    margin-right: 5px;
+}
+.icons{
+  min-width: max-content;
+  color: var(--primary);
+  background: var(--background-color-gradient);
+  padding: 2px 8px;
+  display: flex;
+  align-items: center;
+  border-radius: 20px; 
+  .mat-icon{
+    height: 16px;
+    width: auto;
+    font-size: 17px;
+    font-weight: 600;
+  }
+}
+.portions{
+  min-width: max-content;
+}
 
 @media (max-width: 600px) {
   .recipy-name {

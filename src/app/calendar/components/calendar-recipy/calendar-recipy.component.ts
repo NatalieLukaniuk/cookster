@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import { ComplexityDescription } from 'src/app/recipies/models/complexity.enum';
+import { DishType } from 'src/app/recipies/models/dishType.enum';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { PreparationStep } from 'src/app/recipies/models/preparationStep.interface';
 import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
@@ -40,6 +41,9 @@ export class CalendarRecipyComponent implements OnInit {
   isShowDetails: boolean = false;
   Details = Details;
 
+  hasPrepSuggestions: boolean = false;
+  showNeedsAdvancePreparation: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -50,6 +54,8 @@ export class CalendarRecipyComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCoef();
+    this.showNeedsAdvancePreparation = this.recipy.type.includes(DishType['потребує попередньої підготовки']);
+    this.hasPrepSuggestions = !!this.recipy.ingrediends.find(ingr => !!ingr.prep)
   }
   viewRecipy() {
     if (this.isMobile) {
