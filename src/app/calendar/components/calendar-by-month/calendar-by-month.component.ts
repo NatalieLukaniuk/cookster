@@ -65,9 +65,7 @@ export class CalendarByMonthComponent implements OnInit, OnDestroy {
     this.destroyed$.next();
   }
   ngOnInit() {
-    this.dateService.date.subscribe((res) => {
-      this.generateByMonth(res);
-    });
+    let month$ = this.dateService.date;
     let currentUser$ = this.store.pipe(
       select(getCurrentUser),
       takeUntil(this.destroyed$)
@@ -76,7 +74,8 @@ export class CalendarByMonthComponent implements OnInit, OnDestroy {
       select(getAllRecipies),
       takeUntil(this.destroyed$)
     );
-    combineLatest([currentUser$, allRecipies$]).subscribe((res) => {
+    combineLatest([currentUser$, allRecipies$, month$]).subscribe((res) => {
+      this.generateByMonth(res[2]);
       if (res[0] && res[1]) {
         this.cleanCalendarRecipies();
         let [currentUser, recipies] = res;
