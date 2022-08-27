@@ -79,9 +79,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
           this.isRecipySelected = !!res;
         });
     }
-    this.dateService.date.subscribe((res) => {
-      this.generate(res);
-    });
+    let month$ = this.dateService.date;
     let currentUser$ = this.store.pipe(
       select(getCurrentUser),
       takeUntil(this.destroyed$)
@@ -90,7 +88,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
       select(getAllRecipies),
       takeUntil(this.destroyed$)
     );
-    combineLatest([currentUser$, allRecipies$]).subscribe((res) => {
+    combineLatest([currentUser$, allRecipies$, month$]).subscribe((res) => {
+      this.generate(res[2]);
       this.cleanCalendarRecipies();
       let [currentUser, recipies] = res;
       if (!!currentUser && 'details' in currentUser && !!currentUser.details) {
