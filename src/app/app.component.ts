@@ -168,5 +168,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       'delete',
       this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/trash.svg')
     );
+    this.iconRegistry.addSvgIcon(
+      'approved',
+      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/approved-signal-svgrepo-com.svg')
+    );
   }
 }

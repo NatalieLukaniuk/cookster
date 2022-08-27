@@ -18,7 +18,8 @@ export interface Recipy extends NewRecipy {
   clonedBy?: string;
   clonedOn?: number;
   originalRecipy?: string;
-  isSplitIntoGroups: IngredientsGroup[]
+  isSplitIntoGroups: IngredientsGroup[];
+  isCheckedAndApproved?: boolean
 }
 
 export interface RecipyForCalendar extends Recipy {

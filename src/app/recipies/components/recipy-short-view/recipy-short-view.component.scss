@@ -23,6 +23,21 @@ $aspect-ratio: 5/4;
   z-index: 10;
   display: flex;
   flex-direction: column;
+  .icons{
+    position: absolute;
+    top: 8px;
+    color: var(--primary);
+    background: var(--background-color-gradient);
+    padding: 2px 8px;
+    display: flex;
+    align-items: center;
+    border-radius: 20px; 
+    .mat-icon{
+      height: 18px;
+      width: auto;
+      font-size: 18px;
+    }
+  }
 }
 
 .overlay {
@@ -98,6 +113,11 @@ $aspect-ratio: 5/4;
     .mat-icon {
       font-size: 18px;
       margin-right: 5px;
+      height: 17px;
+      width: auto;
+      &.color-primary{
+        color: var(--primary);
+      }
     }
   }
 }

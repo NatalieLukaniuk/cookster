@@ -9,6 +9,13 @@
     [class.plain-background]="!recipy.photo"
     [class.hovered]="isHovered || isRecipyClicked"
   >
+  <div class="icons" *ngIf="!isRecipyClicked && !isHovered">
+    <mat-icon *ngIf="showNeedsAdvancePreparation"
+          >av_timer</mat-icon
+        >
+    <mat-icon *ngIf="hasPrepSuggestions">whatshot</mat-icon>
+    <mat-icon *ngIf="recipy.isCheckedAndApproved" class="color-primary" matSuffix svgIcon="approved"></mat-icon>
+  </div>
     <div class="recipy-title">
       {{ recipy.name }}
     </div>
@@ -36,6 +43,7 @@
       </div>
       <div>{{ complexity }} рецепт</div>
       <div class="advance-prep" *ngIf="hasPrepSuggestions"><mat-icon>whatshot</mat-icon> дещо можна приготувати заздалегіть</div>
+      <div class="advance-prep" *ngIf="recipy.isCheckedAndApproved"><mat-icon class="color-primary" matSuffix svgIcon="approved"></mat-icon> рецепт перевірений на практиці</div>
       <div class="tags">
         <mat-chip-list>
           <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
