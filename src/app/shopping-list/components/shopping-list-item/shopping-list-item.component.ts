@@ -12,8 +12,10 @@ import {
   MeasuringUnitText,
 } from 'src/app/recipies/models/measuring-units.enum';
 import { Product, ProductType } from 'src/app/recipies/models/products.interface';
+import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import {
   convertAmountToSelectedUnit,
+  getRecipyNameById,
   NormalizeDisplayedAmount,
   transformToGr,
 } from 'src/app/recipies/services/recipies.utils';
@@ -36,6 +38,7 @@ enum ChangeType {
 export class ShoppingListItemComponent implements OnInit, OnDestroy {
   @Input() item!: ShoppingListItem;
   @Input() allProducts!: Product[];
+  @Input() allRecipies!: Recipy[] | null;
   _item: ShoppingListItem | undefined;
   _measuringUnit: MeasuringUnit | undefined;
   _amountToDisplay: number = 0;
@@ -191,5 +194,11 @@ export class ShoppingListItemComponent implements OnInit, OnDestroy {
 
   removeIngr() {
     this.removeIngredient.emit(this.item);
+  }
+
+  getrecipyName(id: string) {
+    if (this.allRecipies) {
+      return getRecipyNameById(this.allRecipies, id);
+    } else return '';
   }
 }

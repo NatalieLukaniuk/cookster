@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { Product } from 'src/app/recipies/models/products.interface';
+import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
@@ -16,6 +17,7 @@ export interface NoGroupListItem extends Ingredient {
 export class NoGroupListComponent implements OnChanges {
   @Input() lists!: ShoppingListItem[];
   @Input() allProducts!: Product[];
+  @Input() allRecipies!: Recipy[] | null;
   _lists: ShoppingListItem[] = [];
   listToDisplay: ShoppingListItem[] = [];
 
@@ -61,6 +63,7 @@ export class NoGroupListComponent implements OnChanges {
     this.listToDisplay.sort((a, b) =>
       a.productName!.localeCompare(b.productName!)
     );
+    console.log(this.listToDisplay)
   }
 
   onRemoveIngredient(event: ShoppingListItem) {

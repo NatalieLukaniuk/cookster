@@ -1,4 +1,5 @@
 import { Product, ProductType } from 'src/app/recipies/models/products.interface';
+import { Recipy } from 'src/app/recipies/models/recipy.interface';
 
 import { Ingredient } from '../models/ingredient.interface';
 import { MeasuringUnit } from '../models/measuring-units.enum';
@@ -385,4 +386,8 @@ export function getNiceDecimal(amount: number): number {
       return Math.ceil(amount);
     }
   } else return amount;
+}
+
+export function getRecipyNameById(allRecipies: Recipy[], recipyToFindId: string): string {
+  return allRecipies.find(rec => rec.id == recipyToFindId)!.name
 }

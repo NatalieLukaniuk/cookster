@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/recipies/models/products.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import { User } from '../auth/models/user.interface';
+import { Recipy } from '../recipies/models/recipy.interface';
 import { RecipiesService } from '../recipies/services/recipies.service';
 import { IAppState } from '../store/reducers';
 import * as UserActions from './../store/actions/user.actions';
+import { getAllRecipies } from './../store/selectors/recipies.selectors';
 import { ShoppingListMode } from './models';
 import { ShoppingListService } from './services/shopping-list.service';
 
@@ -26,6 +29,8 @@ export class ShoppingListComponent implements OnInit {
   allProducts: Product[] = [];
 
   currentUser: User | undefined;
+
+  allRecipies$: Observable<Recipy[]>
 
   constructor(
     private store: Store<IAppState>,
@@ -52,6 +57,7 @@ export class ShoppingListComponent implements OnInit {
         this.allProducts = res;
       }
     });
+    this.allRecipies$ = this.store.pipe(select(getAllRecipies))
   }
 
   ngOnInit() {}
