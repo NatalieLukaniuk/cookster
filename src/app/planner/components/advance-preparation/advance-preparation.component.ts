@@ -71,7 +71,6 @@ export class AdvancePreparationComponent
   calendar: Day[] | undefined;
   dateRange: { startDate: string; endDate: string } | undefined;
 
-
   prepDate: any | undefined;
   lists: SuggestionList[] = [];
 
@@ -207,8 +206,6 @@ export class AdvancePreparationComponent
     }
   }
 
-
-
   createPrepList(event: any) {
     let newList = new SuggestionList(event);
     this.lists.push(newList);
@@ -240,8 +237,20 @@ export class AdvancePreparationComponent
       let updatedUser: User = {
         ...this.currentUser,
         prepLists: this.lists,
-      };      
+      };
       this.store.dispatch(new UserActions.UpdateUserAction(updatedUser));
     }
+  }
+  onRemoveItem(event: Suggestion, list: SuggestionList) {
+    this.lists = this.lists.map((el) => {
+      if (el.date == list.date) {
+        return {
+          ...el,
+          suggestions: el.suggestions.filter(
+            (sugg) => sugg.prepDescription !== event.prepDescription
+          ),
+        };
+      } else return el;
+    });
   }
 }

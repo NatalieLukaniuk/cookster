@@ -1,5 +1,6 @@
 <div class="suggestions-list-item">
-  <div class="suggestions-list-item-ingredient">
+  <div class="content-wrapper">
+    <div class="suggestions-list-item-ingredient">
     <span>{{ suggestion.productName }}</span>
     <span
       >{{ NormalizeDisplayedAmount(suggestion.amount, suggestion.unit) }}
@@ -13,4 +14,6 @@
     <span>{{ suggestion.recipyTitle }}</span>
     <span>{{ suggestion.day | date }}</span>
   </div>
+  </div>
+  <mat-icon *ngIf="showDelete" (click)="delete()">delete_outline</mat-icon>
 </div>

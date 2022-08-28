@@ -59,7 +59,7 @@
           ><mat-icon (click)="deleteList(list)">delete_outline</mat-icon>
         </div>
         <div cdkDrag *ngFor="let suggestion of list.suggestions">
-          <app-suggestion [suggestion]="suggestion"></app-suggestion>
+          <app-suggestion [showDelete]="true" [suggestion]="suggestion" (removeItem)="onRemoveItem($event, list)"></app-suggestion>
         </div>
       </div>
     </div>
