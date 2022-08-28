@@ -147,12 +147,12 @@ export class IngredientComponent implements OnInit, OnChanges {
     if (!!this._ingredient) {
       let ingr: Ingredient = {
         product: this._ingredient?.product,
-        amount: this._amountInSelectedUnit,
+        amount: +this._amountInSelectedUnit,
         defaultUnit: this._ingredient?.defaultUnit,
       };
       let amountToSave = transformToGr(
         ingr,
-        this._amountInSelectedUnit,
+        +this._amountInSelectedUnit,
         ingr.defaultUnit,
         this.recipiesService.products$.value
       );
