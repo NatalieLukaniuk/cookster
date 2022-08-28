@@ -10,6 +10,7 @@ import { RecipiesModule } from './../recipies/recipies.module';
 import { SharedModule } from './../shared/shared.module';
 import { AdvancePreparationComponent } from './components/advance-preparation/advance-preparation.component';
 import { RecipiesComponent } from './components/recipies/recipies.component';
+import { PrepListsComponent } from './containers/prep-lists/prep-lists.component';
 import { PlannerComponent } from './planner.component';
 
 @NgModule({
@@ -23,6 +24,6 @@ import { PlannerComponent } from './planner.component';
     DragDropModule,
     ShoppingListModule,
   ],
-  declarations: [PlannerComponent, RecipiesComponent, AdvancePreparationComponent]
+  declarations: [PlannerComponent, RecipiesComponent, AdvancePreparationComponent, PrepListsComponent]
 })
 export class PlannerModule { }

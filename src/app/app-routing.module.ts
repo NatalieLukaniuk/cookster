@@ -8,6 +8,7 @@ import { SplashComponent } from './auth/components/splash/splash.component';
 import { CalendarContainerComponent } from './calendar/containers/calendar-container/calendar-container.component';
 import { CooksterComponent } from './cookster/cookster.component';
 import { FriendsFeedComponent } from './layout/containers/friends-feed/friends-feed.component';
+import { PrepListsComponent } from './planner/containers/prep-lists/prep-lists.component';
 import { PlannerComponent } from './planner/planner.component';
 import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
 import { EditRecipyComponent } from './recipies/containers/edit-recipy/edit-recipy.component';
@@ -51,6 +52,10 @@ export const routes: Routes = [
   {
     path: 'calendar-planner',
     component: PlannerComponent
+  },
+  {
+    path: 'prep-lists',
+    component: PrepListsComponent
   },
   {
     path: 'calendar',

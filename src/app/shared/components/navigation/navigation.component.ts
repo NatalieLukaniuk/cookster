@@ -76,4 +76,9 @@ export class NavigationComponent implements OnDestroy {
    goShoppingLists(){
     this.router.navigate(['shopping-list'])
    }
+
+   goPrepLists(){
+    this.router.navigate(['prep-lists'])
+   }
+   
 }
