@@ -21,6 +21,7 @@ export enum Details {
   Ingredients,
   Steps,
   Info,
+  Prep
 }
 @Component({
   selector: 'app-calendar-recipy',
@@ -39,10 +40,13 @@ export class CalendarRecipyComponent implements OnInit {
   isShowIngredients: boolean = false;
   isShowSteps: boolean = false;
   isShowDetails: boolean = false;
+  isShowPrepSuggestions: boolean = false;
   Details = Details;
 
   hasPrepSuggestions: boolean = false;
   showNeedsAdvancePreparation: boolean = false;
+
+  suggestions: {ingr: string, text: string}[] = [];
 
   constructor(
     private router: Router,
@@ -55,7 +59,15 @@ export class CalendarRecipyComponent implements OnInit {
   ngOnInit(): void {
     this.getCoef();
     this.showNeedsAdvancePreparation = this.recipy.type.includes(DishType['потребує попередньої підготовки']);
-    this.hasPrepSuggestions = !!this.recipy.ingrediends.find(ingr => !!ingr.prep)
+    this.hasPrepSuggestions = !!this.recipy.ingrediends.find(ingr => !!ingr.prep);
+    if(this.hasPrepSuggestions){
+      this.recipy.ingrediends.forEach(ingr => {
+        if(ingr.prep){
+          ingr.prep.forEach(prep => this.suggestions.push({ingr: this.recipiesService.getIngredientText(ingr), text: prep}))
+          
+        }
+      })
+    }
   }
   viewRecipy() {
     if (this.isMobile) {
@@ -144,6 +156,7 @@ export class CalendarRecipyComponent implements OnInit {
           this.isShowIngredients = !this.isShowIngredients;
           this.isShowDetails = false;
           this.isShowSteps = false;
+          this.isShowPrepSuggestions = false
         }
         break;
       case Details.Info:
@@ -151,12 +164,21 @@ export class CalendarRecipyComponent implements OnInit {
           this.isShowDetails = !this.isShowDetails;
           this.isShowIngredients = false;
           this.isShowSteps = false;
+          this.isShowPrepSuggestions = false
         }
         break;
       case Details.Steps: {
         this.isShowSteps = !this.isShowSteps;
         this.isShowIngredients = false;
         this.isShowDetails = false;
+        this.isShowPrepSuggestions = false
+      }
+      break;
+      case Details.Prep: {
+        this.isShowPrepSuggestions = !this.isShowPrepSuggestions;
+        this.isShowIngredients = false;
+        this.isShowDetails = false;
+        this.isShowSteps = false;
       }
     }
   }

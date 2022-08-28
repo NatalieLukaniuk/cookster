@@ -60,6 +60,14 @@
           
         </div>
       </div>
+      <button mat-list-item class="recipy-details-item button" (click)="showDetails(Details.Prep)">
+        Попереднє приготування
+      </button>
+      <div *ngIf="isShowPrepSuggestions" class="additional-info">
+        <ng-container *ngFor="let suggestion of suggestions">
+          <div>{{suggestion.ingr}} {{suggestion.text}}</div>
+        </ng-container>
+      </div>
       <!-- <button mat-list-item (click)="addToShoppingList()">
         <mat-icon>add_shopping_cart</mat-icon>Додати інгридієнти в список
         покупок
