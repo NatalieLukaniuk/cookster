@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
+import { RecipiesService } from '../recipies/services/recipies.service';
 import { IAppState } from '../store/reducers';
 import * as CalendarSelectors from '../store/selectors/calendar.selectors';
 import { Recipy } from './../recipies/models/recipy.interface';
@@ -23,8 +24,9 @@ export class PlannerComponent implements OnInit, OnDestroy {
   selectedTab = new FormControl(0);
 
   currentUser$ = this.store.pipe(select(getCurrentUser), takeUntil(this.destroy$));
+  allProducts$ = this.recipiesService.products$.pipe(takeUntil(this.destroy$));
 
-  constructor(private store: Store<IAppState>) {
+  constructor(private store: Store<IAppState>, private recipiesService: RecipiesService) {
     this.store
       .pipe(
         select(CalendarSelectors.getPreviewRecipy),

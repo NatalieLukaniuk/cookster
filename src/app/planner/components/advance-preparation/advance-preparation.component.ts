@@ -8,8 +8,10 @@ import { User } from 'src/app/auth/models/user.interface';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { MeasuringUnit } from 'src/app/recipies/models/measuring-units.enum';
+import { Product } from 'src/app/recipies/models/products.interface';
 import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
+import { convertAmountToSelectedUnit } from 'src/app/recipies/services/recipies.utils';
 import { IAppState } from 'src/app/store/reducers';
 
 import * as UserActions from '../../../store/actions/user.actions';
@@ -37,10 +39,12 @@ export class SuggestionList implements ISuggestionList {
   date: string;
   day: Date;
   suggestions: Suggestion[];
+  isExpanded: boolean;
   constructor(day: Date) {
     this.day = day;
     this.suggestions = [];
     this.date = transformDate(day);
+    this.isExpanded = true;
   }
 }
 
@@ -65,6 +69,7 @@ export class AdvancePreparationComponent
   implements OnInit, OnDestroy, OnChanges
 {
   @Input() currentUser: User | null | undefined;
+  @Input() allProducts!: Product[] | null;
   destroyed$ = new Subject();
   plannedRecipies: DayDetails[] = [];
   suggestions: Suggestion[] = [];
@@ -179,17 +184,23 @@ export class AdvancePreparationComponent
     recipyName: string,
     day: Date
   ) {
-    let suggestion: Suggestion = {
-      productId: ingredient.product,
-      productName: this.recipiesService.getIngredientText(ingredient),
-      amount: ingredient.amount * coef,
-      unit: ingredient.defaultUnit,
-      prepDescription: prepDescription,
-      recipyId: recipyId,
-      recipyTitle: recipyName,
-      day: day,
-    };
-    this.suggestions.push(suggestion);
+    if (this.allProducts) {
+      let suggestion: Suggestion = {
+        productId: ingredient.product,
+        productName: this.recipiesService.getIngredientText(ingredient),
+        amount: convertAmountToSelectedUnit(
+          ingredient.defaultUnit,
+          { ...ingredient, amount: ingredient.amount * coef },
+          this.allProducts
+        ),
+        unit: ingredient.defaultUnit,
+        prepDescription: prepDescription,
+        recipyId: recipyId,
+        recipyTitle: recipyName,
+        day: day,
+      };
+      this.suggestions.push(suggestion);
+    }
   }
 
   onDateSelected(event: { startDate: string; endDate: string }) {
@@ -252,5 +263,6 @@ export class AdvancePreparationComponent
         };
       } else return el;
     });
+    this.isListsChanged = true;
   }
 }
