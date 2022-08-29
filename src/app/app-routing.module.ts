@@ -8,6 +8,10 @@ import { SplashComponent } from './auth/components/splash/splash.component';
 import { CalendarContainerComponent } from './calendar/containers/calendar-container/calendar-container.component';
 import { CooksterComponent } from './cookster/cookster.component';
 import { FriendsFeedComponent } from './layout/containers/friends-feed/friends-feed.component';
+import {
+  PlannerByDateRangeComponent,
+} from './planner-reworked/containers/planner-by-date-range/planner-by-date-range.component';
+import { PlannerLandingComponent } from './planner-reworked/containers/planner-landing/planner-landing.component';
 import { PrepListsComponent } from './planner/containers/prep-lists/prep-lists.component';
 import { PlannerComponent } from './planner/planner.component';
 import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
@@ -63,6 +67,13 @@ export const routes: Routes = [
     data: { isPlanner: false },
   },
   { path: 'shopping-list', component: ShoppingListComponent },
+  { path: 'planner-reworked', component: PlannerLandingComponent , children: [
+    {
+      path: 'by-date/:id',
+      component: PlannerByDateRangeComponent,
+      pathMatch: 'full',
+    },
+  ]},
   { path: 'admin-panel', component: AdminComponent },
   { path: 'login', component: LoginComponent },
   { path: 'welcome', component: SplashComponent},

@@ -17,6 +17,7 @@ import { CalendarModule } from './calendar/calendar.module';
 import { CooksterModule } from './cookster/cookster.module';
 import { FiltersModule } from './filters/filters.module';
 import { LayoutModule } from './layout/layout.module';
+import { PlannerReworkedModule } from './planner-reworked/planner-reworked.module';
 import { PlannerModule } from './planner/planner.module';
 import { RecipiesModule } from './recipies/recipies.module';
 import { SharedModule } from './shared/shared.module';
@@ -39,6 +40,7 @@ import { reducers } from './store/reducers';
     RecipiesModule,
     HttpClientModule,
     CalendarModule,
+    PlannerReworkedModule,
     AdminModule,
     CooksterModule,
     AuthModule,
