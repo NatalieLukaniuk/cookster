@@ -1,7 +1,7 @@
 <div class="prep-lists-container">
   <div *ngIf="!!prepLists.length">
     <ng-container *ngFor="let list of prepLists">
-      <mat-expansion-panel hideToggle>
+      <mat-expansion-panel hideToggle *ngIf="hasIncomplete(list)">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <div class="list-item-title">
@@ -9,10 +9,49 @@
             </div>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="list-item" *ngFor="let suggestion of list.suggestions">
-          <app-suggestion [suggestion]="suggestion"></app-suggestion>
-        </div>
+        <ng-container *ngFor="let suggestion of list.suggestions">
+          <div class="list-item" *ngIf="!suggestion.done">
+            <app-suggestion
+              [suggestion]="suggestion"
+              (click)="onClickSuggestion(suggestion)"
+            ></app-suggestion>
+          </div>
+        </ng-container>
       </mat-expansion-panel>
     </ng-container>
   </div>
+
+  <ng-container *ngIf="doneItemsAvailable()">
+    <h3>Завершені</h3>
+
+  <div>
+    <ng-container *ngFor="let list of prepLists">
+      <mat-expansion-panel hideToggle *ngIf="hasDoneItems(list)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="list-item-title">
+              <span>{{ list.day | date }}</span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container *ngFor="let suggestion of list.suggestions">
+          <div class="list-item" *ngIf="suggestion.done">
+            <app-suggestion
+              [suggestion]="suggestion"
+              (click)="onClickSuggestion(suggestion)"
+            ></app-suggestion>
+          </div>
+        </ng-container>
+      </mat-expansion-panel>
+    </ng-container>
+    <button
+          mat-flat-button
+          class="action-button"
+          (click)="saveChanges()"
+        >
+          Видалити завершені
+        </button>
+  </div>
+  </ng-container>
+  
 </div>

@@ -27,6 +27,29 @@ export interface Suggestion {
   recipyId: string;
   recipyTitle: string;
   day: Date;
+  done?: boolean
+}
+
+export class SuggestionCard implements Suggestion{
+  productId: string;
+  productName: string;
+  amount: number;
+  unit: MeasuringUnit;
+  prepDescription: string;
+  recipyId: string;
+  recipyTitle: string;
+  day: Date;
+  done?: boolean = false;
+constructor(suggestion: Suggestion){
+  this.productId = suggestion.productId;
+  this.productName = suggestion.productName;
+  this.amount = suggestion.amount;
+  this.unit = suggestion.unit;
+  this.prepDescription = suggestion.prepDescription;
+  this.recipyId = suggestion.recipyId;
+  this.recipyTitle = suggestion.recipyTitle;
+  this.day = suggestion.day;
+}
 }
 
 export interface ISuggestionList {
@@ -38,7 +61,7 @@ export interface ISuggestionList {
 export class SuggestionList implements ISuggestionList {
   date: string;
   day: Date;
-  suggestions: Suggestion[];
+  suggestions: Suggestion[] | SuggestionCard[];
   isExpanded: boolean;
   constructor(day: Date) {
     this.day = day;
