@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
-import * as UserActions from '../../store/actions/user.actions'
 
+import * as UserActions from '../../store/actions/user.actions';
 import { AuthApiService } from './auth-api.service';
 
 @Injectable({

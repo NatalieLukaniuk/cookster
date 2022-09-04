@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 
-import { User } from '../models/user.interface';
+import { Role, User } from '../models/user.interface';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -64,6 +64,7 @@ export class AuthService {
           let currentUser: User = {
             email: user.email,
             uid: user.uid,
+            role: Role.User
           };
           // this.store.dispatch(new UserActions.UserLoadedAction(currentUser))
         }

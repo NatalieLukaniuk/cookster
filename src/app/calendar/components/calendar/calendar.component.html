@@ -21,7 +21,7 @@
         <span *ngIf="!isMobile && !isPlanner">{{ day.value | moment: "D" }}</span>
         <div *ngIf="isMobile || isPlanner" class="day-header">
           <span>{{ day.value | moment: "dddd, Do MMMM" }}</span>
-          <div>
+          <div *ngIf="false">
             <button mat-icon-button (click)="addRecipy(day)" *ngIf="!isPlanner">
               <mat-icon>add_circle_outline</mat-icon>
             </button>
