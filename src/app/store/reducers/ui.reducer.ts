@@ -6,6 +6,7 @@ export interface UiState {
   error: any | null;
   isSidebarOpen: boolean;
   currentRoute: string;
+  previousRoute: string;
 }
 
 export const InitialUiState: UiState = {
@@ -14,6 +15,7 @@ export const InitialUiState: UiState = {
   error: null,
   isSidebarOpen: false,
   currentRoute: '',
+  previousRoute: ''
 };
 
 export function UiReducers(
@@ -24,6 +26,7 @@ export function UiReducers(
     case UiActionTypes.SET_CURRENT_ROUTE: {
       return {
         ...state,
+        previousRoute: state.currentRoute,
         currentRoute: action.route,
       };
     }

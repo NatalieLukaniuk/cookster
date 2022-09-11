@@ -355,13 +355,7 @@
     aria-label="Font Style"
     (change)="onMatToggleChange($event)"
   >
-  <mat-button-toggle value="home"
-          >
-          <mat-icon>home</mat-icon
-            >
-          </mat-button-toggle
-        >
-    <mat-button-toggle style="display: none" value="back"
+    <mat-button-toggle *ngIf="isPreviousRoute$ | async" value="back"
       ><mat-icon>arrow_back</mat-icon></mat-button-toggle
     >
     <mat-button-toggle value="ingredients" checked>

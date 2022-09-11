@@ -4,13 +4,14 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, take, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { CalendarService } from 'src/app/calendar/services/calendar.service';
 import { AVERAGE_PORTION } from 'src/app/shared/constants';
 import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { LayoutService } from 'src/app/shared/services/layout.service';
+import { IAppState } from 'src/app/store/reducers';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
@@ -22,6 +23,7 @@ import { GetUkrIngredientsGroup, Ingredient } from '../../models/ingredient.inte
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { NewRecipy, Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
+import { getPreviousRoute } from './../../../store/selectors/ui.selectors';
 
 @Component({
   selector: 'app-recipy-preview',
@@ -61,16 +63,20 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   selectedStepId = 0;
 
+  isPreviousRoute$: Observable<boolean>;
+
   constructor(
     private layoutService: LayoutService,
-    private store: Store,
+    private store: Store<IAppState>,
     private recipiesService: RecipiesService,
     private dialogsService: DialogsService,
     private calendarService: CalendarService,
     private location: Location,
     private router: Router,
-    private route: ActivatedRoute,
-  ) {}
+    private route: ActivatedRoute
+  ) {
+    this.isPreviousRoute$ = this.store.pipe(select(getPreviousRoute), map(route => !!route.length && route !== 'login'))
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
       this.portionsToServe = this.savedPortionsServed;
@@ -118,15 +124,19 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       this.portionSize = navigationData.amountPerportion;
     }
 
-    if(this.portions){
-      this.portionsToServe = this.portions
+    if (this.portions) {
+      this.portionsToServe = this.portions;
     }
-    if(this.amountPerPortion){
-      this.portionSize = this.amountPerPortion
+    if (this.amountPerPortion) {
+      this.portionSize = this.amountPerPortion;
     }
 
     this._clonedRecipy = _.cloneDeep(this.recipy);
-    if (!!this._clonedRecipy.ingrediends.length && !navigationData.portions && !this.portions) {
+    if (
+      !!this._clonedRecipy.ingrediends.length &&
+      !navigationData.portions &&
+      !this.portions
+    ) {
       this.portionsToServe = this.savedPortionsServed;
     }
     if (
@@ -191,7 +201,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     this.getCoeficient();
   }
 
-  onportionSizeChanged(){
+  onportionSizeChanged() {
     this.getCoeficient();
   }
 
@@ -205,7 +215,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       });
     }
   }
-
 
   get portionsText(): string {
     if (this.portionsToServe && this.portionsToServe == 1) {
@@ -265,8 +274,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     return tags;
   }
   onMatToggleChange(event: any) {
-    if(event.value === 'home'){
-      this.router.navigate(['/'], { relativeTo: this.route });
+    if (event.value === 'back') {
+      this.goBack()
     } else {
       this.currentTab = event.value;
     }
@@ -274,7 +283,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   onPortionsChange(option: number) {
     this.portionsToServe = option;
-    this.onPortionsNumberChanged()
+    this.onPortionsNumberChanged();
   }
 
   get complexity() {
@@ -282,8 +291,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       return ComplexityDescription[this._clonedRecipy.complexity];
     } else return '';
   }
-
-  goBack() {}
 
   onAddRecipy() {
     if (this._clonedRecipy) {
@@ -495,5 +502,14 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       this._clonedRecipy.photo = event;
       this.isChangesSaved = false;
     }
+  }
+  goBack() {
+    this.store.pipe(select(getPreviousRoute), take(1)).subscribe((route) => {
+      switch (route) {
+        case 'all-recipies': this.router.navigate(['/'], { relativeTo: this.route });
+        break;
+        case 'calendar': this.router.navigate(['calendar']);
+      }
+    });
   }
 }

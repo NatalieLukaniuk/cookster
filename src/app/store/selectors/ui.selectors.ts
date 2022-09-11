@@ -25,3 +25,7 @@ export const getCurrentRoute = createSelector(
   getUIState,
   (state: UiState) => state.currentRoute
 );
+export const getPreviousRoute = createSelector(
+    getUIState,
+    (state: UiState) => state.previousRoute
+  );
