@@ -8,6 +8,41 @@
       <section>
         <router-outlet></router-outlet>
       </section>
+
+      <mat-button-toggle-group
+        *ngIf="(isMobile$ | async) && isDisplayNavTabs()"
+        appearance="legacy"
+        aria-label="Font Style"
+        [value]="currentRoute"
+        (change)="onMatToggleChange($event)"
+      >
+        <mat-button-toggle [value]="MainTabs.Home"
+          >
+          <mat-icon>home</mat-icon
+            >
+          </mat-button-toggle
+        >
+        <mat-button-toggle [value]="MainTabs.AddRecipy">
+          <mat-icon>add_circle_outline</mat-icon
+            >
+        </mat-button-toggle>
+        <mat-button-toggle [value]="MainTabs.Calendar">
+          <mat-icon>calendar_today</mat-icon
+            >
+        </mat-button-toggle>
+        <mat-button-toggle [value]="MainTabs.ShoppingList"
+          >
+          <mat-icon>shopping_cart</mat-icon
+            >
+          </mat-button-toggle
+        >
+        <mat-button-toggle [value]="MainTabs.Preps"
+          >
+          <mat-icon>whatshot</mat-icon
+            >
+          </mat-button-toggle
+        >
+      </mat-button-toggle-group>
     </ng-container>
   </mat-drawer-content>
 </mat-drawer-container>

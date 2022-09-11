@@ -4,7 +4,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { initializeApp } from 'firebase/app';
@@ -20,6 +20,13 @@ import * as UiActions from './store/actions/ui.actions';
 import { IAppState } from './store/reducers';
 import { getIsError, getIsSidebarOpen, getIsSuccessMessage } from './store/selectors/ui.selectors';
 
+export enum MainTabs {
+  Home = 'all-recipies',
+  AddRecipy = 'edit-recipy',
+  Calendar = 'calendar',
+  ShoppingList = 'shopping-list',
+  Preps = 'prep-lists',
+}
 @UntilDestroy()
 @Component({
   selector: 'app-root',
@@ -39,8 +46,14 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   isAuthCheckPerformed$: Observable<boolean>;
 
+  isMobile$: Observable<boolean>;
+
   @ViewChild('drawer')
   sidebar!: MatDrawer;
+
+  MainTabs = MainTabs;
+
+  currentRoute: string = '';
 
   constructor(
     private iconRegistry: MatIconRegistry,
@@ -57,22 +70,32 @@ export class AppComponent implements OnInit, AfterViewInit {
   ) {
     this.addIcons();
     const app = initializeApp(this.firebaseConfig);
-    this.isAuthCheckPerformed$ = this.authService.isCheckPerformed$.pipe(tap(res => console.log(res)));
+    this.isAuthCheckPerformed$ = this.authService.isCheckPerformed$.pipe(
+      tap((res) => console.log(res))
+    );
+    this.isMobile$ = this.layoutService.isMobile$;
+
+    this.router.events.subscribe(event => {
+      if(event instanceof NavigationEnd) {
+        const url = event.urlAfterRedirects.split('/');
+        this.currentRoute = url[url.length - 1];
+        this.store.dispatch(new UiActions.SetCurrentRouteAction(this.currentRoute))
+      }
+    })
   }
   ngAfterViewInit(): void {
-    this.sidebar.openedChange.subscribe(isOpen => {
+    this.sidebar.openedChange.subscribe((isOpen) => {
       if (!isOpen) {
-        this.store.dispatch(new UiActions.SetIsSidebarOpenAction(false))
+        this.store.dispatch(new UiActions.SetIsSidebarOpenAction(false));
       }
-    })
-    this.store.pipe(select(getIsSidebarOpen)).subscribe(isOpen => {
+    });
+    this.store.pipe(select(getIsSidebarOpen)).subscribe((isOpen) => {
       if (isOpen) {
-        this.sidebar.open()
+        this.sidebar.open();
       } else if (!isOpen && this.sidebar.opened) {
-        this.sidebar.close()
+        this.sidebar.close();
       }
-
-    })
+    });
   }
   ngOnInit(): void {
     const url = window.location.pathname;
@@ -101,26 +124,24 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       });
     this.store.dispatch(new RecipiesActions.GetRecipiesAction());
-    this.store.dispatch(new RecipiesActions.LoadNewIngredientsAction())
+    this.store.dispatch(new RecipiesActions.LoadNewIngredientsAction());
 
-    this.store.pipe(select(getIsError)).subscribe(error => {
+    this.store.pipe(select(getIsError)).subscribe((error) => {
       if (!!error) {
         this._snackBar.open(error, 'Ok', {
-          duration: 3000
+          duration: 3000,
         });
-        this.store.dispatch(new UiActions.ResetErrorAction())
+        this.store.dispatch(new UiActions.ResetErrorAction());
       }
-
-    })
-    this.store.pipe(select(getIsSuccessMessage)).subscribe(message => {
+    });
+    this.store.pipe(select(getIsSuccessMessage)).subscribe((message) => {
       if (message) {
         this._snackBar.open(message, 'Ok', {
-          duration: 3000
+          duration: 3000,
         });
-        this.store.dispatch(new UiActions.DismissSuccessMessageAction())
+        this.store.dispatch(new UiActions.DismissSuccessMessageAction());
       }
-
-    })
+    });
   }
 
   addIcons() {
@@ -170,7 +191,57 @@ export class AppComponent implements OnInit, AfterViewInit {
     );
     this.iconRegistry.addSvgIcon(
       'approved',
-      this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/approved-signal-svgrepo-com.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        '/assets/icons/approved-signal-svgrepo-com.svg'
+      )
     );
+    this.iconRegistry.addSvgIcon(
+      'ingredients',
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        '/assets/icons/ingredients-svgrepo-com.svg'
+      )
+    );
+    this.iconRegistry.addSvgIcon(
+      'preparation',
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        '/assets/icons/ingredients-plate-svgrepo-com.svg'
+      )
+    );
+  }
+
+  onMatToggleChange(event: any) {
+    switch(event.value){
+      case MainTabs.Home: this.goHome();
+      break;
+      case MainTabs.AddRecipy: this.goAddRecipy();
+      break;
+      case MainTabs.Calendar: this.goCalendar();
+      break;
+      case MainTabs.ShoppingList: this.goShoppingLists();
+      break;
+      case MainTabs.Preps: this.goPrepLists()
+    }
+  }
+  goHome() {
+    this.router.navigate(['/'], { relativeTo: this.route });
+  }
+  goCalendar() {
+    this.router.navigate(['calendar']);
+  }
+
+  goShoppingLists() {
+    this.router.navigate(['shopping-list']);
+  }
+
+  goPrepLists() {
+    this.router.navigate(['prep-lists']);
+  }
+
+  goAddRecipy(){
+    this.router.navigate(['cookster','recipies', 'edit-recipy'], { relativeTo: this.route })
+  }
+
+  isDisplayNavTabs(): boolean {
+    return Object.values(MainTabs).includes(this.currentRoute as MainTabs)
   }
 }

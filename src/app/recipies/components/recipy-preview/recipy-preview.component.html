@@ -110,40 +110,21 @@
         <div class="preparation-wrapper" *ngIf="!!_clonedRecipy.steps">
           <h3>Приготування</h3>
           <ng-container *ngIf="mode !== AppMode.EditRecipy">
-            <div class="steps-table" *ngIf="!isSplitToGroups">
+            <div class="steps-table">
               <div
                 class="steps-row"
                 *ngFor="let step of _clonedRecipy.steps; let i = index"
               >
                 <div>{{ i + 1 }}. {{ step.description }}</div>
-                <div class="time-cell">
+                <div class="time-cell" style="display: none">
                   {{ getTotalStepTime(step) | normalizeTime }}
                 </div>
               </div>
             </div>
-            <ng-container *ngIf="isSplitToGroups">
-              <ng-container *ngFor="let item of stepsByGroup | keyvalue">
-                <ng-container *ngIf="item.value.length > 0">
-                  <h4>{{ item.key }}</h4>
-                  <div class="steps-table">
-                    <div
-                      class="steps-row"
-                      *ngFor="let step of item.value; let i = index"
-                    >
-                      <div>{{ i + 1 }}. {{ step.description }}</div>
-                      <div class="time-cell">
-                        {{ getTotalStepTime(step) | normalizeTime }}
-                      </div>
-                    </div>
-                  </div>
-                </ng-container>
-              </ng-container>
-            </ng-container>
           </ng-container>
           <ng-container *ngIf="mode == AppMode.EditRecipy">
             <mat-list
               class="steps-table"
-              *ngIf="!isSplitToGroups"
               cdkDropList
               (cdkDropListDropped)="drop($event)"
             >
@@ -186,57 +167,6 @@
               </mat-list-item>
             </mat-list>
 
-            <ng-container *ngIf="isSplitToGroups" cdkDropListGroup>
-              <ng-container *ngFor="let item of stepsByGroup | keyvalue">
-                <ng-container *ngIf="item.value.length > 0">
-                  <h4>{{ item.key }}</h4>
-                  <mat-list
-                    class="steps-table"
-                    cdkDropList
-                    [cdkDropListData]="item.value"
-                    (cdkDropListDropped)="dropSplitToGroups($event)"
-                  >
-                    <mat-list-item
-                      class="steps-row"
-                      cdkDrag
-                      *ngFor="let step of item.value; let i = index"
-                    >
-                      <div class="step-description">
-                        <mat-form-field>
-                          <textarea
-                            matInput
-                            resize="vertical"
-                            rows="2"
-                            [(ngModel)]="step.description"
-                            (ngModelChange)="onStepDescriptionEdited(step)"
-                          >
-                          </textarea>
-                        </mat-form-field>
-                      </div>
-                      <div>
-                        <input
-                          class="edit-input"
-                          matInput
-                          [(ngModel)]="step.timeActive"
-                          (ngModelChange)="onStepDescriptionEdited(step)"
-                        />хв
-                      </div>
-                      <div>
-                        <input
-                          class="edit-input"
-                          matInput
-                          [(ngModel)]="step.timePassive"
-                          (ngModelChange)="onStepDescriptionEdited(step)"
-                        />хв
-                      </div>
-                      <button mat-icon-button (click)="onDeleteStep(step)">
-                        <mat-icon>delete</mat-icon>
-                      </button>
-                    </mat-list-item>
-                  </mat-list>
-                </ng-container>
-              </ng-container>
-            </ng-container>
             <button
               mat-flat-button
               class="action-button add-ingredient-button"
@@ -248,7 +178,10 @@
             <app-add-step
               *ngIf="isAddStepFormShown"
               [index]="_clonedRecipy.steps.length"
-              [isSplitToGroups]="_clonedRecipy.isSplitIntoGroups && !!_clonedRecipy.isSplitIntoGroups.length"
+              [isSplitToGroups]="
+                _clonedRecipy.isSplitIntoGroups &&
+                !!_clonedRecipy.isSplitIntoGroups.length
+              "
               [groupOptions]="_clonedRecipy.isSplitIntoGroups"
               (addNewStep)="onAddNewStep($event)"
             ></app-add-step>
@@ -370,29 +303,16 @@
     </ng-container>
   </div>
   <div class="tab-content" *ngIf="currentTab === 'preparation'">
-    <table class="steps-table" *ngIf="!isSplitToGroups">
+    <table class="steps-table">
       <tr *ngFor="let step of _clonedRecipy.steps; let i = index">
-        <td>
-          <p>{{ step.id }}. {{ step.description }}</p>
+        <td [class.current-step]="selectedStepId === i">
+          <p (click)="selectedStepId = i">{{ step.description }}</p>
         </td>
-        <td>{{ getTotalStepTime(step) | normalizeTime }}</td>
+        <td style="display: none">
+          {{ getTotalStepTime(step) | normalizeTime }}
+        </td>
       </tr>
     </table>
-    <ng-container *ngIf="isSplitToGroups">
-      <ng-container *ngFor="let item of stepsByGroup | keyvalue">
-        <ng-container *ngIf="item.value.length > 0">
-          <h4>{{ item.key }}</h4>
-          <table class="steps-table">
-            <tr *ngFor="let step of item.value; let i = index">
-              <td>
-                <p>{{ step.id }}. {{ step.description }}</p>
-              </td>
-              <td>{{ getTotalStepTime(step) | normalizeTime }}</td>
-            </tr>
-          </table>
-        </ng-container>
-      </ng-container>
-    </ng-container>
   </div>
   <div
     class="tab-content"
@@ -435,10 +355,23 @@
     aria-label="Font Style"
     (change)="onMatToggleChange($event)"
   >
-    <mat-button-toggle value="ingredients" checked
-      >Інгридієнти</mat-button-toggle
+  <mat-button-toggle value="home"
+          >
+          <mat-icon>home</mat-icon
+            >
+          </mat-button-toggle
+        >
+    <mat-button-toggle style="display: none" value="back"
+      ><mat-icon>arrow_back</mat-icon></mat-button-toggle
     >
-    <mat-button-toggle value="preparation">Приготування</mat-button-toggle>
-    <mat-button-toggle value="details">Деталі</mat-button-toggle>
+    <mat-button-toggle value="ingredients" checked>
+      <mat-icon svgIcon="ingredients"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="preparation">
+      <mat-icon svgIcon="preparation"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="details"
+      ><mat-icon>info</mat-icon></mat-button-toggle
+    >
   </mat-button-toggle-group>
 </ng-container>

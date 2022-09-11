@@ -49,10 +49,18 @@ body {
 }
 
 :root {
-  --primary: 	hsla(105, 100%, 25%, 1);
+  --primary: hsla(105, 100%, 25%, 1);
   --background-color: hsla(105, 100%, 98%, 1);
   --background-color-semi-transparent: hsla(105, 100%, 98%, 0.8);
-  --background-color-gradient: linear-gradient(90deg, rgba(247,255,245,0) 0%, rgba(247,255,245,0.75) 10%, rgba(247,255,245,0.85) 20%, rgba(247,255,245,0.85) 80%, rgba(247,255,245,0.75) 90%, rgba(247,255,245,0) 100%);
+  --background-color-gradient: linear-gradient(
+    90deg,
+    rgba(247, 255, 245, 0) 0%,
+    rgba(247, 255, 245, 0.75) 10%,
+    rgba(247, 255, 245, 0.85) 20%,
+    rgba(247, 255, 245, 0.85) 80%,
+    rgba(247, 255, 245, 0.75) 90%,
+    rgba(247, 255, 245, 0) 100%
+  );
   --text-color: hsla(105, 100%, 10%, 1);
   --tint-very-light: hsla(105, 100%, 95%, 0.5);
   --tint1: hsla(105, 100%, 90%, 1);
@@ -303,8 +311,10 @@ button.mat-menu-item {
   padding: 0.5em 0 1em 0;
 }
 
-.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element,
-.mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent
+  .mat-ripple-element,
+.mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent
+  .mat-ripple-element {
   background: var(--primary);
 }
 
@@ -382,7 +392,7 @@ button.mat-menu-item {
   }
 }
 
-.info-icon{
+.info-icon {
   font-size: 16px;
   color: var(--tint3);
 }
@@ -401,13 +411,16 @@ button.mat-menu-item {
 
 // --- Slider
 
-.mat-slider.mat-accent .mat-slider-track-fill, .mat-slider.mat-accent .mat-slider-thumb, .mat-slider.mat-accent .mat-slider-thumb-label{
+.mat-slider.mat-accent .mat-slider-track-fill,
+.mat-slider.mat-accent .mat-slider-thumb,
+.mat-slider.mat-accent .mat-slider-thumb-label {
   background-color: var(--primary);
 }
 
 //-- checkbox
 
-.mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{
+.mat-primary .mat-pseudo-checkbox-checked,
+.mat-primary .mat-pseudo-checkbox-indeterminate {
   background-color: var(--primary);
 }
 
@@ -429,7 +442,31 @@ button.mat-menu-item {
     font-size: 12px;
   }
 
-  .recipies-bottomsheet .mat-bottom-sheet-container{
+  .recipies-bottomsheet .mat-bottom-sheet-container {
     height: 80vh;
+  }
+}
+
+.mat-button-toggle-group {
+  position: fixed !important;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--background-color);
+  z-index: 10;
+}
+
+.mat-button-toggle {
+  height: 98%;
+  display: flex;
+  font-family: "Montserrat", sans-serif;
+  flex-grow: 1;
+  &.mat-button-toggle-checked {
+    background-color: var(--primary);
+    border-radius: 2px;
+    color: var(--background-color) !important;
+    font-weight: 500 !important;
   }
 }

@@ -1,6 +1,7 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DatePipe, Location } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
@@ -14,12 +15,7 @@ import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
 import { AppMode } from '../../containers/edit-recipy/edit-recipy.component';
-import {
-  IngredientsByGroup,
-  ingredientsByGroup,
-  StepsByGroup,
-  stepsByGroup,
-} from '../../containers/recipy-full-view/recipy-full-view.component';
+import { IngredientsByGroup, ingredientsByGroup } from '../../containers/recipy-full-view/recipy-full-view.component';
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
 import { GetUkrIngredientsGroup, Ingredient } from '../../models/ingredient.interface';
@@ -44,7 +40,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   portionsToServe: number | undefined;
   ingredientsByGroup: IngredientsByGroup = new ingredientsByGroup();
-  stepsByGroup: StepsByGroup = new stepsByGroup();
   isSplitToGroups: boolean = false;
 
   isChangesSaved: boolean = true;
@@ -64,13 +59,17 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   coeficient: number = 1;
 
+  selectedStepId = 0;
+
   constructor(
     private layoutService: LayoutService,
     private store: Store,
     private recipiesService: RecipiesService,
     private dialogsService: DialogsService,
     private calendarService: CalendarService,
-    private location: Location
+    private location: Location,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
@@ -82,7 +81,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     ) {
       this.isSplitToGroups = true;
       this.getIngredientsByGroup();
-      this.getStepsByGroup();
     }
 
     if (changes.recipy.currentValue) {
@@ -137,7 +135,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     ) {
       this.isSplitToGroups = true;
       this.getIngredientsByGroup();
-      this.getStepsByGroup();
     }
   }
 
@@ -209,14 +206,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  getStepsByGroup() {
-    if (this._clonedRecipy && this._clonedRecipy.isSplitIntoGroups) {
-      let steps = this._clonedRecipy?.steps;
-      this._clonedRecipy.isSplitIntoGroups.forEach((group) => {
-        this.stepsByGroup[group] = steps.filter((step) => step.group == group);
-      });
-    }
-  }
 
   get portionsText(): string {
     if (this.portionsToServe && this.portionsToServe == 1) {
@@ -276,7 +265,11 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     return tags;
   }
   onMatToggleChange(event: any) {
-    this.currentTab = event.value;
+    if(event.value === 'home'){
+      this.router.navigate(['/'], { relativeTo: this.route });
+    } else {
+      this.currentTab = event.value;
+    }
   }
 
   onPortionsChange(option: number) {
@@ -391,7 +384,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       this._clonedRecipy.steps = this._clonedRecipy.steps.filter(
         (item) => item.id !== step.id
       );
-      this.getStepsByGroup();
     }
     this.isChangesSaved = false;
   }
@@ -420,7 +412,6 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       step.group = event.group;
     }
     this._clonedRecipy?.steps.push(step);
-    this.getStepsByGroup();
     this.isAddStepFormShown = false;
     this.isChangesSaved = false;
   }
@@ -461,43 +452,43 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  dropSplitToGroups(event: CdkDragDrop<PreparationStep[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-    let changedStepsByGroup: StepsByGroup = {
-      main: this.mapStepsByGroup('main'),
-      filling: this.mapStepsByGroup('filling'),
-      souce: this.mapStepsByGroup('souce'),
-      dough: this.mapStepsByGroup('dough'),
-      decoration: this.mapStepsByGroup('decoration'),
-    };
-    if (this._clonedRecipy) {
-      let updatedSteps: PreparationStep[] = [];
-      Object.values(changedStepsByGroup).forEach(
-        (ar) => (updatedSteps = updatedSteps.concat(ar))
-      );
-      this._clonedRecipy.steps = updatedSteps;
-    }
-    this.isChangesSaved = false;
-  }
+  // dropSplitToGroups(event: CdkDragDrop<PreparationStep[]>) {
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex
+  //     );
+  //   } else {
+  //     transferArrayItem(
+  //       event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex
+  //     );
+  //   }
+  //   // let changedStepsByGroup: StepsByGroup = {
+  //   //   main: this.mapStepsByGroup('main'),
+  //   //   filling: this.mapStepsByGroup('filling'),
+  //   //   souce: this.mapStepsByGroup('souce'),
+  //   //   dough: this.mapStepsByGroup('dough'),
+  //   //   decoration: this.mapStepsByGroup('decoration'),
+  //   // };
+  //   if (this._clonedRecipy) {
+  //     let updatedSteps: PreparationStep[] = [];
+  //     Object.values(changedStepsByGroup).forEach(
+  //       (ar) => (updatedSteps = updatedSteps.concat(ar))
+  //     );
+  //     this._clonedRecipy.steps = updatedSteps;
+  //   }
+  //   this.isChangesSaved = false;
+  // }
 
-  mapStepsByGroup(key: string): PreparationStep[] {
-    return this.stepsByGroup[key].map(
-      (item: PreparationStep) => ({ ...item, group: key } as PreparationStep)
-    );
-  }
+  // mapStepsByGroup(key: string): PreparationStep[] {
+  //   return this.stepsByGroup[key].map(
+  //     (item: PreparationStep) => ({ ...item, group: key } as PreparationStep)
+  //   );
+  // }
 
   onFileUploaded(event: string) {
     if (this._clonedRecipy) {
