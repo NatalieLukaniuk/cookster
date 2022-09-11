@@ -13,9 +13,9 @@
 
     <ng-container *ngIf="mode !== AppMode.EditRecipy">
       <div class="ingredient-amount">
-        <span *ngIf="amountToDisplay > 0">{{
+        <div *ngIf="amountToDisplay > 0" class="ingredient-amount-number">{{
           NormalizeDisplayedAmount(amountToDisplay, measuringUnit)
-        }}</span>
+        }}</div>
         <ng-container *ngIf="!isMobile">
           <ng-container>
             <select
@@ -34,11 +34,28 @@
           </ng-container>
         </ng-container>
 
-        <ng-container *ngIf="isMobile">
+        <ng-container *ngIf="isMobile && _ingredient">
           <ng-container>
-            <span>{{ getUnitText(measuringUnit) }}</span>
+            <button class="measuring-unit-trigger"
+            mat-icon-button
+            [matMenuTriggerFor]="unitMenu"
+            *ngIf="_ingredient.amount > 0"
+          ><span>{{ getUnitText(measuringUnit) }}</span>
+          </button>
+          <span *ngIf="measuringUnit == MeasuringUnit.none">за смаком</span>
+          <mat-menu #unitMenu="matMenu">
+            <button
+              mat-menu-item
+              *ngFor="let unit of measurementUnits"
+              [value]="unit"
+              (click)="onValueChangeMatMenu(unit)"
+            >
+              {{ getUnitText(unit) }}
+            </button>
+          </mat-menu>
+            
           </ng-container>
-        </ng-container>
+        </ng-container>        
 
         <!-- <ng-container
         *ngIf="!!savedPortionsToServe"
@@ -85,25 +102,7 @@
         }}</span>
       </ng-container>
 
-      <ng-container *ngIf="isMobile">
-        <button
-          mat-icon-button
-          [matMenuTriggerFor]="unitMenu"
-          *ngIf="_ingredient.amount > 0"
-        >
-          <mat-icon svgIcon="edit"></mat-icon>
-        </button>
-        <mat-menu #unitMenu="matMenu">
-          <button
-            mat-menu-item
-            *ngFor="let unit of measurementUnits"
-            [value]="unit"
-            (click)="onValueChangeMatMenu(unit)"
-          >
-            {{ getUnitText(unit) }}
-          </button>
-        </mat-menu>
-      </ng-container>
+      
     </div>
   </ng-container>
   <ng-container *ngIf="!isProductInDB && _ingredient">

@@ -31,7 +31,15 @@ select {
     padding: 10px;
     align-items: center;
     &:not(.shopping-list-mode) {
-      border-bottom: 1px solid var(--tint2);
+      border-bottom: 1px solid var(--gray);
     }
+  }
+  .ingredient-amount-number{
+    padding-top: 3px;
+  }
+  .measuring-unit-trigger{
+    font-weight: 600;
+    margin-left: 2px;
+    width: auto;
   }
 }

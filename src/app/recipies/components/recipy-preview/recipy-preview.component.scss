@@ -291,6 +291,11 @@
   .portion-size-selection {
     padding: 5px 10px 15px;
   }
+  .top-part{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
 
 .current-step {

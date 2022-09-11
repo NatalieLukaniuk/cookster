@@ -359,15 +359,18 @@ button.mat-menu-item {
   justify-content: space-between;
   width: 100%;
   align-items: center;
+  
 }
 
 .ingredient-name {
-  width: 70%;
+  flex-grow: 1;
 }
 
 .ingredient-amount {
   text-align: end;
-  width: 30%;
+  width: max-content;
+  display: flex;
+  align-items: center;
 }
 
 // --- Buttons

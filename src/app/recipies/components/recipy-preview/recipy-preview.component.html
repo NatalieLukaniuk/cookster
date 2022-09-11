@@ -246,7 +246,8 @@
     class="tab-content"
     *ngIf="currentTab === 'ingredients' && portionsToServe"
   >
-    <div class="portions-selector">
+  <div class="top-part">
+     <div class="portions-selector">
       <span>Кількість порцій: {{ portionsToServe }}</span>
       <button
         mat-icon-button
@@ -278,6 +279,8 @@
       />
       гр.
     </div>
+  </div>
+   
 
     <ng-container *ngIf="!isSplitToGroups">
       <app-ingredient

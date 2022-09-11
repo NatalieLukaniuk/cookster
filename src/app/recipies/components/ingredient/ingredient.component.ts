@@ -45,6 +45,7 @@ export class IngredientComponent implements OnInit, OnChanges {
   isProductInDB: boolean = false;
 
   measuringUnit: MeasuringUnit = MeasuringUnit.gr;
+  MeasuringUnit = MeasuringUnit;
 
   NormalizeDisplayedAmount = NormalizeDisplayedAmount;
   constructor(
