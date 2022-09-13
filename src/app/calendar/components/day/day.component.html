@@ -19,174 +19,40 @@
       </div>
     </mat-expansion-panel>
   </div>
-  <div
-    cdkDropList
-    id="breakfast"
-    [cdkDropListData]="day.details.breakfastRecipies"
-    (cdkDropListDropped)="drop($event)"
-    *ngIf="!!day.details.breakfastRecipies.length || isMobile || isPlanner"
-    class="meal-time"
+  <app-celandar-meal
+    [day]="day"
+    [isMobile]="isMobile"
+    [mealtime]="MealTime.Breakfast"
+    (addRecipy)="passAddRecipy($event)"
+    (mealTimeUpdated)="onUpdateDay($event)"
+    (updateRecipy)="updateRecipy($event.recipy, $event.mealtime)"
+    (removeRecipy)="removeRecipy($event.recipy, $event.mealtime)"
+    (saveToShoppingList)="onSaveToShoppingList($event.item, $event.mealtime)"
   >
-    <div class="meal-header" [class.side-pane]="isPlanner">
-      <div>
-        <span>Breakfast</span>
-        <button
-          mat-icon-button
-          (click)="this.selectedMeal = 'breakfast'"
-          [matMenuTriggerFor]="addToDay"
-          *ngIf="isPlanner"
-        >
-          <mat-icon>add_circle_outline</mat-icon>
-        </button>
-      </div>
+  </app-celandar-meal>
+  <app-celandar-meal
+    [day]="day"
+    [isMobile]="isMobile"
+    [mealtime]="MealTime.Lunch"
+    (addRecipy)="passAddRecipy($event)"
+    (mealTimeUpdated)="onUpdateDay($event)"
+    (updateRecipy)="updateRecipy($event.recipy, $event.mealtime)"
+    (removeRecipy)="removeRecipy($event.recipy, $event.mealtime)"
+    (saveToShoppingList)="onSaveToShoppingList($event.item, $event.mealtime)"
+  >
+  </app-celandar-meal>
+  <app-celandar-meal
+    [day]="day"
+    [isMobile]="isMobile"
+    [mealtime]="MealTime.Dinner"
+    (addRecipy)="passAddRecipy($event)"
+    (mealTimeUpdated)="onUpdateDay($event)"
+    (updateRecipy)="updateRecipy($event.recipy, $event.mealtime)"
+    (removeRecipy)="removeRecipy($event.recipy, $event.mealtime)"
+    (saveToShoppingList)="onSaveToShoppingList($event.item, $event.mealtime)"
+  >
+  </app-celandar-meal>
 
-      <div>
-        <span *ngIf="!!getPortions('breakfast')">
-          {{ getPortions("breakfast") }} персони
-        </span>
-        <span class="divider"> | </span>
-        <span *ngIf="!!getAmountPerPerson('breakfast')">
-          {{ getAmountPerPerson("breakfast") }} гр/чол
-        </span>
-      </div>
-    </div>
-    <ng-container *ngIf="!!day.details.breakfastRecipies">
-      <ng-container *ngIf="!isMobile">
-        <div cdkDrag *ngFor="let item of day.details.breakfastRecipies">
-          <app-calendar-recipy
-            [isMobile]="isMobile"
-            [recipy]="item"
-            (removeRecipy)="removeRecipy($event, 'breakfastRecipies')"
-            (recipyUpdated)="updateRecipy($event, 'breakfastRecipies')"
-            (saveToShoppingList)="onSaveToShoppingList($event, 'breakfast')"
-          ></app-calendar-recipy>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="isMobile">
-        <div *ngFor="let item of day.details.breakfastRecipies">
-          <app-calendar-recipy
-            [isMobile]="isMobile"
-            [recipy]="item"
-            (removeRecipy)="removeRecipy($event, 'breakfastRecipies')"
-            (recipyUpdated)="updateRecipy($event, 'breakfastRecipies')"
-            (saveToShoppingList)="onSaveToShoppingList($event, 'breakfast')"
-          ></app-calendar-recipy>
-        </div>
-      </ng-container>
-    </ng-container>
-  </div>
-  <div
-    cdkDropList
-    id="lunch"
-    [cdkDropListData]="day.details.lunchRecipies"
-    (cdkDropListDropped)="drop($event)"
-    *ngIf="!!day.details.lunchRecipies.length || isMobile || isPlanner"
-    class="meal-time"
-  >
-    <div class="meal-header" [class.side-pane]="isPlanner">
-      <div>
-        <span>Lunch</span>
-        <button
-          mat-icon-button
-          [matMenuTriggerFor]="addToDay"
-          (click)="this.selectedMeal = 'lunch'"
-          *ngIf="isPlanner"
-        >
-          <mat-icon>add_circle_outline</mat-icon>
-        </button>
-      </div>
-
-      <div>
-        <span *ngIf="!!getPortions('lunch')">
-          {{ getPortions("lunch") }} персони
-        </span>
-        <span class="divider"> | </span>
-        <span *ngIf="!!getAmountPerPerson('lunch')">
-          {{ getAmountPerPerson("lunch") }} гр/чол
-        </span>
-      </div>
-    </div>
-    <ng-container *ngIf="!!day.details.lunchRecipies">
-      <ng-container *ngIf="!isMobile">
-        <div cdkDrag *ngFor="let item of day.details.lunchRecipies">
-          <app-calendar-recipy
-            [isMobile]="isMobile"
-            [recipy]="item"
-            (removeRecipy)="removeRecipy($event, 'lunchRecipies')"
-            (recipyUpdated)="updateRecipy($event, 'lunchRecipies')"
-            (saveToShoppingList)="onSaveToShoppingList($event, 'lunch')"
-          ></app-calendar-recipy>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="isMobile">
-        <div *ngFor="let item of day.details.lunchRecipies">
-          <app-calendar-recipy
-            [isMobile]="isMobile"
-            [recipy]="item"
-            (removeRecipy)="removeRecipy($event, 'lunchRecipies')"
-            (recipyUpdated)="updateRecipy($event, 'lunchRecipies')"
-            (saveToShoppingList)="onSaveToShoppingList($event, 'lunch')"
-          ></app-calendar-recipy>
-        </div>
-      </ng-container>
-    </ng-container>
-  </div>
-  <div
-    cdkDropList
-    [cdkDropListData]="day.details.dinnerRecipies"
-    id="dinner"
-    (cdkDropListDropped)="drop($event)"
-    *ngIf="!!day.details.dinnerRecipies.length || isMobile || isPlanner"
-    class="meal-time"
-  >
-    <div class="meal-header" [class.side-pane]="isPlanner">
-      <div>
-        <span>Dinner</span>
-        <button
-          mat-icon-button
-          [matMenuTriggerFor]="addToDay"
-          (click)="this.selectedMeal = 'dinner'"
-          *ngIf="isPlanner"
-        >
-          <mat-icon>add_circle_outline</mat-icon>
-        </button>
-      </div>
-      <div>
-        <span *ngIf="!!getPortions('dinner')">
-          {{ getPortions("dinner") }} персони
-        </span>
-        <span class="divider"> | </span>
-        <span *ngIf="!!getAmountPerPerson('dinner')">
-          {{ getAmountPerPerson("dinner") }} гр/чол
-        </span>
-      </div>
-    </div>
-    <ng-container *ngIf="!!day.details.dinnerRecipies">
-      <ng-container *ngIf="!isMobile">
-        <div cdkDrag *ngFor="let item of day.details.dinnerRecipies">
-          <app-calendar-recipy
-            [isMobile]="isMobile"
-            [recipy]="item"
-            (removeRecipy)="removeRecipy($event, 'dinnerRecipies')"
-            (recipyUpdated)="updateRecipy($event, 'dinnerRecipies')"
-            (saveToShoppingList)="onSaveToShoppingList($event, 'dinner')"
-          ></app-calendar-recipy>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="isMobile">
-        <div *ngFor="let item of day.details.dinnerRecipies">
-          <app-calendar-recipy
-            [isMobile]="isMobile"
-            [recipy]="item"
-            (removeRecipy)="removeRecipy($event, 'dinnerRecipies')"
-            (recipyUpdated)="updateRecipy($event, 'dinnerRecipies')"
-            (saveToShoppingList)="onSaveToShoppingList($event, 'dinner')"
-          ></app-calendar-recipy>
-        </div>
-      </ng-container>
-    </ng-container>
-  </div>
-</div>
 
 <mat-menu #addToDay="matMenu">
   <button mat-menu-item (click)="onAddRecipy()">Додати рецепт</button>

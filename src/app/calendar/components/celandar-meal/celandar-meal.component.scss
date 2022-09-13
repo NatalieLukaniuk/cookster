@@ -1,0 +1,56 @@
+.meal-header {
+    margin-block: 5px;
+    padding-inline: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &:first-child {
+        font-weight: bold;
+      }
+    }
+    &.side-pane {
+      flex-direction: column;
+      align-items: baseline;
+      & > div {
+        width: 100%;
+        &:first-child {
+          min-height: 30px;
+          .mat-icon {
+            font-size: 20px;
+          }
+          .mat-icon-button {
+            line-height: 30px;
+            height: 30px;
+          }
+        }
+      }
+    }
+  }
+
+  ::ng-deep .mat-expansion-panel-header-title {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .meal-time {
+    padding-block: 5px;
+  }
+  
+  .divider {
+    color: var(--gray);
+  }
+
+  @media (min-width: 600px) {    
+    .meal-time {
+      background: var(--tint1);
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--tint3);
+      }
+    }
+  }
+  

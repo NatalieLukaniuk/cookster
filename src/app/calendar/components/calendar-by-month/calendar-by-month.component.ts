@@ -314,7 +314,7 @@ export class CalendarByMonthComponent implements OnInit, OnDestroy {
             userToSave,
             event.day.details.day,
             event.recipyId,
-            event.meal,
+            event.meal.split('_')[0],
             amount.portions,
             amount.amountPerPortion
           );

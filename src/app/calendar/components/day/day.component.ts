@@ -1,10 +1,12 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import * as _ from 'lodash';
 import { Recipy, RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
 import { CalendarRecipyInDatabase, IDayDetails } from '../../models/calendar';
 import { Day } from '../calendar/calendar.component';
+import { MealTime } from '../celandar-meal/celandar-meal.component';
 
 @Component({
   selector: 'app-day',
@@ -28,68 +30,26 @@ export class DayComponent implements OnInit {
     meal: string;
     recipyId: string;
   }>();
-  @Output() recipyWasMoved = new EventEmitter<null>();
 
   selectedMeal: string = '';
+
+  MealTime = MealTime;
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  removeRecipy(recipy: Recipy, mealtime: string) {
-    let detailsToSave: IDayDetails = {
-      day: this.day.details.day,
-      breakfast: this.day.details.breakfastRecipies.map(
-        (item: RecipyForCalendar) => {
-          let toSave: CalendarRecipyInDatabase = {
-            recipyId: item.id,
-            portions: item.portions,
-            amountPerPortion: item.amountPerPortion,
-          };
-          return toSave;
-        }
-      ),
-      lunch: this.day.details.lunchRecipies.map((item: RecipyForCalendar) => {
-        let toSave: CalendarRecipyInDatabase = {
-          recipyId: item.id,
-          portions: item.portions,
-          amountPerPortion: item.amountPerPortion,
-        };
-        return toSave;
-      }),
-      dinner: this.day.details.dinnerRecipies.map((item: RecipyForCalendar) => {
-        let toSave: CalendarRecipyInDatabase = {
-          recipyId: item.id,
-          portions: item.portions,
-          amountPerPortion: item.amountPerPortion,
-        };
-        return toSave;
-      }),
-    };
-    switch (mealtime) {
-      case 'breakfastRecipies':
-        {
-          detailsToSave.breakfast = detailsToSave.breakfast.filter(
-            (item) => item.recipyId != recipy.id
-          );
-        }
-        break;
-      case 'lunchRecipies':
-        {
-          detailsToSave.lunch = detailsToSave.lunch.filter(
-            (item) => item.recipyId != recipy.id
-          );
-        }
-        break;
-      case 'dinnerRecipies':
-        {
-          detailsToSave.dinner = detailsToSave.dinner.filter(
-            (item) => item.recipyId != recipy.id
-          );
-        }
-        break;
+  removeRecipy(recipy: Recipy, mealtime: MealTime) {
+    let updatedDay: Day = _.cloneDeep(this.day);
+    switch(mealtime){
+      case MealTime.Breakfast: updatedDay.details.breakfastRecipies = updatedDay.details.breakfastRecipies.filter(item => item.id !== recipy.id);
+      break;
+      case MealTime.Lunch: updatedDay.details.lunchRecipies = updatedDay.details.lunchRecipies.filter(item => item.id !== recipy.id);
+      break;
+      case MealTime.Dinner: updatedDay.details.dinnerRecipies = updatedDay.details.dinnerRecipies.filter(item => item.id !== recipy.id);
+      break;
     }
-    this.updateDay.emit(detailsToSave);
+    this.onUpdateDay(updatedDay);
   }
 
   updateRecipy(recipy: RecipyForCalendar, mealtime: string) {
@@ -130,87 +90,6 @@ export class DayComponent implements OnInit {
     }
   }
 
-  getPortions(mealtime: string): number | null {
-    if (this.day.details) {
-      switch (mealtime) {
-        case 'breakfast':
-          return !!this.day.details.breakfastRecipies[0]
-            ? this.day.details.breakfastRecipies[0].portions
-            : null;
-        case 'lunch':
-          return !!this.day.details.lunchRecipies[0]
-            ? this.day.details.lunchRecipies[0].portions
-            : null;
-        case 'dinner':
-          return !!this.day.details.dinnerRecipies[0]
-            ? this.day.details.dinnerRecipies[0].portions
-            : null;
-        default:
-          return null;
-      }
-    } else return null;
-  }
-
-  drop(event: CdkDragDrop<Recipy[]> | CdkDragDrop<RecipyForCalendar[]>) {
-    if (event.previousContainer.id.includes('cdk-drop-list')) {
-      this.addRecipy.emit({
-        day: this.day,
-        meal: event.container.id,
-        recipyId: event.item.element.nativeElement.id,
-      });
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-      this.recipyWasMoved.emit();
-    }
-  }
-
-  getAmountPerPerson(mealtime: string) {
-    if (this.day.details) {
-      switch (mealtime) {
-        case 'breakfast': {
-          let amount = 0;
-          if (!!this.day.details.breakfastRecipies.length) {
-            this.day.details.breakfastRecipies.forEach(
-              (recipy: RecipyForCalendar) => {
-                amount = amount + recipy.amountPerPortion;
-              }
-            );
-          }
-          return amount;
-        }
-        case 'lunch': {
-          let amount = 0;
-          if (!!this.day.details.lunchRecipies.length) {
-            this.day.details.lunchRecipies.forEach(
-              (recipy: RecipyForCalendar) => {
-                amount = amount + recipy.amountPerPortion;
-              }
-            );
-          }
-          return amount;
-        }
-        case 'dinner': {
-          let amount = 0;
-          if (!!this.day.details.dinnerRecipies.length) {
-            this.day.details.dinnerRecipies.forEach(
-              (recipy: RecipyForCalendar) => {
-                amount = amount + recipy.amountPerPortion;
-              }
-            );
-          }
-          return amount;
-        }
-        default:
-          return null;
-      }
-    } else return null;
-  }
-
   onSaveToShoppingList(event: ShoppingListItem, meal: string) {
     event.day = [{ day: this.day.details.day, meal: meal }];
     this.saveToShoppingList.emit([event]);
@@ -218,5 +97,23 @@ export class DayComponent implements OnInit {
 
   onAddRecipy() {
     this.daySelected.emit({ day: this.day, meal: this.selectedMeal });
+  }
+
+  passAddRecipy(event: {
+    day: Day;
+    meal: string;
+    recipyId: string;
+  }){
+    this.addRecipy.emit(event)
+  }
+
+  onUpdateDay(event: Day){
+    let dayToSave: IDayDetails = {
+      day: event.details.day,
+      breakfast: event.details.breakfastRecipies.map(item => ({recipyId: item.id, portions: item.portions, amountPerPortion: item.amountPerPortion})),
+      lunch: event.details.lunchRecipies.map(item => ({recipyId: item.id, portions: item.portions, amountPerPortion: item.amountPerPortion})),
+      dinner: event.details.dinnerRecipies.map(item => ({recipyId: item.id, portions: item.portions, amountPerPortion: item.amountPerPortion}))
+    }
+    this.updateDay.emit(dayToSave)
   }
 }

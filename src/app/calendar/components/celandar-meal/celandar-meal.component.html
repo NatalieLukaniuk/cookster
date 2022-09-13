@@ -1,0 +1,48 @@
+<div
+    cdkDropList
+    [id]="mealtime + '_' + day.details.day"
+    [cdkDropListData]="detailedRecipiesList"
+    (cdkDropListDropped)="drop($event)"
+    *ngIf="!!_day"
+    class="meal-time"
+  >
+    <div class="meal-header">
+      <div>
+        <span>{{mealtime}}</span>        
+      </div>
+
+      <div  *ngIf="!!detailedRecipiesList.length">
+        <span *ngIf="!!getPortions()">
+          {{ getPortions() }} персони
+        </span>
+        <span class="divider"> | </span>
+        <span *ngIf="!!getAmountPerPerson()">
+          {{ getAmountPerPerson() }} гр/чол
+        </span>
+      </div>
+    </div>
+    <ng-container *ngIf="!!detailedRecipiesList">
+      <ng-container *ngIf="!isMobile">
+        <div cdkDrag *ngFor="let item of detailedRecipiesList" [id]="item.id">
+          <app-calendar-recipy
+            [isMobile]="isMobile"
+            [recipy]="item"
+            (removeRecipy)="onRemoveRecipy($event)"
+            (recipyUpdated)="onUpdateRecipy($event)"
+            (saveToShoppingList)="onSaveToShoppingList($event)"
+          ></app-calendar-recipy>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isMobile">
+        <div *ngFor="let item of detailedRecipiesList">
+          <app-calendar-recipy
+            [isMobile]="isMobile"
+            [recipy]="item"
+            (removeRecipy)="onRemoveRecipy($event)"
+            (recipyUpdated)="onUpdateRecipy($event)"
+            (saveToShoppingList)="onSaveToShoppingList($event)"
+          ></app-calendar-recipy>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>

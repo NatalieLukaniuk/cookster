@@ -22,6 +22,7 @@ import { PlannerModule } from './planner/planner.module';
 import { RecipiesModule } from './recipies/recipies.module';
 import { SharedModule } from './shared/shared.module';
 import { ShoppingListModule } from './shopping-list/shopping-list.module';
+import { CalendarEffects } from './store/effects/calendar.effects';
 import { RecipiesEffects } from './store/effects/recipies.effects';
 import { UserEffects } from './store/effects/user.effects';
 import { reducers } from './store/reducers';
@@ -49,7 +50,7 @@ import { reducers } from './store/reducers';
     PlannerModule,
     MatNativeDateModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([RecipiesEffects, UserEffects]),
+    EffectsModule.forRoot([RecipiesEffects, UserEffects, CalendarEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [RecipiesService],
