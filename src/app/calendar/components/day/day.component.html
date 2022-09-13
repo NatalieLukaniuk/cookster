@@ -4,18 +4,21 @@
   [class.side-panel]="isPlanner"
   [id]="day.details.day"
 >
-<div class="prep-plan" *ngIf="!!day.preps">
-  <mat-expansion-panel hideToggle>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <mat-icon>alarm</mat-icon> Приготувати заздалегіть
-      </mat-panel-title>      
-    </mat-expansion-panel-header>
-    <div class="prep-plan-item" *ngFor="let suggestion of day.preps.suggestions">
-      <app-suggestion [suggestion]="suggestion"></app-suggestion>
-    </div>
-  </mat-expansion-panel>
-</div>
+  <div class="prep-plan" *ngIf="!!day.preps">
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>alarm</mat-icon> Приготувати заздалегіть
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div
+        class="prep-plan-item"
+        *ngFor="let suggestion of day.preps.suggestions"
+      >
+        <app-suggestion [suggestion]="suggestion"></app-suggestion>
+      </div>
+    </mat-expansion-panel>
+  </div>
   <div
     cdkDropList
     id="breakfast"
@@ -48,15 +51,28 @@
       </div>
     </div>
     <ng-container *ngIf="!!day.details.breakfastRecipies">
-      <div cdkDrag *ngFor="let item of day.details.breakfastRecipies">
-        <app-calendar-recipy
-          [isMobile]="isMobile"
-          [recipy]="item"
-          (removeRecipy)="removeRecipy($event, 'breakfastRecipies')"
-          (recipyUpdated)="updateRecipy($event, 'breakfastRecipies')"
-          (saveToShoppingList)="onSaveToShoppingList($event, 'breakfast')"
-        ></app-calendar-recipy>
-      </div>
+      <ng-container *ngIf="!isMobile">
+        <div cdkDrag *ngFor="let item of day.details.breakfastRecipies">
+          <app-calendar-recipy
+            [isMobile]="isMobile"
+            [recipy]="item"
+            (removeRecipy)="removeRecipy($event, 'breakfastRecipies')"
+            (recipyUpdated)="updateRecipy($event, 'breakfastRecipies')"
+            (saveToShoppingList)="onSaveToShoppingList($event, 'breakfast')"
+          ></app-calendar-recipy>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isMobile">
+        <div *ngFor="let item of day.details.breakfastRecipies">
+          <app-calendar-recipy
+            [isMobile]="isMobile"
+            [recipy]="item"
+            (removeRecipy)="removeRecipy($event, 'breakfastRecipies')"
+            (recipyUpdated)="updateRecipy($event, 'breakfastRecipies')"
+            (saveToShoppingList)="onSaveToShoppingList($event, 'breakfast')"
+          ></app-calendar-recipy>
+        </div>
+      </ng-container>
     </ng-container>
   </div>
   <div
@@ -91,15 +107,28 @@
       </div>
     </div>
     <ng-container *ngIf="!!day.details.lunchRecipies">
-      <div cdkDrag *ngFor="let item of day.details.lunchRecipies">
-        <app-calendar-recipy
-          [isMobile]="isMobile"
-          [recipy]="item"
-          (removeRecipy)="removeRecipy($event, 'lunchRecipies')"
-          (recipyUpdated)="updateRecipy($event, 'lunchRecipies')"
-          (saveToShoppingList)="onSaveToShoppingList($event, 'lunch')"
-        ></app-calendar-recipy>
-      </div>
+      <ng-container *ngIf="!isMobile">
+        <div cdkDrag *ngFor="let item of day.details.lunchRecipies">
+          <app-calendar-recipy
+            [isMobile]="isMobile"
+            [recipy]="item"
+            (removeRecipy)="removeRecipy($event, 'lunchRecipies')"
+            (recipyUpdated)="updateRecipy($event, 'lunchRecipies')"
+            (saveToShoppingList)="onSaveToShoppingList($event, 'lunch')"
+          ></app-calendar-recipy>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isMobile">
+        <div *ngFor="let item of day.details.lunchRecipies">
+          <app-calendar-recipy
+            [isMobile]="isMobile"
+            [recipy]="item"
+            (removeRecipy)="removeRecipy($event, 'lunchRecipies')"
+            (recipyUpdated)="updateRecipy($event, 'lunchRecipies')"
+            (saveToShoppingList)="onSaveToShoppingList($event, 'lunch')"
+          ></app-calendar-recipy>
+        </div>
+      </ng-container>
     </ng-container>
   </div>
   <div
@@ -133,15 +162,28 @@
       </div>
     </div>
     <ng-container *ngIf="!!day.details.dinnerRecipies">
-      <div cdkDrag *ngFor="let item of day.details.dinnerRecipies">
-        <app-calendar-recipy
-          [isMobile]="isMobile"
-          [recipy]="item"
-          (removeRecipy)="removeRecipy($event, 'dinnerRecipies')"
-          (recipyUpdated)="updateRecipy($event, 'dinnerRecipies')"
-          (saveToShoppingList)="onSaveToShoppingList($event, 'dinner')"
-        ></app-calendar-recipy>
-      </div>
+      <ng-container *ngIf="!isMobile">
+        <div cdkDrag *ngFor="let item of day.details.dinnerRecipies">
+          <app-calendar-recipy
+            [isMobile]="isMobile"
+            [recipy]="item"
+            (removeRecipy)="removeRecipy($event, 'dinnerRecipies')"
+            (recipyUpdated)="updateRecipy($event, 'dinnerRecipies')"
+            (saveToShoppingList)="onSaveToShoppingList($event, 'dinner')"
+          ></app-calendar-recipy>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isMobile">
+        <div *ngFor="let item of day.details.dinnerRecipies">
+          <app-calendar-recipy
+            [isMobile]="isMobile"
+            [recipy]="item"
+            (removeRecipy)="removeRecipy($event, 'dinnerRecipies')"
+            (recipyUpdated)="updateRecipy($event, 'dinnerRecipies')"
+            (saveToShoppingList)="onSaveToShoppingList($event, 'dinner')"
+          ></app-calendar-recipy>
+        </div>
+      </ng-container>
     </ng-container>
   </div>
 </div>
