@@ -1,3 +1,4 @@
+import { UiModule } from './ui/ui.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -48,6 +49,7 @@ import { reducers } from './store/reducers';
     FiltersModule,
     ShoppingListModule,
     PlannerModule,
+    UiModule,
     MatNativeDateModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([RecipiesEffects, UserEffects, CalendarEffects]),

@@ -1,0 +1,52 @@
+<div *ngIf="!!currentFilters" class="wrapper">
+  <div
+    class="title"
+    *ngIf="
+      currentFilters.ingredientsToInclude.length ||
+      currentFilters.ingredientsToExclude.length ||
+      currentFilters.tags.length ||
+      !!currentFilters.maxPrepTime
+    "
+  >
+    <h4>Фільтри:</h4>
+    <h5>Знайдено {{ recipiesService.filteredRecipies }} рецептів</h5>
+  </div>
+  <div class="filters">
+    <div class="ingreds-to-include" *ngIf="currentFilters.ingredientsToInclude.length">
+      <mat-chip-list>
+        <mat-chip
+          selectable="true"
+          *ngFor="let tag of currentFilters.ingredientsToInclude"
+          (click)="removeIngrToInclude(tag)"
+          >{{ getIngredientText(tag) }} <mat-icon>close</mat-icon></mat-chip
+        >
+      </mat-chip-list>
+    </div>
+    <div class="ingreds-to-exclude"  *ngIf="currentFilters.ingredientsToExclude.length">
+      <mat-chip-list>
+        <mat-chip
+          *ngFor="let tag of currentFilters.ingredientsToExclude"
+          (click)="removeIngrToExclude(tag)"
+          >{{ getIngredientText(tag) }} <mat-icon>close</mat-icon></mat-chip
+        >
+      </mat-chip-list>
+    </div>
+    <div class="tags"  *ngIf="currentFilters.tags.length">
+      <mat-chip-list selectable="true">
+        <mat-chip
+          selectable="true"
+          *ngFor="let tag of currentFilters.tags"
+          (click)="removeTag(tag)"
+          >{{ getTagsText(tag) }} <mat-icon>close</mat-icon></mat-chip
+        >
+      </mat-chip-list>
+    </div>
+    <div class="max-prep-time" *ngIf="!!currentFilters.maxPrepTime">
+      <mat-chip        
+        (click)="removeMaxPrepTime()"
+        >До {{ formatPrepTimeSliderLabel() }}
+        <mat-icon>close</mat-icon></mat-chip
+      >
+    </div>
+  </div>
+</div>

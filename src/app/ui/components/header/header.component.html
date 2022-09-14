@@ -1,5 +1,6 @@
 <header>
   <h1 mat-button (click)="goHome()">Cookster</h1>
+
   <button
     *ngIf="!isMobile && (isLoggedIn$ | async)"
     mat-icon-button

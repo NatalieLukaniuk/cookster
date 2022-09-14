@@ -1,3 +1,5 @@
+import { FiltersModule } from './../filters/filters.module';
+import { UiModule } from './../ui/ui.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -28,8 +30,10 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    DragDropModule,
+    UiModule,
     MatTooltipModule,
-    DragDropModule,    
+    FiltersModule,
     StoreModule.forFeature('recipies', RecipiesReducers),
   ],
   declarations: [
@@ -46,6 +50,10 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     RecipyPreviewComponent,
     EditRecipyComponent,
   ],
-  exports: [IngredientComponent, RecipyShortViewComponent, RecipyPreviewComponent],
+  exports: [
+    IngredientComponent,
+    RecipyShortViewComponent,
+    RecipyPreviewComponent,
+  ],
 })
 export class RecipiesModule {}

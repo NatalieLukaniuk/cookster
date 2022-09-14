@@ -36,9 +36,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { SelectOptionDialogComponent } from './components/select-option-dialog/select-option-dialog.component';
 import { SuggestionComponent } from './components/suggestion/suggestion.component';
 import { TextInputDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
-import { HeaderComponent } from './containers/header/header.component';
 import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
-
 
 @NgModule({
   imports: [
@@ -72,10 +70,9 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatTabsModule,
     MatTooltipModule,
     MatDatepickerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
-    HeaderComponent,
     NavigationComponent,
     SelectOptionDialogComponent,
     NormalizeTimePipe,
@@ -83,10 +80,9 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     ImageComponent,
     TextInputDialogComponent,
     DatePickerRangeComponent,
-    SuggestionComponent
+    SuggestionComponent,
   ],
   exports: [
-    HeaderComponent,
     MatButtonModule,
     NavigationComponent,
     MatSidenavModule,
@@ -121,8 +117,8 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     ImageComponent,
     TextInputDialogComponent,
     DatePickerRangeComponent,
-    SuggestionComponent
+    SuggestionComponent,
   ],
-  providers: []
+  providers: [],
 })
 export class SharedModule {}

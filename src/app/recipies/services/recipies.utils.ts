@@ -330,6 +330,19 @@ export function getIngredientText(
   return productName;
 }
 
+export function getProductText(
+  productId: string,
+  allProducts: Product[]
+){
+  let productName = '';
+  for (let product of allProducts) {
+    if (product.id === productId) {
+      productName = product.name;
+    }
+  }
+  return productName;
+}
+
 export function NormalizeDisplayedAmount(
   weirdAmount: number,
   unit: MeasuringUnit

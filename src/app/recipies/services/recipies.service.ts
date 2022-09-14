@@ -14,6 +14,7 @@ import { RecipiesApiService } from './recipies-api.service';
 import {
   getIngredientIdFromName,
   getIngredientText,
+  getProductText,
   isIngrIncludedInAmountCalculation,
   transformToGr,
 } from './recipies.utils';
@@ -75,6 +76,10 @@ export class RecipiesService {
 
   getIngredientText(ingr: Ingredient): string {
     return getIngredientText(ingr, this.products$.value);
+  }
+
+  getProductNameById(id: string): string {
+    return getProductText(id, this.products$.value);
   }
 
   deleteRecipy(recipy: Recipy) {
