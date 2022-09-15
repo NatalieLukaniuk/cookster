@@ -1,3 +1,4 @@
+import { PlannerByDate } from './../../planner-reworked/models';
 import { MultiFactorUser, UserInfo, UserMetadata } from 'firebase/auth';
 import { DayDetails } from 'src/app/calendar/models/calendar';
 import { SuggestionList } from 'src/app/planner/components/advance-preparation/advance-preparation.component';
@@ -11,7 +12,8 @@ export interface User {
   shoppingLists?: ShoppingListItem[];
   prepLists?: SuggestionList[];
   img?: string;
-  role: Role
+  role: Role,
+  planner?: PlannerByDate[]
 }
 
 export enum Role {
