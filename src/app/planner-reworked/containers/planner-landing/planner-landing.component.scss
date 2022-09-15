@@ -1,0 +1,9 @@
+.planner-container{
+    padding-top: 10px;
+}
+
+@media (max-width: 600px) {
+    .planner-container{
+      padding-top: 10vh;
+    }
+  }

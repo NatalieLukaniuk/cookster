@@ -1,7 +1,21 @@
-<p *ngIf="isListView">
-  here will be the list of existing planners and a button to add new one
+<div class="planner-container" *ngIf="isListView$ | async">
+  <!-- here will be the list of existing planners and a button to add new one
   On navigation to a planner isListView is set to false
-  On create new planner button is clicked and range is selected, a new empty planner is created and added to this isListView
-
-</p>
+  On create new planner button is clicked and range is selected, a new empty planner is created and added to this isListView -->
+  <button mat-flat-button class="action-button" (click)="onAddNewPlanner()">
+    Додати
+  </button>
+  <app-date-picker-range
+    *ngIf="showDatePicker"
+    (dateSelected)="onDateSelected($event)"
+  ></app-date-picker-range>
+  <mat-list>
+    <mat-list-item
+      *ngFor="let planner of plannersList"
+      (click)="onPlannerClicked(planner.id)"
+    >
+      {{ planner.startDate }} - {{ planner.endDate }}
+    </mat-list-item>
+  </mat-list>
+</div>
 <router-outlet></router-outlet>
