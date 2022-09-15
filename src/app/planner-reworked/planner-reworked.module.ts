@@ -1,3 +1,6 @@
+import { PrepsComponent } from './components/preps/preps.component';
+import { ShoppingComponent } from './components/shopping/shopping.component';
+import { PlanningComponent } from './components/planning/planning.component';
 import { SharedModule } from './../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -13,6 +16,6 @@ import { PlannerLandingComponent } from './containers/planner-landing/planner-la
     RouterModule,
     SharedModule
   ],
-  declarations: [PlannerByDateRangeComponent, PlannerLandingComponent]
+  declarations: [PlannerByDateRangeComponent, PlannerLandingComponent, PlanningComponent, ShoppingComponent, PrepsComponent]
 })
 export class PlannerReworkedModule { }

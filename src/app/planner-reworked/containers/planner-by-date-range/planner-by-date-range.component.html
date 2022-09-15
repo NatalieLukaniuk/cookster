@@ -1,3 +1,7 @@
-<p>
-  planner-by-date-range works!
-</p>
+<nav mat-tab-nav-bar>
+  <a mat-tab-link *ngFor="let tab of tabs"
+     (click)="activeLink = tab.link"
+     [active]="activeLink == tab.link"
+     [routerLink]="tab.link"> {{tab.name}} </a>
+</nav>
+<mat-tab-nav-panel #tabPanel><router-outlet></router-outlet></mat-tab-nav-panel>

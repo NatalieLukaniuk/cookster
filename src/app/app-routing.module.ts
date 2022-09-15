@@ -1,3 +1,6 @@
+import { PrepsComponent } from './planner-reworked/components/preps/preps.component';
+import { ShoppingComponent } from './planner-reworked/components/shopping/shopping.component';
+import { PlanningComponent } from './planner-reworked/components/planning/planning.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -71,7 +74,12 @@ export const routes: Routes = [
     {
       path: 'by-date/:id',
       component: PlannerByDateRangeComponent,
-      pathMatch: 'full',
+      // pathMatch: 'full',
+      children: [
+        {path: 'planning', component: PlanningComponent, pathMatch: 'full',},
+        {path: 'shopping', component: ShoppingComponent, pathMatch: 'full',},
+        {path: 'preps', component: PrepsComponent, pathMatch: 'full',}
+      ]
     },
   ]},
   { path: 'admin-panel', component: AdminComponent },
