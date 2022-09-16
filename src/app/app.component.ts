@@ -1,15 +1,18 @@
+import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
+import { SetCurrentPlannerByDateAction } from './store/actions/planner.actions';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Event, NavigationEnd, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { throws } from 'assert';
 import { initializeApp } from 'firebase/app';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { map, tap, filter } from 'rxjs/operators';
 
 import { AuthService } from './auth/services/auth.service';
 import { UserService } from './auth/services/user.service';
@@ -18,7 +21,12 @@ import { LayoutService } from './shared/services/layout.service';
 import * as RecipiesActions from './store/actions/recipies.actions';
 import * as UiActions from './store/actions/ui.actions';
 import { IAppState } from './store/reducers';
-import { getIsError, getIsSidebarOpen, getIsSuccessMessage } from './store/selectors/ui.selectors';
+import {
+  getIsError,
+  getIsSidebarOpen,
+  getIsSuccessMessage,
+} from './store/selectors/ui.selectors';
+import { User } from './auth/models/user.interface';
 
 export enum MainTabs {
   Home = 'all-recipies',
@@ -54,6 +62,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   MainTabs = MainTabs;
 
   currentRoute: string = '';
+  routerEvents$: Observable<Event>;
+  currentUser$: Observable<User | null>;
 
   constructor(
     private iconRegistry: MatIconRegistry,
@@ -75,13 +85,30 @@ export class AppComponent implements OnInit, AfterViewInit {
     );
     this.isMobile$ = this.layoutService.isMobile$;
 
-    this.router.events.subscribe(event => {
-      if(event instanceof NavigationEnd) {
-        const url = event.urlAfterRedirects.split('/');
-        this.currentRoute = url[url.length - 1];
-        this.store.dispatch(new UiActions.SetCurrentRouteAction(this.currentRoute))
-      }
-    })
+    this.routerEvents$ = this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd)
+    );
+    this.currentUser$ = this.store.pipe(select(getCurrentUser));
+
+    combineLatest([this.routerEvents$, this.currentUser$])
+      .pipe(map((result) => ({ routerEvent: result[0], user: result[1] })))
+      .subscribe((res: { routerEvent: Event; user: User | null }) => {
+        if (res.routerEvent instanceof NavigationEnd) {
+          const url = res.routerEvent.urlAfterRedirects.split('/');
+          this.currentRoute = url[url.length - 1];
+          this.store.dispatch(
+            new UiActions.SetCurrentRouteAction(this.currentRoute)
+          );
+        }
+        if (
+          res.routerEvent instanceof NavigationEnd &&
+          res.routerEvent.urlAfterRedirects.includes('by-date') &&
+          res.user
+        ) {
+          const url = res.routerEvent.urlAfterRedirects.split('/');
+          this.store.dispatch(new SetCurrentPlannerByDateAction(url[3]));
+        }
+      });
   }
   ngAfterViewInit(): void {
     this.sidebar.openedChange.subscribe((isOpen) => {
@@ -210,16 +237,21 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   onMatToggleChange(event: any) {
-    switch(event.value){
-      case MainTabs.Home: this.goHome();
-      break;
-      case MainTabs.AddRecipy: this.goAddRecipy();
-      break;
-      case MainTabs.Calendar: this.goCalendar();
-      break;
-      case MainTabs.ShoppingList: this.goShoppingLists();
-      break;
-      case MainTabs.Preps: this.goPrepLists()
+    switch (event.value) {
+      case MainTabs.Home:
+        this.goHome();
+        break;
+      case MainTabs.AddRecipy:
+        this.goAddRecipy();
+        break;
+      case MainTabs.Calendar:
+        this.goCalendar();
+        break;
+      case MainTabs.ShoppingList:
+        this.goShoppingLists();
+        break;
+      case MainTabs.Preps:
+        this.goPrepLists();
     }
   }
   goHome() {
@@ -237,11 +269,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.router.navigate(['prep-lists']);
   }
 
-  goAddRecipy(){
-    this.router.navigate(['cookster','recipies', 'edit-recipy'], { relativeTo: this.route })
+  goAddRecipy() {
+    this.router.navigate(['cookster', 'recipies', 'edit-recipy'], {
+      relativeTo: this.route,
+    });
   }
 
   isDisplayNavTabs(): boolean {
-    return Object.values(MainTabs).includes(this.currentRoute as MainTabs)
+    return Object.values(MainTabs).includes(this.currentRoute as MainTabs);
   }
 }

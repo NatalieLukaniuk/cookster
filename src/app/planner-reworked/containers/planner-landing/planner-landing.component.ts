@@ -1,3 +1,4 @@
+import { SetCurrentPlannerByDateAction } from './../../../store/actions/planner.actions';
 import { LayoutService } from 'src/app/shared/services/layout.service';
 import { PlannerService } from './../../services/planner.service';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
@@ -38,10 +39,9 @@ export class PlannerLandingComponent implements OnInit, OnDestroy {
       .subscribe((user) => {
         if (user && user.planner) {
           this.plannersList = user.planner;
-          console.log(this.plannersList);
         }
       });
-      this.isMobile$ = this.layoutService.isMobile$;
+    this.isMobile$ = this.layoutService.isMobile$;
   }
   ngOnDestroy(): void {
     this.destroyed$.next();
@@ -61,7 +61,7 @@ export class PlannerLandingComponent implements OnInit, OnDestroy {
   }
 
   onPlannerClicked(id: string) {
-    this.router.navigate(['by-date/', id], {
+    this.router.navigate(['by-date/', id, 'planning'], {
       relativeTo: this.route,
     });
   }

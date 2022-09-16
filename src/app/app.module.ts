@@ -1,3 +1,4 @@
+import { PlannerEffects } from './store/effects/planner.effects';
 import { UiModule } from './ui/ui.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -52,7 +53,7 @@ import { reducers } from './store/reducers';
     UiModule,
     MatNativeDateModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([RecipiesEffects, UserEffects, CalendarEffects]),
+    EffectsModule.forRoot([RecipiesEffects, UserEffects, CalendarEffects, PlannerEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [RecipiesService],
