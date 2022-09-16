@@ -1,0 +1,36 @@
+<div class="content-wrapper">
+  <div class="all-recipies">
+    <div
+      *ngIf="!!allRecipies && currentUser"
+      class="user-recipies-wrapper"
+      cdkDropList
+    >
+      <div
+        class="recipy"
+        cdkDrag
+        [id]="recipy.id"
+        *ngFor="let recipy of allRecipies"
+      >
+        <app-recipy-short-view
+          [recipy]="recipy"
+          [isPlanner]="true"
+          [currentUser]="currentUser"
+          [isMobile]="isMobile"
+          [mode]="appMode"
+          (addToCalendar)="onAddToCalendar($event)"
+          (recipyClicked)="onRecipyClicked($event)"
+        ></app-recipy-short-view>
+        <div class="recipy-placeholder" *cdkDragPlaceholder>{{recipy.name}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="recipy-preview" *ngIf="showRecipyPreview && recipyForPreview">
+    <button mat-button (click)="closeRecipyPreview()" class="close-preview-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+    <app-recipy-preview
+      [recipy]="recipyForPreview"
+      [mode]="AppMode.Planner"
+    ></app-recipy-preview>
+  </div>
+</div>

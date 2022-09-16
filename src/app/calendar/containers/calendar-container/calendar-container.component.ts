@@ -9,6 +9,10 @@ import { IAppState } from 'src/app/store/reducers';
 
 import * as CalendarActions from '../../../store/actions/calendar.actions';
 
+export enum Direction {
+  Vertical,
+  Horizontal
+}
 @Component({
   selector: 'app-calendar-container',
   templateUrl: './calendar-container.component.html',
@@ -19,6 +23,9 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
   _isPlanner = false;
   @Input() isPlanner = false;
   @Input() isRecipySelected: boolean = false;
+  @Input() direction: Direction = Direction.Vertical;
+  @Input() displayRange: { startDate: string; endDate: string } | undefined;
+  @Input() displayMonthSelector: boolean = true;
   destroy$ = new Subject();
 
   showDatePicker: boolean = false;

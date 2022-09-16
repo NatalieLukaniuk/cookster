@@ -17,6 +17,7 @@ import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import * as UserActions from '../../../store/actions/user.actions';
+import { Direction } from '../../containers/calendar-container/calendar-container.component';
 import {
   CalendarRecipyInDatabase,
   DayDetails,
@@ -27,9 +28,7 @@ import {
 import { CalendarService } from '../../services/calendar.service';
 import { DateService } from '../../services/date.service';
 import { Day } from '../calendar/calendar.component';
-import {
-  IngredientsToListBottomsheetComponent,
-} from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
+import { IngredientsToListBottomsheetComponent } from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 import * as CalendarActions from './../../../store/actions/calendar.actions';
 import { getaddToCartDateRange } from './../../../store/selectors/calendar.selectors';
 
@@ -40,12 +39,15 @@ import { getaddToCartDateRange } from './../../../store/selectors/calendar.selec
 })
 export class CalendarByMonthComponent implements OnInit, OnDestroy {
   @Input() isMobile: boolean = false;
+  @Input() direction!: Direction;
+  @Input() displayRange: { startDate: string; endDate: string } | undefined;
 
   calendar: Day[] = [];
   userCalendarData: IDayDetails[] = [];
   destroyed$ = new Subject();
 
   currentUser: User | undefined;
+  Direction = Direction;
 
   constructor(
     private dateService: DateService,
@@ -363,5 +365,14 @@ export class CalendarByMonthComponent implements OnInit, OnDestroy {
       };
       this.store.dispatch(new UserActions.UpdateUserAction(updatedUser));
     }
+  }
+
+  isWithinRange(day: Day): boolean {
+    if (this.displayRange) {
+      return (
+        +day.details.day >= +this.displayRange.startDate &&
+        +day.details.day <= +this.displayRange.endDate
+      );
+    } else return true;
   }
 }

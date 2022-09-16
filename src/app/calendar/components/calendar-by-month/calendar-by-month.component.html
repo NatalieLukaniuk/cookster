@@ -1,9 +1,9 @@
-<div >
+<div class="calendar-by-month-wrapper" [class.horizontal]="direction == Direction.Horizontal">
   <ng-container *ngFor="let day of calendar">
-    <div cdkDrag
+    <div
       [id]="day.details.day"
       class="calendar-day"
-      *ngIf="!day.disabled"
+      *ngIf="!day.disabled && isWithinRange(day)"
       [class.disabled]="day.disabled"
       [class.selected]="day.selected"
       [class.active]="day.active"

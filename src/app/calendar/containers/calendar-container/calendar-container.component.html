@@ -1,5 +1,5 @@
 <div class="calendar-container">
-  <div class="calendar-header">
+  <div class="calendar-header" *ngIf="displayMonthSelector">
     <div *ngIf="showDatePicker" class="date-selection">
       <mat-form-field appearance="fill">
       <mat-label>Enter a date range</mat-label>
@@ -20,11 +20,13 @@
     <app-calendar [isMobile]="isMobile" *ngIf="!_isPlanner"></app-calendar>
     <app-calendar-by-month
       [isMobile]="isMobile"
+      [direction]="direction"
+      [displayRange]="displayRange"
       *ngIf="_isPlanner"
     ></app-calendar-by-month>
   </div>
   <div class="optional"></div>
-  <div class="add-shopping-cart-wrapper">
+  <!-- <div class="add-shopping-cart-wrapper">
     <button
       *ngIf="!showDatePicker"
       mat-icon-button
@@ -33,5 +35,5 @@
       <mat-icon>add_shopping_cart</mat-icon>
     </button>
     
-  </div>
+  </div> -->
 </div>

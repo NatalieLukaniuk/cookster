@@ -1,3 +1,6 @@
-<p>
-  planning works!
-</p>
+<div *ngIf="!!currentPlanner; else noPlanner" cdkDropListGroup>
+  <app-calendar-container [isPlanner]="true" [direction]="Direction.Horizontal" [displayRange]="getDisplayRange()" [displayMonthSelector]="false"></app-calendar-container>
+  <app-recipies-pannel [currentUser]="currentUser$ | async"></app-recipies-pannel>
+</div>
+
+<ng-template #noPlanner>This planner doesn't exist</ng-template>

@@ -1,32 +1,39 @@
-.calendar-day {
-    padding-block: 10px;
-    width: 100%;
-      min-height: auto;
-      text-align: left;
-      font-size: 12px;
-      border: none;
-      margin-bottom: 10px;
-      background-color: var(--tint1);
-      padding-inline: 0;
-    &.active {
-      border-color: black;
-      span {
-        font-weight: 800;
-      }
-    }
-    &.disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+.calendar-by-month-wrapper {
+  display: flex;
+  .horizontal {
+    flex-direction: row;
   }
+}
 
-  .day-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 10px;
-    padding-left: 10px;
-    .mat-icon {
-      font-size: 20px;
+.calendar-day {
+  padding-block: 10px;
+  width: 100%;
+  min-height: auto;
+  text-align: left;
+  font-size: 12px;
+  border: none;
+  margin-bottom: 10px;
+  background-color: var(--tint1);
+  padding-inline: 0;
+  &.active {
+    border-color: black;
+    span {
+      font-weight: 800;
     }
   }
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  padding-left: 10px;
+  .mat-icon {
+    font-size: 20px;
+  }
+}
