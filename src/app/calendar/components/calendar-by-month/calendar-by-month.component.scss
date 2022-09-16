@@ -1,7 +1,11 @@
 .calendar-by-month-wrapper {
   display: flex;
-  .horizontal {
-    flex-direction: row;
+  &:not(.horizontal) {
+    flex-direction: column;    
+  }
+  &.horizontal{
+    width: 100vw;
+    overflow-x: auto;
   }
 }
 
@@ -24,6 +28,12 @@
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+  &.horizontal{
+    margin-inline: 5px;
+    max-height: 40vh;
+    overflow-y: auto;
+    min-width: 220px;
   }
 }
 

@@ -204,4 +204,12 @@ export class CelandarMealComponent implements OnInit {
       }
     } else return [];
   }
+
+  get mealtimeText(){
+    switch(this.mealtime){
+      case MealTime.Breakfast: return 'Сніданок';
+      case MealTime.Lunch: return 'Обід';
+      case MealTime.Dinner: return 'Вечеря';
+    }
+  }
 }
