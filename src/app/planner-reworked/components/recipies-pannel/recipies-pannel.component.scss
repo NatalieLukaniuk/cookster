@@ -29,17 +29,22 @@
 
 .content-wrapper {
   display: flex;
+  flex-direction: column;
+  max-height: 60vh; //todo height is messed up and not responsive
 }
 
 .recipy-preview {
   min-width: 490px;
-  max-height: 75vh;
+  max-height: 55vh;//todo height is messed up and not responsive
   overflow-y: auto;
 }
 
 .all-recipies {
-  max-height: 75vh;
+max-height: 55vh;//todo height is messed up and not responsive
   overflow-y: auto;
+}
+.recipies{
+  display: flex;
 }
 
 .close-preview-btn {
@@ -48,4 +53,15 @@
   padding-inline: 10px;
   min-width: 40px;
   position: absolute;
+}
+
+.menu-button{
+  min-width: max-content;
+    height: fit-content;
+    margin-right: 15px;
+}
+
+.filters{
+  display: flex;
+  align-items: center;
 }

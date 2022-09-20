@@ -32,7 +32,7 @@
         >
           <mat-icon>remove</mat-icon>
         </button>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="amount-per-portion-input">
           <mat-label>Amount per portion (in gramms)</mat-label>
           <input
             matInput
@@ -58,7 +58,7 @@
       >
         <mat-icon>zoom_in</mat-icon>Перейти до рецепту
       </button>
-      <button
+      <!-- <button
         mat-list-item
         class="recipy-details-item button"
         (click)="showDetails(Details.Ingredients)"
@@ -116,7 +116,7 @@
         <ng-container *ngFor="let suggestion of suggestions">
           <div>{{ suggestion.ingr }} {{ suggestion.text }}</div>
         </ng-container>
-      </div>
+      </div> -->
       <!-- <button mat-list-item (click)="addToShoppingList()">
         <mat-icon>add_shopping_cart</mat-icon>Додати інгридієнти в список
         покупок

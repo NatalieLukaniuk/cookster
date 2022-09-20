@@ -18,6 +18,7 @@ import { getFilters } from 'src/app/store/selectors/filters.selectors';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import * as CalendarActions from './../../../store/actions/calendar.actions';
 import * as FiltersActions from './../../../store/actions/filters.actions';
+import * as UiActions from '../../../store/actions/ui.actions';
 
 @Component({
   selector: 'app-recipies-pannel',
@@ -163,5 +164,8 @@ export class RecipiesPannelComponent implements OnInit {
 
   closeRecipyPreview() {
     this.showRecipyPreview = false;
+  }
+  onOpenFilters(){
+    this.store.dispatch(new UiActions.SetIsSidebarOpenAction(true))
   }
 }

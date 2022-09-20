@@ -1,3 +1,4 @@
+import { FiltersModule } from './../filters/filters.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RecipiesPannelComponent } from './components/recipies-pannel/recipies-pannel.component';
 import { RecipiesModule } from './../recipies/recipies.module';
@@ -20,7 +21,8 @@ import { PlannerLandingComponent } from './containers/planner-landing/planner-la
     SharedModule,
     CalendarModule,
     RecipiesModule,
-    DragDropModule
+    DragDropModule,
+    FiltersModule
   ],
   declarations: [
     PlannerByDateRangeComponent,
