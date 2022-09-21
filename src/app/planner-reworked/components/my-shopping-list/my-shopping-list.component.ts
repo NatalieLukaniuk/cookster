@@ -82,7 +82,7 @@ export class MyShoppingListComponent implements OnChanges, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       if (this._currentPlanner) {
         this.plannerService.addShoppingList(
-          { name: result, items: [] },
+          { name: result, items: [], isExpanded: true },
           this._currentPlanner
         );
       }
@@ -223,6 +223,14 @@ export class MyShoppingListComponent implements OnChanges, OnDestroy {
         this.myLists,
         this._currentPlanner
       );
+    }
+  }
+
+  toggleIsExpanded(i: number, value: boolean) {
+    let _myLists = _.cloneDeep(this.myLists);
+    _myLists[i].isExpanded = value;
+    if (this._currentPlanner) {
+      this.plannerService.updateShoppingLists(_myLists, this._currentPlanner);
     }
   }
 }

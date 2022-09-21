@@ -3,7 +3,9 @@
   <div class="my-lists" *ngIf="!(isMobile$ | async)">
     <mat-expansion-panel
       *ngFor="let list of myLists; let i = index"
-      expanded="true"
+      [expanded]="list.isExpanded"
+      (afterExpand)="toggleIsExpanded(i, true)"
+      (afterCollapse)="toggleIsExpanded(i, false)"
       hideToggle
     >
       <mat-expansion-panel-header>
@@ -46,13 +48,15 @@
   </div>
 
   <div class="my-lists" *ngIf="isMobile$ | async">
-    <div class="wrapper">      
+    <div class="wrapper">
       <mat-tab-group>
         <mat-tab label="Купити">
           <ng-container *ngFor="let list of myLists; let i = index">
             <mat-expansion-panel
               *ngIf="hasNotCompletedItems(i)"
-              expanded="true"
+              [expanded]="list.isExpanded"
+              (afterExpand)="toggleIsExpanded(i, true)"
+              (afterCollapse)="toggleIsExpanded(i, false)"
               hideToggle
             >
               <mat-expansion-panel-header>
@@ -82,7 +86,9 @@
           <ng-container *ngFor="let list of myLists; let i = index">
             <mat-expansion-panel
               *ngIf="hasCompletedItems(i)"
-              expanded="true"
+              [expanded]="list.isExpanded"
+              (afterExpand)="toggleIsExpanded(i, true)"
+              (afterCollapse)="toggleIsExpanded(i, false)"
               hideToggle
             >
               <mat-expansion-panel-header>

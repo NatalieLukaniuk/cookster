@@ -27,6 +27,7 @@ export class PlannerByDate implements Planner {
 
 export interface ShoppingList {
   name: string;
+  isExpanded: boolean;
   items: ShoppingListItemReworked[];
 }
 
