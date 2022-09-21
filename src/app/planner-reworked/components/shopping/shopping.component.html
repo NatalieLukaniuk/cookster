@@ -72,6 +72,9 @@
               <mat-panel-title>
                 {{ list.name }}
               </mat-panel-title>
+              <button mat-icon-button class="delete-list-btn" (click)="deleteList(list)">
+                <mat-icon>delete</mat-icon>
+              </button>
             </mat-expansion-panel-header>
             <mat-list
               cdkDropList

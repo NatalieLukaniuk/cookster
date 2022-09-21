@@ -59,6 +59,17 @@
     max-height: 30vh;
     overflow-y: auto;
   }
+  .mat-icon{
+    font-size: 18px;    
+  }
+  .delete-list-btn{
+    display: none;
+  }
+  .mat-expansion-panel-header:hover{
+    .delete-list-btn{
+      display: block;
+    }
+  }
 }
 .fixed-container {
   position: fixed;

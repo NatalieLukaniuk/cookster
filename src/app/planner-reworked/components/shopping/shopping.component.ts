@@ -32,10 +32,7 @@ import {
 } from 'src/app/recipies/services/recipies.utils';
 import { MatDialog } from '@angular/material/dialog';
 import { AddListDialogComponent } from '../add-list-dialog/add-list-dialog.component';
-import {
-  CdkDragDrop,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import * as _ from 'lodash';
 
 export interface SLItem {
@@ -310,5 +307,11 @@ export class ShoppingComponent implements OnDestroy, OnInit {
     return !!this.myLists.find(
       (list) => !!list.items.find((ingr) => ingr.title == item.name)
     );
+  }
+
+  deleteList(list: ShoppingList) {
+    if (this.currentPlanner) {
+      this.plannerService.removeShoppingList(list, this.currentPlanner);
+    }
   }
 }

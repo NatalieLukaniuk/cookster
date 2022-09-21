@@ -58,10 +58,11 @@ export class PlannerService {
   }
 
   removeShoppingList(list: ShoppingList, planner: PlannerByDate) {
-    planner.shoppingLists = planner.shoppingLists.filter(
+    let updatedPlanner = _.cloneDeep(planner)
+    updatedPlanner.shoppingLists = updatedPlanner.shoppingLists.filter(
       (item) => item.name !== list.name
     );
-    this.updatePlannerByDate(planner);
+    this.updatePlannerByDate(updatedPlanner);
   }
 
   addShoppingList(list: ShoppingList, planner: PlannerByDate) {
