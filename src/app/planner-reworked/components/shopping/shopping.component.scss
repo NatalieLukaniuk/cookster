@@ -60,13 +60,15 @@
     overflow-y: auto;
   }
   .mat-icon{
-    font-size: 18px;    
+    font-size: 20px;    
   }
-  .delete-list-btn{
+  .delete-btn{
     display: none;
+    height: 20px;
+    line-height: 20px;
   }
-  .mat-expansion-panel-header:hover{
-    .delete-list-btn{
+  .mat-expansion-panel-header:hover, .mat-list-item:hover{
+    .delete-btn{
       display: block;
     }
   }

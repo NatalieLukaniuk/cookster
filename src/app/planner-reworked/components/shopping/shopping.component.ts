@@ -314,4 +314,14 @@ export class ShoppingComponent implements OnDestroy, OnInit {
       this.plannerService.removeShoppingList(list, this.currentPlanner);
     }
   }
+
+  deleteListItem(item: ShoppingListItemReworked, i:number){
+    this.myLists[i].items = this.myLists[i].items.filter(el => !(el.title == item.title));
+    if (this.currentPlanner) {
+      this.plannerService.updateShoppingLists(
+        this.myLists,
+        this.currentPlanner
+      );
+    }
+  }
 }
