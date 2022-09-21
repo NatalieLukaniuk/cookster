@@ -102,7 +102,8 @@ export class ShoppingComponent implements OnDestroy, OnInit {
           this.currentPlanner = res.planner;
         }
         if (res.planner && res.planner.shoppingLists) {
-          this.myLists = res.planner.shoppingLists.map((list) => {
+          this.myLists = _.cloneDeep(res.planner.shoppingLists);
+          this.myLists = this.myLists.map((list) => {
             if (!list.items) {
               return {
                 ...list,
@@ -277,6 +278,7 @@ export class ShoppingComponent implements OnDestroy, OnInit {
     let itemToAdd = {
       title: this.recipiesService.getProductNameById(id),
       amount: amnt + this.getUnitText(+unit),
+      editMode: false,
     };
     this.myLists[ind].items?.length
       ? (this.myLists[ind].items = [...this.myLists[ind].items, itemToAdd])
@@ -337,6 +339,7 @@ export class ShoppingComponent implements OnDestroy, OnInit {
           title: name,
           amount: amount,
           comment: comment,
+          editMode: false,
         });
 
         this.plannerService.updateShoppingLists(
@@ -345,5 +348,31 @@ export class ShoppingComponent implements OnDestroy, OnInit {
         );
       }
     });
+  }
+  saveChanges(item: ShoppingListItemReworked, i: number) {
+    if (this.currentPlanner) {
+      this.myLists[i].items = this.myLists[i].items.map((el) => {
+        if (el.title == item.title) {
+          return {
+            ...item,
+            editMode: false,
+          };
+        } else return el;
+      });
+      this.plannerService.updateShoppingLists(
+        this.myLists,
+        this.currentPlanner
+      );
+    }
+  }
+
+  get isShoppingListActive(): boolean {
+    return !!this.currentPlanner?.isShoppingListActive;
+  }
+
+  makeListActive() {
+    if (this.currentPlanner) {
+      this.plannerService.makeShoppingListActive(this.currentPlanner);
+    }
   }
 }

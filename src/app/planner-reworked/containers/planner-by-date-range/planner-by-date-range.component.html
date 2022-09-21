@@ -1,7 +1,17 @@
 <nav mat-tab-nav-bar>
-  <a mat-tab-link *ngFor="let tab of tabs"
-     (click)="activeLink = tab.link"
-     [active]="activeLink == tab.link"
-     [routerLink]="tab.link"> {{tab.name}} </a>
+  <a
+    mat-tab-link
+    *ngFor="let tab of tabs"
+    (click)="activeLink = tab.link"
+    [active]="activeLink == tab.link"
+    [routerLink]="tab.link"
+  >
+    {{ tab.name }}
+  </a>
 </nav>
 <mat-tab-nav-panel #tabPanel><router-outlet></router-outlet></mat-tab-nav-panel>
+
+<div class="title" *ngIf="currentPlanner">
+  <div>{{ currentPlanner.startDate }} - {{ currentPlanner.endDate }}</div> 
+  <div class="subtitle" *ngIf="currentPlanner.isShoppingListActive">Список покупок для цього планера є активним</div>
+</div>

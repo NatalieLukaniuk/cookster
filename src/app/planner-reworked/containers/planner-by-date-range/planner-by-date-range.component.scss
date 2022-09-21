@@ -1,0 +1,16 @@
+:host{
+    position: relative;
+}
+
+.title{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    text-align: right;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.subtitle{
+    font-size: 9px;
+}

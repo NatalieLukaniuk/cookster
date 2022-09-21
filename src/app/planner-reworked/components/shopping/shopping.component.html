@@ -7,6 +7,14 @@
     >
       {{ showCalendar ? "Сховати календар" : "Показати календар" }}
     </button>
+    <button
+      *ngIf="!isShoppingListActive"
+      mat-flat-button
+      class="action-button"
+      (click)="makeListActive()"
+    >
+      Зробити активним
+    </button>
     <app-calendar-container
       *ngIf="showCalendar"
       [isPlanner]="true"
@@ -89,8 +97,17 @@
               (cdkDropListDropped)="drop($event)"
               [cdkDropListData]="list.items"
             >
-              <mat-list-item cdkDrag *ngFor="let item of list.items"
-                >{{ item.title }} {{ item.amount }}
+              <mat-list-item cdkDrag *ngFor="let item of list.items">
+                <span class="item-title">{{ item.title }}</span>
+                <span
+                  *ngIf="!item.editMode"
+                  (dblclick)="item.editMode = true"
+                  >{{ item.amount }}</span
+                >
+                <span class="edit-field" *ngIf="item.editMode">
+                  <input [(ngModel)]="item.amount" />
+                  <mat-icon (click)="saveChanges(item, i)">check</mat-icon>
+                </span>
                 <span *ngIf="item.comment">{{ item.comment }}</span>
                 <button
                   mat-icon-button

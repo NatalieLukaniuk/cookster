@@ -58,7 +58,7 @@ export class PlannerService {
   }
 
   removeShoppingList(list: ShoppingList, planner: PlannerByDate) {
-    let updatedPlanner = _.cloneDeep(planner)
+    let updatedPlanner = _.cloneDeep(planner);
     updatedPlanner.shoppingLists = updatedPlanner.shoppingLists.filter(
       (item) => item.name !== list.name
     );
@@ -74,5 +74,27 @@ export class PlannerService {
     }
 
     this.updatePlannerByDate(updated);
+  }
+
+  makeShoppingListActive(planner: PlannerByDate) {
+    this.store.pipe(select(getCurrentUser), take(1)).subscribe((user) => {
+      if (user && user.planner?.length) {
+        let updatedUser = _.cloneDeep(user);
+        updatedUser.planner = updatedUser.planner!.map((list) => {
+          if (list.id == planner.id) {
+            return {
+              ...list,
+              isShoppingListActive: true,
+            };
+          } else {
+            return {
+              ...list,
+              isShoppingListActive: false,
+            };
+          }
+        });
+        this.store.dispatch(new UpdateUserAction(updatedUser));
+      }
+    });
   }
 }
