@@ -47,46 +47,6 @@
   }
 }
 
-.my-lists {
-  ::ng-deep .mat-list-base .mat-list-item {
-    background-color: var(--tint2);
-    padding-block: 7px;
-    &:not(:last-child) {
-      border-bottom: 1px solid var(--background-color);
-    }
-  }
-  ::ng-deep .mat-expansion-panel-body {
-    max-height: 30vh;
-    overflow-y: auto;
-  }
-  .mat-icon {
-    font-size: 20px;
-  }
-  .delete-btn {
-    visibility: hidden;
-    height: 20px;
-    line-height: 20px;
-  }
-  .mat-expansion-panel-header:hover,
-  .mat-list-item:hover {
-    .delete-btn {
-      visibility: visible;
-    }
-  }
-  .item-title{
-    min-width: max-content;
-    margin-right: 5px;
-  }
-  .edit-field {
-    display: flex;
-    align-items: center;
-    max-width: 30%;
-    input{
-      max-width: 73%;
-      text-align: right;
-    }    
-  }
-}
 .fixed-container {
   position: fixed;
   right: 3vw;

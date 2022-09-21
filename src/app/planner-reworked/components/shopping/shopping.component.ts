@@ -1,9 +1,7 @@
-import { AddListItemDialogComponent } from './../add-list-item-dialog/add-list-item-dialog.component';
 import { PlannerService } from './../../services/planner.service';
 import { getAllRecipies } from './../../../store/selectors/recipies.selectors';
 import {
   MeasuringUnit,
-  MeasuringUnitText,
 } from 'src/app/recipies/models/measuring-units.enum';
 import { getCalendar } from './../../../store/selectors/calendar.selectors';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -17,7 +15,6 @@ import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import {
   PlannerByDate,
   ShoppingList,
-  ShoppingListItemReworked,
 } from '../../models';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
@@ -29,11 +26,7 @@ import {
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import {
   getRecipyNameById,
-  NormalizeDisplayedAmount,
 } from 'src/app/recipies/services/recipies.utils';
-import { MatDialog } from '@angular/material/dialog';
-import { AddListDialogComponent } from '../add-list-dialog/add-list-dialog.component';
-import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import * as _ from 'lodash';
 
 export interface SLItem {
@@ -70,7 +63,6 @@ export class ShoppingComponent implements OnDestroy, OnInit {
   constructor(
     private store: Store<IAppState>,
     private recipiesService: RecipiesService,
-    public dialog: MatDialog,
     private plannerService: PlannerService
   ) {
     this.planner$ = this.store.pipe(select(getCurrentPlanner));
@@ -109,14 +101,7 @@ export class ShoppingComponent implements OnDestroy, OnInit {
                 ...list,
                 items: [],
               };
-            } else {
-              let newList = {
-                ...list,
-                items: list.items.map((item) => item),
-              };
-              newList.items.sort((a, b) => a.title!.localeCompare(b.title!));
-              return newList;
-            }
+            } else return list;
           });
         }
         if (res.planner && res.calendar) {
@@ -238,132 +223,10 @@ export class ShoppingComponent implements OnDestroy, OnInit {
     } else return undefined;
   }
 
-  getUnitText(unit: MeasuringUnit) {
-    return MeasuringUnitText[unit];
-  }
-
-  onAddList() {
-    const dialogRef = this.dialog.open(AddListDialogComponent);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (this.currentPlanner) {
-        this.plannerService.addShoppingList(
-          { name: result, items: [] },
-          this.currentPlanner
-        );
-      }
-    });
-  }
-
-  drop(event: CdkDragDrop<any[]>) {
-    if (!event.previousContainer.id.includes('my-list')) {
-      this.dropFromAllIngredsList(event);
-    } else {
-      this.dropBetweenMyLists(event);
-    }
-  }
-
-  dropFromAllIngredsList(event: CdkDragDrop<SLItem[]>) {
-    let split = event.item.element.nativeElement.id.split('/');
-    let [id, amount, unit] = split;
-    console.log(id, amount, unit);
-    console.log(event.container.id);
-    let ind = +event.container.id.split('-')[2];
-    let convertedAmount = this.recipiesService.getAmountInSelectedUnit(
-      +unit,
-      id,
-      +amount
-    );
-    let amnt = NormalizeDisplayedAmount(convertedAmount, +unit);
-    let itemToAdd = {
-      title: this.recipiesService.getProductNameById(id),
-      amount: amnt + this.getUnitText(+unit),
-      editMode: false,
-    };
-    this.myLists[ind].items?.length
-      ? (this.myLists[ind].items = [...this.myLists[ind].items, itemToAdd])
-      : (this.myLists[ind].items = [itemToAdd]);
-    if (this.currentPlanner) {
-      this.plannerService.updateShoppingLists(
-        this.myLists,
-        this.currentPlanner
-      );
-    }
-  }
-
-  dropBetweenMyLists(event: CdkDragDrop<ShoppingListItemReworked[]>) {
-    transferArrayItem(
-      event.previousContainer.data,
-      event.container.data,
-      event.previousIndex,
-      event.currentIndex
-    );
-    if (this.currentPlanner) {
-      this.plannerService.updateShoppingLists(
-        this.myLists,
-        this.currentPlanner
-      );
-    }
-  }
-
   getHasBeenAdded(item: SLItem) {
     return !!this.myLists.find(
       (list) => !!list.items.find((ingr) => ingr.title == item.name)
     );
-  }
-
-  deleteList(list: ShoppingList) {
-    if (this.currentPlanner) {
-      this.plannerService.removeShoppingList(list, this.currentPlanner);
-    }
-  }
-
-  deleteListItem(item: ShoppingListItemReworked, i: number) {
-    this.myLists[i].items = this.myLists[i].items.filter(
-      (el) => !(el.title == item.title)
-    );
-    if (this.currentPlanner) {
-      this.plannerService.updateShoppingLists(
-        this.myLists,
-        this.currentPlanner
-      );
-    }
-  }
-  addItem(i: number) {
-    const dialogRef = this.dialog.open(AddListItemDialogComponent);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (this.currentPlanner) {
-        let [name, amount, comment] = result;
-        this.myLists[i].items.push({
-          title: name,
-          amount: amount,
-          comment: comment,
-          editMode: false,
-        });
-
-        this.plannerService.updateShoppingLists(
-          this.myLists,
-          this.currentPlanner
-        );
-      }
-    });
-  }
-  saveChanges(item: ShoppingListItemReworked, i: number) {
-    if (this.currentPlanner) {
-      this.myLists[i].items = this.myLists[i].items.map((el) => {
-        if (el.title == item.title) {
-          return {
-            ...item,
-            editMode: false,
-          };
-        } else return el;
-      });
-      this.plannerService.updateShoppingLists(
-        this.myLists,
-        this.currentPlanner
-      );
-    }
   }
 
   get isShoppingListActive(): boolean {

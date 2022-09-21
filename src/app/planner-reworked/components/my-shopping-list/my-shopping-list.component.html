@@ -1,0 +1,47 @@
+<div>
+  <h3>Мої списки покупок <mat-icon (click)="onAddList()">add</mat-icon></h3>
+  <div class="my-lists">
+    <mat-expansion-panel
+      *ngFor="let list of myLists; let i = index"
+      expanded="true"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ list.name }}
+        </mat-panel-title>
+        <button mat-icon-button class="delete-btn" (click)="addItem(i)">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-icon-button class="delete-btn" (click)="deleteList(list)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-expansion-panel-header>
+      <mat-list
+        cdkDropList
+        [id]="'my-list-' + i"
+        (cdkDropListDropped)="drop($event)"
+        [cdkDropListData]="list.items"
+      >
+        <mat-list-item cdkDrag *ngFor="let item of list.items">
+          <span class="item-title">{{ item.title }}</span>
+          <span *ngIf="!item.editMode" (dblclick)="item.editMode = true">{{
+            item.amount
+          }}</span>
+          <span class="edit-field" *ngIf="item.editMode">
+            <input [(ngModel)]="item.amount" />
+            <mat-icon (click)="saveChanges(item, i)">check</mat-icon>
+          </span>
+          <span *ngIf="item.comment">{{ item.comment }}</span>
+          <button
+            mat-icon-button
+            class="delete-btn"
+            (click)="deleteListItem(item, i)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+  </div>
+</div>
