@@ -1,5 +1,12 @@
-<div *ngIf="plannerWithActiveShoppingList; else NoLists">
-  <app-my-shopping-list [planner]="plannerWithActiveShoppingList"></app-my-shopping-list>
+<div
+  class="shopping-list-container"
+  *ngIf="plannerWithActiveShoppingList; else NoLists"
+>
+  <app-my-shopping-list
+    [planner]="plannerWithActiveShoppingList"
+  ></app-my-shopping-list>
 </div>
 
-<ng-template #NoLists>No lists</ng-template>
+<ng-template #NoLists
+  ><div class="shopping-list-container">No lists</div></ng-template
+>

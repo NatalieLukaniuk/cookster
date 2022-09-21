@@ -1,6 +1,6 @@
 <div>
   <h3>Мої списки покупок <mat-icon (click)="onAddList()">add</mat-icon></h3>
-  <div class="my-lists">
+  <div class="my-lists" *ngIf="!(isMobile$ | async)">
     <mat-expansion-panel
       *ngFor="let list of myLists; let i = index"
       expanded="true"
@@ -43,5 +43,72 @@
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>
+  </div>
+
+  <div class="my-lists" *ngIf="isMobile$ | async">
+    <div class="wrapper">      
+      <mat-tab-group>
+        <mat-tab label="Купити">
+          <ng-container *ngFor="let list of myLists; let i = index">
+            <mat-expansion-panel
+              *ngIf="hasNotCompletedItems(i)"
+              expanded="true"
+              hideToggle
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ list.name }}
+                </mat-panel-title>
+                <button mat-icon-button class="delete-btn" (click)="addItem(i)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </mat-expansion-panel-header>
+              <mat-action-list>
+                <ng-container *ngFor="let item of list.items">
+                  <mat-list-item
+                    *ngIf="!item.completed"
+                    (click)="toggleCompleted(item, i)"
+                  >
+                    <span class="item-title">{{ item.title }}</span>
+                    <span>{{ item.amount }}</span>
+                    <span *ngIf="item.comment">{{ item.comment }}</span>
+                  </mat-list-item>
+                </ng-container>
+              </mat-action-list>
+            </mat-expansion-panel>
+          </ng-container>
+        </mat-tab>
+        <mat-tab label="Куплені">
+          <ng-container *ngFor="let list of myLists; let i = index">
+            <mat-expansion-panel
+              *ngIf="hasCompletedItems(i)"
+              expanded="true"
+              hideToggle
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ list.name }}
+                </mat-panel-title>
+                <button mat-icon-button class="delete-btn" (click)="addItem(i)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </mat-expansion-panel-header>
+              <mat-action-list>
+                <ng-container *ngFor="let item of list.items">
+                  <mat-list-item
+                    *ngIf="item.completed"
+                    (click)="toggleCompleted(item, i)"
+                  >
+                    <span class="item-title">{{ item.title }}</span>
+                    <span>{{ item.amount }}</span>
+                    <span *ngIf="item.comment">{{ item.comment }}</span>
+                  </mat-list-item>
+                </ng-container>
+              </mat-action-list>
+            </mat-expansion-panel>
+          </ng-container>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
   </div>
 </div>

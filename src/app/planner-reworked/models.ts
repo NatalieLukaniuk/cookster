@@ -35,4 +35,5 @@ export interface ShoppingListItemReworked {
   amount: string;
   comment?: string;
   editMode: boolean;
+  completed: boolean;
 }

@@ -7,6 +7,7 @@ import {
   Component,
   Input,
   OnChanges,
+  OnDestroy,
   SimpleChanges,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,22 +23,33 @@ import {
   MeasuringUnit,
   MeasuringUnitText,
 } from 'src/app/recipies/models/measuring-units.enum';
+import { LayoutService } from 'src/app/shared/services/layout.service';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-my-shopping-list',
   templateUrl: './my-shopping-list.component.html',
   styleUrls: ['./my-shopping-list.component.scss'],
 })
-export class MyShoppingListComponent implements OnChanges {
+export class MyShoppingListComponent implements OnChanges, OnDestroy {
   @Input() planner!: PlannerByDate;
   myLists: ShoppingList[] = [];
 
   _currentPlanner: PlannerByDate | undefined;
+
+  isMobile$: Observable<boolean>;
+  destroy$ = new Subject();
   constructor(
     public dialog: MatDialog,
     private plannerService: PlannerService,
-    private recipiesService: RecipiesService
-  ) {}
+    private recipiesService: RecipiesService,
+    private layoutService: LayoutService
+  ) {
+    this.isMobile$ = this.layoutService.isMobile$;
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.planner && changes.planner.currentValue) {
@@ -88,6 +100,7 @@ export class MyShoppingListComponent implements OnChanges {
           amount: amount,
           comment: comment,
           editMode: false,
+          completed: false,
         });
 
         this.plannerService.updateShoppingLists(
@@ -128,6 +141,7 @@ export class MyShoppingListComponent implements OnChanges {
       title: this.recipiesService.getProductNameById(id),
       amount: amnt + this.getUnitText(+unit),
       editMode: false,
+      completed: false,
     };
     this.myLists[ind].items?.length
       ? (this.myLists[ind].items = [...this.myLists[ind].items, itemToAdd])
@@ -180,6 +194,30 @@ export class MyShoppingListComponent implements OnChanges {
     this.myLists[i].items = this.myLists[i].items.filter(
       (el) => !(el.title == item.title)
     );
+    if (this._currentPlanner) {
+      this.plannerService.updateShoppingLists(
+        this.myLists,
+        this._currentPlanner
+      );
+    }
+  }
+
+  hasNotCompletedItems(i: number) {
+    return this.myLists[i].items.some((item) => !item.completed);
+  }
+  hasCompletedItems(i: number) {
+    return this.myLists[i].items.some((item) => item.completed);
+  }
+
+  toggleCompleted(item: ShoppingListItemReworked, i: number) {
+    this.myLists[i].items = this.myLists[i].items.map((el) => {
+      if (el.title == item.title) {
+        return {
+          ...el,
+          completed: !el.completed,
+        };
+      } else return el;
+    });
     if (this._currentPlanner) {
       this.plannerService.updateShoppingLists(
         this.myLists,
