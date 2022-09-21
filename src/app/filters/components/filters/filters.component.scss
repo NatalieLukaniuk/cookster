@@ -1,40 +1,41 @@
 .filters-list {
-    max-height: 45vh;
-    overflow-y: auto;
-    .mat-list-option{
-        max-width: 95%;
-    }
+  max-height: 45vh;
+  overflow-y: auto;
+  .mat-list-option {
+    max-width: 95%;
+  }
 }
 
-.filters-header-wrapper{
-    padding: 10px 10px 5px;
-    h5{
-        margin-block: 6px;
-    }
+.filters-header-wrapper {
+  padding: 10px 10px 5px;
+  h5 {
+    margin-block: 6px;
+  }
 }
-::ng-deep.mat-expansion-panel-body {
+.filters-wrapper {
+  ::ng-deep.mat-expansion-panel-body {
     padding-right: 0 !important;
-}
-
-::ng-deep.mat-slider {
+  }
+  ::ng-deep.mat-slider {
     width: 90%;
     .mat-slider-thumb-label {
-        width: 40px;
-        height: 40px;
+      width: 40px;
+      height: 40px;
     }
+  }
 }
 
-.action-buttons{
-    display: flex;
-    &>button{
-        flex-grow: 1;
-        margin: 10px 5px;
-    }
+.action-buttons {
+  display: flex;
+  & > button {
+    flex-grow: 1;
+    margin: 10px 5px;
+  }
 }
 
 @media (max-width: 600px) {
-    ::ng-deep.mat-expansion-panel-body {
-        min-width: 65vw;
-        padding: 0 0 0 15px !important;
-    }
+  .filters-wrapper ::ng-deep.mat-expansion-panel-body {
+    min-width: 65vw;
+    padding: 0 0 0 15px !important;
+  }
 }
