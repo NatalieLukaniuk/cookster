@@ -46,7 +46,7 @@ export class ShoppingComponent implements OnDestroy, OnInit {
   destroyed$ = new Subject();
   Direction = Direction;
   currentUser$ = this.store.pipe(select(getCurrentUser));
-  showCalendar = true;
+  showCalendar = false;
   calendar: Day[] = [];
   planner$: Observable<PlannerByDate | null>;
   calendar$: Observable<Day[] | null>;
@@ -72,7 +72,7 @@ export class ShoppingComponent implements OnDestroy, OnInit {
       if (res) {
         this.itemsTree = [];
         this.buildTree(res);
-        console.log(this.itemsTree);
+        // console.log(this.itemsTree);
       }
     });
     this.store

@@ -19,7 +19,6 @@
   <div class="calendar-body">
     <app-calendar [isMobile]="isMobile" *ngIf="!_isPlanner"></app-calendar>
     <app-calendar-by-month
-      [isMobile]="isMobile"
       [direction]="direction"
       [displayRange]="displayRange"
       *ngIf="_isPlanner"

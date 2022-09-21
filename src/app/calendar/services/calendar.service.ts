@@ -1,9 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import * as _ from 'lodash';
+import * as moment from 'moment';
 import { User } from 'src/app/auth/models/user.interface';
+import {
+  Recipy,
+  RecipyForCalendar,
+} from 'src/app/recipies/models/recipy.interface';
+import { LoadCalendarAction } from 'src/app/store/actions/calendar.actions';
 
 import * as UserActions from '../../store/actions/user.actions';
-import { DayDetails, IDayDetails } from '../models/calendar';
+import { Day } from '../components/calendar/calendar.component';
+import {
+  CalendarRecipyInDatabase,
+  DayDetails,
+  DayDetailsExtended,
+  IDayDetails,
+} from '../models/calendar';
 
 @Injectable({
   providedIn: 'root',
@@ -94,5 +107,96 @@ export class CalendarService {
       details: details,
     };
     this.store.dispatch(new UserActions.UpdateUserAction(updatedUser));
+  }
+
+  generateInRange(start: string, end: string): Day[] {
+    // format: YYYYMMDD
+
+    const startDay = moment(start).subtract(1, 'day');
+    const endDay = moment(end).add(1, 'day');
+    const date = startDay.clone();
+
+    const calendar: Day[] = [];
+    const currentDay = moment().subtract(1, 'day');
+    while (date.isBefore(endDay, 'day')) {
+      const value = date.add(1, 'day').clone();
+      const active = moment().isSame(value, 'date');
+      const disabled = value.isBefore(currentDay);
+      const selected = value.isSame(currentDay);
+      let det = new DayDetails(value.format('DDMMYYYY'));
+      const details: DayDetailsExtended = {
+        ...det,
+        breakfastRecipies: [],
+        lunchRecipies: [],
+        dinnerRecipies: [],
+      };
+      calendar.push({ value, active, disabled, selected, details });
+    }
+    return calendar;
+  }
+
+  buildCalendarInRange(
+    start: string,
+    end: string,
+    userCalendarData: DayDetails[],
+    allRecipies: Recipy[]
+  ) {
+    let calendar = this.generateInRange(start, end);
+
+    calendar = calendar.map((day: Day) => {
+      let foundDay = userCalendarData.find(
+        (item: IDayDetails) => item.day == day.details.day
+      );
+      if (!!foundDay) {
+        let _day = _.cloneDeep(day);
+        if ('breakfast' in foundDay && !!foundDay.breakfast.length) {
+          foundDay.breakfast.forEach((rec: CalendarRecipyInDatabase) => {
+            let foundRecipy = allRecipies.find(
+              (recipy) => recipy.id == rec.recipyId
+            );
+            if (foundRecipy) {
+              let recipy: RecipyForCalendar = {
+                ...foundRecipy,
+                portions: rec.portions,
+                amountPerPortion: rec.amountPerPortion,
+              };
+              _day.details.breakfastRecipies.push(recipy);
+            }
+          });
+        }
+        if ('lunch' in foundDay && !!foundDay.lunch.length) {
+          foundDay.lunch.forEach((rec: CalendarRecipyInDatabase) => {
+            let foundRecipy = allRecipies.find(
+              (recipy) => recipy.id == rec.recipyId
+            );
+            if (foundRecipy) {
+              let recipy: RecipyForCalendar = {
+                ...foundRecipy,
+                portions: rec.portions,
+                amountPerPortion: rec.amountPerPortion,
+              };
+              _day.details.lunchRecipies.push(recipy);
+            }
+          });
+        }
+        if ('dinner' in foundDay && !!foundDay.dinner.length) {
+          foundDay.dinner.forEach((rec: CalendarRecipyInDatabase) => {
+            let foundRecipy = allRecipies.find(
+              (recipy) => recipy.id == rec.recipyId
+            );
+            if (foundRecipy) {
+              let recipy: RecipyForCalendar = {
+                ...foundRecipy,
+                portions: rec.portions,
+                amountPerPortion: rec.amountPerPortion,
+              };
+              _day.details.dinnerRecipies.push(recipy);
+            }
+          });
+        }
+        return _day;
+      } else return day;
+    });
+    this.store.dispatch(new LoadCalendarAction(calendar));
   }
 }

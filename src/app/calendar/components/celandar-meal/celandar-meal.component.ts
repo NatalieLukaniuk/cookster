@@ -9,9 +9,7 @@ import {
 } from 'src/app/recipies/models/recipy.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 import {
-  AddRecipyToCalendarAction,
   MoveRecipyInCalendarAction,
-  RemoveRecipyFromCalendarAction,
 } from 'src/app/store/actions/calendar.actions';
 import { IAppState } from 'src/app/store/reducers';
 import { getCalendar } from 'src/app/store/selectors/calendar.selectors';

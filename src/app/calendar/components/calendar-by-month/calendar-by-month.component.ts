@@ -1,9 +1,9 @@
+import { LayoutService } from './../../../shared/services/layout.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
-import * as moment from 'moment';
-import { combineLatest, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
@@ -13,24 +13,22 @@ import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 import { ShoppingListService } from 'src/app/shopping-list/services/shopping-list.service';
 import { IAppState } from 'src/app/store/reducers';
-import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import * as UserActions from '../../../store/actions/user.actions';
 import { Direction } from '../../containers/calendar-container/calendar-container.component';
 import {
-  CalendarRecipyInDatabase,
   DayDetails,
-  DayDetailsExtended,
-  EmptyDayDetailsExtended,
   IDayDetails,
 } from '../../models/calendar';
 import { CalendarService } from '../../services/calendar.service';
-import { DateService } from '../../services/date.service';
 import { Day } from '../calendar/calendar.component';
 import { IngredientsToListBottomsheetComponent } from '../ingredients-to-list-bottomsheet/ingredients-to-list-bottomsheet.component';
 import * as CalendarActions from './../../../store/actions/calendar.actions';
-import { getaddToCartDateRange } from './../../../store/selectors/calendar.selectors';
+import {
+  getaddToCartDateRange,
+  getCalendar,
+} from './../../../store/selectors/calendar.selectors';
 
 @Component({
   selector: 'app-calendar-by-month',
@@ -38,7 +36,6 @@ import { getaddToCartDateRange } from './../../../store/selectors/calendar.selec
   styleUrls: ['./calendar-by-month.component.scss'],
 })
 export class CalendarByMonthComponent implements OnInit, OnDestroy {
-  @Input() isMobile: boolean = false;
   @Input() direction!: Direction;
   @Input() displayRange: { startDate: string; endDate: string } | undefined;
 
@@ -46,18 +43,22 @@ export class CalendarByMonthComponent implements OnInit, OnDestroy {
   userCalendarData: IDayDetails[] = [];
   destroyed$ = new Subject();
 
+  isMobile: boolean = false;
+
   currentUser: User | undefined;
   Direction = Direction;
 
   constructor(
-    private dateService: DateService,
+    private layoutService: LayoutService,
     private store: Store<IAppState>,
     private dialogsService: DialogsService,
     private calendarService: CalendarService,
     private shoppingListService: ShoppingListService,
     private recipiesService: RecipiesService,
     private _bottomSheet: MatBottomSheet
-  ) {}
+  ) {
+    this.layoutService.isMobile.subscribe((res) => (this.isMobile = res));
+  }
 
   drop(event: any) {
     console.log(event);
@@ -67,101 +68,22 @@ export class CalendarByMonthComponent implements OnInit, OnDestroy {
     this.destroyed$.next();
   }
   ngOnInit() {
-    let month$ = this.dateService.date;
-    let currentUser$ = this.store.pipe(
-      select(getCurrentUser),
-      takeUntil(this.destroyed$)
-    );
-    let allRecipies$ = this.store.pipe(
-      select(getAllRecipies),
-      takeUntil(this.destroyed$)
-    );
-    combineLatest([currentUser$, allRecipies$, month$]).subscribe((res) => {
-      this.generateByMonth(res[2]);
-      if (res[0] && res[1]) {
-        this.cleanCalendarRecipies();
-        let [currentUser, recipies] = res;
-        if (
-          !!currentUser &&
-          'details' in currentUser &&
-          !!currentUser.details
-        ) {
-          this.currentUser = currentUser;
-          this.userCalendarData = currentUser.details;
+    this.store.pipe(
+        select(getCurrentUser),
+        takeUntil(this.destroyed$)
+      ).subscribe(res => {
+        if(res){
+          this.currentUser = res
         }
-        this.calendar = this.calendar.map((day: Day) => {
-          let foundDay = this.userCalendarData.find(
-            (item: IDayDetails) => item.day == day.details.day
-          );
-          if (!!foundDay) {
-            let _day = _.cloneDeep(day);
-            if ('breakfast' in foundDay && !!foundDay.breakfast.length) {
-              foundDay.breakfast.forEach((rec: CalendarRecipyInDatabase) => {
-                let foundRecipy = recipies.find(
-                  (recipy) => recipy.id == rec.recipyId
-                );
-                if (foundRecipy) {
-                  let recipy: RecipyForCalendar = {
-                    ...foundRecipy,
-                    portions: rec.portions,
-                    amountPerPortion: rec.amountPerPortion,
-                  };
-                  _day.details.breakfastRecipies.push(recipy);
-                }
-              });
-            }
-            if ('lunch' in foundDay && !!foundDay.lunch.length) {
-              foundDay.lunch.forEach((rec: CalendarRecipyInDatabase) => {
-                let foundRecipy = recipies.find(
-                  (recipy) => recipy.id == rec.recipyId
-                );
-                if (foundRecipy) {
-                  let recipy: RecipyForCalendar = {
-                    ...foundRecipy,
-                    portions: rec.portions,
-                    amountPerPortion: rec.amountPerPortion,
-                  };
-                  _day.details.lunchRecipies.push(recipy);
-                }
-              });
-            }
-            if ('dinner' in foundDay && !!foundDay.dinner.length) {
-              foundDay.dinner.forEach((rec: CalendarRecipyInDatabase) => {
-                let foundRecipy = recipies.find(
-                  (recipy) => recipy.id == rec.recipyId
-                );
-                if (foundRecipy) {
-                  let recipy: RecipyForCalendar = {
-                    ...foundRecipy,
-                    portions: rec.portions,
-                    amountPerPortion: rec.amountPerPortion,
-                  };
-                  _day.details.dinnerRecipies.push(recipy);
-                }
-              });
-            }
-            return _day;
-          } else return day;
-        });
-        if (!!this.currentUser?.prepLists) {
-          this.calendar = this.calendar.map((day: Day) => {
-            let foundDay = this.currentUser?.prepLists?.find(
-              (list) => list.date == day.details.day
-            );
-            if (foundDay) {
-              return {
-                ...day,
-                preps: foundDay,
-              };
-            } else return day;
-          });
+      })
+    
+    this.store
+      .pipe(select(getCalendar), takeUntil(this.destroyed$))
+      .subscribe((res) => {
+        if (res) {
+          this.calendar = res;
         }
-
-        this.store.dispatch(
-          new CalendarActions.LoadCalendarAction(this.calendar)
-        );
-      }
-    });
+      });
     this.store
       .pipe(select(getaddToCartDateRange), takeUntil(this.destroyed$))
       .subscribe((date) => {
@@ -255,43 +177,6 @@ export class CalendarByMonthComponent implements OnInit, OnDestroy {
       }
     });
     return (recipy.portions * recipy.amountPerPortion) / totalAmount;
-  }
-
-  generateByMonth(now: moment.Moment) {
-    const startDay = now.clone().startOf('month');
-    const endDay = now.clone().endOf('month');
-
-    const date = startDay.clone().subtract(1, 'day');
-
-    const calendar: Day[] = [];
-    const currentDay = moment();
-    while (date.isBefore(endDay, 'day')) {
-      const value = date.add(1, 'day').clone();
-      const active = moment().isSame(value, 'date');
-      const disabled =
-        !now.isSame(value, 'month') ||
-        (!value.isSame(currentDay, 'date') && value.isBefore(currentDay));
-      const selected = now.isSame(value, 'date');
-      let det = new DayDetails(value.format('DDMMYYYY'));
-      const details: DayDetailsExtended = {
-        ...det,
-        breakfastRecipies: [],
-        lunchRecipies: [],
-        dinnerRecipies: [],
-      };
-      calendar.push({ value, active, disabled, selected, details });
-    }
-    this.calendar = calendar;
-  }
-
-  cleanCalendarRecipies() {
-    this.calendar = this.calendar.map((day) => {
-      if (day.details) {
-        let _day = _.cloneDeep(day);
-        _day.details = new EmptyDayDetailsExtended(day.details.day);
-        return _day;
-      } else return day;
-    });
   }
 
   onUpdateDay(event: IDayDetails) {

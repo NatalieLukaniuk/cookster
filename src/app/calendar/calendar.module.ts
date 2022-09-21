@@ -45,6 +45,6 @@ import { MomentPipe } from './pipes/moment.pipe';
     BottomsheetIngredientComponent,
     CelandarMealComponent
   ],
-  exports: [CalendarContainerComponent],
+  exports: [CalendarContainerComponent, CalendarByMonthComponent],
 })
 export class CalendarModule {}

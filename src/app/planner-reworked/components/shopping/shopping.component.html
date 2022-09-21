@@ -15,13 +15,14 @@
     >
       Зробити активним
     </button>
-    <app-calendar-container
-      *ngIf="showCalendar"
-      [isPlanner]="true"
+    <app-calendar-by-month
+      *ngIf="currentPlanner && showCalendar"
       [direction]="Direction.Horizontal"
-      [displayRange]="getDisplayRange()"
-      [displayMonthSelector]="false"
-    ></app-calendar-container>
+      [displayRange]="{
+        startDate: currentPlanner.startDate,
+        endDate: currentPlanner.endDate
+      }"
+    ></app-calendar-by-month>
   </div>
   <div class="shopping-lists" cdkDropListGroup>
     <div *ngIf="itemsTree">

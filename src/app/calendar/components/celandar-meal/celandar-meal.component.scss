@@ -46,6 +46,14 @@
     color: var(--gray);
   }
 
+  .recipy-placeholder {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: var(--tint3);
+    border: solid 1px var(--tint5);
+  }
+
   @media (min-width: 600px) {    
     .meal-time {
       background: var(--tint1);

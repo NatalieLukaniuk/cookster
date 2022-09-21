@@ -9,4 +9,8 @@ export class LayoutService {
 
 constructor() { }
 
+get isMobile(){
+  return this.isMobile$.asObservable()
+}
+
 }

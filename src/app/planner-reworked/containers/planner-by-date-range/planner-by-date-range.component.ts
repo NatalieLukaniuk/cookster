@@ -1,12 +1,16 @@
+import { CalendarService } from 'src/app/calendar/services/calendar.service';
 import { PlannerByDate } from './../../models';
-import { take, filter, takeUntil } from 'rxjs/operators';
+import { take, filter, takeUntil, map } from 'rxjs/operators';
 import { getCurrentRoute } from './../../../store/selectors/ui.selectors';
 import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { IAppState } from 'src/app/store/reducers';
 import { getCurrentPlanner } from 'src/app/store/selectors/planners.selectors';
-import { Subject } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
+import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
+import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
+import * as _ from 'lodash';
 
 export enum Tabs {
   Planning,
@@ -29,7 +33,10 @@ export class PlannerByDateRangeComponent implements OnInit, OnDestroy {
   activeLink = '';
   currentPlanner: PlannerByDate | undefined;
   destroy$ = new Subject();
-  constructor(private router: Router, private store: Store<IAppState>) {
+  constructor(
+    private store: Store<IAppState>,
+    private calendarService: CalendarService
+  ) {
     this.store
       .pipe(select(getCurrentRoute), take(1))
       .subscribe((route) => (this.activeLink = route));
@@ -39,15 +46,41 @@ export class PlannerByDateRangeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store
+    let currentUser$ = this.store.pipe(select(getCurrentUser));
+    let allRecipies$ = this.store.pipe(select(getAllRecipies));
+
+    let currentPlanner$ = this.store.pipe(
+      select(getCurrentPlanner),
+      filter((res) => !!res)
+    );
+
+    combineLatest([currentUser$, allRecipies$, currentPlanner$])
       .pipe(
-        select(getCurrentPlanner),
-        filter((res) => !!res),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
+        map((res) => ({ user: res[0], recipies: res[1], planner: res[2] }))
       )
       .subscribe((res) => {
-        if (res) {
-          this.currentPlanner = res;
+        if (res.planner) {
+          this.currentPlanner = res.planner;
+        }
+        if (res.planner && res.user && res.recipies) {
+          let start =
+            res.planner.startDate.substring(4) +
+            res.planner.startDate.substring(2, 4) +
+            res.planner.startDate.substring(0, 2);
+          let end =
+            res.planner.endDate.substring(4) +
+            res.planner.endDate.substring(2, 4) +
+            res.planner.endDate.substring(0, 2);
+          if (res.user.details) {
+            let userCalendarData = res.user.details;
+            this.calendarService.buildCalendarInRange(
+              start,
+              end,
+              userCalendarData,
+              res.recipies
+            );
+          }
         }
       });
   }

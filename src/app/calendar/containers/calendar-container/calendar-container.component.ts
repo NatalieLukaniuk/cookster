@@ -1,17 +1,22 @@
+import { CalendarService } from 'src/app/calendar/services/calendar.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { combineLatest, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { LayoutService } from 'src/app/shared/services/layout.service';
 import { IAppState } from 'src/app/store/reducers';
+import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
+import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import * as CalendarActions from '../../../store/actions/calendar.actions';
+import { DateService } from '../../services/date.service';
+import * as moment from 'moment';
 
 export enum Direction {
   Vertical,
-  Horizontal
+  Horizontal,
 }
 @Component({
   selector: 'app-calendar-container',
@@ -37,7 +42,9 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
   constructor(
     private layoutService: LayoutService,
     private route: ActivatedRoute,
-    private store: Store<IAppState>
+    private store: Store<IAppState>,
+    private dateService: DateService,
+    private calendarService: CalendarService
   ) {}
 
   ngOnInit() {
@@ -48,6 +55,38 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
     if (this.isPlanner) {
       this._isPlanner = true;
     }
+
+    let month$ = this.dateService.date;
+    let currentUser$ = this.store.pipe(
+      select(getCurrentUser),
+      takeUntil(this.destroy$)
+    );
+    let allRecipies$ = this.store.pipe(
+      select(getAllRecipies),
+      takeUntil(this.destroy$)
+    );
+    combineLatest([currentUser$, allRecipies$, month$])
+      .pipe(map((res) => ({ user: res[0], recipies: res[1], month: res[2] })))
+      .subscribe((res) => {
+        if (res.month && res.user && res.recipies) {
+          let start = ''
+          if(res.month.get('month') == moment().get('month')){
+            start = res.month.format('YYYYMMDD');
+          } else {
+            start = res.month.clone().startOf('month').format('YYYYMMDD')
+          }
+          
+          let end = res.month.clone().endOf('month').format('YYYYMMDD');
+          if (res.user.details) {
+            this.calendarService.buildCalendarInRange(
+              start,
+              end,
+              res.user.details,
+              res.recipies
+            );
+          }
+        }
+      });
   }
   ngOnDestroy(): void {
     this.destroy$.next();
