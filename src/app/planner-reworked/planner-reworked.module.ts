@@ -1,3 +1,4 @@
+import { AddListItemDialogComponent } from './components/add-list-item-dialog/add-list-item-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { AddListDialogComponent } from './components/add-list-dialog/add-list-dialog.component';
 import { FiltersModule } from './../filters/filters.module';
@@ -34,7 +35,8 @@ import { PlannerLandingComponent } from './containers/planner-landing/planner-la
     ShoppingComponent,
     PrepsComponent,
     RecipiesPannelComponent,
-    AddListDialogComponent
+    AddListDialogComponent,
+    AddListItemDialogComponent
   ],
 })
 export class PlannerReworkedModule {}

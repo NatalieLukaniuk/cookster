@@ -1,0 +1,25 @@
+<mat-form-field appearance="outline" class="amount-per-portion-input">
+  <mat-label>Назва</mat-label>
+  <input matInput [(ngModel)]="name" type="text" />
+</mat-form-field>
+<mat-form-field appearance="outline" class="amount-per-portion-input">
+  <mat-label>Кількість і од. вимірювання</mat-label>
+  <input matInput [(ngModel)]="amount" type="text" />
+</mat-form-field>
+<mat-form-field appearance="outline" class="amount-per-portion-input">
+  <mat-label>Коментар</mat-label>
+  <input matInput [(ngModel)]="comment" type="text" />
+</mat-form-field>
+<div mat-dialog-actions class="action-buttons">
+  <button mat-button class="secondary-button" (click)="onNoClick()">
+    Скасувати
+  </button>
+  <button
+    mat-button
+    class="action-button"
+    [mat-dialog-close]="[name, amount, comment]"
+    cdkFocusInitial
+  >
+    Додати
+  </button>
+</div>

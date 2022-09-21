@@ -1,3 +1,4 @@
+import { AddListItemDialogComponent } from './../add-list-item-dialog/add-list-item-dialog.component';
 import { PlannerService } from './../../services/planner.service';
 import { getAllRecipies } from './../../../store/selectors/recipies.selectors';
 import {
@@ -315,13 +316,34 @@ export class ShoppingComponent implements OnDestroy, OnInit {
     }
   }
 
-  deleteListItem(item: ShoppingListItemReworked, i:number){
-    this.myLists[i].items = this.myLists[i].items.filter(el => !(el.title == item.title));
+  deleteListItem(item: ShoppingListItemReworked, i: number) {
+    this.myLists[i].items = this.myLists[i].items.filter(
+      (el) => !(el.title == item.title)
+    );
     if (this.currentPlanner) {
       this.plannerService.updateShoppingLists(
         this.myLists,
         this.currentPlanner
       );
     }
+  }
+  addItem(i: number) {
+    const dialogRef = this.dialog.open(AddListItemDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (this.currentPlanner) {
+        let [name, amount, comment] = result;
+        this.myLists[i].items.push({
+          title: name,
+          amount: amount,
+          comment: comment,
+        });
+
+        this.plannerService.updateShoppingLists(
+          this.myLists,
+          this.currentPlanner
+        );
+      }
+    });
   }
 }

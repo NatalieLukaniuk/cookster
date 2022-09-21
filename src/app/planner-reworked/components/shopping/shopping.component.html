@@ -72,7 +72,14 @@
               <mat-panel-title>
                 {{ list.name }}
               </mat-panel-title>
-              <button mat-icon-button class="delete-btn" (click)="deleteList(list)">
+              <button mat-icon-button class="delete-btn" (click)="addItem(i)">
+                <mat-icon>add</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                class="delete-btn"
+                (click)="deleteList(list)"
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             </mat-expansion-panel-header>
@@ -84,14 +91,15 @@
             >
               <mat-list-item cdkDrag *ngFor="let item of list.items"
                 >{{ item.title }} {{ item.amount }}
-                <span *ngIf="item.comment">{{
-                  item.comment
-                }}</span>
-                <button mat-icon-button class="delete-btn" (click)="deleteListItem(item, i)">
+                <span *ngIf="item.comment">{{ item.comment }}</span>
+                <button
+                  mat-icon-button
+                  class="delete-btn"
+                  (click)="deleteListItem(item, i)"
+                >
                   <mat-icon>delete</mat-icon>
                 </button>
-                </mat-list-item
-              >
+              </mat-list-item>
             </mat-list>
           </mat-expansion-panel>
         </div>
