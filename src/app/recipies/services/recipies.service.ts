@@ -1,3 +1,4 @@
+import { ProductType } from './../models/products.interface';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -5,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { IAppState } from 'src/app/store/reducers';
 
 import * as fromRecipiesActions from '../../store/actions/recipies.actions';
+import { MeasuringUnit } from '../models/measuring-units.enum';
 import { Product } from '../models/products.interface';
 import { UserService } from './../../auth/services/user.service';
 import { Ingredient } from './../models/ingredient.interface';
@@ -12,6 +14,8 @@ import { NewRecipy, Recipy } from './../models/recipy.interface';
 import { ProductsApiService } from './products-api.service';
 import { RecipiesApiService } from './recipies-api.service';
 import {
+  getAmountInSelectedUnit,
+  getDefaultMeasuringUnit,
   getIngredientIdFromName,
   getIngredientText,
   getProductText,
@@ -80,6 +84,25 @@ export class RecipiesService {
 
   getProductNameById(id: string): string {
     return getProductText(id, this.products$.value);
+  }
+
+  getDefaultMU(id: string): MeasuringUnit{
+    return getDefaultMeasuringUnit(id, this.products$.value)
+  }
+
+  getAmountInSelectedUnit(
+    selectedUnit: MeasuringUnit,
+    ingredientId: string,
+    amountInGr: number
+  ){
+    return getAmountInSelectedUnit(selectedUnit, ingredientId, amountInGr, this.products$.value)
+  }
+
+  getProductType(ingredientId: string){
+    let product = this.products$.value.find(product => product.id == ingredientId);
+    if(product){
+      return product.type
+    } else return ProductType.spice
   }
 
   deleteRecipy(recipy: Recipy) {

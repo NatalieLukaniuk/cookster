@@ -1,3 +1,5 @@
+import { FormsModule } from '@angular/forms';
+import { AddListDialogComponent } from './components/add-list-dialog/add-list-dialog.component';
 import { FiltersModule } from './../filters/filters.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RecipiesPannelComponent } from './components/recipies-pannel/recipies-pannel.component';
@@ -22,7 +24,8 @@ import { PlannerLandingComponent } from './containers/planner-landing/planner-la
     CalendarModule,
     RecipiesModule,
     DragDropModule,
-    FiltersModule
+    FiltersModule,
+    FormsModule
   ],
   declarations: [
     PlannerByDateRangeComponent,
@@ -31,7 +34,7 @@ import { PlannerLandingComponent } from './containers/planner-landing/planner-la
     ShoppingComponent,
     PrepsComponent,
     RecipiesPannelComponent,
-
+    AddListDialogComponent
   ],
 })
 export class PlannerReworkedModule {}

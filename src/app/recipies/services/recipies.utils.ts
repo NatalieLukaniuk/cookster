@@ -1,4 +1,7 @@
-import { Product, ProductType } from 'src/app/recipies/models/products.interface';
+import {
+  Product,
+  ProductType,
+} from 'src/app/recipies/models/products.interface';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 
 import { Ingredient } from '../models/ingredient.interface';
@@ -144,7 +147,7 @@ export function grToItems(amount: number, grInOneItem: number) {
   return amount / grInOneItem;
 }
 
-export function convertAmountToSelectedUnit(
+export function convertAmountToSelectedUnit( // todo this shall become deprecated after refactoring
   unit: MeasuringUnit,
   ingredient: Ingredient,
   allProducts: Product[]
@@ -218,6 +221,81 @@ export function convertAmountToSelectedUnit(
   }
 }
 
+export function getAmountInSelectedUnit(
+  selectedUnit: MeasuringUnit,
+  ingredientId: string,
+  amountInGr: number,
+  allProducts: Product[]
+) {
+  if (selectedUnit == MeasuringUnit.gr) {
+    return amountInGr;
+  } else {
+    let amount = 0;
+    switch (selectedUnit) {
+      case MeasuringUnit.kg:
+        amount = grToKg(amountInGr);
+        break;
+      case MeasuringUnit.l:
+        amount = grToLiter(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.ml:
+        amount = grToMl(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.tableSpoon:
+        amount = grToTableSpoons(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.dessertSpoon:
+        amount = grToDessertSpoons(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.teaSpoon:
+        amount = grToTeaSpoons(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.coffeeSpoon:
+        amount = grToCoffeeSpoons(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.pinch:
+        amount = grToPinch(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.bunch:
+        amount = grToBunch(amountInGr);
+        break;
+      case MeasuringUnit.item:
+        amount = grToItems(
+          amountInGr,
+          getGrPerItem(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.cup:
+        amount = grToGlass(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+    }
+    return amount;
+  }
+}
+
 export function getDensity(productId: string, allProducts: Product[]) {
   let density = 0;
   for (let item of allProducts) {
@@ -271,7 +349,8 @@ export function transformToGr(
       return itemsToGr(amount, grInOneItem);
     case MeasuringUnit.cup:
       return glassToGr(amount, density);
-      default: return 0
+    default:
+      return 0;
   }
 }
 
@@ -291,30 +370,31 @@ export function getIngredientIdFromName(
 export function isIngrIncludedInAmountCalculation(
   ingr: any,
   allProducts: Product[]
-): boolean{
+): boolean {
   return getIngrCalories(ingr, allProducts) > 10;
 }
 
-export function getIngrCalories(ingr: Ingredient,
-  allProducts: Product[]): number {
-    let calories: number = 0;
-    for (let product of allProducts) {
-      if (product.id === ingr.product) {
-        calories = product.calories;
-      }
+export function getIngrCalories(
+  ingr: Ingredient,
+  allProducts: Product[]
+): number {
+  let calories: number = 0;
+  for (let product of allProducts) {
+    if (product.id === ingr.product) {
+      calories = product.calories;
     }
-    return calories;
+  }
+  return calories;
 }
 
-export function getIngrType(ingr: any,
-  allProducts: Product[]): ProductType {
-    let type: ProductType = ProductType.fluid;
-    for (let product of allProducts) {
-      if (product.id === ingr.product) {
-        type = product.type;
-      }
+export function getIngrType(ingr: any, allProducts: Product[]): ProductType {
+  let type: ProductType = ProductType.fluid;
+  for (let product of allProducts) {
+    if (product.id === ingr.product) {
+      type = product.type;
     }
-    return type;
+  }
+  return type;
 }
 
 export function getIngredientText(
@@ -330,10 +410,7 @@ export function getIngredientText(
   return productName;
 }
 
-export function getProductText(
-  productId: string,
-  allProducts: Product[]
-){
+export function getProductText(productId: string, allProducts: Product[]) {
   let productName = '';
   for (let product of allProducts) {
     if (product.id === productId) {
@@ -341,6 +418,16 @@ export function getProductText(
     }
   }
   return productName;
+}
+
+export function getDefaultMeasuringUnit(productId: string, allProducts: Product[]) {
+  let unit = MeasuringUnit.gr;
+  for (let product of allProducts) {
+    if (product.id === productId) {
+      unit = product.defaultUnit;
+    }
+  }
+  return unit;
 }
 
 export function NormalizeDisplayedAmount(
@@ -372,7 +459,8 @@ export function NormalizeDisplayedAmount(
       return getNiceDecimal(weirdAmount);
     case MeasuringUnit.teaSpoon:
       return getNiceDecimal(weirdAmount);
-      default: return 0
+    default:
+      return 0;
   }
 }
 
@@ -392,7 +480,7 @@ export function getNiceDecimal(amount: number): number {
   if ((amount * 10) % 10) {
     let remainder = (amount * 10) % 10;
     if (remainder > 0 && remainder < 3) {
-      return Math.floor(amount) > 0? Math.floor(amount) : 0.5;
+      return Math.floor(amount) > 0 ? Math.floor(amount) : 0.5;
     } else if (remainder >= 3 && remainder < 7) {
       return Math.floor(amount) + 0.5;
     } else {
@@ -401,6 +489,9 @@ export function getNiceDecimal(amount: number): number {
   } else return amount;
 }
 
-export function getRecipyNameById(allRecipies: Recipy[], recipyToFindId: string): string {
-  return allRecipies.find(rec => rec.id == recipyToFindId)!.name
+export function getRecipyNameById(
+  allRecipies: Recipy[],
+  recipyToFindId: string
+): string {
+  return allRecipies.find((rec) => rec.id == recipyToFindId)!.name;
 }

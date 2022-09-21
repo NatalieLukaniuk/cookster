@@ -1,3 +1,94 @@
-<p>
-  shopping works!
-</p>
+<div class="shopping-tab-container">
+  <div>
+    <button
+      mat-flat-button
+      class="action-button"
+      (click)="showCalendar = !showCalendar"
+    >
+      {{ showCalendar ? "Сховати календар" : "Показати календар" }}
+    </button>
+    <app-calendar-container
+      *ngIf="showCalendar"
+      [isPlanner]="true"
+      [direction]="Direction.Horizontal"
+      [displayRange]="getDisplayRange()"
+      [displayMonthSelector]="false"
+    ></app-calendar-container>
+  </div>
+  <div class="shopping-lists" cdkDropListGroup>
+    <div *ngIf="itemsTree">
+      <h3>Всі інгридієнти для запланованих рецептів</h3>
+      <mat-accordion
+        cdkDropList
+        class="example-headers-align"
+        *ngFor="let item of itemsTree; let i = index"
+      >
+        <mat-expansion-panel
+          cdkDrag
+          [id]="item.id + '/' + item.total + '/' + item.unit"
+          [expanded]="openedItem === i"
+          (opened)="openedItem = i"
+          hideToggle
+        >
+          <mat-expansion-panel-header [class.greyedOut]="getHasBeenAdded(item)">
+            <mat-panel-title>
+              {{ item.name }}
+            </mat-panel-title>
+            <app-amount-in-selected-unit
+              [ingrId]="item.id"
+              [amountInGr]="item.total"
+              [unit]="item.unit"
+            ></app-amount-in-selected-unit>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <mat-list-item *ngFor="let childItem of item.items">
+              <div *ngFor="let id of childItem.recipyId">
+                {{ getrecipyName(id) }}
+              </div>
+              <div>
+                <app-amount-in-selected-unit
+                  [ingrId]="childItem.product"
+                  [amountInGr]="childItem.amount"
+                  [unit]="childItem.defaultUnit"
+                ></app-amount-in-selected-unit>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div>
+      <div class="fixed-container">
+        <h3>
+          Мої списки покупок <mat-icon (click)="onAddList()">add</mat-icon>
+        </h3>
+        <div class="my-lists">
+          <mat-expansion-panel
+            *ngFor="let list of myLists; let i = index"
+            expanded="true"
+            hideToggle
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ list.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list
+              cdkDropList
+              [id]="'my-list-' + i"
+              (cdkDropListDropped)="drop($event)"
+              [cdkDropListData]="list.items"
+            >
+              <mat-list-item cdkDrag *ngFor="let item of list.items"
+                >{{ item.title }} {{ item.amount }}
+                <span *ngIf="item.comment">{{
+                  item.comment
+                }}</span></mat-list-item
+              >
+            </mat-list>
+          </mat-expansion-panel>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

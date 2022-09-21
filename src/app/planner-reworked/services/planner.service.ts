@@ -29,31 +29,32 @@ export class PlannerService {
     this.store.pipe(select(getCurrentUser), take(1)).subscribe((user) => {
       if (user && user.planner) {
         let updatedUser = _.cloneDeep(user);
-        updatedUser.planner!.forEach((plannerByDate) => {
+        updatedUser.planner = updatedUser.planner!.map((plannerByDate) => {
           if (plannerByDate.id == planner.id) {
-            plannerByDate = planner;
-          }
+            return planner;
+          } else return plannerByDate;
         });
         this.store.dispatch(new UpdateUserAction(updatedUser));
       }
     });
   }
 
-  removePlannerByDate(planner: PlannerByDate){
+  removePlannerByDate(planner: PlannerByDate) {
     this.store.pipe(select(getCurrentUser), take(1)).subscribe((user) => {
       if (user && user.planner) {
         let updatedUser = _.cloneDeep(user);
-        updatedUser.planner = updatedUser.planner!.filter((plannerByDate) => plannerByDate.id !== planner.id);
+        updatedUser.planner = updatedUser.planner!.filter(
+          (plannerByDate) => plannerByDate.id !== planner.id
+        );
         this.store.dispatch(new UpdateUserAction(updatedUser));
       }
     });
   }
 
-  updateShoppingList(list: ShoppingList, planner: PlannerByDate) {
-    planner.shoppingLists = planner.shoppingLists.map((item) =>
-      item.name == list.name ? list : item
-    );
-    this.updatePlannerByDate(planner);
+  updateShoppingLists(lists: ShoppingList[], planner: PlannerByDate) {
+    let updated = _.cloneDeep(planner);
+    updated.shoppingLists = lists;
+    this.updatePlannerByDate(updated);
   }
 
   removeShoppingList(list: ShoppingList, planner: PlannerByDate) {
@@ -64,9 +65,13 @@ export class PlannerService {
   }
 
   addShoppingList(list: ShoppingList, planner: PlannerByDate) {
-    planner.shoppingLists.push(list)
-    this.updatePlannerByDate(planner);
-  }
+    let updated = { ...planner };
+    if (updated.shoppingLists) {
+      updated.shoppingLists = [...updated.shoppingLists, list];
+    } else {
+      updated.shoppingLists = [list];
+    }
 
-  
+    this.updatePlannerByDate(updated);
+  }
 }

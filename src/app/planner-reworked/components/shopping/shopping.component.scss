@@ -1,0 +1,67 @@
+.shopping-tab-container {
+  padding-top: 20px;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.shopping-lists {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 10px;
+  flex-grow: 2;
+  overflow-y: auto;
+  position: relative;
+  & > div {
+    width: 45%;
+  }
+  h3 {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  ::ng-deep .mat-expansion-panel-header,
+  ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content {
+    justify-content: space-between;
+  }
+  ::ng-deep .mat-expansion-panel-header {
+    background: var(--background-color);
+    &.greyedOut {
+      background: #e3dfdf;
+      opacity: 0.3;
+    }
+  }
+  ::ng-deep .mat-list-base {
+    padding-inline: 25px;
+    .mat-list-item {
+      height: auto;
+      .mat-list-item-content {
+        font-size: 12px;
+        select.inline-select {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+.my-lists {
+  ::ng-deep .mat-list-base .mat-list-item {
+    background-color: var(--tint2);
+    padding-block: 7px;
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--background-color);
+    }
+  }
+  ::ng-deep .mat-expansion-panel-body {
+    max-height: 30vh;
+    overflow-y: auto;
+  }
+}
+.fixed-container {
+  position: fixed;
+  right: 3vw;
+  width: 30vw;
+}

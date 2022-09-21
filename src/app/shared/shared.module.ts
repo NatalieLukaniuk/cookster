@@ -1,3 +1,4 @@
+import { AmountInSelectedUnitComponent } from './components/amount-in-selected-unit/amount-in-selected-unit.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -81,6 +82,7 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     TextInputDialogComponent,
     DatePickerRangeComponent,
     SuggestionComponent,
+    AmountInSelectedUnitComponent
   ],
   exports: [
     MatButtonModule,
@@ -118,6 +120,7 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     TextInputDialogComponent,
     DatePickerRangeComponent,
     SuggestionComponent,
+    AmountInSelectedUnitComponent
   ],
   providers: [],
 })
