@@ -1,3 +1,4 @@
+import { ActiveShoppingListComponent } from './containers/active-shopping-list/active-shopping-list.component';
 import { MyShoppingListComponent } from './components/my-shopping-list/my-shopping-list.component';
 import { AddListItemDialogComponent } from './components/add-list-item-dialog/add-list-item-dialog.component';
 import { FormsModule } from '@angular/forms';
@@ -38,7 +39,8 @@ import { PlannerLandingComponent } from './containers/planner-landing/planner-la
     RecipiesPannelComponent,
     AddListDialogComponent,
     AddListItemDialogComponent,
-    MyShoppingListComponent
+    MyShoppingListComponent,
+    ActiveShoppingListComponent
   ],
 })
 export class PlannerReworkedModule {}

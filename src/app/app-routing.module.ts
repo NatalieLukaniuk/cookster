@@ -1,3 +1,4 @@
+import { ActiveShoppingListComponent } from './planner-reworked/containers/active-shopping-list/active-shopping-list.component';
 import { PrepsComponent } from './planner-reworked/components/preps/preps.component';
 import { ShoppingComponent } from './planner-reworked/components/shopping/shopping.component';
 import { PlanningComponent } from './planner-reworked/components/planning/planning.component';
@@ -69,7 +70,7 @@ export const routes: Routes = [
     component: CalendarContainerComponent,
     data: { isPlanner: false },
   },
-  { path: 'shopping-list', component: ShoppingListComponent },
+  { path: 'shopping-list', component: ActiveShoppingListComponent },
   { path: 'planner-reworked', component: PlannerLandingComponent , children: [
     {
       path: 'by-date/:id',

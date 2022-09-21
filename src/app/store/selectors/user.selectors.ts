@@ -12,3 +12,5 @@ export const getUserPlannedRecipies = createSelector(
   getUserState,
   (state) => state.currentUser?.details
 );
+
+export const getUserPlanners = createSelector(getUserState, state => state.currentUser?.planner)
