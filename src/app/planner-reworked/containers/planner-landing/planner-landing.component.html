@@ -10,7 +10,7 @@
     <mat-list>
       <mat-list-item *ngFor="let planner of plannersList">
         <span (click)="onPlannerClicked(planner.id)"
-          >{{ planner.startDate }} - {{ planner.endDate }}</span
+          >{{ getFormattedName(planner.startDate) | date: 'MMMM, dd' }} - {{ getFormattedName(planner.endDate) | date: 'MMMM, dd' }}</span
         >
         <mat-icon class="delete-btn" (click)="deletePlanner(planner)"
           >delete_outline</mat-icon

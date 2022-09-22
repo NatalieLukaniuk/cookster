@@ -3,7 +3,7 @@
     <div
       [id]="day.details.day"
       class="calendar-day"
-      *ngIf="(!displayRange && !day.disabled) || isWithinRange(day)"
+      *ngIf="isDisplay(day)"
       [class.disabled]="day.disabled"
       [class.selected]="day.selected"
       [class.active]="day.active"

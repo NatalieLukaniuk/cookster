@@ -1,8 +1,6 @@
 import { PlannerService } from './../../services/planner.service';
 import { getAllRecipies } from './../../../store/selectors/recipies.selectors';
-import {
-  MeasuringUnit,
-} from 'src/app/recipies/models/measuring-units.enum';
+import { MeasuringUnit } from 'src/app/recipies/models/measuring-units.enum';
 import { getCalendar } from './../../../store/selectors/calendar.selectors';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { select, Store } from '@ngrx/store';
@@ -12,10 +10,7 @@ import { Direction } from 'src/app/calendar/containers/calendar-container/calend
 import { IAppState } from 'src/app/store/reducers';
 import { getCurrentPlanner } from 'src/app/store/selectors/planners.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
-import {
-  PlannerByDate,
-  ShoppingList,
-} from '../../models';
+import { PlannerByDate, ShoppingList } from '../../models';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
@@ -24,10 +19,9 @@ import {
   RecipyForCalendar,
 } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
-import {
-  getRecipyNameById,
-} from 'src/app/recipies/services/recipies.utils';
+import { getRecipyNameById } from 'src/app/recipies/services/recipies.utils';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 export interface SLItem {
   total: number;
@@ -108,8 +102,12 @@ export class ShoppingComponent implements OnDestroy, OnInit {
           let fullCal = res.calendar;
           const dayItemsToAdd = fullCal.filter(
             (detail: Day) =>
-              +detail.details.day >= +this.currentPlanner!.startDate &&
-              +detail.details.day <= +this.currentPlanner!.endDate
+              moment(detail.details.day, 'DDMMYYYY').isSameOrAfter(
+                moment(this.currentPlanner!.startDate, 'DDMMYYYY')
+              ) &&
+              moment(detail.details.day, 'DDMMYYYY').isSameOrBefore(
+                moment(this.currentPlanner!.endDate, 'DDMMYYYY')
+              )
           );
           let list: ShoppingListItem[] = [];
           dayItemsToAdd.forEach((day: Day) => {

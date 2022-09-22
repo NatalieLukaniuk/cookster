@@ -10,6 +10,7 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { IAppState } from 'src/app/store/reducers';
 import { Observable, Subject } from 'rxjs';
+import { getFormattedName } from '../../services/planner.utils';
 
 @Component({
   selector: 'app-planner-landing',
@@ -22,6 +23,8 @@ export class PlannerLandingComponent implements OnInit, OnDestroy {
   plannersList: Planner[] = [];
   destroyed$ = new Subject();
   isMobile$: Observable<boolean>;
+
+  getFormattedName = getFormattedName;
 
   constructor(
     private store: Store<IAppState>,
@@ -47,7 +50,8 @@ export class PlannerLandingComponent implements OnInit, OnDestroy {
     this.destroyed$.next();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   onAddNewPlanner() {
     this.showDatePicker = true;

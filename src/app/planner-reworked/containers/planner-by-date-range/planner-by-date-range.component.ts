@@ -11,6 +11,7 @@ import { Subject, combineLatest } from 'rxjs';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import * as _ from 'lodash';
+import { getFormattedName } from '../../services/planner.utils';
 
 export enum Tabs {
   Planning,
@@ -33,9 +34,12 @@ export class PlannerByDateRangeComponent implements OnInit, OnDestroy {
   activeLink = '';
   currentPlanner: PlannerByDate | undefined;
   destroy$ = new Subject();
+
+  getFormattedName = getFormattedName;
   constructor(
     private store: Store<IAppState>,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private router: Router
   ) {
     this.store
       .pipe(select(getCurrentRoute), take(1))
@@ -83,5 +87,8 @@ export class PlannerByDateRangeComponent implements OnInit, OnDestroy {
           }
         }
       });
+  }
+  goAllPlanners() {
+    this.router.navigate(['/planner-reworked']);
   }
 }

@@ -1,16 +1,25 @@
-:host{
-    position: relative;
+:host {
+  position: relative;
 }
 
-.title{
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    text-align: right;
-    color: var(--primary);
-    font-weight: 600;
+.title {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  text-align: right;
+  color: var(--primary);
+  font-weight: 600;
+  display: flex;
+  z-index: 10;
+  align-items: center;
+  button {
+    margin-left: 15px;
+    .mat-icon {
+      font-size: 35px;
+    }
+  }
 }
 
-.subtitle{
-    font-size: 9px;
+.subtitle {
+  font-size: 9px;
 }

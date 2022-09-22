@@ -29,6 +29,7 @@ import {
   getaddToCartDateRange,
   getCalendar,
 } from './../../../store/selectors/calendar.selectors';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-calendar-by-month',
@@ -255,9 +256,12 @@ export class CalendarByMonthComponent implements OnInit, OnDestroy {
   isWithinRange(day: Day): boolean {
     if (this.displayRange) {
       return (
-        +day.details.day >= +this.displayRange.startDate &&
-        +day.details.day <= +this.displayRange.endDate
+        moment(day.details.day, 'DDMMYYYY').isSameOrAfter(moment(this.displayRange.startDate, 'DDMMYYYY')) &&
+        moment(day.details.day, 'DDMMYYYY').isSameOrBefore(moment(this.displayRange.endDate, 'DDMMYYYY'))
       );
     } else return true;
+  }
+  isDisplay(day: Day): boolean{
+    return (!this.displayRange && !day.disabled) || this.isWithinRange(day)
   }
 }

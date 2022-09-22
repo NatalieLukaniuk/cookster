@@ -68,7 +68,7 @@ export class NavigationComponent implements OnDestroy {
     if(this.isMobile){
       route = 'calendar';
     } else {
-      route = 'calendar-planner';
+      route = 'planner-reworked';
     }
      this.router.navigate([route])
    }
