@@ -8,11 +8,12 @@
 
 .shopping-lists {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   margin-top: 10px;
   flex-grow: 2;
   overflow-y: auto;
   position: relative;
+  margin-bottom: 20px;
   & > div {
     width: 45%;
   }
@@ -34,7 +35,7 @@
     }
   }
   ::ng-deep .mat-list-base {
-    padding-inline: 25px;
+    padding-inline: 10px;
     .mat-list-item {
       height: auto;
       .mat-list-item-content {
@@ -47,8 +48,15 @@
   }
 }
 
+.buttons-wrapper{
+  margin-left: 15px;
+  button{
+    margin-right: 10px;
+  }
+}
+
 .fixed-container {
   position: fixed;
-  right: 3vw;
+  right: 12vw;
   width: 30vw;
 }

@@ -26,15 +26,20 @@
         [cdkDropListData]="list.items"
       >
         <mat-list-item cdkDrag *ngFor="let item of list.items">
-          <span class="item-title">{{ item.title }}</span>
-          <span *ngIf="!item.editMode" (dblclick)="item.editMode = true">{{
-            item.amount
-          }}</span>
-          <span class="edit-field" *ngIf="item.editMode">
-            <input [(ngModel)]="item.amount" />
-            <mat-icon (click)="saveChanges(item, i)">check</mat-icon>
-          </span>
-          <span *ngIf="item.comment">{{ item.comment }}</span>
+          <div>
+            <div>
+              <span class="item-title">{{ item.title }}</span>
+              <span *ngIf="!item.editMode" (dblclick)="item.editMode = true">{{
+                item.amount
+              }}</span>
+              <span class="edit-field" *ngIf="item.editMode">
+                <input [(ngModel)]="item.amount" />
+                <mat-icon (click)="saveChanges(item, i)">check</mat-icon>
+              </span>
+            </div>
+            <div class="item-comment" *ngIf="item.comment">{{ item.comment }}</div>
+          </div>
+
           <button
             mat-icon-button
             class="delete-btn"
@@ -73,9 +78,12 @@
                     *ngIf="!item.completed"
                     (click)="toggleCompleted(item, i)"
                   >
-                    <span class="item-title">{{ item.title }}</span>
-                    <span>{{ item.amount }}</span>
-                    <span *ngIf="item.comment">{{ item.comment }}</span>
+                  <div class="item-main-part">
+                    <div class="item-title">{{ item.title }}</div>
+                    <div>{{ item.amount }}</div>
+                  </div>
+                    
+                    <div class="item-comment" *ngIf="item.comment">{{ item.comment }}</div>
                   </mat-list-item>
                 </ng-container>
               </mat-action-list>
@@ -105,9 +113,12 @@
                     *ngIf="item.completed"
                     (click)="toggleCompleted(item, i)"
                   >
-                    <span class="item-title">{{ item.title }}</span>
-                    <span>{{ item.amount }}</span>
-                    <span *ngIf="item.comment">{{ item.comment }}</span>
+                  <div class="item-main-part">
+                    <div class="item-title">{{ item.title }}</div>
+                    <div>{{ item.amount }}</div>
+                  </div>
+                    
+                    <div class="item-comment" *ngIf="item.comment">{{ item.comment }}</div>
                   </mat-list-item>
                 </ng-container>
               </mat-action-list>

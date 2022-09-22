@@ -1,8 +1,8 @@
 <div class="shopping-tab-container">
-  <div>
+  <div class="buttons-wrapper">
     <button
       mat-flat-button
-      class="action-button"
+      class="secondary-button"
       (click)="showCalendar = !showCalendar"
     >
       {{ showCalendar ? "Сховати календар" : "Показати календар" }}
@@ -13,7 +13,7 @@
       class="action-button"
       (click)="makeListActive()"
     >
-      Зробити активним
+      Зробити список активним
     </button>
     <app-calendar-by-month
       *ngIf="currentPlanner && showCalendar"

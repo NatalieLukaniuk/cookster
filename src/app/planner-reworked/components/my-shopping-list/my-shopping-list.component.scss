@@ -25,11 +25,16 @@ h3 {
   justify-content: space-evenly;
 }
 
+.item-comment {
+  opacity: 0.6;
+}
+
 @media (min-width: 601px) {
   .my-lists {
     ::ng-deep .mat-list-base .mat-list-item {
       background-color: var(--tint2);
       padding-block: 7px;
+
       &:not(:last-child) {
         border-bottom: 1px solid var(--background-color);
       }
@@ -54,8 +59,8 @@ h3 {
 
 @media (max-width: 600px) {
   .my-lists {
-    .wrapper{
-        position: relative;
+    .wrapper {
+      position: relative;
     }
     .mat-expansion-panel-header-title {
       font-size: 16px;
@@ -68,12 +73,23 @@ h3 {
     }
     ::ng-deep .mat-list-base .mat-list-item {
       &:not(:last-child) {
-        border-bottom: 1px solid var(--gray);
+        border-bottom: 1px solid var(--tint1);
       }
       .mat-list-item-content {
-        justify-content: space-between;
-        font-size: 12px;
+        justify-content: center;
+        flex-direction: column;
+        font-size: 13px;
+        padding-block: 3px;
+        align-items: baseline;
       }
+    }
+    .item-main-part{
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .item-comment{
+      font-size: 10px;
     }
   }
 }
