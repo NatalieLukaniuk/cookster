@@ -12,7 +12,7 @@ import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import * as _ from 'lodash';
 import { getFormattedName } from '../../services/planner.utils';
-
+import * as moment from 'moment';
 export enum Tabs {
   Planning,
   Shopping,
@@ -34,6 +34,7 @@ export class PlannerByDateRangeComponent implements OnInit, OnDestroy {
   activeLink = '';
   currentPlanner: PlannerByDate | undefined;
   destroy$ = new Subject();
+  isRecipiesPlanned: boolean = false;
 
   getFormattedName = getFormattedName;
   constructor(
@@ -42,7 +43,7 @@ export class PlannerByDateRangeComponent implements OnInit, OnDestroy {
     private router: Router
   ) {
     this.store
-      .pipe(select(getCurrentRoute), take(1))
+      .pipe(select(getCurrentRoute), takeUntil(this.destroy$))
       .subscribe((route) => (this.activeLink = route));
   }
   ngOnDestroy(): void {
@@ -67,6 +68,9 @@ export class PlannerByDateRangeComponent implements OnInit, OnDestroy {
         if (res.planner) {
           this.currentPlanner = res.planner;
         }
+
+        if (res.user && res.user.details) {
+        }
         if (res.planner && res.user && res.recipies) {
           let start =
             res.planner.startDate.substring(4) +
@@ -84,6 +88,18 @@ export class PlannerByDateRangeComponent implements OnInit, OnDestroy {
               userCalendarData,
               res.recipies
             );
+
+            this.isRecipiesPlanned = !!res.user.details
+              .filter(
+                (day) =>
+                  moment(day.day, 'DDMMYYYY').isSameOrAfter(
+                    moment(res.planner!.startDate, 'DDMMYYYY')
+                  ) &&
+                  moment(day.day, 'DDMMYYYY').isSameOrBefore(
+                    moment(res.planner!.endDate, 'DDMMYYYY')
+                  )
+              )
+              .find((day) => day.breakfast || day.lunch || day.dinner);
           }
         }
       });
