@@ -91,5 +91,9 @@ h3 {
     .item-comment{
       font-size: 10px;
     }
+    .list-wrapper-mobile{
+      max-height: 68vh;
+      overflow-y: auto;
+    }
   }
 }
