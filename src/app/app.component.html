@@ -3,7 +3,7 @@
     <app-filters></app-filters>
   </mat-drawer>
   <mat-drawer-content>
-    <ng-container *ngIf="isAuthCheckPerformed$ | async; else splash">
+    <ng-container *ngIf="(isAuthCheckPerformed$ | async) && !(isLoading$ | async); else splash">
       <app-header></app-header>
       <section>
         <router-outlet></router-outlet>

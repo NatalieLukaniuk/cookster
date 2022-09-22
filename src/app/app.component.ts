@@ -1,3 +1,4 @@
+import { getAllRecipies } from './store/selectors/recipies.selectors';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { SetCurrentPlannerByDateAction } from './store/actions/planner.actions';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -23,6 +24,7 @@ import * as UiActions from './store/actions/ui.actions';
 import { IAppState } from './store/reducers';
 import {
   getIsError,
+  getIsLoading,
   getIsSidebarOpen,
   getIsSuccessMessage,
 } from './store/selectors/ui.selectors';
@@ -64,6 +66,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   currentRoute: string = '';
   routerEvents$: Observable<Event>;
   currentUser$: Observable<User | null>;
+  isLoading$: Observable<boolean>
 
   constructor(
     private iconRegistry: MatIconRegistry,
@@ -78,6 +81,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private store: Store<IAppState>,
     private _snackBar: MatSnackBar
   ) {
+    this.isLoading$ = this.store.pipe(select(getIsLoading));
     this.addIcons();
     const app = initializeApp(this.firebaseConfig);
     this.isAuthCheckPerformed$ = this.authService.isCheckPerformed$.pipe(
@@ -109,6 +113,13 @@ export class AppComponent implements OnInit, AfterViewInit {
           this.store.dispatch(new SetCurrentPlannerByDateAction(url[3]));
         }
       });
+    let productsLoaded$ = this.recipiesService.productsLoaded$;
+    let recipiesLoaded$ = this.store.pipe(select(getAllRecipies));
+    combineLatest([productsLoaded$, recipiesLoaded$]).subscribe((res) => {
+      if (res[0] && res[1].length) {
+        this.store.dispatch(new UiActions.SetIsLoadingFalseAction());
+      }
+    });
   }
   ngAfterViewInit(): void {
     this.sidebar.openedChange.subscribe((isOpen) => {
@@ -125,6 +136,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
   ngOnInit(): void {
+    this.store.dispatch(new UiActions.SetIsLoadingAction());
     const url = window.location.pathname;
     this.authService.checkIsLoggedIn();
     this.recipiesService.productsUpdated$.subscribe(() =>

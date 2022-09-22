@@ -29,6 +29,7 @@ import {
 export class RecipiesService {
   products$ = new BehaviorSubject<Product[]>([]);
   productsUpdated$ = new Subject<any>();
+  productsLoaded$ = new BehaviorSubject<boolean>(false);
 
   filteredRecipies: number = 0;
 
@@ -67,6 +68,7 @@ export class RecipiesService {
           };
           products.push(recipy);
         }
+        this.productsLoaded$.next(true)
         this.products$.next(products);
       });
   }
