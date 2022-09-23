@@ -89,6 +89,9 @@
   .recipy-name {
     font-size: 14px;
     margin-block: 5px;
+    ::ng-deep .mat-expansion-panel-header{
+      font-size: 13px;
+    }
   }
   .mat-expansion-panel {
     background-color: var(--background-color);
@@ -111,7 +114,8 @@
   }
   .mat-list-base .mat-list-item {
     font-size: 12px;
-    height: 40px;
+    height: auto;
+    padding-block: 5px;
     mat-icon {
       font-size: 20px;
       margin-right: 10px;
