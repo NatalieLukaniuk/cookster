@@ -7,6 +7,12 @@ export enum UserActionTypes {
     GET_USER = '[USER] Get User',
     UPDATE_USER = '[USER] Update User',
     UPDATE_USER_SUCCESSFUL = '[USER] User Has Been Updated',
+    CREATE_RECIPY_COLLECTION = '[USER] Create Recipy Collection'
+}
+
+export class CreateRecipyCollection implements Action {
+    readonly type = UserActionTypes.CREATE_RECIPY_COLLECTION;
+    constructor(public collectionName: string){}
 }
 
 export class UpdateUserAction implements Action{
@@ -29,4 +35,4 @@ export class UserLoadedAction implements Action {
     constructor (public user: User){}
 }
 
-export type UserActions = GetUserAction | UserLoadedAction | UpdateUserAction | UpdateUserSuccessfulAction;
+export type UserActions = GetUserAction | UserLoadedAction | UpdateUserAction | UpdateUserSuccessfulAction | CreateRecipyCollection;

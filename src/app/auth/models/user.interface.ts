@@ -13,12 +13,18 @@ export interface User {
   prepLists?: SuggestionList[];
   img?: string;
   role: Role,
-  planner?: PlannerByDate[]
+  planner?: PlannerByDate[],
+  collections?: RecipyCollection[]
 }
 
 export enum Role {
   Admin = 'admin',
   User = 'user'
+}
+
+export interface RecipyCollection {
+  name: string,
+  recipies: string[]
 }
 
 export interface UserImpl {

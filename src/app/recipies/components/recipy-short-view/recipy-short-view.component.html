@@ -56,7 +56,24 @@
         <mat-icon>pageview</mat-icon>
       </button>
       <button mat-icon-button disabled><mat-icon>event_note</mat-icon></button>
-      <button mat-icon-button disabled><mat-icon>bookmark</mat-icon></button>
+      <button mat-icon-button [matMenuTriggerFor]="collectionsMenu"><mat-icon>bookmark</mat-icon></button>
+      <mat-menu #collectionsMenu="matMenu">
+        <button
+          mat-menu-item
+          *ngFor="let collection of recipyCollections"
+          [value]="collection"
+          (click)="onCollectionSelected(collection)"
+        >
+          {{ collection }}
+        </button>
+        <button
+          mat-menu-item          
+          [value]="'addNew'"
+          (click)="addCollection()"
+        >
+          Додати колекцію
+        </button>
+      </mat-menu>
     </div>
   </div>
 
