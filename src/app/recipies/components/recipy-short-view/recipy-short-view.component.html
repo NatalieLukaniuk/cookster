@@ -9,13 +9,16 @@
     [class.plain-background]="!recipy.photo"
     [class.hovered]="isHovered || isRecipyClicked"
   >
-  <div class="icons" *ngIf="!isRecipyClicked && !isHovered">
-    <mat-icon *ngIf="showNeedsAdvancePreparation"
-          >av_timer</mat-icon
-        >
-    <mat-icon *ngIf="hasPrepSuggestions">whatshot</mat-icon>
-    <mat-icon *ngIf="recipy.isCheckedAndApproved" class="color-primary" matSuffix svgIcon="approved"></mat-icon>
-  </div>
+    <div class="icons" *ngIf="!isRecipyClicked && !isHovered">
+      <mat-icon *ngIf="showNeedsAdvancePreparation">av_timer</mat-icon>
+      <mat-icon *ngIf="hasPrepSuggestions">whatshot</mat-icon>
+      <mat-icon
+        *ngIf="recipy.isCheckedAndApproved"
+        class="color-primary"
+        matSuffix
+        svgIcon="approved"
+      ></mat-icon>
+    </div>
     <div class="recipy-title">
       {{ recipy.name }}
     </div>
@@ -26,8 +29,8 @@
   <div
     class="overlay short-info"
     [class.visible]="
-      (isMobile && isRecipyClicked) ||
-      (!isMobile && isHovered && !isRecipyClicked)
+      ((isMobile && isRecipyClicked) ||
+      (!isMobile && isHovered && !isRecipyClicked)) && !showCollections
     "
   >
     <div class="short-info-details-panel">
@@ -42,21 +45,34 @@
         <div>{{ preparationTime | normalizeTime }}</div>
       </div>
       <div>{{ complexity }} рецепт</div>
-      <div class="advance-prep" *ngIf="hasPrepSuggestions"><mat-icon>whatshot</mat-icon> дещо можна приготувати заздалегіть</div>
-      <div class="advance-prep" *ngIf="recipy.isCheckedAndApproved"><mat-icon class="color-primary" matSuffix svgIcon="approved"></mat-icon> рецепт перевірений на практиці</div>
-      <div class="tags">
+      <div class="advance-prep" *ngIf="hasPrepSuggestions">
+        <mat-icon>whatshot</mat-icon> дещо можна приготувати заздалегіть
+      </div>
+      <div class="advance-prep" *ngIf="recipy.isCheckedAndApproved">
+        <mat-icon class="color-primary" matSuffix svgIcon="approved"></mat-icon>
+        рецепт перевірений на практиці
+      </div>
+      <!-- <div class="tags">
         <mat-chip-list>
           <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
         </mat-chip-list>
+      </div> -->
+      <div class="collection-tags" *ngIf="includedInCollections.length">
+        <span>Колекції: </span>
+        <mat-chip *ngFor="let collection of includedInCollections">{{collection}}</mat-chip>
       </div>
-      
     </div>
     <div class="side-menu-panel">
       <button mat-icon-button (click)="goFullRecipy()">
         <mat-icon>pageview</mat-icon>
       </button>
       <button mat-icon-button disabled><mat-icon>event_note</mat-icon></button>
-      <button mat-icon-button [matMenuTriggerFor]="collectionsMenu"><mat-icon>bookmark</mat-icon></button>
+      <button
+        mat-icon-button
+        (click)="showCollections = true"
+      >
+        <mat-icon>bookmark</mat-icon>
+      </button>
       <mat-menu #collectionsMenu="matMenu">
         <button
           mat-menu-item
@@ -64,23 +80,34 @@
           [value]="collection"
           (click)="onCollectionSelected(collection)"
         >
-          {{ collection }}
+          {{ getIsInCollection(collection) ? "✓" : "+" }} {{ collection }}
         </button>
-        <button
-          mat-menu-item          
-          [value]="'addNew'"
-          (click)="addCollection()"
-        >
+        <button mat-menu-item [value]="'addNew'" (click)="addCollection()">
           Додати колекцію
         </button>
       </mat-menu>
     </div>
   </div>
 
+  <div class="overlay collections" [class.visible]="showCollections" (click)="showCollections = false">
+    <mat-action-list>
+      <button
+        mat-list-item
+        *ngFor="let collection of recipyCollections"
+        (click)="onCollectionSelected(collection)"
+      >
+        {{ getIsInCollection(collection) ? "✓" : "" }} {{ collection }}
+      </button>
+      <button mat-list-item (click)="addCollection()">
+        + Додати колекцію
+      </button>
+    </mat-action-list>
+  </div>
+
   <div
     class="overlay detailed-info"
     [class.visible]="
-      (!isMobile && isRecipyClicked) || (isMobile && isDetailedInfo)
+      ((!isMobile && isRecipyClicked) || (isMobile && isDetailedInfo)) && !showCollections
     "
   >
     <div class="ingredients-wrapper">

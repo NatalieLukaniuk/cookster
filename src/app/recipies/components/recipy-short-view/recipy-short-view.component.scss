@@ -11,11 +11,29 @@ $aspect-ratio: 5/4;
 
 .base,
 .short-info,
-.detailed-info {
+.detailed-info,
+.collections {
   aspect-ratio: $aspect-ratio;
   padding: 4px;
   width: 100%;
   box-sizing: border-box;
+}
+
+.collections.overlay.visible {
+  display: flex;
+  background: var(--background-color);
+  opacity: 0.9;
+  button {
+    font-weight: 600;
+    padding-inline: 30px;
+    height: auto;
+    padding-block: 6px;
+    &:last-of-type{
+      opacity: 0.6;
+      color: var(--primary);
+      font-size: 14px;
+    }
+}
 }
 
 .base {
@@ -23,7 +41,7 @@ $aspect-ratio: 5/4;
   z-index: 10;
   display: flex;
   flex-direction: column;
-  .icons{
+  .icons {
     position: absolute;
     top: 8px;
     color: var(--primary);
@@ -31,8 +49,8 @@ $aspect-ratio: 5/4;
     padding: 2px 8px;
     display: flex;
     align-items: center;
-    border-radius: 20px; 
-    .mat-icon{
+    border-radius: 20px;
+    .mat-icon {
       height: 18px;
       width: auto;
       font-size: 18px;
@@ -98,10 +116,18 @@ $aspect-ratio: 5/4;
   }
 }
 
+.collection-tags{
+  align-items: center;
+  margin-top: 5px;
+}
+
 .side-menu-panel {
   display: flex;
   flex-direction: column;
   margin-left: 20px;
+  button {
+    z-index: 10;
+  }
 }
 
 .short-info-details-panel {
@@ -115,7 +141,7 @@ $aspect-ratio: 5/4;
       margin-right: 5px;
       height: 17px;
       width: auto;
-      &.color-primary{
+      &.color-primary {
         color: var(--primary);
       }
     }

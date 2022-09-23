@@ -40,6 +40,7 @@ export class RecipyShortViewComponent implements OnInit {
   isRecipyClicked: boolean = false;
   isHovered: boolean = false;
   isDetailedInfo: boolean = false;
+  showCollections: boolean = false;
 
   hasPrepSuggestions: boolean = false;
 
@@ -96,20 +97,29 @@ export class RecipyShortViewComponent implements OnInit {
 
   get recipyCollections() {
     if (this.currentUser.collections) {
-      return this.currentUser.collections.map((collection) => {
-        if (collection.recipies?.includes(this.recipy.id)) {
-          return '✓ ' + collection.name;
-        } else return '+ ' + collection.name;
-      });
+      return this.currentUser.collections.map((collection) => collection.name);
     } else return [];
   }
 
+  get includedInCollections(): string[]{
+    if (this.currentUser.collections) {
+      return this.currentUser.collections.filter((collection) => collection.recipies?.includes(this.recipy.id)).map(coll => coll.name);
+    } else return [];
+  }
+
+  getIsInCollection(collection: string) {
+    if (this.currentUser.collections) {
+      return this.currentUser.collections
+        .find((coll) => coll.name == collection)
+        ?.recipies?.find((recipy) => recipy == this.recipy.id);
+    } else return false;
+  }
+
   onCollectionSelected(collection: string) {
-    let split = collection.split(' ');
-    let cleanedName = split[split.length - 1];
+    this.showCollections = false;
     let updated = _.cloneDeep(this.currentUser);
     updated.collections = updated.collections!.map((coll) => {
-      if (coll.name === cleanedName) {
+      if (coll.name === collection) {
         if (coll.recipies && coll.recipies.includes(this.recipy.id)) {
           coll.recipies = coll.recipies.filter((id) => id !== this.recipy.id);
         } else if (coll.recipies && !coll.recipies.includes(this.recipy.id)) {
