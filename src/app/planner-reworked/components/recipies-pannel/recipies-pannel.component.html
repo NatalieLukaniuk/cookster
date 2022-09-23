@@ -1,47 +1,66 @@
 <div class="content-wrapper">
   <div class="filters">
+    <mat-form-field class="collection-selector" appearance="legacy">
+      <mat-label>Колекція рецептів:</mat-label>
+      <mat-select
+        [(ngModel)]="selectedCollection"
+        (selectionChange)="onCollectionSelected()"
+      >
+        <mat-option
+          *ngFor="let collection of recipyCollections"
+          [value]="collection"
+        >
+          {{ collection }}
+        </mat-option>
+        <mat-option value=""> Всі рецепти </mat-option>
+      </mat-select>
+    </mat-form-field>
     <button mat-flat-button class="menu-button" (click)="onOpenFilters()">
-    <mat-icon>filter_list</mat-icon
-    ><span>Фільтри</span>
-  </button>
-<app-filter-tags></app-filter-tags>
+      <mat-icon>filter_list</mat-icon><span>Фільтри</span>
+    </button>
+    <app-filter-tags></app-filter-tags>
   </div>
   <div class="recipies">
     <div class="all-recipies">
-    <div
-      *ngIf="!!allRecipies && currentUser"
-      class="user-recipies-wrapper"
-      cdkDropList
-    >
       <div
-        class="recipy"
-        cdkDrag
-        [id]="recipy.id"
-        *ngFor="let recipy of allRecipies"
+        *ngIf="!!allRecipies && currentUser"
+        class="user-recipies-wrapper"
+        cdkDropList
       >
-        <app-recipy-short-view
-          [recipy]="recipy"
-          [isPlanner]="true"
-          [currentUser]="currentUser"
-          [isMobile]="isMobile"
-          [mode]="appMode"
-          (addToCalendar)="onAddToCalendar($event)"
-          (recipyClicked)="onRecipyClicked($event)"
-        ></app-recipy-short-view>
-        <div class="recipy-placeholder" *cdkDragPlaceholder>{{recipy.name}}</div>
+        <div
+          class="recipy"
+          cdkDrag
+          [id]="recipy.id"
+          *ngFor="let recipy of allRecipies"
+        >
+          <app-recipy-short-view
+            [recipy]="recipy"
+            [isPlanner]="true"
+            [currentUser]="currentUser"
+            [isMobile]="isMobile"
+            [mode]="appMode"
+            (addToCalendar)="onAddToCalendar($event)"
+            (recipyClicked)="onRecipyClicked($event)"
+          ></app-recipy-short-view>
+          <div class="recipy-placeholder" *cdkDragPlaceholder>
+            {{ recipy.name }}
+          </div>
+        </div>
       </div>
     </div>
+    <!-- todo Recipy preview looks ugly, fonts are too big, layout needs to be fixed as well -->
+    <div class="recipy-preview" *ngIf="showRecipyPreview && recipyForPreview">
+      <button
+        mat-button
+        (click)="closeRecipyPreview()"
+        class="close-preview-btn"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <app-recipy-preview
+        [recipy]="recipyForPreview"
+        [mode]="AppMode.Planner"
+      ></app-recipy-preview>
+    </div>
   </div>
-  <!-- todo Recipy preview looks ugly, fonts are too big, layout needs to be fixed as well -->
-  <div class="recipy-preview" *ngIf="showRecipyPreview && recipyForPreview">
-    <button mat-button (click)="closeRecipyPreview()" class="close-preview-btn">
-      <mat-icon>close</mat-icon>
-    </button>
-    <app-recipy-preview
-      [recipy]="recipyForPreview"
-      [mode]="AppMode.Planner"
-    ></app-recipy-preview>
-  </div>
-  </div>
-  
 </div>

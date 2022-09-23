@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 
 import * as _ from 'lodash';
-import { combineLatest, Subject } from 'rxjs';
-import { skip, take, takeUntil } from 'rxjs/operators';
+import { combineLatest, Subject, BehaviorSubject } from 'rxjs';
+import { skip, take, takeUntil, filter } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
 import { CalendarService } from 'src/app/calendar/services/calendar.service';
@@ -13,7 +13,10 @@ import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { LayoutService } from 'src/app/shared/services/layout.service';
 import { IAppState } from 'src/app/store/reducers';
-import { getSelectedDay, getSelectedRecipy } from 'src/app/store/selectors/calendar.selectors';
+import {
+  getSelectedDay,
+  getSelectedRecipy,
+} from 'src/app/store/selectors/calendar.selectors';
 import { getFilters } from 'src/app/store/selectors/filters.selectors';
 import { getAllRecipies } from 'src/app/store/selectors/recipies.selectors';
 import * as CalendarActions from './../../../store/actions/calendar.actions';
@@ -35,6 +38,10 @@ export class RecipiesPannelComponent implements OnInit {
   AppMode = AppMode;
   appMode: AppMode = AppMode.Planner;
 
+  selectedCollection: string = '';
+
+  selectedCollection$ = new BehaviorSubject<string>('');
+
   @Input() currentUser: User | null | undefined;
   constructor(
     private recipies: RecipiesService,
@@ -51,12 +58,18 @@ export class RecipiesPannelComponent implements OnInit {
       select(getFilters),
       takeUntil(this.destroy$)
     );
-    combineLatest([recipies$, filters$]).subscribe((res: [any, any]) => {
-      let [recipies, filters] = res;
+    combineLatest([recipies$, filters$, this.selectedCollection$]).subscribe((res: [any, any, string]) => {
+      let [recipies, filters, selectedCollection] = res;
       let _recipies = recipies.map((recipy: any) => recipy);
       _recipies = _recipies.filter(
         (recipy: { notApproved: any }) => !recipy.notApproved
       );
+      if(this.currentUser && this.currentUser.collections && selectedCollection.length){
+        let selected = this.currentUser.collections.find(collection => collection.name == selectedCollection);
+        if(selected){
+          _recipies = _recipies.filter((recipy: Recipy) => selected?.recipies.includes(recipy.id))
+        }
+      }
 
       if (!!filters.ingredientsToInclude.length) {
         _recipies = _recipies.filter((recipy: { ingrediends: any[] }) => {
@@ -100,6 +113,12 @@ export class RecipiesPannelComponent implements OnInit {
         ? this.allRecipies?.length
         : 0;
     });
+  }
+
+  get recipyCollections(): string[] {
+    if (this.currentUser && this.currentUser.collections) {
+      return this.currentUser.collections.map((coll) => coll.name);
+    } else return [];
   }
 
   ngOnDestroy(): void {
@@ -165,7 +184,11 @@ export class RecipiesPannelComponent implements OnInit {
   closeRecipyPreview() {
     this.showRecipyPreview = false;
   }
-  onOpenFilters(){
-    this.store.dispatch(new UiActions.SetIsSidebarOpenAction(true))
+  onOpenFilters() {
+    this.store.dispatch(new UiActions.SetIsSidebarOpenAction(true));
+  }
+
+  onCollectionSelected() {
+    this.selectedCollection$.next(this.selectedCollection);
   }
 }
