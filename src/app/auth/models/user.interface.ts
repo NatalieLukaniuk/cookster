@@ -1,8 +1,8 @@
 import { PlannerByDate } from './../../planner-reworked/models';
 import { MultiFactorUser, UserInfo, UserMetadata } from 'firebase/auth';
 import { DayDetails } from 'src/app/calendar/models/calendar';
-import { SuggestionList } from 'src/app/planner/components/advance-preparation/advance-preparation.component';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
+import { SuggestionList } from 'src/app/planner-reworked/preps.models';
 
 export interface User {
   email: string;

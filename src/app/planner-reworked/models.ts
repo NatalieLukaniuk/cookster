@@ -1,4 +1,5 @@
-import { SuggestionList } from 'src/app/planner/components/advance-preparation/advance-preparation.component';
+import { SuggestionList } from "./preps.models";
+
 export interface Planner {
   id: string;
   startDate: string;

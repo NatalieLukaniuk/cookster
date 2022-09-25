@@ -1,3 +1,4 @@
+import { SavedPrepsComponent } from './components/saved-preps/saved-preps.component';
 import { ActiveShoppingListComponent } from './containers/active-shopping-list/active-shopping-list.component';
 import { MyShoppingListComponent } from './components/my-shopping-list/my-shopping-list.component';
 import { AddListItemDialogComponent } from './components/add-list-item-dialog/add-list-item-dialog.component';
@@ -40,7 +41,8 @@ import { PlannerLandingComponent } from './containers/planner-landing/planner-la
     AddListDialogComponent,
     AddListItemDialogComponent,
     MyShoppingListComponent,
-    ActiveShoppingListComponent
+    ActiveShoppingListComponent,
+    SavedPrepsComponent
   ],
 })
 export class PlannerReworkedModule {}

@@ -1,5 +1,6 @@
 .suggestions-list-item {
   display: flex;
+  align-items: center;
   & > div:first-child {
     flex-grow: 1;
     margin-right: 10px;
@@ -7,18 +8,30 @@
 }
 
 .content-wrapper {
-  margin-bottom: 25px;
+  border-bottom: 1px solid var(--tint2);
+  padding-block: 5px;
   & > div {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
-    font-size: 14px;
+    font-size: 13px;
   }
-  .suggestions-list--ingredient {
+  .suggestions-list-item-ingredient {
     font-weight: 600;
   }
   .suggestions-list-item-details {
     font-size: 10px;
     opacity: 0.4;
+  }
+}
+
+.delete-btn {
+  margin-left: 15px;
+  font-size: 18px;
+  display: none;
+  cursor: pointer;
+}
+.suggestions-list-item:hover {
+  .delete-btn {
+    display: block;
   }
 }

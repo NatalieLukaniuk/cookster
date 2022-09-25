@@ -15,5 +15,5 @@
     <span>{{ suggestion.day | date }}</span>
   </div>
   </div>
-  <mat-icon *ngIf="showDelete" (click)="delete()">delete_outline</mat-icon>
+  <mat-icon class="delete-btn" *ngIf="showDelete" (click)="delete()">delete</mat-icon>
 </div>

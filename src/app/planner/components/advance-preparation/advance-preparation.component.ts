@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
+import { Suggestion, SuggestionList } from 'src/app/planner-reworked/preps.models';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { MeasuringUnit } from 'src/app/recipies/models/measuring-units.enum';
 import { Product } from 'src/app/recipies/models/products.interface';
@@ -18,71 +19,9 @@ import * as UserActions from '../../../store/actions/user.actions';
 import { DayDetails } from './../../../calendar/models/calendar';
 import { getCalendar } from './../../../store/selectors/calendar.selectors';
 
-export interface Suggestion {
-  productId: string;
-  productName: string;
-  amount: number;
-  unit: MeasuringUnit;
-  prepDescription: string;
-  recipyId: string;
-  recipyTitle: string;
-  day: Date;
-  done?: boolean
-}
 
-export class SuggestionCard implements Suggestion{
-  productId: string;
-  productName: string;
-  amount: number;
-  unit: MeasuringUnit;
-  prepDescription: string;
-  recipyId: string;
-  recipyTitle: string;
-  day: Date;
-  done?: boolean = false;
-constructor(suggestion: Suggestion){
-  this.productId = suggestion.productId;
-  this.productName = suggestion.productName;
-  this.amount = suggestion.amount;
-  this.unit = suggestion.unit;
-  this.prepDescription = suggestion.prepDescription;
-  this.recipyId = suggestion.recipyId;
-  this.recipyTitle = suggestion.recipyTitle;
-  this.day = suggestion.day;
-}
-}
 
-export interface ISuggestionList {
-  date: string;
-  day: Date;
-  suggestions: Suggestion[];
-}
 
-export class SuggestionList implements ISuggestionList {
-  date: string;
-  day: Date;
-  suggestions: Suggestion[] | SuggestionCard[];
-  isExpanded: boolean;
-  constructor(day: Date) {
-    this.day = day;
-    this.suggestions = [];
-    this.date = transformDate(day);
-    this.isExpanded = true;
-  }
-}
-
-export function transformDate(date: Date): string {
-  return (
-    getTwoDigitValue(date.getDate().toString()) +
-    getTwoDigitValue((date.getMonth() + 1).toString()) +
-    date.getFullYear().toString()
-  );
-}
-export function getTwoDigitValue(value: string): string {
-  if (value.length < 2) {
-    return '0' + value;
-  } else return value;
-}
 @Component({
   selector: 'app-advance-preparation',
   templateUrl: './advance-preparation.component.html',

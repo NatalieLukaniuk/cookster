@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { combineLatest, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
-import { SuggestionList } from 'src/app/planner/components/advance-preparation/advance-preparation.component';
+import { SuggestionList } from 'src/app/planner-reworked/preps.models';
 import { Recipy, RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { DialogsService } from 'src/app/shared/services/dialogs.service';
 import { ShoppingListItem } from 'src/app/shopping-list/models';

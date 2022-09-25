@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { User } from 'src/app/auth/models/user.interface';
-import {
-  SuggestionCard,
-  SuggestionList,
-} from 'src/app/planner/components/advance-preparation/advance-preparation.component';
+import { SuggestionList, SuggestionCard } from 'src/app/planner-reworked/preps.models';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import * as UserActions from '../../../store/actions/user.actions';

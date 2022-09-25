@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Suggestion } from 'src/app/planner-reworked/preps.models';
 import { MeasuringUnit, MeasuringUnitText } from 'src/app/recipies/models/measuring-units.enum';
 import { NormalizeDisplayedAmount } from 'src/app/recipies/services/recipies.utils';
 
-import { Suggestion } from '../../../planner/components/advance-preparation/advance-preparation.component';
 
 @Component({
   selector: 'app-suggestion',
