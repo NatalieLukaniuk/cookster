@@ -1,5 +1,5 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
 import { take } from 'rxjs/operators';
@@ -27,7 +27,7 @@ export enum MealTime {
   templateUrl: './celandar-meal.component.html',
   styleUrls: ['./celandar-meal.component.scss'],
 })
-export class CelandarMealComponent implements OnInit {
+export class CelandarMealComponent implements OnChanges {
   @Input() day!: Day;
   @Input() isMobile!: boolean;
   @Input() mealtime!: MealTime;
@@ -53,8 +53,10 @@ export class CelandarMealComponent implements OnInit {
   _day: Day | undefined;
   constructor(private store: Store<IAppState>) {}
 
-  ngOnInit() {
-    this._day = _.cloneDeep(this.day);
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes.day.currentValue){
+      this._day = _.cloneDeep(this.day);
+    }
   }
 
   drop(event: CdkDragDrop<Recipy[]> | CdkDragDrop<RecipyForCalendar[]>) {

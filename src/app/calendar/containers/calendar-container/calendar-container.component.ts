@@ -1,7 +1,7 @@
 import { CalendarService } from 'src/app/calendar/services/calendar.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -44,7 +44,8 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<IAppState>,
     private dateService: DateService,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -117,5 +118,9 @@ export class CalendarContainerComponent implements OnInit, OnDestroy {
       this.getTwoDigitValue((date.getMonth() + 1).toString()) +
       date.getFullYear().toString()
     );
+  }
+
+  goByDay(){
+    this.router.navigate(['calendar-by-day'])
   }
 }

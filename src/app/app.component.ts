@@ -36,6 +36,7 @@ export enum MainTabs {
   Calendar = 'calendar',
   ShoppingList = 'shopping-list',
   Preps = 'prep-lists',
+  CalendarByDay = 'calendar-by-day'
 }
 @UntilDestroy()
 @Component({
@@ -256,7 +257,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       case MainTabs.AddRecipy:
         this.goAddRecipy();
         break;
-      case MainTabs.Calendar:
+      case MainTabs.CalendarByDay:
         this.goCalendar();
         break;
       case MainTabs.ShoppingList:
@@ -270,7 +271,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/'], { relativeTo: this.route });
   }
   goCalendar() {
-    this.router.navigate(['calendar']);
+    this.router.navigate(['calendar-by-day']);
   }
 
   goShoppingLists() {

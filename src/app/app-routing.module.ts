@@ -1,3 +1,4 @@
+import { CalendarByDayComponent } from './calendar/containers/calendar-by-day/calendar-by-day.component';
 import { ActiveShoppingListComponent } from './planner-reworked/containers/active-shopping-list/active-shopping-list.component';
 import { PrepsComponent } from './planner-reworked/components/preps/preps.component';
 import { ShoppingComponent } from './planner-reworked/components/shopping/shopping.component';
@@ -69,6 +70,10 @@ export const routes: Routes = [
     path: 'calendar',
     component: CalendarContainerComponent,
     data: { isPlanner: false },
+  },
+  {
+    path: 'calendar-by-day',
+    component: CalendarByDayComponent,
   },
   { path: 'shopping-list', component: ActiveShoppingListComponent },
   { path: 'planner-reworked', component: PlannerLandingComponent , children: [
