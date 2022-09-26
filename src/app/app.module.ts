@@ -1,3 +1,4 @@
+import { AdvancePreparationModule } from './advance-preparation/advance-preparation.module';
 import { PlannerEffects } from './store/effects/planner.effects';
 import { UiModule } from './ui/ui.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -50,6 +51,7 @@ import { reducers } from './store/reducers';
     FiltersModule,
     ShoppingListModule,
     PlannerModule,
+    AdvancePreparationModule,
     UiModule,
     MatNativeDateModule,
     StoreModule.forRoot(reducers),

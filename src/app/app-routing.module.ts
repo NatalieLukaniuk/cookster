@@ -13,17 +13,16 @@ import { SplashComponent } from './auth/components/splash/splash.component';
 import { CalendarContainerComponent } from './calendar/containers/calendar-container/calendar-container.component';
 import { CooksterComponent } from './cookster/cookster.component';
 import { FriendsFeedComponent } from './layout/containers/friends-feed/friends-feed.component';
-import {
-  PlannerByDateRangeComponent,
-} from './planner-reworked/containers/planner-by-date-range/planner-by-date-range.component';
+import { PlannerByDateRangeComponent } from './planner-reworked/containers/planner-by-date-range/planner-by-date-range.component';
 import { PlannerLandingComponent } from './planner-reworked/containers/planner-landing/planner-landing.component';
-import { PrepListsComponent } from './planner/containers/prep-lists/prep-lists.component';
+
 import { PlannerComponent } from './planner/planner.component';
 import { AllRecipiesComponent } from './recipies/containers/all-recipies/all-recipies.component';
 import { EditRecipyComponent } from './recipies/containers/edit-recipy/edit-recipy.component';
 import { RecipyFullViewComponent } from './recipies/containers/recipy-full-view/recipy-full-view.component';
 import { UserRecipiesComponent } from './recipies/containers/user-recipies/user-recipies.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { PrepListsComponent } from './advance-preparation/components/prep-lists/prep-lists.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'cookster' },
@@ -60,11 +59,11 @@ export const routes: Routes = [
   },
   {
     path: 'calendar-planner',
-    component: PlannerComponent
+    component: PlannerComponent,
   },
   {
     path: 'prep-lists',
-    component: PrepListsComponent
+    component: PrepListsComponent,
   },
   {
     path: 'calendar',
@@ -76,21 +75,25 @@ export const routes: Routes = [
     component: CalendarByDayComponent,
   },
   { path: 'shopping-list', component: ActiveShoppingListComponent },
-  { path: 'planner-reworked', component: PlannerLandingComponent , children: [
-    {
-      path: 'by-date/:id',
-      component: PlannerByDateRangeComponent,
-      // pathMatch: 'full',
-      children: [
-        {path: 'planning', component: PlanningComponent, pathMatch: 'full',},
-        {path: 'shopping', component: ShoppingComponent, pathMatch: 'full',},
-        {path: 'preps', component: PrepsComponent, pathMatch: 'full',}
-      ]
-    },
-  ]},
+  {
+    path: 'planner-reworked',
+    component: PlannerLandingComponent,
+    children: [
+      {
+        path: 'by-date/:id',
+        component: PlannerByDateRangeComponent,
+        // pathMatch: 'full',
+        children: [
+          { path: 'planning', component: PlanningComponent, pathMatch: 'full' },
+          { path: 'shopping', component: ShoppingComponent, pathMatch: 'full' },
+          { path: 'preps', component: PrepsComponent, pathMatch: 'full' },
+        ],
+      },
+    ],
+  },
   { path: 'admin-panel', component: AdminComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'welcome', component: SplashComponent},
+  { path: 'welcome', component: SplashComponent },
   { path: 'register', component: RegistrationComponent },
 ];
 

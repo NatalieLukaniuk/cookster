@@ -1,3 +1,4 @@
+import { AdvancePreparationModule } from './../advance-preparation/advance-preparation.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -31,7 +32,8 @@ import { MomentPipe } from './pipes/moment.pipe';
     FormsModule,
     RecipiesModule,
     DragDropModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule,
+    AdvancePreparationModule
   ],
   declarations: [
     CalendarComponent,

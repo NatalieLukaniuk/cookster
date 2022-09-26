@@ -21,6 +21,8 @@ export class CalendarByDayComponent implements OnInit {
   dayChanged$ = new Subject();
   currentUser: User | undefined;
 
+  hasTimedOutPreps: boolean = false;
+
   constructor(
     private store: Store,
     private calendarService: CalendarService,
@@ -105,5 +107,9 @@ export class CalendarByDayComponent implements OnInit {
     if (!!this.currentUser) {
       this.calendarService.updateDay(this.currentUser, event);
     }
+  }
+  onhasTimedOutPreps(event: boolean){
+    this.hasTimedOutPreps = event
+    console.log(event)
   }
 }
