@@ -176,9 +176,9 @@ export class PrepsComponent implements OnInit, OnDestroy {
   }
 
   isSaved(suggestion: Suggestion): boolean {
-    if (this.currentUser && this.currentUser.prepLists) {
+    if (this.currentUser && !!this.currentUser.prepLists) {
       return !!this.currentUser.prepLists.find((list: SuggestionList) =>
-        list.suggestions.find(
+        list.suggestions?.find(
           (sugg) =>
             sugg.productId == suggestion.productId &&
             sugg.prepDescription == suggestion.prepDescription &&

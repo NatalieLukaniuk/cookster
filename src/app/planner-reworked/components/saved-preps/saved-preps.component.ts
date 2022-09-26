@@ -103,4 +103,16 @@ export class SavedPrepsComponent implements OnChanges, OnDestroy {
     });
     this.listsChanged$.next();
   }
+
+  onTimeChanged(suggestion: Suggestion, i: number) {
+    this.lists[i].suggestions = this.lists[i].suggestions.map((sugg) => {
+      if (
+        sugg.productId == suggestion.productId &&
+        sugg.prepDescription == suggestion.prepDescription
+      ) {
+        return suggestion;
+      } else return sugg;
+    });
+    this.listsChanged$.next();
+  }
 }

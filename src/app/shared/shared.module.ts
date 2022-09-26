@@ -39,6 +39,8 @@ import { SelectOptionDialogComponent } from './components/select-option-dialog/s
 import { SuggestionComponent } from './components/suggestion/suggestion.component';
 import { TextInputDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
 import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+
 
 @NgModule({
   imports: [
@@ -73,6 +75,7 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     MatTooltipModule,
     MatDatepickerModule,
     ReactiveFormsModule,
+    NgxMaterialTimepickerModule    
   ],
   declarations: [
     NavigationComponent,
@@ -123,7 +126,7 @@ import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
     DatePickerRangeComponent,
     SuggestionComponent,
     AmountInSelectedUnitComponent,
-    InputDialogComponent
+    InputDialogComponent,
   ],
   providers: [],
 })

@@ -1,19 +1,44 @@
 <div class="suggestions-list-item">
   <div class="content-wrapper">
+    <div *ngIf="enableTimePicker" class="time-section">
+      <mat-icon class="timepicker-icon" (click)="changeTime()"
+        >access_time</mat-icon
+      >
+      <span (click)="changeTime()" *ngIf="!showTimePicker">{{
+        suggestion.time ? suggestion.time : "час не вказано"
+      }}</span>
+      <div class="ngx-timepicker-field-example" *ngIf="showTimePicker">
+        <input
+          aria-label="24hr format"
+          [ngModel]="suggestion.time ? suggestion.time : '11:25'"
+          [ngxTimepicker]="fullTime"
+          [format]="24"
+          readonly
+        />
+        <ngx-material-timepicker
+          #fullTime
+          (closed)="showTimePicker = false"
+          (timeSet)="onTimeChanged($event)"
+        ></ngx-material-timepicker>
+      </div>
+    </div>
+
     <div class="suggestions-list-item-ingredient">
-    <span>{{ suggestion.productName }}</span>
-    <span
-      >{{ NormalizeDisplayedAmount(suggestion.amount, suggestion.unit) }}
-      {{ getUnitText(suggestion.unit) }}</span
-    >
+      <span>{{ suggestion.productName }}</span>
+      <span
+        >{{ NormalizeDisplayedAmount(suggestion.amount, suggestion.unit) }}
+        {{ getUnitText(suggestion.unit) }}</span
+      >
+    </div>
+    <div class="suggestions-list-item-prep">
+      <span>{{ suggestion.prepDescription }}</span>
+    </div>
+    <div class="suggestions-list-item-details">
+      <span>{{ suggestion.recipyTitle }}</span>
+      <span>{{ suggestion.day | date }}</span>
+    </div>
   </div>
-  <div class="suggestions-list-item-prep">
-    <span>{{ suggestion.prepDescription }}</span>
-  </div>
-  <div class="suggestions-list-item-details">
-    <span>{{ suggestion.recipyTitle }}</span>
-    <span>{{ suggestion.day | date }}</span>
-  </div>
-  </div>
-  <mat-icon class="delete-btn" *ngIf="showDelete" (click)="delete()">delete</mat-icon>
+  <mat-icon class="delete-btn" *ngIf="showDelete" (click)="delete()"
+    >delete</mat-icon
+  >
 </div>

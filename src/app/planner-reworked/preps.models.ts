@@ -9,7 +9,8 @@ export interface Suggestion {
     recipyId: string;
     recipyTitle: string;
     day: Date;
-    done?: boolean
+    done?: boolean;
+    time?: string
   }
 
   export class SuggestionCard implements Suggestion{
@@ -22,6 +23,7 @@ export interface Suggestion {
     recipyTitle: string;
     day: Date;
     done?: boolean = false;
+    time?: string = ''
   constructor(suggestion: Suggestion){
     this.productId = suggestion.productId;
     this.productName = suggestion.productName;
@@ -31,6 +33,7 @@ export interface Suggestion {
     this.recipyId = suggestion.recipyId;
     this.recipyTitle = suggestion.recipyTitle;
     this.day = suggestion.day;
+    this.time = suggestion.time
   }
   }
   
