@@ -1,12 +1,13 @@
 import { Router } from '@angular/router';
 import { CalendarService } from 'src/app/calendar/services/calendar.service';
-import { DayDetails } from './../../models/calendar';
+import { DayDetails, IDayDetails } from './../../models/calendar';
 import { getCurrentUser } from './../../../store/selectors/user.selectors';
 import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { Day } from '../../components/calendar/calendar.component';
+import { User } from 'src/app/auth/models/user.interface';
 
 @Component({
   selector: 'app-calendar-by-day',
@@ -18,6 +19,7 @@ export class CalendarByDayComponent implements OnInit {
   _day: Day | undefined;
 
   dayChanged$ = new Subject();
+  currentUser: User | undefined;
 
   constructor(
     private store: Store,
@@ -46,6 +48,7 @@ export class CalendarByDayComponent implements OnInit {
       this.store.pipe(select(getCurrentUser)).subscribe((user) => {
         let stringDay = this.currentDay!.clone().format('DDMMYYYY');
         if (user) {
+          this.currentUser = user;
           let details = user.details?.find(
             (day: DayDetails) => day.day == stringDay
           );
@@ -96,5 +99,11 @@ export class CalendarByDayComponent implements OnInit {
 
   goByMonth() {
     this.router.navigate(['/calendar']);
+  }
+
+  onUpdateDay(event: IDayDetails){
+    if (!!this.currentUser) {
+      this.calendarService.updateDay(this.currentUser, event);
+    }
   }
 }
