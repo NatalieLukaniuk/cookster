@@ -63,8 +63,7 @@ export class PrepListsComponent implements OnChanges {
     if(this.currentUser && this.currentUser.prepLists){
        let updatedUser = _.cloneDeep(this.currentUser);
        updatedUser.prepLists = updatedUser.prepLists!.map(list => {
-        if(list.date == this.day.details.day){
-          debugger
+        if(list.date == this.day.details.day){          
           return {...list, suggestions: this.prepListItems.filter(sugg => !sugg.done)}
         } else return list
        })
