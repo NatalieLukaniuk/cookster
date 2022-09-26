@@ -14,6 +14,7 @@
       <div *ngIf="!!_day">
         <app-day
           [day]="_day"
+          [isMobile]="isMobile"
           [isPlanner]="false"
           [isRecipySelected]="false"
           (updateDay)="onUpdateDay($event)"

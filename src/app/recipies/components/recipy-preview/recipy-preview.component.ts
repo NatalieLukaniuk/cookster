@@ -1,6 +1,13 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DatePipe, Location } from '@angular/common';
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
@@ -16,10 +23,16 @@ import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 
 import * as fromRecipiesActions from '../../../store/actions/recipies.actions';
 import { AppMode } from '../../containers/edit-recipy/edit-recipy.component';
-import { IngredientsByGroup, ingredientsByGroup } from '../../containers/recipy-full-view/recipy-full-view.component';
+import {
+  IngredientsByGroup,
+  ingredientsByGroup,
+} from '../../containers/recipy-full-view/recipy-full-view.component';
 import { ComplexityDescription } from '../../models/complexity.enum';
 import { DishType } from '../../models/dishType.enum';
-import { GetUkrIngredientsGroup, Ingredient } from '../../models/ingredient.interface';
+import {
+  GetUkrIngredientsGroup,
+  Ingredient,
+} from '../../models/ingredient.interface';
 import { PreparationStep } from '../../models/preparationStep.interface';
 import { NewRecipy, Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
@@ -75,7 +88,10 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.isPreviousRoute$ = this.store.pipe(select(getPreviousRoute), map(route => !!route.length && route !== 'login'))
+    this.isPreviousRoute$ = this.store.pipe(
+      select(getPreviousRoute),
+      map((route) => !!route.length && route !== 'login')
+    );
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.recipy.ingrediends.length) {
@@ -275,7 +291,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
   onMatToggleChange(event: any) {
     if (event.value === 'back') {
-      this.goBack()
+      this.goBack();
     } else {
       this.currentTab = event.value;
     }
@@ -506,9 +522,14 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   goBack() {
     this.store.pipe(select(getPreviousRoute), take(1)).subscribe((route) => {
       switch (route) {
-        case 'all-recipies': this.router.navigate(['/'], { relativeTo: this.route });
-        break;
-        case 'calendar': this.router.navigate(['calendar']);
+        case 'all-recipies':
+          this.router.navigate(['/'], { relativeTo: this.route });
+          break;
+        case 'calendar':
+          this.router.navigate(['calendar']);
+          break;
+        case 'calendar-by-day':
+          this.router.navigate(['calendar-by-day']);
       }
     });
   }

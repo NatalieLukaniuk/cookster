@@ -4,17 +4,19 @@ import { DayDetails, IDayDetails } from './../../models/calendar';
 import { getCurrentUser } from './../../../store/selectors/user.selectors';
 import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as moment from 'moment';
 import { Day } from '../../components/calendar/calendar.component';
 import { User } from 'src/app/auth/models/user.interface';
+import { LayoutService } from 'src/app/shared/services/layout.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendar-by-day',
   templateUrl: './calendar-by-day.component.html',
   styleUrls: ['./calendar-by-day.component.scss'],
 })
-export class CalendarByDayComponent implements OnInit {
+export class CalendarByDayComponent implements OnInit, OnDestroy {
   currentDay: moment.Moment | undefined;
   _day: Day | undefined;
 
@@ -23,15 +25,28 @@ export class CalendarByDayComponent implements OnInit {
 
   hasTimedOutPreps: boolean = false;
 
+  isMobile: boolean = false;
+
+  destroy$ = new Subject()
+
   constructor(
     private store: Store,
     private calendarService: CalendarService,
-    private router: Router
+    private router: Router,
+    private layoutService: LayoutService,
   ) {
-    this.dayChanged$.subscribe(() => this.getDayDetails());
+    this.dayChanged$.pipe(takeUntil(this.destroy$)).subscribe(() => this.getDayDetails());
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next()
   }
 
   ngOnInit(): void {
+    this.layoutService.isMobile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((bool) => (this.isMobile = bool));
+
+
     this.currentDay = moment().clone();
     this.dayChanged$.next();
   }
