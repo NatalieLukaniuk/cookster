@@ -28,6 +28,7 @@ export class RecipiesEffects {
               };
               recipies.push(recipy);
             }
+            recipies.reverse();
             return recipies;
           }),
           map((res: Recipy[]) => new RecipiesActions.RecipiesLoadedAction(res))
