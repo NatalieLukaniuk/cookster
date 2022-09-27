@@ -275,7 +275,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   get tags() {
     let tags: string[] = [];
     if (this._clonedRecipy) {
-      this._clonedRecipy.type.forEach((tag: DishType) => {
+      this._clonedRecipy.type?.forEach((tag: DishType) => {
         tags.push(DishType[tag]);
       });
     }

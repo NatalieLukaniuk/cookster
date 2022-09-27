@@ -26,7 +26,7 @@ export class AddTagsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!!this.selected.length) {
+    if (!!this.selected?.length) {
       this.chips = this.tags.map(tag => {
         if (this.selected.includes(tag)) {
           return new chip(tag, true)
