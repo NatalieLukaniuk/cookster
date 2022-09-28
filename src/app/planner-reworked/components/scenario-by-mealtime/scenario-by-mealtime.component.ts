@@ -1,6 +1,7 @@
+import { Product } from 'src/app/recipies/models/products.interface';
 import { RecipyForCalendar } from './../../../recipies/models/recipy.interface';
 import { MealTime } from 'src/app/calendar/components/celandar-meal/celandar-meal.component';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, tap } from 'rxjs/operators';
 import { Observable, Subject, combineLatest } from 'rxjs';
 import { getCurrentRoute } from './../../../store/selectors/ui.selectors';
 import { select, Store } from '@ngrx/store';
@@ -9,6 +10,9 @@ import { IAppState } from 'src/app/store/reducers';
 import { getCalendar } from 'src/app/store/selectors/calendar.selectors';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
+import { RecipiesService } from 'src/app/recipies/services/recipies.service';
+import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
+import { User } from 'src/app/auth/models/user.interface';
 
 @Component({
   selector: 'app-scenario-by-mealtime',
@@ -21,11 +25,29 @@ export class ScenarioByMealtimeComponent implements OnInit, OnDestroy {
   date: string | undefined;
   calendar$: Observable<Day[] | null>;
   currentRoute$: Observable<string>;
+  currentUser: User | undefined;
+  currentUser$ = this.store.pipe(
+    select(getCurrentUser),
+    tap((user) => {
+      if (user) {
+        this.currentUser = user;
+      }
+    })
+  );
 
   recipies: RecipyForCalendar[] | undefined;
-  constructor(private store: Store<IAppState>) {
+  allProducts: Product[] | undefined;
+  constructor(
+    private store: Store<IAppState>,
+    private recipiesService: RecipiesService
+  ) {
     this.calendar$ = this.store.pipe(select(getCalendar));
     this.currentRoute$ = this.store.pipe(select(getCurrentRoute));
+    this.recipiesService.products$.subscribe((res) => {
+      if (res) {
+        this.allProducts = res;
+      }
+    });
   }
   ngOnDestroy(): void {
     this.destroy$.next();

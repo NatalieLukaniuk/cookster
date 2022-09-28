@@ -1,3 +1,4 @@
+import { SavedScenariosComponent } from './components/saved-scenarios/saved-scenarios.component';
 import { ScenarioByMealtimeComponent } from './components/scenario-by-mealtime/scenario-by-mealtime.component';
 import { ScenarioLandingComponent } from './containers/scenario-landing/scenario-landing.component';
 import { SavedPrepsComponent } from './components/saved-preps/saved-preps.component';
@@ -46,7 +47,8 @@ import { PlannerLandingComponent } from './containers/planner-landing/planner-la
     ActiveShoppingListComponent,
     SavedPrepsComponent,
     ScenarioLandingComponent,
-    ScenarioByMealtimeComponent
+    ScenarioByMealtimeComponent,
+    SavedScenariosComponent
   ],
 })
 export class PlannerReworkedModule {}

@@ -10,4 +10,9 @@
       </mat-tab>
     </mat-tab-group>
   </div>
+  <div class="saved-scenarios-list">
+    <div class="fixed-container">
+      <app-saved-scenarios *ngIf="allProducts && (currentUser$ | async)" [allProducts]="allProducts" [currentUser]="currentUser$ | async"></app-saved-scenarios>      
+    </div>
+  </div>
 </div>

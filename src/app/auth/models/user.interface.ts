@@ -14,7 +14,8 @@ export interface User {
   img?: string;
   role: Role,
   planner?: PlannerByDate[],
-  collections?: RecipyCollection[]
+  collections?: RecipyCollection[],
+  scenarios?: SuggestionList[]
 }
 
 export enum Role {
