@@ -11,7 +11,8 @@ export enum AppMode {
   AddIngrToShoppingList = 'addIngredientsToShoppingList',
   ShoppingList = 'shoppingList',
   Planner = 'planner',
-  SelectRecipy = 'select-recipy'
+  SelectRecipy = 'select-recipy',
+  Scenarios = 'scenarios'
 }
 
 @Component({

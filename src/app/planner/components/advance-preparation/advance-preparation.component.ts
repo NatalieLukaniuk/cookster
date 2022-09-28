@@ -1,12 +1,22 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
 import { Day } from 'src/app/calendar/components/calendar/calendar.component';
-import { Suggestion, SuggestionList } from 'src/app/planner-reworked/preps.models';
+import {
+  Suggestion,
+  SuggestionList,
+} from 'src/app/planner-reworked/preps.models';
 import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
 import { MeasuringUnit } from 'src/app/recipies/models/measuring-units.enum';
 import { Product } from 'src/app/recipies/models/products.interface';
@@ -18,9 +28,6 @@ import { IAppState } from 'src/app/store/reducers';
 import * as UserActions from '../../../store/actions/user.actions';
 import { DayDetails } from './../../../calendar/models/calendar';
 import { getCalendar } from './../../../store/selectors/calendar.selectors';
-
-
-
 
 @Component({
   selector: 'app-advance-preparation',
@@ -148,14 +155,19 @@ export class AdvancePreparationComponent
   ) {
     if (this.allProducts) {
       let suggestion: Suggestion = {
-        productId: ingredient.product,
-        productName: this.recipiesService.getIngredientText(ingredient),
-        amount: convertAmountToSelectedUnit(
-          ingredient.defaultUnit,
-          { ...ingredient, amount: ingredient.amount * coef },
-          this.allProducts
-        ),
-        unit: ingredient.defaultUnit,
+        ingredients: [
+          {
+            productId: ingredient.product,
+            productName: this.recipiesService.getIngredientText(ingredient),
+            amount: convertAmountToSelectedUnit(
+              ingredient.defaultUnit,
+              { ...ingredient, amount: ingredient.amount * coef },
+              this.allProducts
+            ),
+            unit: ingredient.defaultUnit,
+          },
+        ],
+
         prepDescription: prepDescription,
         recipyId: recipyId,
         recipyTitle: recipyName,

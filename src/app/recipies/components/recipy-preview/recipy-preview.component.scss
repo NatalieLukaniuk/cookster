@@ -11,6 +11,9 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
+  &.column {
+    flex-direction: column;
+  }
 }
 
 .recipy-details {

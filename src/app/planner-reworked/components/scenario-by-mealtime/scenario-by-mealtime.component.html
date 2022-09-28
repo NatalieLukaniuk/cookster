@@ -1,8 +1,9 @@
-<div class="scenario-cinstructor-container">
+<div class="scenario-cinstructor-container" cdkDropListGroup>
   <div class="recipies">
     <mat-tab-group *ngIf="recipies">
       <mat-tab *ngFor="let recipy of recipies" [label]="recipy.name">
         <app-recipy-preview
+          [mode]="AppMode.Scenarios"
           [recipy]="recipy"
           [amountPerPortion]="recipy.amountPerPortion"
           [portions]="recipy.portions"
@@ -12,7 +13,11 @@
   </div>
   <div class="saved-scenarios-list">
     <div class="fixed-container">
-      <app-saved-scenarios *ngIf="allProducts && (currentUser$ | async)" [allProducts]="allProducts" [currentUser]="currentUser$ | async"></app-saved-scenarios>      
+      <app-saved-scenarios
+        *ngIf="allProducts && (currentUser$ | async)"
+        [allProducts]="allProducts"
+        [currentUser]="currentUser$ | async"
+      ></app-saved-scenarios>
     </div>
   </div>
 </div>

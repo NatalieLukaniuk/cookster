@@ -9,6 +9,7 @@ import { Suggestion, SuggestionList } from '../../preps.models';
 import * as UserActions from '../../../store/actions/user.actions';
 import * as _ from 'lodash';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { areArraysEqual } from 'src/app/shared/utils/comparison';
 
 @Component({
   selector: 'app-saved-scenarios',
@@ -65,7 +66,9 @@ export class SavedScenariosComponent implements OnChanges, OnDestroy {
   }
 
   drop(event: CdkDragDrop<Suggestion[]>) {
-    console.log(event)
+    console.log(event.item.element.nativeElement.childNodes[0].textContent)
+    let steptext = event.item.element.nativeElement.childNodes[0].textContent;
+
   }
 
   deleteList(list: SuggestionList) {
@@ -90,7 +93,8 @@ export class SavedScenariosComponent implements OnChanges, OnDestroy {
   onTimeChanged(suggestion: Suggestion, i: number) {
     this.lists[i].suggestions = this.lists[i].suggestions.map((sugg) => {
       if (
-        sugg.productId == suggestion.productId &&
+        areArraysEqual(sugg.ingredients, suggestion.ingredients)
+        &&
         sugg.prepDescription == suggestion.prepDescription
       ) {
         return suggestion;

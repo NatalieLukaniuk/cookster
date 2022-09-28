@@ -13,6 +13,7 @@ import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { User } from 'src/app/auth/models/user.interface';
+import { AppMode } from 'src/app/recipies/containers/edit-recipy/edit-recipy.component';
 
 @Component({
   selector: 'app-scenario-by-mealtime',
@@ -34,6 +35,8 @@ export class ScenarioByMealtimeComponent implements OnInit, OnDestroy {
       }
     })
   );
+
+  AppMode = AppMode;
 
   recipies: RecipyForCalendar[] | undefined;
   allProducts: Product[] | undefined;

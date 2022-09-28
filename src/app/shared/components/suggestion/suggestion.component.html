@@ -24,11 +24,13 @@
     </div>
 
     <div class="suggestions-list-item-ingredient">
-      <span>{{ suggestion.productName }}</span>
-      <span
-        >{{ NormalizeDisplayedAmount(suggestion.amount, suggestion.unit) }}
-        {{ getUnitText(suggestion.unit) }}</span
-      >
+      <div *ngFor="let ingred of suggestion.ingredients">
+        <span>{{ ingred.productName }}</span>
+        <span
+          >{{ NormalizeDisplayedAmount(ingred.amount, ingred.unit) }}
+          {{ getUnitText(ingred.unit) }}</span
+        >
+      </div>
     </div>
     <div class="suggestions-list-item-prep">
       <span>{{ suggestion.prepDescription }}</span>

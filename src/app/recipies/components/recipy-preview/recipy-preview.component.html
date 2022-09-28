@@ -1,9 +1,9 @@
 <ng-container *ngIf="_clonedRecipy && !isMobile">
   <div class="full-recipy-wrapper">
-    <div class="recipy-body">
+    <div class="recipy-body" [class.column]="mode == AppMode.Scenarios">
       <div class="recipy-details">
         <div class="recipy-name-wrapper">
-          <h1 *ngIf="mode !== AppMode.EditRecipy">{{ _clonedRecipy.name }}</h1>
+          <h1 *ngIf="mode !== AppMode.EditRecipy && mode !== AppMode.Scenarios">{{ _clonedRecipy.name }}</h1>
           <input
             matInput
             class="input-edit"
@@ -111,7 +111,9 @@
           <h3>Приготування</h3>
           <ng-container *ngIf="mode !== AppMode.EditRecipy">
             <div class="steps-table">
-              <div
+              <div *ngTemplateOutlet="mode == AppMode.Scenarios? stepTemplateDraggable : stepTemplate"></div>
+              <ng-template #stepTemplate>                
+                <div
                 class="steps-row"
                 *ngFor="let step of _clonedRecipy.steps; let i = index"
               >
@@ -120,6 +122,22 @@
                   {{ getTotalStepTime(step) | normalizeTime }}
                 </div>
               </div>
+              </ng-template>
+              <ng-template #stepTemplateDraggable>
+                <div cdkDropList>
+                  <div cdkDrag
+                class="steps-row"
+                *ngFor="let step of _clonedRecipy.steps; let i = index"
+              >
+                <div>{{ i + 1 }}. {{ step.description }}</div>
+                <div class="time-cell" style="display: none">
+                  {{ getTotalStepTime(step) | normalizeTime }}
+                </div>
+              </div>
+                </div>
+                
+              </ng-template>
+              
             </div>
           </ng-container>
           <ng-container *ngIf="mode == AppMode.EditRecipy">

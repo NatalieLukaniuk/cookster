@@ -1,3 +1,4 @@
+import { areArraysEqual } from './../../../shared/utils/comparison';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
@@ -158,14 +159,19 @@ export class PrepsComponent implements OnInit, OnDestroy {
   ) {
     if (this.allProducts) {
       let suggestion: Suggestion = {
-        productId: ingredient.product,
-        productName: this.recipiesService.getIngredientText(ingredient),
-        amount: convertAmountToSelectedUnit(
-          ingredient.defaultUnit,
-          { ...ingredient, amount: ingredient.amount * coef },
-          this.allProducts
-        ),
-        unit: ingredient.defaultUnit,
+        ingredients: [
+          {
+            productId: ingredient.product,
+            productName: this.recipiesService.getIngredientText(ingredient),
+            amount: convertAmountToSelectedUnit(
+              ingredient.defaultUnit,
+              { ...ingredient, amount: ingredient.amount * coef },
+              this.allProducts
+            ),
+            unit: ingredient.defaultUnit,
+          },
+        ],
+
         prepDescription: prepDescription,
         recipyId: recipyId,
         recipyTitle: recipyName,
@@ -180,11 +186,11 @@ export class PrepsComponent implements OnInit, OnDestroy {
       return !!this.currentUser.prepLists.find((list: SuggestionList) =>
         list.suggestions?.find(
           (sugg) =>
-            sugg.productId == suggestion.productId &&
+            areArraysEqual(sugg.ingredients, suggestion.ingredients) &&
             sugg.prepDescription == suggestion.prepDescription &&
             sugg.recipyId == suggestion.recipyId
         )
       );
-    } else return false
+    } else return false;
   }
 }

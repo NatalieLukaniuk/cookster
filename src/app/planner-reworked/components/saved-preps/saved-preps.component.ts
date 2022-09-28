@@ -1,3 +1,4 @@
+import { areArraysEqual } from './../../../shared/utils/comparison';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {
@@ -107,7 +108,7 @@ export class SavedPrepsComponent implements OnChanges, OnDestroy {
   onTimeChanged(suggestion: Suggestion, i: number) {
     this.lists[i].suggestions = this.lists[i].suggestions.map((sugg) => {
       if (
-        sugg.productId == suggestion.productId &&
+        areArraysEqual(sugg.ingredients,suggestion.ingredients) &&
         sugg.prepDescription == suggestion.prepDescription
       ) {
         return suggestion;
