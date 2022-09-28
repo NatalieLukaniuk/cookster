@@ -30,6 +30,7 @@ export class PlannerByDateRangeComponent implements OnInit, OnDestroy {
     { link: 'planning', name: 'Планування' },
     { link: 'shopping', name: 'Список покупок' },
     { link: 'preps', name: 'Попереднє приготування' },
+    {link: 'scenario', name: 'Сценарії'}
   ];
   activeLink = '';
   currentPlanner: PlannerByDate | undefined;

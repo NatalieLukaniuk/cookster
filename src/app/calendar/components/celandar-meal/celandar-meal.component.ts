@@ -1,5 +1,13 @@
+import { Router, ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
 import { take } from 'rxjs/operators';
@@ -8,11 +16,10 @@ import {
   RecipyForCalendar,
 } from 'src/app/recipies/models/recipy.interface';
 import { ShoppingListItem } from 'src/app/shopping-list/models';
-import {
-  MoveRecipyInCalendarAction,
-} from 'src/app/store/actions/calendar.actions';
+import { MoveRecipyInCalendarAction } from 'src/app/store/actions/calendar.actions';
 import { IAppState } from 'src/app/store/reducers';
 import { getCalendar } from 'src/app/store/selectors/calendar.selectors';
+import { CalendarMode } from '../calendar-by-month/calendar-by-month.component';
 
 import { Day } from '../calendar/calendar.component';
 
@@ -31,6 +38,7 @@ export class CelandarMealComponent implements OnChanges {
   @Input() day!: Day;
   @Input() isMobile!: boolean;
   @Input() mealtime!: MealTime;
+  @Input() mode: CalendarMode = CalendarMode.Other;
   @Output() addRecipy = new EventEmitter<{
     day: Day;
     meal: string;
@@ -50,11 +58,17 @@ export class CelandarMealComponent implements OnChanges {
   }>();
   @Output() mealTimeUpdated = new EventEmitter<Day>();
 
+  CalendarMode = CalendarMode;
+
   _day: Day | undefined;
-  constructor(private store: Store<IAppState>) {}
+  constructor(
+    private store: Store<IAppState>,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.day.currentValue){
+    if (changes.day.currentValue) {
       this._day = _.cloneDeep(this.day);
     }
   }
@@ -70,7 +84,7 @@ export class CelandarMealComponent implements OnChanges {
       } else {
         let previousDayId = event.previousContainer.id.split('_');
         let currentDay = event.container.id.split('_');
-        
+
         this.store.pipe(select(getCalendar), take(1)).subscribe((calendar) => {
           if (calendar) {
             let foundDay = calendar.find(
@@ -85,9 +99,20 @@ export class CelandarMealComponent implements OnChanges {
               if (foundRecipy) {
                 this.store.dispatch(
                   new MoveRecipyInCalendarAction(
-                    {recipyId: foundRecipy.id, portions: foundRecipy.portions, amountPerPortion: foundRecipy.amountPerPortion},
-                    {day: previousDayId[1], mealtime: previousDayId[0] as MealTime},
-                    {day: currentDay[1], mealtime: currentDay[0] as MealTime, order: event.currentIndex}                    
+                    {
+                      recipyId: foundRecipy.id,
+                      portions: foundRecipy.portions,
+                      amountPerPortion: foundRecipy.amountPerPortion,
+                    },
+                    {
+                      day: previousDayId[1],
+                      mealtime: previousDayId[0] as MealTime,
+                    },
+                    {
+                      day: currentDay[1],
+                      mealtime: currentDay[0] as MealTime,
+                      order: event.currentIndex,
+                    }
                   )
                 );
               }
@@ -205,11 +230,19 @@ export class CelandarMealComponent implements OnChanges {
     } else return [];
   }
 
-  get mealtimeText(){
-    switch(this.mealtime){
-      case MealTime.Breakfast: return 'Сніданок';
-      case MealTime.Lunch: return 'Обід';
-      case MealTime.Dinner: return 'Вечеря';
+  get mealtimeText() {
+    switch (this.mealtime) {
+      case MealTime.Breakfast:
+        return 'Сніданок';
+      case MealTime.Lunch:
+        return 'Обід';
+      case MealTime.Dinner:
+        return 'Вечеря';
     }
+  }
+
+  goScenario() {
+    let id = this._day?.details.day + '_' + this.mealtime;
+    this.router.navigate([id], { relativeTo: this.route });
   }
 }

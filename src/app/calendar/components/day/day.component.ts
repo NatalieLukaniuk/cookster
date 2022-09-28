@@ -5,6 +5,7 @@ import { Recipy, RecipyForCalendar } from 'src/app/recipies/models/recipy.interf
 import { ShoppingListItem } from 'src/app/shopping-list/models';
 
 import { CalendarRecipyInDatabase, IDayDetails } from '../../models/calendar';
+import { CalendarMode } from '../calendar-by-month/calendar-by-month.component';
 import { Day } from '../calendar/calendar.component';
 import { MealTime } from '../celandar-meal/celandar-meal.component';
 
@@ -21,6 +22,7 @@ export class DayComponent implements OnInit {
   isPlanner!: boolean;
   @Input()
   isRecipySelected!: boolean;
+  @Input() mode: CalendarMode = CalendarMode.Other
 
   @Output() updateDay = new EventEmitter<IDayDetails>();
   @Output() saveToShoppingList = new EventEmitter<ShoppingListItem[]>();

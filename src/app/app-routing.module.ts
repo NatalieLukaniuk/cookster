@@ -1,3 +1,5 @@
+import { ScenarioByMealtimeComponent } from './planner-reworked/components/scenario-by-mealtime/scenario-by-mealtime.component';
+import { ScenarioLandingComponent } from './planner-reworked/containers/scenario-landing/scenario-landing.component';
 import { CalendarByDayComponent } from './calendar/containers/calendar-by-day/calendar-by-day.component';
 import { ActiveShoppingListComponent } from './planner-reworked/containers/active-shopping-list/active-shopping-list.component';
 import { PrepsComponent } from './planner-reworked/components/preps/preps.component';
@@ -87,6 +89,9 @@ export const routes: Routes = [
           { path: 'planning', component: PlanningComponent, pathMatch: 'full' },
           { path: 'shopping', component: ShoppingComponent, pathMatch: 'full' },
           { path: 'preps', component: PrepsComponent, pathMatch: 'full' },
+          {path: 'scenario', component: ScenarioLandingComponent, children: [
+            {path: ':id', component: ScenarioByMealtimeComponent}
+          ]}
         ],
       },
     ],

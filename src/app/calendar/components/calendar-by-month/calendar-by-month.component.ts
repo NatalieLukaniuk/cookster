@@ -31,6 +31,10 @@ import {
 } from './../../../store/selectors/calendar.selectors';
 import * as moment from 'moment';
 
+export enum CalendarMode {
+  Scenario,
+  Other
+}
 @Component({
   selector: 'app-calendar-by-month',
   templateUrl: './calendar-by-month.component.html',
@@ -39,6 +43,7 @@ import * as moment from 'moment';
 export class CalendarByMonthComponent implements OnInit, OnDestroy {
   @Input() direction!: Direction;
   @Input() displayRange: { startDate: string; endDate: string } | undefined;
+  @Input() mode: CalendarMode = CalendarMode.Other;
 
   calendar: Day[] = [];
   userCalendarData: IDayDetails[] = [];

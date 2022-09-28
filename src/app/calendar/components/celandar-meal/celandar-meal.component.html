@@ -8,7 +8,8 @@
 >
   <div class="meal-header">
     <div>
-      <span>{{ mealtimeText }}</span>
+      <span *ngIf="mode == CalendarMode.Other || !detailedRecipiesList.length">{{ mealtimeText }}</span>
+      <div class="inline-button" *ngIf="mode == CalendarMode.Scenario && !!detailedRecipiesList.length" (click)="goScenario()">{{ mealtimeText }}</div>
     </div>
 
     <div *ngIf="!!detailedRecipiesList.length">
