@@ -1,3 +1,13 @@
-<p>
-  scenario-by-mealtime works!
-</p>
+<div class="scenario-cinstructor-container">
+  <div class="recipies">
+    <mat-tab-group *ngIf="recipies">
+      <mat-tab *ngFor="let recipy of recipies" [label]="recipy.name">
+        <app-recipy-preview
+          [recipy]="recipy"
+          [amountPerPortion]="recipy.amountPerPortion"
+          [portions]="recipy.portions"
+        ></app-recipy-preview>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
