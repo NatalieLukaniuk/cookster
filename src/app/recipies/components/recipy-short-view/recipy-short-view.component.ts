@@ -42,6 +42,8 @@ export class RecipyShortViewComponent implements OnInit {
   isDetailedInfo: boolean = false;
   showCollections: boolean = false;
 
+  Math = Math;
+
   hasPrepSuggestions: boolean = false;
 
   ingredientsToSkip = [

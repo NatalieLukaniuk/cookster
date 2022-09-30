@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -119,5 +125,22 @@ export class RecipiesAdminComponent implements OnInit {
       isCheckedAndApproved: !recipy.isCheckedAndApproved,
     };
     this.store.dispatch(new RecipyActions.UpdateRecipyAction(updatedRecipy));
+  }
+
+  updateRecipies() {
+    this.recursiveUpdate(0);
+  }
+  recursiveUpdate(i: number) {
+    if (i < this.recipies.length - 1) {
+      setTimeout(() => {
+        if (!this.recipies[i].calorificValue) {
+          this.store.dispatch(
+            new RecipyActions.UpdateRecipyAction(this.recipies[i])
+          );
+        }
+        i++;
+        this.recursiveUpdate(i);
+      }, 1000);
+    }
   }
 }

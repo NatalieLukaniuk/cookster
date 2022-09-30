@@ -42,6 +42,7 @@ export class CalendarRecipyComponent implements OnInit {
   isShowDetails: boolean = false;
   isShowPrepSuggestions: boolean = false;
   Details = Details;
+  Math = Math;
 
   hasPrepSuggestions: boolean = false;
   showNeedsAdvancePreparation: boolean = false;

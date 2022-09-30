@@ -57,6 +57,7 @@
           <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
         </mat-chip-list>
       </div> -->
+      <div *ngIf="recipy.calorificValue">Калорійність: {{Math.round(recipy.calorificValue)}} ккал в 100гр.</div>
       <div class="collection-tags" *ngIf="includedInCollections.length">
         <span>Колекції: </span>
         <mat-chip *ngFor="let collection of includedInCollections">{{collection}}</mat-chip>

@@ -495,3 +495,7 @@ export function getRecipyNameById(
 ): string {
   return allRecipies.find((rec) => rec.id == recipyToFindId)!.name;
 }
+
+export function getCalorificValue(ingr: Ingredient, allProducts: Product[]): number {
+  return allProducts.find(product => product.id == ingr.product)!.calories
+}

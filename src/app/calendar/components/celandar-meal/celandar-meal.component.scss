@@ -4,15 +4,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 10px;
+  
 
-  & > div {
+  .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 12px;
     &:first-child {
       font-weight: bold;
     }
+  }
+  .details{
+    font-size: 9px;
   }
   &.side-pane {
     flex-direction: column;

@@ -7,18 +7,22 @@
   class="meal-time"
 >
   <div class="meal-header">
-    <div>
+    <div class="title">
       <span *ngIf="mode == CalendarMode.Other || !detailedRecipiesList.length">{{ mealtimeText }}</span>
       <div class="inline-button" *ngIf="mode == CalendarMode.Scenario && !!detailedRecipiesList.length" (click)="goScenario()">{{ mealtimeText }}</div>
     </div>
 
-    <div *ngIf="!!detailedRecipiesList.length">
-      <span *ngIf="!!getPortions()"> {{ getPortions() }} персони </span>
-      <span class="divider"> | </span>
-      <span *ngIf="!!getAmountPerPerson()">
+    <div class="details" *ngIf="!!detailedRecipiesList.length">
+      <div>
+        <span *ngIf="!!getPortions()"> {{ getPortions() }} персони </span>
+      
+      <div *ngIf="!!getAmountPerPerson()">
         {{ getAmountPerPerson() }} гр/чол
-      </span>
+      </div>
+      </div>
+      <div *ngIf="getCalories()">{{getCalories()}} ккал/порцію</div>
     </div>
+    
   </div>
   <ng-container *ngIf="!!detailedRecipiesList">
     <ng-container *ngIf="!isMobile">

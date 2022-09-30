@@ -204,6 +204,27 @@ export class CelandarMealComponent implements OnChanges {
       }
     } else return null;
   }
+  getCalories(): number | null {
+    if (this._day) {
+      if (this._day.details) {
+        switch (this.mealtime) {
+          case MealTime.Breakfast:
+            return this.getCaloriesPerPortion(this._day.details.breakfastRecipies);
+          case MealTime.Lunch:
+            return this.getCaloriesPerPortion(this._day.details.lunchRecipies);
+          case MealTime.Dinner:
+            return this.getCaloriesPerPortion(this._day.details.dinnerRecipies);
+          default:
+            return null;
+        }
+      } else return null;
+    } else return null;
+  }
+  getCaloriesPerPortion(recipies: RecipyForCalendar[]) {
+    let total = 0;
+    recipies.forEach(recipy => total += Math.round(recipy.calorificValue! * recipy.amountPerPortion / 100))
+    return total
+  }
 
   onUpdateRecipy(event: RecipyForCalendar) {
     this.updateRecipy.emit({ recipy: event, mealtime: this.mealtime });

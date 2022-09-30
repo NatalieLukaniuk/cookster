@@ -19,7 +19,8 @@ export interface Recipy extends NewRecipy {
   clonedOn?: number;
   originalRecipy?: string;
   isSplitIntoGroups: IngredientsGroup[];
-  isCheckedAndApproved?: boolean
+  isCheckedAndApproved?: boolean;
+  calorificValue?: number;
 }
 
 export interface RecipyForCalendar extends Recipy {

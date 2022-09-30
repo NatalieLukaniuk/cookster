@@ -22,6 +22,7 @@
     </mat-expansion-panel-header>
     <!-- Todo: no expanding for planner -->
     <mat-action-list>
+      <div *ngIf="recipy.calorificValue">Калорійність порції: {{Math.round(recipy.calorificValue * recipy.amountPerPortion / 100)}} ккал</div>
       <div mat-list-item class="recipy-details-item">
         <button
           mat-icon-button

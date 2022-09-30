@@ -1,3 +1,4 @@
+import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -40,6 +41,16 @@ export class RecipiesEffects {
   addNewRecipy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RecipiesActionTypes.ADD_RECIPY),
+      map((action: RecipiesActions.AddNewRecipyAction) => {
+        let updated = {
+          ...action,
+          recipy: {
+            ...action.recipy,
+            calorificValue: this.recService.countRecipyCalorificValue(action.recipy.ingrediends)
+          }
+        }
+        return updated
+      }),
       switchMap((action: RecipiesActions.AddNewRecipyAction) =>
         this.recipiesService.addRecipy(action.recipy).pipe(
           switchMap((res: { name: string }) => {
@@ -65,6 +76,16 @@ export class RecipiesEffects {
   updateRecipy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RecipiesActionTypes.UPDATE_RECIPY),
+      map((action: RecipiesActions.UpdateRecipyAction) => {
+        let updated = {
+          ...action,
+          recipy: {
+            ...action.recipy,
+            calorificValue: this.recService.countRecipyCalorificValue(action.recipy.ingrediends)
+          }
+        }
+        return updated
+      }),
       switchMap((action: RecipiesActions.UpdateRecipyAction) =>
         this.recipiesService.updateRecipy(action.recipy.id, action.recipy).pipe(
           map((res: any) => new RecipiesActions.UpdateRecipySuccessAction(res)),
@@ -123,6 +144,7 @@ export class RecipiesEffects {
   constructor(
     private actions$: Actions,
     private recipiesService: RecipiesApiService,
+    private recService: RecipiesService,
     private router: Router,
     private productsApiService: ProductsApiService
   ) {}

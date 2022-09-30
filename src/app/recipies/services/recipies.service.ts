@@ -15,6 +15,7 @@ import { ProductsApiService } from './products-api.service';
 import { RecipiesApiService } from './recipies-api.service';
 import {
   getAmountInSelectedUnit,
+  getCalorificValue,
   getDefaultMeasuringUnit,
   getIngredientIdFromName,
   getIngredientText,
@@ -215,5 +216,15 @@ export class RecipiesService {
       }
     }
     return (portionsToServe * portionSize) / amount;
+  }
+
+  countRecipyCalorificValue(ingreds: Ingredient[]){
+    let calories = 0;
+    let totalAmount = 0;
+    ingreds.forEach(ingr => {
+      totalAmount += ingr.amount;
+      calories += ingr.amount * getCalorificValue(ingr, this.products$.value)
+    })
+    return calories / totalAmount
   }
 }
