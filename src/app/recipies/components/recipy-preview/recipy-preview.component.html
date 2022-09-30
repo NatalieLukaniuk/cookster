@@ -3,7 +3,9 @@
     <div class="recipy-body" [class.column]="mode == AppMode.Scenarios">
       <div class="recipy-details">
         <div class="recipy-name-wrapper">
-          <h1 *ngIf="mode !== AppMode.EditRecipy && mode !== AppMode.Scenarios">{{ _clonedRecipy.name }}</h1>
+          <h1 *ngIf="mode !== AppMode.EditRecipy && mode !== AppMode.Scenarios">
+            {{ _clonedRecipy.name }}
+          </h1>
           <input
             matInput
             class="input-edit"
@@ -60,18 +62,45 @@
             гр.
           </h3>
           <div class="ingredients-table" *ngIf="!isSplitToGroups">
-            <app-ingredient
-              (ingredientChanged)="onIngredientChanged($event)"
-              (deleteIngredient)="onDeleteIngredient($event)"
-              *ngFor="
-                let ingredient of _clonedRecipy.ingrediends;
-                let i = index
+            <ng-container
+              *ngTemplateOutlet="
+                mode == AppMode.Scenarios
+                  ? ingredientTemplateDraggable
+                  : ingredientTemplate
               "
-              [ingredient]="ingredient"
-              [mode]="mode"
-              [coeficientOfAmount]="coeficient"
-              [isMobile]="isMobile"
-            ></app-ingredient>
+            ></ng-container>
+            <ng-template #ingredientTemplate>
+              <app-ingredient
+                (ingredientChanged)="onIngredientChanged($event)"
+                (deleteIngredient)="onDeleteIngredient($event)"
+                *ngFor="
+                  let ingredient of _clonedRecipy.ingrediends;
+                  let i = index
+                "
+                [ingredient]="ingredient"
+                [mode]="mode"
+                [coeficientOfAmount]="coeficient"
+                [isMobile]="isMobile"
+              ></app-ingredient>
+            </ng-template>
+            <ng-template #ingredientTemplateDraggable>
+              <div cdkDropList>
+                <app-ingredient
+                  cdkDrag
+                  [cdkDragData]="{ingredient: ingredient, coef: coeficient}"
+                  (ingredientChanged)="onIngredientChanged($event)"
+                  (deleteIngredient)="onDeleteIngredient($event)"
+                  *ngFor="
+                    let ingredient of _clonedRecipy.ingrediends;
+                    let i = index
+                  "
+                  [ingredient]="ingredient"
+                  [mode]="mode"
+                  [coeficientOfAmount]="coeficient"
+                  [isMobile]="isMobile"
+                ></app-ingredient>
+              </div>
+            </ng-template>
           </div>
           <ng-container *ngIf="isSplitToGroups">
             <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
@@ -111,33 +140,38 @@
           <h3>Приготування</h3>
           <ng-container *ngIf="mode !== AppMode.EditRecipy">
             <div class="steps-table">
-              <div *ngTemplateOutlet="mode == AppMode.Scenarios? stepTemplateDraggable : stepTemplate"></div>
-              <ng-template #stepTemplate>                
+              <div
+                *ngTemplateOutlet="
+                  mode == AppMode.Scenarios
+                    ? stepTemplateDraggable
+                    : stepTemplate
+                "
+              ></div>
+              <ng-template #stepTemplate>
                 <div
-                class="steps-row"
-                *ngFor="let step of _clonedRecipy.steps; let i = index"
-              >
-                <div>{{ i + 1 }}. {{ step.description }}</div>
-                <div class="time-cell" style="display: none">
-                  {{ getTotalStepTime(step) | normalizeTime }}
+                  class="steps-row"
+                  *ngFor="let step of _clonedRecipy.steps; let i = index"
+                >
+                  <div>{{ i + 1 }}. {{ step.description }}</div>
+                  <div class="time-cell" style="display: none">
+                    {{ getTotalStepTime(step) | normalizeTime }}
+                  </div>
                 </div>
-              </div>
               </ng-template>
               <ng-template #stepTemplateDraggable>
                 <div cdkDropList>
-                  <div cdkDrag
-                class="steps-row"
-                *ngFor="let step of _clonedRecipy.steps; let i = index"
-              >
-                <div>{{ i + 1 }}. {{ step.description }}</div>
-                <div class="time-cell" style="display: none">
-                  {{ getTotalStepTime(step) | normalizeTime }}
+                  <div
+                    cdkDrag
+                    class="steps-row"
+                    *ngFor="let step of _clonedRecipy.steps; let i = index"
+                  >
+                    <div>{{ i + 1 }}. {{ step.description }}</div>
+                    <div class="time-cell" style="display: none">
+                      {{ getTotalStepTime(step) | normalizeTime }}
+                    </div>
+                  </div>
                 </div>
-              </div>
-                </div>
-                
               </ng-template>
-              
             </div>
           </ng-container>
           <ng-container *ngIf="mode == AppMode.EditRecipy">
@@ -264,41 +298,40 @@
     class="tab-content"
     *ngIf="currentTab === 'ingredients' && portionsToServe"
   >
-  <div class="top-part">
-     <div class="portions-selector">
-      <span>Кількість порцій: {{ portionsToServe }}</span>
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="unitMenu"
-        class="edit-button"
-      >
-        <mat-icon svgIcon="edit"></mat-icon>
-      </button>
-      <mat-menu #unitMenu="matMenu">
+    <div class="top-part">
+      <div class="portions-selector">
+        <span>Кількість порцій: {{ portionsToServe }}</span>
         <button
-          mat-menu-item
-          *ngFor="let option of portionsOptions"
-          (click)="onPortionsChange(option)"
+          mat-icon-button
+          [matMenuTriggerFor]="unitMenu"
+          class="edit-button"
         >
-          {{ option }}
+          <mat-icon svgIcon="edit"></mat-icon>
         </button>
-      </mat-menu>
-    </div>
+        <mat-menu #unitMenu="matMenu">
+          <button
+            mat-menu-item
+            *ngFor="let option of portionsOptions"
+            (click)="onPortionsChange(option)"
+          >
+            {{ option }}
+          </button>
+        </mat-menu>
+      </div>
 
-    <div
-      class="portion-size-selection"
-      *ngIf="portionsToServe && mode !== AppMode.EditRecipy"
-    >
-      Розмір порції
-      <input
-        matInput
-        [(ngModel)]="portionSize"
-        (ngModelChange)="onportionSizeChanged()"
-      />
-      гр.
+      <div
+        class="portion-size-selection"
+        *ngIf="portionsToServe && mode !== AppMode.EditRecipy"
+      >
+        Розмір порції
+        <input
+          matInput
+          [(ngModel)]="portionSize"
+          (ngModelChange)="onportionSizeChanged()"
+        />
+        гр.
+      </div>
     </div>
-  </div>
-   
 
     <ng-container *ngIf="!isSplitToGroups">
       <app-ingredient

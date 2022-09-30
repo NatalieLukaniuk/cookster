@@ -40,6 +40,7 @@ import { SuggestionComponent } from './components/suggestion/suggestion.componen
 import { TextInputDialogComponent } from './components/text-input-dialog/text-input-dialog.component';
 import { NormalizeTimePipe } from './pipes/normalize-time.pipe';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -75,7 +76,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     MatTooltipModule,
     MatDatepickerModule,
     ReactiveFormsModule,
-    NgxMaterialTimepickerModule    
+    NgxMaterialTimepickerModule,
+    DragDropModule    
   ],
   declarations: [
     NavigationComponent,

@@ -16,6 +16,7 @@ import { RecipyForCalendar } from 'src/app/recipies/models/recipy.interface';
 import { Product } from 'src/app/recipies/models/products.interface';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { User } from 'src/app/auth/models/user.interface';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-preps',
@@ -175,7 +176,7 @@ export class PrepsComponent implements OnInit, OnDestroy {
         prepDescription: prepDescription,
         recipyId: recipyId,
         recipyTitle: recipyName,
-        day: day,
+        day: moment(day),
       };
       this.allPrepsInDateRange.push(suggestion);
     }
@@ -186,7 +187,6 @@ export class PrepsComponent implements OnInit, OnDestroy {
       return !!this.currentUser.prepLists.find((list: SuggestionList) =>
         list.suggestions?.find(
           (sugg) =>
-            areArraysEqual(sugg.ingredients, suggestion.ingredients) &&
             sugg.prepDescription == suggestion.prepDescription &&
             sugg.recipyId == suggestion.recipyId
         )

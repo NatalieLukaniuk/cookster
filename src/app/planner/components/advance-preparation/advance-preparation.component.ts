@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/auth/models/user.interface';
@@ -171,7 +172,7 @@ export class AdvancePreparationComponent
         prepDescription: prepDescription,
         recipyId: recipyId,
         recipyTitle: recipyName,
-        day: day,
+        day: moment(day),
       };
       this.suggestions.push(suggestion);
     }

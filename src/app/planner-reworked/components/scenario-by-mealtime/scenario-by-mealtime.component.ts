@@ -2,7 +2,7 @@ import { Product } from 'src/app/recipies/models/products.interface';
 import { RecipyForCalendar } from './../../../recipies/models/recipy.interface';
 import { MealTime } from 'src/app/calendar/components/celandar-meal/celandar-meal.component';
 import { map, takeUntil, tap } from 'rxjs/operators';
-import { Observable, Subject, combineLatest } from 'rxjs';
+import { Observable, Subject, combineLatest, BehaviorSubject } from 'rxjs';
 import { getCurrentRoute } from './../../../store/selectors/ui.selectors';
 import { select, Store } from '@ngrx/store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -35,6 +35,11 @@ export class ScenarioByMealtimeComponent implements OnInit, OnDestroy {
       }
     })
   );
+
+  recipyOpen$ = new BehaviorSubject<{ recipyId: string; recipyName: string }>({
+    recipyId: '',
+    recipyName: '',
+  });
 
   AppMode = AppMode;
 
@@ -80,6 +85,10 @@ export class ScenarioByMealtimeComponent implements OnInit, OnDestroy {
               case MealTime.Dinner:
                 this.recipies = foundDay.details.dinnerRecipies;
             }
+            this.recipyOpen$.next({
+              recipyId: this.recipies[0].id,
+              recipyName: this.recipies[0].name,
+            });
           }
         }
       });

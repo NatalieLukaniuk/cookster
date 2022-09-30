@@ -1,32 +1,36 @@
+import * as moment from 'moment';
 import { MeasuringUnit } from '../recipies/models/measuring-units.enum';
 
 export interface Suggestion {
-  ingredients: [
-    {
-      productId: string;
-      productName: string;
-      amount: number;
-      unit: MeasuringUnit;
-    }
-  ];
+  ingredients: {
+    productId: string;
+    productName: string;
+    amount: number;
+    unit: MeasuringUnit;
+  }[];
   prepDescription: string;
   recipyId: string;
   recipyTitle: string;
-  day: Date;
+  day: moment.Moment;
   done?: boolean;
   time?: string;
 }
 
 export class SuggestionCard implements Suggestion {
-  ingredients: [{ productId: string; productName: string; amount: number; unit: MeasuringUnit; }];
+  ingredients: {
+    productId: string;
+    productName: string;
+    amount: number;
+    unit: MeasuringUnit;
+  }[];
   prepDescription: string;
   recipyId: string;
   recipyTitle: string;
-  day: Date;
+  day: moment.Moment;
   done?: boolean = false;
   time?: string = '';
   constructor(suggestion: Suggestion) {
-    this.ingredients = suggestion.ingredients
+    this.ingredients = suggestion.ingredients;
     this.prepDescription = suggestion.prepDescription;
     this.recipyId = suggestion.recipyId;
     this.recipyTitle = suggestion.recipyTitle;

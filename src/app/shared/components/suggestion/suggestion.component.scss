@@ -20,11 +20,29 @@
 
   .suggestions-list-item-ingredient {
     font-weight: 600;
+    flex-direction: column;
+
+    &.addMode {
+      border: 1px solid;
+      padding-block: 12px;
+    }
+    .ingredient{
+      display: flex;
+      justify-content: space-between;
+    }
   }
   .suggestions-list-item-details {
     font-size: 10px;
     opacity: 0.4;
   }
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: var(--tint3);
+  border: solid 1px var(--tint5);
 }
 
 .timepicker-icon {

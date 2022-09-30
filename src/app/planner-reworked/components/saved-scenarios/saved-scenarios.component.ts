@@ -1,4 +1,10 @@
-import { Component, Input, OnDestroy, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -9,28 +15,30 @@ import { Suggestion, SuggestionList } from '../../preps.models';
 import * as UserActions from '../../../store/actions/user.actions';
 import * as _ from 'lodash';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { areArraysEqual } from 'src/app/shared/utils/comparison';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-saved-scenarios',
   templateUrl: './saved-scenarios.component.html',
-  styleUrls: ['./saved-scenarios.component.scss']
+  styleUrls: ['./saved-scenarios.component.scss'],
 })
 export class SavedScenariosComponent implements OnChanges, OnDestroy {
   @Input() currentUser: User | null | undefined;
   @Input() allProducts!: Product[] | null;
+  @Input() recipyOpen!: { recipyId: string; recipyName: string } | null;
   prepDate: any | undefined;
   lists: SuggestionList[] = [];
 
   listsChanged$ = new Subject();
   destroy$ = new Subject();
-  constructor(private store: Store<IAppState>,) {
+  addIngreds = false;
+  constructor(private store: Store<IAppState>) {
     this.listsChanged$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.saveLists();
     });
-   }
+  }
 
-   ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.currentUser && this.currentUser?.scenarios) {
       this.lists = _.cloneDeep(this.currentUser.scenarios);
 
@@ -39,6 +47,18 @@ export class SavedScenariosComponent implements OnChanges, OnDestroy {
           return {
             ...list,
             suggestions: [],
+          };
+        } else if (list.suggestions.find((sugg) => !sugg.ingredients)) {
+          return {
+            ...list,
+            suggestions: list.suggestions.map((sugg) => {
+              if (!sugg.ingredients) {
+                return {
+                  ...sugg,
+                  ingredients: [],
+                };
+              } else return sugg;
+            }),
           };
         } else return list;
       });
@@ -64,11 +84,29 @@ export class SavedScenariosComponent implements OnChanges, OnDestroy {
       this.store.dispatch(new UserActions.UpdateUserAction(updatedUser));
     }
   }
-
+  stepsOnly() {
+    return false;
+  }
   drop(event: CdkDragDrop<Suggestion[]>) {
-    console.log(event.item.element.nativeElement.childNodes[0].textContent)
-    let steptext = event.item.element.nativeElement.childNodes[0].textContent;
-
+    let date = moment(event.container.id, 'DDMMYYYY');
+    let prepDescription =
+      event.item.element.nativeElement.childNodes[0].textContent?.substring(3);
+    if (prepDescription && this.recipyOpen) {
+      let sugg: Suggestion = {
+        ingredients: [],
+        prepDescription: prepDescription,
+        recipyId: this.recipyOpen.recipyId,
+        recipyTitle: this.recipyOpen.recipyName,
+        day: date,
+      };
+      this.lists = this.lists.map((list) => {
+        if (list.date == event.container.id) {
+          list.suggestions.push(sugg);
+          return list;
+        } else return list;
+      });
+      this.listsChanged$.next();
+    }
   }
 
   deleteList(list: SuggestionList) {
@@ -92,15 +130,10 @@ export class SavedScenariosComponent implements OnChanges, OnDestroy {
 
   onTimeChanged(suggestion: Suggestion, i: number) {
     this.lists[i].suggestions = this.lists[i].suggestions.map((sugg) => {
-      if (
-        areArraysEqual(sugg.ingredients, suggestion.ingredients)
-        &&
-        sugg.prepDescription == suggestion.prepDescription
-      ) {
+      if (sugg.prepDescription == suggestion.prepDescription) {
         return suggestion;
       } else return sugg;
     });
     this.listsChanged$.next();
   }
-
 }

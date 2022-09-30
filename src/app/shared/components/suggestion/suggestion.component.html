@@ -23,21 +23,22 @@
       </div>
     </div>
 
-    <div class="suggestions-list-item-ingredient">
-      <div *ngFor="let ingred of suggestion.ingredients">
+    <div class="suggestions-list-item-ingredient" [class.addMode]="isAddMode" cdkDropList (cdkDropListDropped)="drop($event)">
+      <div class="ingredient" cdkDrag *ngFor="let ingred of suggestion.ingredients">        
         <span>{{ ingred.productName }}</span>
         <span
           >{{ NormalizeDisplayedAmount(ingred.amount, ingred.unit) }}
           {{ getUnitText(ingred.unit) }}</span
         >
       </div>
+      <div class="placeholder" *cdkDragPlaceholder></div>
     </div>
     <div class="suggestions-list-item-prep">
       <span>{{ suggestion.prepDescription }}</span>
     </div>
     <div class="suggestions-list-item-details">
       <span>{{ suggestion.recipyTitle }}</span>
-      <span>{{ suggestion.day | date }}</span>
+      <span>{{ suggestion.day.toString()| date }}</span>
     </div>
   </div>
   <mat-icon class="delete-btn" *ngIf="showDelete" (click)="delete()"

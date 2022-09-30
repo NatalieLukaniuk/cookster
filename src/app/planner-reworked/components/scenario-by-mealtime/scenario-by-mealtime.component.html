@@ -15,6 +15,7 @@
     <div class="fixed-container">
       <app-saved-scenarios
         *ngIf="allProducts && (currentUser$ | async)"
+        [recipyOpen]="recipyOpen$ | async"
         [allProducts]="allProducts"
         [currentUser]="currentUser$ | async"
       ></app-saved-scenarios>
