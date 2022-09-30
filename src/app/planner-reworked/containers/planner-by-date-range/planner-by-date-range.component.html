@@ -5,7 +5,7 @@
     (click)="activeLink = tab.link"
     [active]="activeLink == tab.link"
     [routerLink]="tab.link"
-    [disabled]="!isRecipiesPlanned && i !== 0"
+    [disabled]="(!isRecipiesPlanned && i !== 0) || i==3"
   >
     {{ tab.name }}
   </a>
