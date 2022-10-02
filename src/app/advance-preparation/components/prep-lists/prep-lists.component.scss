@@ -4,7 +4,7 @@
     width: 100%;
     margin-top: 20px;
   }
-  h3{
+  h3 {
     margin-block: 25px 15px;
     text-align: center;
   }
@@ -21,7 +21,13 @@
   padding: 10px 10px 0;
   margin: 10px 10px 10px 0;
   background: var(--background-color);
-  &.timePassed{
+  &.timePassed {
     background: #f99e9e;
+  }
+}
+
+@media (max-width: 600px) {
+  .prep-lists-container {
+    max-height: 70vh;
   }
 }

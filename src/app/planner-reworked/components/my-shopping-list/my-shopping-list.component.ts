@@ -128,8 +128,6 @@ export class MyShoppingListComponent implements OnChanges, OnDestroy {
   dropFromAllIngredsList(event: CdkDragDrop<SLItem[]>) {
     let split = event.item.element.nativeElement.id.split('/');
     let [id, amount, unit] = split;
-    console.log(id, amount, unit);
-    console.log(event.container.id);
     let ind = +event.container.id.split('-')[2];
     let convertedAmount = this.recipiesService.getAmountInSelectedUnit(
       +unit,

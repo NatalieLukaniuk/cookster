@@ -125,6 +125,5 @@ export class CalendarByDayComponent implements OnInit, OnDestroy {
   }
   onhasTimedOutPreps(event: boolean){
     this.hasTimedOutPreps = event
-    console.log(event)
   }
 }

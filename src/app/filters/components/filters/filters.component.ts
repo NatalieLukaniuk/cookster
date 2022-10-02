@@ -55,7 +55,6 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   onTagsChange(event: MatSelectionListChange) {
-    console.log(event);
     this.store.dispatch(
       new FiltersActions.ToggleTagAction(event.options[0].value)
     );

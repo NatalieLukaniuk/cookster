@@ -21,6 +21,7 @@ export interface Recipy extends NewRecipy {
   isSplitIntoGroups: IngredientsGroup[];
   isCheckedAndApproved?: boolean;
   calorificValue?: number;
+  source: string;
 }
 
 export interface RecipyForCalendar extends Recipy {
@@ -43,6 +44,7 @@ export interface NewRecipy {
   isSplitIntoGroups: IngredientsGroup[];
   isBaseRecipy: boolean;
   notApproved?: boolean;
+  source: string;
 }
 
 export class emptyRecipy implements NewRecipy {
@@ -54,7 +56,8 @@ export class emptyRecipy implements NewRecipy {
   author: string;
   createdOn: number = Date.now();
   isSplitIntoGroups: IngredientsGroup[] = [];
-  isBaseRecipy: boolean = false
+  isBaseRecipy: boolean = false;
+  source: string = '';
   constructor(author: string) {
     this.author = author;
   }

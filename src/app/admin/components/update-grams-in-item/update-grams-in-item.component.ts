@@ -70,13 +70,10 @@ export class UpdateGramsInItemComponent implements OnInit {
     const ingrId = this.getProductId(
       this.ingredientsForm.controls.ingredient.value
     );
-    console.log(ingrId);
     const newGrInItem = this.ingredientsForm.controls.newValue.value;
-    console.log(newGrInItem);
     const oldGrams = this.products.find(
       (prod) => prod.id == ingrId
     )!.grInOneItem;
-    console.log(oldGrams);
     let recipiesWithIngrInItems = this.recipies.filter((recipy) =>
       recipy.ingrediends.find(
         (ingr) =>
@@ -97,7 +94,6 @@ export class UpdateGramsInItemComponent implements OnInit {
         ...recipy,
         ingrediends: updatedIng,
       };
-      console.log(updatedRecipy);
       this.store.dispatch(
         new RecipiesActions.UpdateRecipyAction(updatedRecipy)
       );

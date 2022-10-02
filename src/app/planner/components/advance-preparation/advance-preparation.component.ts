@@ -195,7 +195,6 @@ export class AdvancePreparationComponent
   createPrepList(event: any) {
     let newList = new SuggestionList(event);
     this.lists.push(newList);
-    console.log(newList);
   }
   drop(event: CdkDragDrop<Suggestion[]>) {
     transferArrayItem(
@@ -205,7 +204,6 @@ export class AdvancePreparationComponent
       event.currentIndex
     );
     this.isListsChanged = true;
-    console.log(this.lists);
   }
   saveLists() {
     if (this.currentUser) {

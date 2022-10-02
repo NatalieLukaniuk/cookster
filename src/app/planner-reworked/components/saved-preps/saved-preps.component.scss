@@ -12,6 +12,10 @@
 
   .suggestions-list {
     min-width: 350px;
+    ::ng-deep .mat-expansion-panel-content {
+      max-height: 300px;
+      overflow-y: auto;
+  }
   }
 
   .list-item-title {

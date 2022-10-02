@@ -261,6 +261,17 @@
               <p>Пасивний: {{ passiveTime | normalizeTime }}</p>
             </div>
           </div>
+          <div *ngIf="mode !== AppMode.EditRecipy && !!_clonedRecipy.source">
+            Джерело рецепту: <a [href]="_clonedRecipy.source" target="_blank">{{_clonedRecipy.source}}</a>
+          </div>
+          <input
+            matInput
+            class="input-edit"
+            *ngIf="mode == AppMode.EditRecipy"
+            [(ngModel)]="_clonedRecipy.source"
+            (ngModelChange)="isChangesSaved = false"
+          />
+          
           <div class="recipy-tags">
             <div><span class="bold">Теги: </span></div>
             <div *ngIf="mode !== AppMode.EditRecipy">
@@ -392,6 +403,7 @@
       </div>
     </div>
     <div class="recipy-tags"></div>
+    <div *ngIf="!!_clonedRecipy.source">Джерело рецепту: <a [href]="_clonedRecipy.source" target="_blank">{{_clonedRecipy.source}}</a></div>
     <div class="photo-container" *ngIf="_clonedRecipy.photo">
       <app-image [imagePath]="_clonedRecipy.photo"></app-image>
     </div>

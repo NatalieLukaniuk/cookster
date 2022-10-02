@@ -17,6 +17,8 @@ import { Product } from 'src/app/recipies/models/products.interface';
 import { getCurrentUser } from 'src/app/store/selectors/user.selectors';
 import { User } from 'src/app/auth/models/user.interface';
 import * as moment from 'moment';
+import { CalendarMode } from 'src/app/calendar/components/calendar-by-month/calendar-by-month.component';
+import { Direction } from 'src/app/calendar/containers/calendar-container/calendar-container.component';
 
 @Component({
   selector: 'app-preps',
@@ -31,6 +33,10 @@ export class PrepsComponent implements OnInit, OnDestroy {
   planner$: Observable<PlannerByDate | null>;
   calendar$: Observable<Day[] | null>;
   allProducts$: Observable<Product[]>;
+
+  Direction = Direction;
+  CalendarMode = CalendarMode;
+  showCalendar = false;
 
   allProducts!: Product[] | null;
   currentUser: User | undefined;
@@ -73,7 +79,6 @@ export class PrepsComponent implements OnInit, OnDestroy {
             startDate: res.planner.startDate,
             endDate: res.planner.endDate,
           });
-          console.log(this.allPrepsInDateRange);
         }
       });
   }

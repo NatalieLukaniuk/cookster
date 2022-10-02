@@ -147,6 +147,7 @@ export class RecipiesService {
         editedBy: currentUserEmail,
         lastEdited: Date.now(),
         isBaseRecipy: recipy.isBaseRecipy,
+        source: recipy.source
       };
       if ('clonedBy' in recipy) {
         (updatedRecipy.clonedBy = recipy.clonedBy),
@@ -172,6 +173,7 @@ export class RecipiesService {
         clonedBy: currentUserEmail,
         clonedOn: Date.now(),
         isBaseRecipy: recipy.isBaseRecipy,
+        source: recipy.source
       };
       if ('photo' in recipy) {
         clonedRecipy.photo = recipy.photo;

@@ -1,143 +1,234 @@
 <div *ngIf="!!currentUser && !!newRecipy">
-    <h1>Recipy constructor</h1>
-    <div class="recipy-constructor-wrapper">
-        <div class="preview" *ngIf="false">
-            <app-recipy-preview [recipy]="newRecipy"></app-recipy-preview>
-        </div>
-        <div class="recipy-constructor">
-            <mat-stepper #stepper orientation="vertical" (selectionChange)="stepSelected($event)">
-
-
-                <mat-step [completed]="name.valid" #generalInfo editable="false">
-                    <ng-template matStepLabel><span
-                            [class.has-errors]="name.invalid && (name.dirty || name.touched)">інформація</span>
-                    </ng-template>
-                    <div class="additional-info-wrapper">
-                        <mat-form-field appearance="outline" class="recipy-name">
-                            <mat-label>Назва рецепту</mat-label>
-                            <input matInput required minlength="4" type="text" [(ngModel)]="newRecipy.name"
-                                placeholder="Напр.: Картопляне пюре" #name="ngModel" />
-                            <mat-icon matSuffix svgIcon="done" *ngIf="name.valid && (name.dirty || name.touched)">
-                            </mat-icon>
-                        </mat-form-field>
-                        <mat-checkbox [(ngModel)]="isSplitToGroups" (ngModelChange)="toggleSplitToGroups()">
-                            Рецепт складається з кількох груп (тісто, начинка, оздоблення, тощо)
-                        </mat-checkbox>
-                    </div>
-                    <div class="action-buttons-wrapper">
-                        <button mat-flat-button class="action-button" [disabled]="!generalInfo.completed"
-                            matStepperNext>
-                            Далі
-                        </button>
-                    </div>
-                </mat-step>
-
-
-                <mat-step [completed]="newRecipy.ingrediends.length > 0" #ingredients>
-                    <ng-template matStepLabel><span
-                            [class.has-errors]="!newRecipy.ingrediends.length && ingredients.interacted">Інгридієнти</span>
-                    </ng-template>
-                    <ng-container *ngIf="newRecipy.ingrediends.length > 0">
-                        <ng-container *ngIf="newRecipy.isSplitIntoGroups.length <= 0">
-                            <app-ingredient *ngFor="let ingredient of newRecipy.ingrediends" [ingredient]="ingredient"
-                                [isMobile]="isMobile">
-                            </app-ingredient>
-                        </ng-container>
-                        <ng-container *ngIf="newRecipy.isSplitIntoGroups.length > 0">
-                            <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
-                                <ng-container *ngIf="item.value.length > 0">
-                                    <h4>{{item.key}}</h4>
-                                    <app-ingredient *ngFor="let ingredient of item.value" [ingredient]="ingredient"
-                                        [isMobile]="isMobile"></app-ingredient>
-                                </ng-container>
-                            </ng-container>
-                        </ng-container>
-                    </ng-container>
-                    <app-add-ingredient *ngIf="isAddIngredientFormShown" [isIngredientsSplitToGroups]='!!newRecipy.isSplitIntoGroups.length'
-                        (addNewIngredient)="onaAddNewIngredient($event)"></app-add-ingredient>
-                    <div class="action-buttons-wrapper">
-                        <button *ngIf="!isAddIngredientFormShown" mat-flat-button class="action-button" (click)="isAddIngredientFormShown = true">
-                            + Інгридієнт
-                        </button>
-                        <button mat-flat-button class="action-button" [disabled]="newRecipy.ingrediends.length <= 0"
-                            matStepperNext>
-                            Далі
-                        </button>
-                    </div>
-                </mat-step>
-
-
-                <mat-step [completed]="newRecipy.steps.length > 0" #steps>
-                    <ng-template matStepLabel><span
-                            [class.has-errors]="!newRecipy.steps.length && steps.interacted">Приготування</span>
-                    </ng-template>
-                    <ng-container *ngIf="newRecipy.steps.length > 0">
-                        <table class="steps-table" *ngIf="!newRecipy.isSplitIntoGroups.length">
-                            <tr *ngFor="let step of newRecipy.steps; let i = index">
-                                <td>
-                                    <p>{{ i + 1 }}. {{ step.description }}</p>
-                                </td>
-                                <td>{{ getTotalStepTime(step) }} хв.</td>
-                            </tr>
-                        </table>
-                        <ng-container *ngIf="newRecipy.isSplitIntoGroups.length > 0">
-                            <ng-container *ngFor="let item of stepsByGroup | keyvalue">
-                                <ng-container *ngIf="item.value.length > 0">
-                                    <h4>{{item.key}}</h4>
-                                    <table class="steps-table">
-                                        <tr *ngFor="let step of item.value; let i = index">
-                                            <td>
-                                                <p>{{ step.id }}. {{ step.description }}</p>
-                                            </td>
-                                            <td>{{ getTotalStepTime(step) }} хв.</td>
-                                        </tr>
-                                    </table>
-                                </ng-container>
-                            </ng-container>
-                        </ng-container>
-                    </ng-container>
-                    <app-add-step *ngIf="isAddStepFormShown" [index]="newRecipy.steps.length"
-                        [isSplitToGroups]='!!newRecipy.isSplitIntoGroups.length'
-                        [groupOptions]="newRecipy.isSplitIntoGroups" (addNewStep)="onAddNewStep($event)"></app-add-step>
-                    <div class="action-buttons-wrapper">
-                        <button *ngIf="!isAddStepFormShown" mat-flat-button class="action-button" (click)="isAddStepFormShown = true">
-                            + Крок
-                        </button>
-                        <button mat-flat-button class="action-button" [disabled]="newRecipy.steps.length <= 0"
-                            matStepperNext>
-                            Далі
-                        </button>
-                    </div>
-                </mat-step>
-
-
-                <mat-step [completed]="newRecipy.steps.length > 0" #additional>
-                    <ng-template matStepLabel><span
-                            [class.has-errors]="!newRecipy.steps.length && steps.interacted">Додаткова інформація</span>
-                    </ng-template>
-                    <div>
-                        <h5>Виберіть складність</h5>
-                        <mat-radio-group class="cookster-radio-group" [(ngModel)]="newRecipy.complexity">
-                            <mat-radio-button class="example-radio-button" *ngFor="let unit of complexityOptions"
-                                [value]="unit">
-                                {{getComplexityOptionsText(unit)}}
-                            </mat-radio-button>
-                        </mat-radio-group>
-                        <h5>Виберіть теги</h5>
-                        <app-add-tags [tags]="tags" (selectedTags)="onTagsSelectionChange($event)"></app-add-tags>
-                        <mat-checkbox [(ngModel)]="newRecipy.isBaseRecipy">
-                            Базовий рецепт (не відображається на сторінці рецептів, але може бути доданий в календар)
-                        </mat-checkbox>
-                        <div class="action-buttons-wrapper">
-                            <button mat-flat-button class="action-button" (click)="onPreviewRecipy()">
-                                Переглянути
-                            </button>
-                        </div>
-                    </div>
-                </mat-step>
-
-
-            </mat-stepper>
-        </div>
+  <h1>Recipy constructor</h1>
+  <div class="recipy-constructor-wrapper">
+    <div class="preview" *ngIf="false">
+      <app-recipy-preview [recipy]="newRecipy"></app-recipy-preview>
     </div>
+    <div class="recipy-constructor">
+      <mat-stepper
+        #stepper
+        orientation="vertical"
+        (selectionChange)="stepSelected($event)"
+      >
+        <mat-step [completed]="name.valid" #generalInfo editable="false">
+          <ng-template matStepLabel
+            ><span
+              [class.has-errors]="name.invalid && (name.dirty || name.touched)"
+              >інформація</span
+            >
+          </ng-template>
+          <div class="additional-info-wrapper">
+            <mat-form-field appearance="outline" class="recipy-name">
+              <mat-label>Назва рецепту</mat-label>
+              <input
+                matInput
+                required
+                minlength="4"
+                type="text"
+                [(ngModel)]="newRecipy.name"
+                placeholder="Напр.: Картопляне пюре"
+                #name="ngModel"
+              />
+              <mat-icon
+                matSuffix
+                svgIcon="done"
+                *ngIf="name.valid && (name.dirty || name.touched)"
+              >
+              </mat-icon>
+            </mat-form-field>
+            <mat-checkbox
+              [(ngModel)]="isSplitToGroups"
+              (ngModelChange)="toggleSplitToGroups()"
+            >
+              Рецепт складається з кількох груп (тісто, начинка, оздоблення,
+              тощо)
+            </mat-checkbox>
+          </div>
+          <div class="action-buttons-wrapper">
+            <button
+              mat-flat-button
+              class="action-button"
+              [disabled]="!generalInfo.completed"
+              matStepperNext
+            >
+              Далі
+            </button>
+          </div>
+        </mat-step>
+
+        <mat-step [completed]="newRecipy.ingrediends.length > 0" #ingredients>
+          <ng-template matStepLabel
+            ><span
+              [class.has-errors]="
+                !newRecipy.ingrediends.length && ingredients.interacted
+              "
+              >Інгридієнти</span
+            >
+          </ng-template>
+          <ng-container *ngIf="newRecipy.ingrediends.length > 0">
+            <ng-container *ngIf="newRecipy.isSplitIntoGroups.length <= 0">
+              <app-ingredient
+                *ngFor="let ingredient of newRecipy.ingrediends"
+                [ingredient]="ingredient"
+                [isMobile]="isMobile"
+              >
+              </app-ingredient>
+            </ng-container>
+            <ng-container *ngIf="newRecipy.isSplitIntoGroups.length > 0">
+              <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
+                <ng-container *ngIf="item.value.length > 0">
+                  <h4>{{ item.key }}</h4>
+                  <app-ingredient
+                    *ngFor="let ingredient of item.value"
+                    [ingredient]="ingredient"
+                    [isMobile]="isMobile"
+                  ></app-ingredient>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+          <app-add-ingredient
+            *ngIf="isAddIngredientFormShown"
+            [isIngredientsSplitToGroups]="!!newRecipy.isSplitIntoGroups.length"
+            (addNewIngredient)="onaAddNewIngredient($event)"
+          ></app-add-ingredient>
+          <div class="action-buttons-wrapper">
+            <button
+              *ngIf="!isAddIngredientFormShown"
+              mat-flat-button
+              class="action-button"
+              (click)="isAddIngredientFormShown = true"
+            >
+              + Інгридієнт
+            </button>
+            <button
+              mat-flat-button
+              class="action-button"
+              [disabled]="newRecipy.ingrediends.length <= 0"
+              matStepperNext
+            >
+              Далі
+            </button>
+          </div>
+        </mat-step>
+
+        <mat-step [completed]="newRecipy.steps.length > 0" #steps>
+          <ng-template matStepLabel
+            ><span
+              [class.has-errors]="!newRecipy.steps.length && steps.interacted"
+              >Приготування</span
+            >
+          </ng-template>
+          <ng-container *ngIf="newRecipy.steps.length > 0">
+            <table
+              class="steps-table"
+              *ngIf="!newRecipy.isSplitIntoGroups.length"
+            >
+              <tr *ngFor="let step of newRecipy.steps; let i = index">
+                <td>
+                  <p>{{ i + 1 }}. {{ step.description }}</p>
+                </td>
+                <td>{{ getTotalStepTime(step) }} хв.</td>
+              </tr>
+            </table>
+            <ng-container *ngIf="newRecipy.isSplitIntoGroups.length > 0">
+              <ng-container *ngFor="let item of stepsByGroup | keyvalue">
+                <ng-container *ngIf="item.value.length > 0">
+                  <h4>{{ item.key }}</h4>
+                  <table class="steps-table">
+                    <tr *ngFor="let step of item.value; let i = index">
+                      <td>
+                        <p>{{ step.id }}. {{ step.description }}</p>
+                      </td>
+                      <td>{{ getTotalStepTime(step) }} хв.</td>
+                    </tr>
+                  </table>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+          <app-add-step
+            *ngIf="isAddStepFormShown"
+            [index]="newRecipy.steps.length"
+            [isSplitToGroups]="!!newRecipy.isSplitIntoGroups.length"
+            [groupOptions]="newRecipy.isSplitIntoGroups"
+            (addNewStep)="onAddNewStep($event)"
+          ></app-add-step>
+          <div class="action-buttons-wrapper">
+            <button
+              *ngIf="!isAddStepFormShown"
+              mat-flat-button
+              class="action-button"
+              (click)="isAddStepFormShown = true"
+            >
+              + Крок
+            </button>
+            <button
+              mat-flat-button
+              class="action-button"
+              [disabled]="newRecipy.steps.length <= 0"
+              matStepperNext
+            >
+              Далі
+            </button>
+          </div>
+        </mat-step>
+
+        <mat-step [completed]="newRecipy.steps.length > 0" #additional>
+          <ng-template matStepLabel
+            ><span
+              [class.has-errors]="!newRecipy.steps.length && steps.interacted"
+              >Додаткова інформація</span
+            >
+          </ng-template>
+          <div>
+            <h5>Виберіть складність</h5>
+            <mat-radio-group
+              class="cookster-radio-group"
+              [(ngModel)]="newRecipy.complexity"
+            >
+              <mat-radio-button
+                class="example-radio-button"
+                *ngFor="let unit of complexityOptions"
+                [value]="unit"
+              >
+                {{ getComplexityOptionsText(unit) }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <h5>Виберіть теги</h5>
+            <app-add-tags
+              [tags]="tags"
+              (selectedTags)="onTagsSelectionChange($event)"
+            ></app-add-tags>
+            <input
+              matInput
+              type="text"
+              class="input-edit"
+              placeholder="Напр.: http://recepty.ua"
+              [(ngModel)]="newRecipy.source"
+            />
+            <!-- <mat-form-field appearance="outline" class="recipy-name">
+                            <mat-label>Джерело рецепту (посилання)</mat-label>
+                            <input matInput minlength="4" type="text" [(ngModel)]="newRecipy.source"
+                                placeholder="Напр.: http://recepty.ua" #source="ngModel" />
+                            
+                        </mat-form-field> -->
+            <mat-checkbox [(ngModel)]="newRecipy.isBaseRecipy">
+              Базовий рецепт (не відображається на сторінці рецептів, але може
+              бути доданий в календар)
+            </mat-checkbox>
+            <div class="action-buttons-wrapper">
+              <button
+                mat-flat-button
+                class="action-button"
+                (click)="onPreviewRecipy()"
+              >
+                Переглянути
+              </button>
+            </div>
+          </div>
+        </mat-step>
+      </mat-stepper>
+    </div>
+  </div>
 </div>
