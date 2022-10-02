@@ -533,4 +533,21 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
   }
+
+  get preps(): { ingr: string; text: string }[] {
+    if (this._clonedRecipy) {
+      let preps: { ingr: string; text: string }[] = [];
+      this._clonedRecipy.ingrediends.forEach((ingr) => {
+        if (ingr.prep) {
+          ingr.prep.forEach((pr) =>
+            preps.push({
+              ingr: this.recipiesService.getIngredientText(ingr),
+              text: pr,
+            })
+          );
+        }
+      });
+      return preps;
+    } else return [];
+  }
 }

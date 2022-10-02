@@ -286,6 +286,13 @@
                 (selectedTags)="onTagsSelectionChange($event)"
               ></app-add-tags>
             </div>
+            
+          </div>
+          <div>
+            <h4>Попереднє приготування:</h4>
+            <div *ngFor="let prep of preps">
+              <b>{{prep.ingr}}</b><span>: {{prep.text}}</span>
+            </div>
           </div>
         </div>
       </div>
