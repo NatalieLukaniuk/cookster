@@ -87,7 +87,7 @@
               <div cdkDropList>
                 <app-ingredient
                   cdkDrag
-                  [cdkDragData]="{ingredient: ingredient, coef: coeficient}"
+                  [cdkDragData]="{ ingredient: ingredient, coef: coeficient }"
                   (ingredientChanged)="onIngredientChanged($event)"
                   (deleteIngredient)="onDeleteIngredient($event)"
                   *ngFor="
@@ -261,8 +261,14 @@
               <p>Пасивний: {{ passiveTime | normalizeTime }}</p>
             </div>
           </div>
-          <div *ngIf="mode !== AppMode.EditRecipy && !!_clonedRecipy.source">
-            Джерело рецепту: <a [href]="_clonedRecipy.source" target="_blank">{{_clonedRecipy.source}}</a>
+          <div class="recipy-source">
+            <div>Джерело рецепту:</div>
+            <a
+              *ngIf="mode !== AppMode.EditRecipy && !!_clonedRecipy.source"
+              [href]="_clonedRecipy.source"
+              target="_blank"
+              >{{ _clonedRecipy.source }}</a
+            >
           </div>
           <input
             matInput
@@ -271,7 +277,7 @@
             [(ngModel)]="_clonedRecipy.source"
             (ngModelChange)="isChangesSaved = false"
           />
-          
+
           <div class="recipy-tags">
             <div><span class="bold">Теги: </span></div>
             <div *ngIf="mode !== AppMode.EditRecipy">
@@ -286,12 +292,12 @@
                 (selectedTags)="onTagsSelectionChange($event)"
               ></app-add-tags>
             </div>
-            
           </div>
-          <div>
+          <div *ngIf="preps.length">
             <h4>Попереднє приготування:</h4>
             <div *ngFor="let prep of preps">
-              <b>{{prep.ingr}}</b><span>: {{prep.text}}</span>
+              <b>{{ prep.ingr }}</b
+              ><span>: {{ prep.text }}</span>
             </div>
           </div>
         </div>
@@ -410,9 +416,20 @@
       </div>
     </div>
     <div class="recipy-tags"></div>
-    <div *ngIf="!!_clonedRecipy.source">Джерело рецепту: <a [href]="_clonedRecipy.source" target="_blank">{{_clonedRecipy.source}}</a></div>
+    <div *ngIf="!!_clonedRecipy.source">
+      Джерело рецепту:
+      <a [href]="_clonedRecipy.source" target="_blank">{{
+        _clonedRecipy.source
+      }}</a>
+    </div>
     <div class="photo-container" *ngIf="_clonedRecipy.photo">
       <app-image [imagePath]="_clonedRecipy.photo"></app-image>
+    </div>
+    <div *ngIf="isUserAdmin">
+      <mat-checkbox
+          [ngModel]="recipy.isCheckedAndApproved"
+          (ngModelChange)="onisCheckedAndApprovedClicked()"
+        >Рецепт перевірений на практиці</mat-checkbox>
     </div>
   </div>
   <button

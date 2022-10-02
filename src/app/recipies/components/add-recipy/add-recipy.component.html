@@ -200,19 +200,18 @@
               [tags]="tags"
               (selectedTags)="onTagsSelectionChange($event)"
             ></app-add-tags>
-            <input
-              matInput
-              type="text"
-              class="input-edit"
-              placeholder="Напр.: http://recepty.ua"
-              [(ngModel)]="newRecipy.source"
-            />
-            <!-- <mat-form-field appearance="outline" class="recipy-name">
-                            <mat-label>Джерело рецепту (посилання)</mat-label>
-                            <input matInput minlength="4" type="text" [(ngModel)]="newRecipy.source"
-                                placeholder="Напр.: http://recepty.ua" #source="ngModel" />
-                            
-                        </mat-form-field> -->
+            <mat-form-field appearance="outline" class="recipy-source">
+              <mat-label>Джерело рецепту (посилання)</mat-label>
+              <input
+                matInput
+                minlength="4"
+                type="text"
+                [(ngModel)]="newRecipy.source"
+                placeholder="Напр.: http://recepty.ua"
+                #source="ngModel"
+              />
+            </mat-form-field>
+
             <mat-checkbox [(ngModel)]="newRecipy.isBaseRecipy">
               Базовий рецепт (не відображається на сторінці рецептів, але може
               бути доданий в календар)

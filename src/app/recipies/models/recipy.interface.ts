@@ -45,6 +45,7 @@ export interface NewRecipy {
   isBaseRecipy: boolean;
   notApproved?: boolean;
   source: string;
+  isCheckedAndApproved?: boolean;
 }
 
 export class emptyRecipy implements NewRecipy {

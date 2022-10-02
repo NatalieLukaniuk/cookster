@@ -13,7 +13,7 @@ import { select, Store } from '@ngrx/store';
 import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { map, take, takeUntil } from 'rxjs/operators';
-import { User } from 'src/app/auth/models/user.interface';
+import { Role, User } from 'src/app/auth/models/user.interface';
 import { CalendarService } from 'src/app/calendar/services/calendar.service';
 import { AVERAGE_PORTION } from 'src/app/shared/constants';
 import { DialogsService } from 'src/app/shared/services/dialogs.service';
@@ -549,5 +549,17 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       });
       return preps;
     } else return [];
+  }
+
+  get isUserAdmin(): boolean{
+    return !!(this.currentUser && this.currentUser.role == Role.Admin)
+  }
+
+  onisCheckedAndApprovedClicked(){
+    let updatedRecipy: Recipy = {
+      ...this.recipy,
+      isCheckedAndApproved: !this.recipy.isCheckedAndApproved,
+    } as Recipy;
+    this.store.dispatch(new fromRecipiesActions.UpdateRecipyAction(updatedRecipy));
   }
 }
