@@ -1,3 +1,4 @@
+import { AdminService } from './../../../admin/services/admin.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DatePipe, Location } from '@angular/common';
 import {
@@ -86,7 +87,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     private calendarService: CalendarService,
     private location: Location,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private adminService: AdminService
   ) {
     this.isPreviousRoute$ = this.store.pipe(
       select(getPreviousRoute),
@@ -561,5 +563,15 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
       isCheckedAndApproved: !this.recipy.isCheckedAndApproved,
     } as Recipy;
     this.store.dispatch(new fromRecipiesActions.UpdateRecipyAction(updatedRecipy));
+  }
+
+  onAddAdminComment(){
+    this.dialogsService.openTextInputDialog('Коментар:').pipe(take(1)).subscribe(res => {
+      if(res && 'id' in this.recipy){
+        this.adminService.addAdminComment({recipyId: this.recipy.id, text: res}).pipe(take(1)).subscribe(res => {
+          console.log('comment added')
+        })
+      }
+    })
   }
 }

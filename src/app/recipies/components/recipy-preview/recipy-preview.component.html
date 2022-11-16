@@ -425,11 +425,15 @@
     <div class="photo-container" *ngIf="_clonedRecipy.photo">
       <app-image [imagePath]="_clonedRecipy.photo"></app-image>
     </div>
-    <div *ngIf="isUserAdmin">
+    <div *ngIf="isUserAdmin" class="margin-block-medium">
       <mat-checkbox
           [ngModel]="recipy.isCheckedAndApproved"
           (ngModelChange)="onisCheckedAndApprovedClicked()"
         >Рецепт перевірений на практиці</mat-checkbox>
+    </div>
+    <div *ngIf="isUserAdmin" class="margin-block-medium">
+      <button mat-flat-button
+      class="action-button" (click)="onAddAdminComment()">Додати коментар</button>
     </div>
   </div>
   <button

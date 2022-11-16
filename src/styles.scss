@@ -359,7 +359,6 @@ button.mat-menu-item {
   justify-content: space-between;
   width: 100%;
   align-items: center;
-  
 }
 
 .ingredient-name {
@@ -449,7 +448,7 @@ button.mat-menu-item {
     height: 80vh;
   }
 
-  .page-container{
+  .page-container {
     padding-top: 9vh;
   }
 }
@@ -476,4 +475,8 @@ button.mat-menu-item {
     color: var(--background-color) !important;
     font-weight: 500 !important;
   }
+}
+
+.margin-block-medium {
+  margin-block: 20px;
 }

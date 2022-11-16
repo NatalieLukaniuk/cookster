@@ -227,6 +227,9 @@
 
 .mobile-details-wrapper {
   padding: 10px;
+  & > div:last-of-type {
+    margin-bottom: 30px;
+  }
 }
 
 .add-ingredient-button {
