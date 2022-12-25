@@ -59,6 +59,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   isMobile$: Observable<boolean>;
 
+  isRecipiesAndProductsLoaded = false;
+
   @ViewChild('drawer')
   sidebar!: MatDrawer;
 
@@ -118,7 +120,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     let recipiesLoaded$ = this.store.pipe(select(getAllRecipies));
     combineLatest([productsLoaded$, recipiesLoaded$]).subscribe((res) => {
       if (res[0] && res[1].length) {
-        this.store.dispatch(new UiActions.SetIsLoadingFalseAction());
+        this.isRecipiesAndProductsLoaded = true;
       }
     });
   }
@@ -136,8 +138,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  ngOnInit(): void {
-    this.store.dispatch(new UiActions.SetIsLoadingAction());
+  ngOnInit(): void {    
     const url = window.location.pathname;
     this.authService.checkIsLoggedIn();
     this.recipiesService.productsUpdated$.subscribe(() =>
@@ -168,9 +169,10 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.store.pipe(select(getIsError)).subscribe((error) => {
       if (!!error) {
-        this._snackBar.open(error, 'Ok', {
+        this.store.dispatch(new UiActions.SetIsLoadingFalseAction())
+        this._snackBar.open(JSON.stringify(error), 'Ok', {
           duration: 3000,
-        });
+        });        
         this.store.dispatch(new UiActions.ResetErrorAction());
       }
     });

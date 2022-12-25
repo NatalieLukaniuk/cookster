@@ -1,9 +1,10 @@
+import { SetIsLoadingAction } from './../actions/ui.actions';
 import { RecipiesService } from 'src/app/recipies/services/recipies.service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Recipy } from 'src/app/recipies/models/recipy.interface';
 import { RecipiesApiService } from 'src/app/recipies/services/recipies-api.service';
 
@@ -11,6 +12,7 @@ import { RecipiesActionTypes } from '../actions/recipies.actions';
 import * as RecipiesActions from '../actions/recipies.actions';
 import * as UiActions from '../actions/ui.actions';
 import { ProductsApiService } from './../../recipies/services/products-api.service';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class RecipiesEffects {
@@ -49,6 +51,7 @@ export class RecipiesEffects {
             calorificValue: this.recService.countRecipyCalorificValue(action.recipy.ingrediends)
           }
         }
+        this.store.dispatch(new SetIsLoadingAction())
         return updated
       }),
       switchMap((action: RecipiesActions.AddNewRecipyAction) =>
@@ -77,6 +80,7 @@ export class RecipiesEffects {
     this.actions$.pipe(
       ofType(RecipiesActionTypes.UPDATE_RECIPY),
       map((action: RecipiesActions.UpdateRecipyAction) => {
+        this.store.dispatch(new SetIsLoadingAction())
         let updated = {
           ...action,
           recipy: {
@@ -88,7 +92,7 @@ export class RecipiesEffects {
       }),
       switchMap((action: RecipiesActions.UpdateRecipyAction) =>
         this.recipiesService.updateRecipy(action.recipy.id, action.recipy).pipe(
-          map((res: any) => new RecipiesActions.UpdateRecipySuccessAction(res)),
+          switchMap((res: any) => {return [new RecipiesActions.UpdateRecipySuccessAction(res), new UiActions.SetIsLoadingFalseAction()]}),
           catchError((error) => of(new UiActions.ErrorAction(error)))
         )
       )
@@ -98,12 +102,13 @@ export class RecipiesEffects {
   updateProduct$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RecipiesActionTypes.UPDATE_PRODUCT),
+      tap(() => this.store.dispatch(new UiActions.SetIsLoadingAction())),
       switchMap((action: RecipiesActions.UpdateProductAction) =>
         this.productsApiService
           .updateProduct(action.product.id, action.product)
           .pipe(
-            map(
-              (res: any) => new RecipiesActions.UpdateProductSuccessAction(res)
+            switchMap(
+              (res: any) => {return [new RecipiesActions.UpdateProductSuccessAction(res), new UiActions.SetIsLoadingFalseAction()]}
             ),
             catchError((error) => of(new UiActions.ErrorAction(error)))
           )
@@ -146,6 +151,7 @@ export class RecipiesEffects {
     private recipiesService: RecipiesApiService,
     private recService: RecipiesService,
     private router: Router,
-    private productsApiService: ProductsApiService
+    private productsApiService: ProductsApiService,
+    private store: Store
   ) {}
 }

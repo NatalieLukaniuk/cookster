@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { SharedModule } from '../shared/shared.module';
+import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 
 @NgModule({
   imports: [
@@ -10,7 +11,7 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule,
     FiltersModule
   ],
-  declarations: [HeaderComponent,],
-  exports: [HeaderComponent,]
+  declarations: [HeaderComponent, LoadingIndicatorComponent],
+  exports: [HeaderComponent, LoadingIndicatorComponent]
 })
 export class UiModule { }

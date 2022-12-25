@@ -1,3 +1,4 @@
+import { SetIsLoadingAction, SetIsLoadingFalseAction } from './../../../store/actions/ui.actions';
 import { AdminService } from './../../../admin/services/admin.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DatePipe, Location } from '@angular/common';
@@ -568,8 +569,9 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   onAddAdminComment(){
     this.dialogsService.openTextInputDialog('Коментар:').pipe(take(1)).subscribe(res => {
       if(res && 'id' in this.recipy){
+        this.store.dispatch(new SetIsLoadingAction())
         this.adminService.addAdminComment({recipyId: this.recipy.id, text: res}).pipe(take(1)).subscribe(res => {
-          console.log('comment added')
+          this.store.dispatch(new SetIsLoadingFalseAction())
         })
       }
     })

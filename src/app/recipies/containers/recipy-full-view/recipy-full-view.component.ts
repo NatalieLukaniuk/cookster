@@ -1,6 +1,8 @@
+import { SetIsLoadingAction, SetIsLoadingFalseAction } from './../../../store/actions/ui.actions';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/auth/services/user.service';
@@ -57,7 +59,8 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     private recipiesService: RecipiesService,
     public dialog: MatDialog,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {
     const path = window.location.pathname.split('/');
     this.recipyId = path[path.length - 1];
@@ -67,6 +70,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.store.dispatch(new SetIsLoadingAction())
     this.getRecipy(this.recipyId);
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       if (event instanceof NavigationEnd ){
@@ -88,6 +92,7 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .subscribe((recipy) => {
         this.recipy = recipy;
         recipy.id = recipyId;
+        this.store.dispatch(new SetIsLoadingFalseAction())
       });
   }
 

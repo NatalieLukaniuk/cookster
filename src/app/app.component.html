@@ -3,7 +3,7 @@
     <app-filters></app-filters>
   </mat-drawer>
   <mat-drawer-content>
-    <ng-container *ngIf="(isAuthCheckPerformed$ | async) && !(isLoading$ | async); else splash">
+    <ng-container *ngIf="(isAuthCheckPerformed$ | async) && isRecipiesAndProductsLoaded; else splash">
       <app-header></app-header>
       <section>
         <router-outlet></router-outlet>
@@ -40,6 +40,7 @@
     </ng-container>
   </mat-drawer-content>
 </mat-drawer-container>
+<app-loading-indicator *ngIf="isLoading$ | async"></app-loading-indicator>
 
 <ng-template #splash>
   <app-splash></app-splash>
