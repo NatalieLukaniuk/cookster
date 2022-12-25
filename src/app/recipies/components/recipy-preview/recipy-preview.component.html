@@ -30,6 +30,14 @@
             >
               Save Changes
             </button>
+            <button
+              mat-flat-button
+              class="action-button"
+              *ngIf="mode == AppMode.AddPreview"
+              (click)="onAddRecipy()"
+            >
+              Зберегти рецепт
+            </button>
           </div>
         </div>
         <div
@@ -303,14 +311,6 @@
         </div>
       </div>
     </div>
-    <button
-      mat-flat-button
-      class="action-button"
-      *ngIf="mode == AppMode.AddPreview"
-      (click)="onAddRecipy()"
-    >
-      Add recipy
-    </button>
   </div>
 </ng-container>
 
@@ -427,13 +427,19 @@
     </div>
     <div *ngIf="isUserAdmin" class="margin-block-medium">
       <mat-checkbox
-          [ngModel]="recipy.isCheckedAndApproved"
-          (ngModelChange)="onisCheckedAndApprovedClicked()"
-        >Рецепт перевірений на практиці</mat-checkbox>
+        [ngModel]="recipy.isCheckedAndApproved"
+        (ngModelChange)="onisCheckedAndApprovedClicked()"
+        >Рецепт перевірений на практиці</mat-checkbox
+      >
     </div>
     <div *ngIf="isUserAdmin" class="margin-block-medium">
-      <button mat-flat-button
-      class="action-button" (click)="onAddAdminComment()">Додати коментар</button>
+      <button
+        mat-flat-button
+        class="action-button"
+        (click)="onAddAdminComment()"
+      >
+        Додати коментар
+      </button>
     </div>
   </div>
   <button
