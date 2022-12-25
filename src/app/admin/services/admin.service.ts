@@ -1,3 +1,4 @@
+import { AdminCommentMapped } from './../containers/comments-to-recipies/comments-to-recipies.component';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -21,5 +22,9 @@ export class AdminService {
 
   getAdminComments(): Observable<AdminComment[]> {
     return this.http.get<AdminComment[]>(`${this.url}.json`);
+  }
+
+  deleteComment(comment: AdminCommentMapped): Observable<any> {
+    return this.http.delete<any>(`${this.url}/${comment.commentId}.json`)
   }
 }

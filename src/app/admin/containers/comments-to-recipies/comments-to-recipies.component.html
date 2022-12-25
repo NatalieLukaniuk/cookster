@@ -2,5 +2,13 @@
   <div class="admin-header">
     <h2>Comments</h2>
   </div>
+
+  <div *ngFor="let comment of comments" class="row">
+    <div>{{comment.recipyName}}</div>
+    <div>{{comment.text}}</div>
+    <button mat-icon-button (click)="deleteComment(comment)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
   
 </div>
