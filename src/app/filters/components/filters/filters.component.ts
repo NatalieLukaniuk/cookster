@@ -31,7 +31,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.recipiesService.products$.subscribe((products: Product[]) => {
-      this.products = products;
+      this.products = products.sort((a,b) => (a.name.localeCompare(b.name)));
     });
   }
 
