@@ -25,14 +25,19 @@ export class HeaderComponent implements OnDestroy {
   currentRoute$: Observable<string>;
 
   Role = Role;
-  constructor(private router: Router, private layoutService: LayoutService, private authService: AuthService, private store: Store<IAppState>) {
+  constructor(
+    private router: Router,
+    private layoutService: LayoutService,
+    private authService: AuthService,
+    private store: Store<IAppState>
+  ) {
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((bool) => this.isMobile = bool);
-      this.isLoggedIn$ = this.authService.isLoggedIn;
-      this.currentUser$ = this.store.pipe(select(getCurrentUser));
-      
-      this.currentRoute$ = this.store.pipe(select(getCurrentRoute))
+      .subscribe((bool) => (this.isMobile = bool));
+    this.isLoggedIn$ = this.authService.isLoggedIn;
+    this.currentUser$ = this.store.pipe(select(getCurrentUser));
+
+    this.currentRoute$ = this.store.pipe(select(getCurrentRoute));
   }
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -46,11 +51,15 @@ export class HeaderComponent implements OnDestroy {
     this.router.navigate(['admin-panel']);
   }
 
-  logout(){
-    this.authService.logoutUser()
+  logout() {
+    this.authService.logoutUser();
   }
 
-  onOpenFilters(){
-    this.store.dispatch(new UiActions.SetIsSidebarOpenAction(true))
+  onOpenFilters() {
+    this.store.dispatch(new UiActions.SetIsSidebarOpenAction(true));
+  }
+
+  onSearch(event: string) {
+    console.log(event);
   }
 }
