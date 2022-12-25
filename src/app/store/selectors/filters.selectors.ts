@@ -9,6 +9,7 @@ export const getFilters = createSelector(getFiltersState, (state: FiltersState) 
         ingredientsToInclude: state.ingredientsToInclude,
         ingredientsToExclude: state.ingredientsToExclude,
         tags: state.tags,
-        maxPrepTime: state.maxPrepTime
+        maxPrepTime: state.maxPrepTime,
+        search: state.search
     }
 })

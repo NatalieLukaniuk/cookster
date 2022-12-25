@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { IAppState } from 'src/app/store/reducers';
 
 import * as UiActions from '../../../store/actions/ui.actions';
+import * as FiltersActions from '../../../store/actions/filters.actions';
 import { LayoutService } from '../../../shared/services/layout.service';
 import { getCurrentRoute } from '../../../store/selectors/ui.selectors';
 import { getCurrentUser } from '../../../store/selectors/user.selectors';
@@ -60,6 +61,6 @@ export class HeaderComponent implements OnDestroy {
   }
 
   onSearch(event: string) {
-    console.log(event);
+    this.store.dispatch(new FiltersActions.SetSearchWordAction(event))
   }
 }

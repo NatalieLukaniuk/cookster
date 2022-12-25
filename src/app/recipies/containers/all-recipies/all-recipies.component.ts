@@ -103,6 +103,9 @@ export class AllRecipiesComponent implements OnInit, OnDestroy {
             return prepTime <= maxTime;
           });
         }
+        if(filters.search.length){
+          _recipies = _recipies.filter((recipy) => recipy.name.includes(filters.search))
+        }
         this.allRecipies = _recipies;
         this.recipies.filteredRecipies = this.allRecipies.length;
       }

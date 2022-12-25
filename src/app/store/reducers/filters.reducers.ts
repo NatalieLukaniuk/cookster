@@ -4,18 +4,27 @@ export interface FiltersState {
     ingredientsToInclude: string[],
     ingredientsToExclude: string[],
     tags: number[],
-    maxPrepTime: number
+    maxPrepTime: number,
+    search: string
 }
 
 export const InitialFiltersState: FiltersState = {
     ingredientsToInclude: [],
     ingredientsToExclude: [],
     tags: [],
-    maxPrepTime: 0
+    maxPrepTime: 0,
+    search: ''
 }
 
 export function FiltersReducers(state: FiltersState = InitialFiltersState, action: FiltersActions): FiltersState {
     switch (action.type) {
+        case FiltersActionTypes.SET_SEARCH_WORD: {
+            return {
+                ...state,
+                search: action.word
+            }
+        }
+
         case FiltersActionTypes.TOGGLE_INGREDIENT_TO_INCLUDE: {
             return {
                 ...state,
