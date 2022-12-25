@@ -18,4 +18,8 @@ export class AdminService {
   addAdminComment(comment: AdminComment): Observable<any> {
     return this.http.post<any>(`${this.url}.json`, comment);
   }
+
+  getAdminComments(): Observable<AdminComment[]> {
+    return this.http.get<AdminComment[]>(`${this.url}.json`);
+  }
 }

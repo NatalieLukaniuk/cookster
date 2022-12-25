@@ -15,6 +15,7 @@
       <app-recipies-admin *ngIf="activePath === 'recipies'" [recipies]="recipies"></app-recipies-admin>
       <app-products-admin *ngIf="activePath === 'products'" [products]="products"></app-products-admin>
       <app-update-products *ngIf="activePath === 'update-products'" [products]="products" [recipies]="recipies"></app-update-products>
+      <app-comments-to-recipies *ngIf="activePath === 'recipies-comments'"></app-comments-to-recipies>
     </div>
   </mat-drawer-content>
 </mat-drawer-container>

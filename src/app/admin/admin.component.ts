@@ -1,6 +1,9 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import {
+  MatTreeFlatDataSource,
+  MatTreeFlattener,
+} from '@angular/material/tree';
 import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -62,18 +65,21 @@ export class AdminComponent implements OnInit, OnDestroy {
       { name: 'Recipies', path: `recipies` },
       { name: 'Products', path: 'products' },
       { name: 'Update Products', path: 'update-products' },
+      { name: 'Comments to Recipies', path: 'recipies-comments' },
     ];
 
     this.dataSource.data = TREE_DATA;
   }
   ngOnDestroy(): void {
-    this.destroyed$.complete()
+    this.destroyed$.complete();
   }
 
   ngOnInit() {
-    this.store.pipe(select(getAllRecipies), takeUntil(this.destroyed$)).subscribe(res => this.recipies = res)
+    this.store
+      .pipe(select(getAllRecipies), takeUntil(this.destroyed$))
+      .subscribe((res) => (this.recipies = res));
     this.recipiesService.products$.subscribe((products: Product[]) => {
       this.products = products;
-    })
+    });
   }
 }

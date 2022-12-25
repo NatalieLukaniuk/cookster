@@ -1,3 +1,4 @@
+import { CommentsToRecipiesComponent } from './containers/comments-to-recipies/comments-to-recipies.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +17,6 @@ import { UpdateProductsComponent } from './containers/update-products/update-pro
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [AdminComponent, RecipiesAdminComponent, ProductsAdminComponent, UpdateProductsComponent, UpdateGramsInItemComponent]
+  declarations: [AdminComponent, RecipiesAdminComponent, ProductsAdminComponent, UpdateProductsComponent, UpdateGramsInItemComponent, CommentsToRecipiesComponent]
 })
 export class AdminModule { }
