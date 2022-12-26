@@ -40,6 +40,10 @@ import { NewRecipy, Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
 import { getPreviousRoute } from './../../../store/selectors/ui.selectors';
 
+export interface FullRecipyQueryParams {
+  portions?: number;
+  amountPerportion?: number;
+}
 @Component({
   selector: 'app-recipy-preview',
   templateUrl: './recipy-preview.component.html',
@@ -126,22 +130,20 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
           this.currentUser = user;
         }
       });
+
+      this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((res) => {
+        if(res && res.portions){
+          this.portionsToServe = res.portions
+        }
+        if(res && res.amountPerportion){
+          this.portionSize = res.amountPerportion
+        }
+      });
     this.initRecipy();
     this.getCoeficient();
   }
 
   initRecipy() {
-    let navigationData = this.location.getState() as {
-      portions?: number;
-      amountPerportion?: number;
-    };
-    if (!!navigationData.portions) {
-      this.portionsToServe = navigationData.portions;
-    }
-
-    if (!!navigationData.amountPerportion) {
-      this.portionSize = navigationData.amountPerportion;
-    }
 
     if (this.portions) {
       this.portionsToServe = this.portions;
@@ -153,7 +155,7 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
     this._clonedRecipy = _.cloneDeep(this.recipy);
     if (
       !!this._clonedRecipy.ingrediends.length &&
-      !navigationData.portions &&
+      !this.portionsToServe &&
       !this.portions
     ) {
       this.portionsToServe = this.savedPortionsServed;

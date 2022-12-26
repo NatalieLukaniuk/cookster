@@ -10,7 +10,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Event, NavigationEnd, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { throws } from 'assert';
 import { initializeApp } from 'firebase/app';
 import { Observable, combineLatest } from 'rxjs';
 import { map, tap, filter } from 'rxjs/operators';
@@ -36,7 +35,7 @@ export enum MainTabs {
   Calendar = 'calendar',
   ShoppingList = 'shopping-list',
   Preps = 'prep-lists',
-  CalendarByDay = 'calendar-by-day'
+  CalendarByDay = 'calendar-by-day',
 }
 @UntilDestroy()
 @Component({
@@ -69,7 +68,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   currentRoute: string = '';
   routerEvents$: Observable<Event>;
   currentUser$: Observable<User | null>;
-  isLoading$: Observable<boolean>
+  isLoading$: Observable<boolean>;
 
   constructor(
     private iconRegistry: MatIconRegistry,
@@ -138,8 +137,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  ngOnInit(): void {    
+  ngOnInit(): void {
     const url = window.location.pathname;
+    const queryParams = window.location.search;
     this.authService.checkIsLoggedIn();
     this.recipiesService.productsUpdated$.subscribe(() =>
       this.recipiesService.getAllProducts()
@@ -159,7 +159,12 @@ export class AppComponent implements OnInit, AfterViewInit {
         if (isLoggedIn) {
           this.recipiesService.getAllProducts();
           this.userService.getAllUsers();
-          this.router.navigate([url]);
+          if (queryParams) {
+            let parsedParams = this.parseQueryParams(queryParams)
+            this.router.navigate([url], {queryParams: parsedParams});
+          } else {
+            this.router.navigate([url]);
+          }
         } else {
           this.router.navigate(['login']);
         }
@@ -169,10 +174,10 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.store.pipe(select(getIsError)).subscribe((error) => {
       if (!!error) {
-        this.store.dispatch(new UiActions.SetIsLoadingFalseAction())
+        this.store.dispatch(new UiActions.SetIsLoadingFalseAction());
         this._snackBar.open(JSON.stringify(error), 'Ok', {
           duration: 3000,
-        });        
+        });
         this.store.dispatch(new UiActions.ResetErrorAction());
       }
     });
@@ -184,6 +189,25 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.store.dispatch(new UiActions.DismissSuccessMessageAction());
       }
     });
+  }
+
+  parseQueryParams(value: string) {
+    let split = value.split('&');
+    let params = {
+      portions: 1,
+      amountPerportion: 250,
+    };
+    split.forEach((item) => {
+      if (item.includes('portions')) {
+        let splitted = item.split('=');
+        params.portions = +splitted[1];
+      }
+      if (item.includes('amountPerportion')) {
+        let splitted = item.split('=');
+        params.amountPerportion = +splitted[1];
+      }
+    });
+    return params;
   }
 
   addIcons() {

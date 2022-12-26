@@ -80,6 +80,10 @@ export class CalendarRecipyComponent implements OnInit {
             portions: this.recipy.portions,
             amountPerportion: this.recipy.amountPerPortion,
           },
+          queryParams: {
+            portions: this.recipy.portions,
+            amountPerportion: this.recipy.amountPerPortion,
+          }
         }
       );
     } else {

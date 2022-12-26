@@ -1,4 +1,7 @@
-import { SetIsLoadingAction, SetIsLoadingFalseAction } from './../../../store/actions/ui.actions';
+import {
+  SetIsLoadingAction,
+  SetIsLoadingFalseAction,
+} from './../../../store/actions/ui.actions';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
@@ -29,13 +32,12 @@ export interface StepsByGroup extends Record<string, any> {
 }
 
 export class ingredientsByGroup implements IngredientsByGroup {
-  main: Ingredient[] = []
-  decoration: Ingredient[] = []
-  dough: Ingredient[] = []
-  souce: Ingredient[] = []
-  filling: Ingredient[] = []
-  constructor() { }
-};
+  main: Ingredient[] = [];
+  decoration: Ingredient[] = [];
+  dough: Ingredient[] = [];
+  souce: Ingredient[] = [];
+  filling: Ingredient[] = [];
+}
 
 export class stepsByGroup implements StepsByGroup {
   main: PreparationStep[] = [];
@@ -43,8 +45,8 @@ export class stepsByGroup implements StepsByGroup {
   souce: PreparationStep[] = [];
   dough: PreparationStep[] = [];
   decoration: PreparationStep[] = [];
-  constructor(){}
 }
+
 @Component({
   selector: 'app-recipy-full-view',
   templateUrl: './recipy-full-view.component.html',
@@ -70,18 +72,18 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch(new SetIsLoadingAction())
+    this.store.dispatch(new SetIsLoadingAction());
     this.getRecipy(this.recipyId);
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
-      if (event instanceof NavigationEnd ){
+      if (event instanceof NavigationEnd) {
         let splitUrl = event.url.split('/');
         let newId = splitUrl[splitUrl.length - 1];
-        if(newId !== this.recipyId){
+        if (newId !== this.recipyId) {
           this.recipyId = newId;
-          this.getRecipy(this.recipyId)
+          this.getRecipy(this.recipyId);
         }
       }
-    })
+    });
   }
 
   getRecipy(recipyId: string) {
@@ -92,10 +94,9 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
       .subscribe((recipy) => {
         this.recipy = recipy;
         recipy.id = recipyId;
-        this.store.dispatch(new SetIsLoadingFalseAction())
+        this.store.dispatch(new SetIsLoadingFalseAction());
       });
   }
-
 
   getMode() {
     let mode: string = '';
@@ -111,5 +112,3 @@ export class RecipyFullViewComponent implements OnInit, OnDestroy {
     return mode;
   }
 }
-
-
