@@ -296,7 +296,8 @@ export class RecipyPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
   onMatToggleChange(event: any) {
     if (event.value === 'back') {
-      this.goBack();
+      // this.goBack();
+      this.router.navigate(['calendar-by-day'])
     } else {
       this.currentTab = event.value;
     }
