@@ -1,3 +1,4 @@
+import { NormalizeDisplayedAmountPipe } from './pipes/normalize-displayed-amount.pipe';
 import { FiltersModule } from './../filters/filters.module';
 import { UiModule } from './../ui/ui.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -22,6 +23,7 @@ import { AllRecipiesComponent } from './containers/all-recipies/all-recipies.com
 import { EditRecipyComponent } from './containers/edit-recipy/edit-recipy.component';
 import { RecipyFullViewComponent } from './containers/recipy-full-view/recipy-full-view.component';
 import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.component';
+import { ConvertToSelectedUnitPipe } from './pipes/convert-to-selected-unit.pipe';
 
 @NgModule({
   imports: [
@@ -49,11 +51,13 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     AddTagsComponent,
     RecipyPreviewComponent,
     EditRecipyComponent,
+    ConvertToSelectedUnitPipe, NormalizeDisplayedAmountPipe
   ],
   exports: [
     IngredientComponent,
     RecipyShortViewComponent,
     RecipyPreviewComponent,
   ],
+  providers: [NormalizeDisplayedAmountPipe]
 })
 export class RecipiesModule {}

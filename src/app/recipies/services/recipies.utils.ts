@@ -221,6 +221,81 @@ export function convertAmountToSelectedUnit( // todo this shall become deprecate
   }
 }
 
+export function convertAmountToSelectedUnitRefactored( 
+amountInGr: number,  
+unit: MeasuringUnit,
+  ingredientId: string,
+  allProducts: Product[]
+) {
+  if (unit == MeasuringUnit.gr) {
+    return amountInGr;
+  } else {
+    let amount = 0;
+    switch (unit) {
+      case MeasuringUnit.kg:
+        amount = grToKg(amountInGr);
+        break;
+      case MeasuringUnit.l:
+        amount = grToLiter(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.ml:
+        amount = grToMl(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.tableSpoon:
+        amount = grToTableSpoons(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.dessertSpoon:
+        amount = grToDessertSpoons(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.teaSpoon:
+        amount = grToTeaSpoons(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.coffeeSpoon:
+        amount = grToCoffeeSpoons(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.pinch:
+        amount = grToPinch(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.bunch:
+        amount = grToBunch(amountInGr);
+        break;
+      case MeasuringUnit.item:
+        amount = grToItems(
+          amountInGr,
+          getGrPerItem(ingredientId, allProducts)
+        );
+        break;
+      case MeasuringUnit.cup:
+        amount = grToGlass(
+          amountInGr,
+          getDensity(ingredientId, allProducts)
+        );
+    }
+    return amount;
+  }
+}
+
 export function getAmountInSelectedUnit(
   selectedUnit: MeasuringUnit,
   ingredientId: string,
