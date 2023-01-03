@@ -1,0 +1,31 @@
+<div class="prep-lists-container" *ngIf="prepListItems.length; else noPreps">
+  <div *ngIf="hasIncomplete()">
+    <ng-container *ngFor="let suggestion of prepListItems">
+      <div class="list-item" *ngIf="!suggestion.done" [class.timePassed]="isTimePassed(suggestion)">
+        <app-suggestion
+        [enableTimePicker]="true"
+          [suggestion]="suggestion"
+          (click)="onClickSuggestion(suggestion)"
+        ></app-suggestion>
+      </div>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="hasDoneItems()">
+    <h3>Завершені</h3>
+    <div *ngIf="hasDoneItems()"></div>
+    <ng-container *ngFor="let suggestion of prepListItems">
+      <div class="list-item" *ngIf="suggestion.done">
+        <app-suggestion
+          [suggestion]="suggestion"
+          (click)="onClickSuggestion(suggestion)"
+        ></app-suggestion>
+      </div>
+    </ng-container>
+    <button mat-flat-button class="action-button" (click)="saveChanges()">
+      Видалити завершені
+    </button>
+  </ng-container>
+</div>
+
+<ng-template #noPreps>На сьогодні планів немає</ng-template>

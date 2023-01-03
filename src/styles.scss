@@ -1,6 +1,6 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use "~@angular/material" as mat;
+@use "@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -49,17 +49,29 @@ body {
 }
 
 :root {
-  --primary: hsla(57, 100%, 73%, 1);
-  --background-color: hsla(57, 100%, 98%, 1);
-  --text-color: hsla(57, 100%, 10%, 1);
-  --tint1: hsla(57, 100%, 93%, 1);
-  --tint2: hsla(57, 100%, 83%, 1);
-  --tint3: hsla(57, 100%, 63%, 1);
-  --tint4: hsla(57, 100%, 53%, 1);
-  --tint5: hsla(57, 100%, 43%, 1);
-  --tint6: hsla(57, 100%, 33%, 1);
-  --tint7: hsla(57, 100%, 23%, 1);
-  --tint7: hsla(57, 100%, 13%, 1);
+  --primary: hsla(105, 100%, 25%, 1);
+  --background-color: hsla(105, 100%, 98%, 1);
+  --background-color-semi-transparent: hsla(105, 100%, 98%, 0.8);
+  --background-color-gradient: linear-gradient(
+    90deg,
+    rgba(247, 255, 245, 0) 0%,
+    rgba(247, 255, 245, 0.75) 10%,
+    rgba(247, 255, 245, 0.85) 20%,
+    rgba(247, 255, 245, 0.85) 80%,
+    rgba(247, 255, 245, 0.75) 90%,
+    rgba(247, 255, 245, 0) 100%
+  );
+  --text-color: hsla(105, 100%, 10%, 1);
+  --tint-very-light: hsla(105, 100%, 95%, 0.5);
+  --tint1: hsla(105, 100%, 90%, 1);
+  --tint2: hsla(105, 70%, 80%, 1);
+  --tint3: hsla(105, 70%, 70%, 1);
+  --tint4: hsla(105, 70%, 60%, 1);
+  --tint5: hsla(105, 70%, 50%, 1);
+  --tint6: hsla(105, 70%, 40%, 1);
+  --tint7: hsla(105, 70%, 30%, 1);
+  --tint7: hsla(105, 100%, 20%, 1);
+  --gray: hsla(105, 0%, 90%, 1);
 }
 
 .full-recipy-dialog {
@@ -94,7 +106,7 @@ h3 {
 }
 
 button.action-button {
-  background-color: var(--primary);
+  background-color: var(--tint1);
   color: var(--text-color);
   font-family: "Montserrat", sans-serif;
   &:not(:disabled) {
@@ -103,7 +115,7 @@ button.action-button {
 }
 
 button.secondary-button {
-  background-color: var(--background-color);
+  background-color: transparent;
   color: var(--text-color);
   font-family: "Montserrat", sans-serif;
   &:not(:disabled) {
@@ -112,7 +124,7 @@ button.secondary-button {
 }
 
 select.inline-select {
-  background-color: var(--background-color);
+  background-color: transparent;
   border: none;
   color: var(--text-color);
   font-weight: 700;
@@ -121,13 +133,14 @@ select.inline-select {
 
 .mat-chip.mat-standard-chip {
   border-radius: 4px;
-  min-height: 21px;
+  min-height: 18px;
   font-size: 10px;
   color: var(--text-color);
   height: auto;
-  padding: 5px 13px 7px;
+  padding: 2px 13px 3px;
   background-color: var(--tint1);
   border: 1px solid var(--tint2);
+  margin: 2px !important;
 }
 
 // ----- Mat-menu --- //
@@ -182,6 +195,7 @@ button.mat-menu-item {
 // ---- Admin-panel
 
 .admin-panel {
+  min-height: 70vh;
   .admin-header {
     display: flex;
     justify-content: space-between;
@@ -228,7 +242,7 @@ button.mat-menu-item {
 
     .table-actions,
     .table-id {
-      width: 9%;
+      min-width: 80px;
     }
   }
 
@@ -297,6 +311,24 @@ button.mat-menu-item {
   padding: 0.5em 0 1em 0;
 }
 
+.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent
+  .mat-ripple-element,
+.mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent
+  .mat-ripple-element {
+  background: var(--primary);
+}
+
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background: var(--primary);
+}
+
+.edit-input {
+  border-bottom: 1px solid var(--text-color) !important;
+  max-width: 50px !important;
+  text-align: right !important;
+}
+
 // --- Auth-forms
 
 .auth-form-wrapper {
@@ -330,12 +362,14 @@ button.mat-menu-item {
 }
 
 .ingredient-name {
-  width: 70%;
+  flex-grow: 1;
 }
 
 .ingredient-amount {
   text-align: end;
-  width: 30%;
+  width: max-content;
+  display: flex;
+  align-items: center;
 }
 
 // --- Buttons
@@ -360,9 +394,89 @@ button.mat-menu-item {
   }
 }
 
+.info-icon {
+  font-size: 16px;
+  color: var(--tint3);
+}
+
+// --- Stepper
+
+.mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done,
+.mat-step-header .mat-step-icon-state-edit {
+  background-color: var(--primary);
+}
+
+.mat-drawer-container {
+  height: 100%;
+}
+
+// --- Slider
+
+.mat-slider.mat-accent .mat-slider-track-fill,
+.mat-slider.mat-accent .mat-slider-thumb,
+.mat-slider.mat-accent .mat-slider-thumb-label {
+  background-color: var(--primary);
+}
+
+//-- checkbox
+
+.mat-primary .mat-pseudo-checkbox-checked,
+.mat-primary .mat-pseudo-checkbox-indeterminate {
+  background-color: var(--primary);
+}
+
 @media (max-width: 600px) {
   html,
   body {
     font-size: 14px;
   }
+
+  .mat-chip-list-wrapper {
+    justify-content: space-between;
+  }
+
+  .mat-chip.mat-standard-chip {
+    border-radius: 2px;
+    flex-grow: 1;
+    min-height: 30px;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  .recipies-bottomsheet .mat-bottom-sheet-container {
+    height: 80vh;
+  }
+
+  .page-container {
+    padding-top: 9vh;
+  }
+}
+
+.mat-button-toggle-group {
+  position: fixed !important;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--background-color);
+  z-index: 10;
+}
+
+.mat-button-toggle {
+  height: 98%;
+  display: flex;
+  font-family: "Montserrat", sans-serif;
+  flex-grow: 1;
+  &.mat-button-toggle-checked {
+    background-color: var(--primary);
+    border-radius: 2px;
+    color: var(--background-color) !important;
+    font-weight: 500 !important;
+  }
+}
+
+.margin-block-medium {
+  margin-block: 20px;
 }

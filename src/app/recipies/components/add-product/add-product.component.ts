@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { MeasuringUnit, MeasuringUnitOptions } from '../../models/measuring-units.enum';
@@ -12,17 +12,17 @@ import { MeasuringUnitText } from './../../models/measuring-units.enum';
   styleUrls: ['./add-product.component.scss'],
 })
 export class AddProductComponent implements OnInit {
-  productForm!: FormGroup;
+  productForm!: UntypedFormGroup;
   constructor(public dialogRef: MatDialogRef<AddProductComponent>) {}
 
   ngOnInit(): void {
-    this.productForm = new FormGroup({
-      name: new FormControl('', Validators.required),
-      density: new FormControl(''),
-      grInOneItem: new FormControl(''),
-      calories: new FormControl(''),
-      defaultUnit: new FormControl(''),
-      type: new FormControl(''),
+    this.productForm = new UntypedFormGroup({
+      name: new UntypedFormControl('', Validators.required),
+      density: new UntypedFormControl(''),
+      grInOneItem: new UntypedFormControl(''),
+      calories: new UntypedFormControl(''),
+      defaultUnit: new UntypedFormControl(''),
+      type: new UntypedFormControl(''),
     });
   }
 

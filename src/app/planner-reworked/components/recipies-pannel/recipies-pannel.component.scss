@@ -1,0 +1,73 @@
+.user-recipies-wrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  height: fit-content;
+  &.cdk-drop-list-dragging .recipy:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+.recipy {
+  width: 30%;
+  position: relative;
+  min-width: 250px;
+  max-width: 300px;
+  margin: 1vw;
+}
+
+.cdk-drag-preview {
+  opacity: 0;
+}
+
+.recipy-placeholder {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: var(--tint3);
+  border: solid 1px var(--tint5);
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-height: 60vh; //todo height is messed up and not responsive
+}
+
+.recipy-preview {
+  min-width: 490px;
+  max-height: 55vh; //todo height is messed up and not responsive
+  overflow-y: auto;
+}
+
+.all-recipies {
+  max-height: 55vh; //todo height is messed up and not responsive
+  overflow-y: auto;
+}
+.recipies {
+  display: flex;
+}
+
+.close-preview-btn {
+  right: 10px;
+  background: var(--background-color);
+  padding-inline: 10px;
+  min-width: 40px;
+  position: absolute;
+}
+
+.menu-button {
+  min-width: max-content;
+  height: fit-content;
+  margin-right: 15px;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+}
+
+.collection-selector {
+  margin-inline: 15px;
+  font-size: 14px;
+  margin-top: 5px;
+}

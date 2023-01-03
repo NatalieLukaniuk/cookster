@@ -1,0 +1,62 @@
+.suggestions-list-item {
+  display: flex;
+  align-items: center;
+  & > div:first-child {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+}
+
+.content-wrapper {
+  border-bottom: 1px solid var(--tint2);
+  padding-block: 5px;
+  & > div {
+    display: flex;
+    font-size: 13px;
+    &:not(.time-section) {
+      justify-content: space-between;
+    }
+  }
+
+  .suggestions-list-item-ingredient {
+    font-weight: 600;
+    flex-direction: column;
+
+    &.addMode {
+      border: 1px solid;
+      padding-block: 12px;
+    }
+    .ingredient{
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  .suggestions-list-item-details {
+    font-size: 10px;
+    opacity: 0.4;
+  }
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: var(--tint3);
+  border: solid 1px var(--tint5);
+}
+
+.timepicker-icon {
+  font-size: 16px;
+}
+
+.delete-btn {
+  margin-left: 15px;
+  font-size: 18px;
+  display: none;
+  cursor: pointer;
+}
+.suggestions-list-item:hover {
+  .delete-btn {
+    display: block;
+  }
+}

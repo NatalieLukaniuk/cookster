@@ -1,0 +1,471 @@
+<ng-container *ngIf="_clonedRecipy && !isMobile">
+  <div class="full-recipy-wrapper">
+    <div class="recipy-body" [class.column]="mode == AppMode.Scenarios">
+      <div class="recipy-details">
+        <div class="recipy-name-wrapper">
+          <h1 *ngIf="mode !== AppMode.EditRecipy && mode !== AppMode.Scenarios">
+            {{ _clonedRecipy.name }}
+          </h1>
+          <input
+            matInput
+            class="input-edit"
+            *ngIf="mode == AppMode.EditRecipy"
+            [(ngModel)]="_clonedRecipy.name"
+            (ngModelChange)="isChangesSaved = false"
+          />
+          <div class="recipy-action-buttons">
+            <button
+              *ngIf="mode == AppMode.ViewRecipy"
+              mat-icon-button
+              (click)="mode == AppMode.ViewRecipy ? onEditRecipy() : other()"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-flat-button
+              class="action-button"
+              *ngIf="mode == AppMode.EditRecipy"
+              (click)="saveUpdatedRecipy()"
+              [disabled]="isChangesSaved"
+            >
+              Save Changes
+            </button>
+            <button
+              mat-flat-button
+              class="action-button"
+              *ngIf="mode == AppMode.AddPreview"
+              (click)="onAddRecipy()"
+            >
+              Зберегти рецепт
+            </button>
+          </div>
+        </div>
+        <div
+          class="ingredients-wrapper"
+          *ngIf="portionsToServe && !!_clonedRecipy.ingrediends"
+        >
+          <h3 *ngIf="portionsToServe && mode !== AppMode.EditRecipy">
+            Інгридієнти на
+            <select
+              class="inline-select"
+              [(ngModel)]="portionsToServe"
+              (ngModelChange)="onPortionsNumberChanged()"
+            >
+              <option *ngFor="let option of portionsOptions">
+                {{ option }}
+              </option>
+            </select>
+            {{ portionsText }}
+          </h3>
+          <h3
+            class="portion-size-selection"
+            *ngIf="portionsToServe && mode !== AppMode.EditRecipy"
+          >
+            Розмір порції
+            <input
+              matInput
+              [(ngModel)]="portionSize"
+              (ngModelChange)="onportionSizeChanged()"
+            />
+            гр.
+          </h3>
+          <div class="ingredients-table" *ngIf="!isSplitToGroups">
+            <ng-container
+              *ngTemplateOutlet="
+                mode == AppMode.Scenarios
+                  ? ingredientTemplateDraggable
+                  : ingredientTemplate
+              "
+            ></ng-container>
+            <ng-template #ingredientTemplate>
+              <app-ingredient
+                (ingredientChanged)="onIngredientChanged($event)"
+                (deleteIngredient)="onDeleteIngredient($event)"
+                *ngFor="
+                  let ingredient of _clonedRecipy.ingrediends;
+                  let i = index
+                "
+                [ingredient]="ingredient"
+                [mode]="mode"
+                [coeficientOfAmount]="coeficient"
+                [isMobile]="isMobile"
+              ></app-ingredient>
+            </ng-template>
+            <ng-template #ingredientTemplateDraggable>
+              <div cdkDropList>
+                <app-ingredient
+                  cdkDrag
+                  [cdkDragData]="{ ingredient: ingredient, coef: coeficient }"
+                  (ingredientChanged)="onIngredientChanged($event)"
+                  (deleteIngredient)="onDeleteIngredient($event)"
+                  *ngFor="
+                    let ingredient of _clonedRecipy.ingrediends;
+                    let i = index
+                  "
+                  [ingredient]="ingredient"
+                  [mode]="mode"
+                  [coeficientOfAmount]="coeficient"
+                  [isMobile]="isMobile"
+                ></app-ingredient>
+              </div>
+            </ng-template>
+          </div>
+          <ng-container *ngIf="isSplitToGroups">
+            <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
+              <ng-container *ngIf="item.value.length > 0">
+                <h4>{{ item.key }}</h4>
+                <app-ingredient
+                  (ingredientChanged)="onIngredientChanged($event)"
+                  (deleteIngredient)="onDeleteIngredient($event)"
+                  [mode]="mode"
+                  [coeficientOfAmount]="coeficient"
+                  *ngFor="let ingredient of item.value; let i = index"
+                  [ingredient]="ingredient"
+                  [isMobile]="isMobile"
+                ></app-ingredient>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+          <button
+            mat-flat-button
+            class="action-button add-ingredient-button"
+            *ngIf="mode == AppMode.EditRecipy && !isAddIngredientFormShown"
+            (click)="isAddIngredientFormShown = true"
+          >
+            Add Ingredient
+          </button>
+          <app-add-ingredient
+            [isIngredientsSplitToGroups]="
+              _clonedRecipy.isSplitIntoGroups &&
+              !!_clonedRecipy.isSplitIntoGroups.length
+            "
+            (addNewIngredient)="onaAddNewIngredient($event)"
+            *ngIf="isAddIngredientFormShown"
+          ></app-add-ingredient>
+        </div>
+
+        <div class="preparation-wrapper" *ngIf="!!_clonedRecipy.steps">
+          <h3>Приготування</h3>
+          <ng-container *ngIf="mode !== AppMode.EditRecipy">
+            <div class="steps-table">
+              <div
+                *ngTemplateOutlet="
+                  mode == AppMode.Scenarios
+                    ? stepTemplateDraggable
+                    : stepTemplate
+                "
+              ></div>
+              <ng-template #stepTemplate>
+                <div
+                  class="steps-row"
+                  *ngFor="let step of _clonedRecipy.steps; let i = index"
+                >
+                  <div>{{ i + 1 }}. {{ step.description }}</div>
+                  <div class="time-cell" style="display: none">
+                    {{ getTotalStepTime(step) | normalizeTime }}
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template #stepTemplateDraggable>
+                <div cdkDropList>
+                  <div
+                    cdkDrag
+                    class="steps-row"
+                    *ngFor="let step of _clonedRecipy.steps; let i = index"
+                  >
+                    <div>{{ i + 1 }}. {{ step.description }}</div>
+                    <div class="time-cell" style="display: none">
+                      {{ getTotalStepTime(step) | normalizeTime }}
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="mode == AppMode.EditRecipy">
+            <mat-list
+              class="steps-table"
+              cdkDropList
+              (cdkDropListDropped)="drop($event)"
+            >
+              <mat-list-item
+                cdkDrag
+                class="steps-row"
+                *ngFor="let step of _clonedRecipy.steps; let i = index"
+              >
+                <div class="step-description">
+                  <mat-form-field>
+                    <textarea
+                      matInput
+                      resize="vertical"
+                      rows="3"
+                      [(ngModel)]="step.description"
+                      (ngModelChange)="onStepDescriptionEdited(step)"
+                    >
+                    </textarea>
+                  </mat-form-field>
+                </div>
+                <div>
+                  <input
+                    class="edit-input"
+                    matInput
+                    [(ngModel)]="step.timeActive"
+                    (ngModelChange)="onStepDescriptionEdited(step)"
+                  />хв
+                </div>
+                <div>
+                  <input
+                    class="edit-input"
+                    matInput
+                    [(ngModel)]="step.timePassive"
+                    (ngModelChange)="onStepDescriptionEdited(step)"
+                  />хв
+                </div>
+                <button mat-icon-button (click)="onDeleteStep(step)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
+
+            <button
+              mat-flat-button
+              class="action-button add-ingredient-button"
+              *ngIf="!isAddStepFormShown"
+              (click)="isAddStepFormShown = true"
+            >
+              Add Step
+            </button>
+            <app-add-step
+              *ngIf="isAddStepFormShown"
+              [index]="_clonedRecipy.steps.length"
+              [isSplitToGroups]="
+                _clonedRecipy.isSplitIntoGroups &&
+                !!_clonedRecipy.isSplitIntoGroups.length
+              "
+              [groupOptions]="_clonedRecipy.isSplitIntoGroups"
+              (addNewStep)="onAddNewStep($event)"
+            ></app-add-step>
+          </ng-container>
+        </div>
+      </div>
+      <div class="recipy-info">
+        <div *ngIf="mode == AppMode.EditRecipy" class="file-upload">
+          <app-file-upload
+            (fileUploaded)="onFileUploaded($event)"
+          ></app-file-upload>
+        </div>
+        <div class="photo-container" *ngIf="_clonedRecipy.photo">
+          <app-image [imagePath]="_clonedRecipy.photo"></app-image>
+        </div>
+        <div>
+          <div class="recipy-complexity" *ngIf="!!_clonedRecipy.complexity">
+            <span class="bold">Складність:</span> {{ complexity }}
+          </div>
+          <div class="recipy-time" *ngIf="!!_clonedRecipy.steps.length">
+            <div><span class="bold">Час приготування: </span></div>
+            <div>
+              <p>{{ activeTime + passiveTime | normalizeTime }}</p>
+              <p>Активний: {{ activeTime | normalizeTime }}</p>
+              <p>Пасивний: {{ passiveTime | normalizeTime }}</p>
+            </div>
+          </div>
+          <div class="recipy-source">
+            <div>Джерело рецепту:</div>
+            <a
+              *ngIf="mode !== AppMode.EditRecipy && !!_clonedRecipy.source"
+              [href]="_clonedRecipy.source"
+              target="_blank"
+              >{{ _clonedRecipy.source }}</a
+            >
+          </div>
+          <input
+            matInput
+            class="input-edit"
+            *ngIf="mode == AppMode.EditRecipy"
+            [(ngModel)]="_clonedRecipy.source"
+            (ngModelChange)="isChangesSaved = false"
+          />
+
+          <div class="recipy-tags">
+            <div><span class="bold">Теги: </span></div>
+            <div *ngIf="mode !== AppMode.EditRecipy">
+              <mat-chip-list>
+                <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
+              </mat-chip-list>
+            </div>
+            <div *ngIf="mode == AppMode.EditRecipy">
+              <app-add-tags
+                [selected]="_clonedRecipy.type"
+                [tags]="allTags"
+                (selectedTags)="onTagsSelectionChange($event)"
+              ></app-add-tags>
+            </div>
+          </div>
+          <div *ngIf="preps.length">
+            <h4>Попереднє приготування:</h4>
+            <div *ngFor="let prep of preps">
+              <b>{{ prep.ingr }}</b
+              ><span>: {{ prep.text }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isMobile && _clonedRecipy">
+  <header class="mobile-header">
+    {{ _clonedRecipy.name }}
+  </header>
+  <div
+    class="tab-content"
+    *ngIf="currentTab === 'ingredients' && portionsToServe"
+  >
+    <div class="top-part">
+      <div class="portions-selector">
+        <span>Кількість порцій: {{ portionsToServe }}</span>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="unitMenu"
+          class="edit-button"
+        >
+          <mat-icon svgIcon="edit"></mat-icon>
+        </button>
+        <mat-menu #unitMenu="matMenu">
+          <button
+            mat-menu-item
+            *ngFor="let option of portionsOptions"
+            (click)="onPortionsChange(option)"
+          >
+            {{ option }}
+          </button>
+        </mat-menu>
+      </div>
+
+      <div
+        class="portion-size-selection"
+        *ngIf="portionsToServe && mode !== AppMode.EditRecipy"
+      >
+        Розмір порції
+        <input
+          matInput
+          [(ngModel)]="portionSize"
+          (ngModelChange)="onportionSizeChanged()"
+        />
+        гр.
+      </div>
+    </div>
+
+    <ng-container *ngIf="!isSplitToGroups">
+      <app-ingredient
+        *ngFor="let ingredient of _clonedRecipy.ingrediends"
+        [ingredient]="ingredient"
+        [coeficientOfAmount]="coeficient"
+        [isMobile]="isMobile"
+      >
+      </app-ingredient>
+    </ng-container>
+    <ng-container *ngIf="isSplitToGroups">
+      <ng-container *ngFor="let item of ingredientsByGroup | keyvalue">
+        <ng-container *ngIf="item.value.length > 0">
+          <h4>{{ item.key }}</h4>
+          <app-ingredient
+            *ngFor="let ingredient of item.value"
+            [ingredient]="ingredient"
+            [coeficientOfAmount]="coeficient"
+            [isMobile]="isMobile"
+          ></app-ingredient>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div class="tab-content" *ngIf="currentTab === 'preparation'">
+    <table class="steps-table">
+      <tr *ngFor="let step of _clonedRecipy.steps; let i = index">
+        <td [class.current-step]="selectedStepId === i">
+          <p (click)="selectedStepId = i">{{ step.description }}</p>
+        </td>
+        <td style="display: none">
+          {{ getTotalStepTime(step) | normalizeTime }}
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div
+    class="tab-content"
+    *ngIf="currentTab === 'details'"
+    class="mobile-details-wrapper"
+  >
+    <div>
+      <mat-chip-list>
+        <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="recipy-complexity">
+      <span>Складність: </span> <b>{{ complexity }}</b>
+    </div>
+    <div class="recipy-time">
+      <div>
+        <p>
+          Загальний час приготування:
+          <b>{{ activeTime + passiveTime | normalizeTime }}</b>
+        </p>
+        <p>Активний: {{ activeTime | normalizeTime }}</p>
+        <p>Пасивний: {{ passiveTime | normalizeTime }}</p>
+      </div>
+    </div>
+    <div class="recipy-tags"></div>
+    <div *ngIf="!!_clonedRecipy.source">
+      Джерело рецепту:
+      <a [href]="_clonedRecipy.source" target="_blank">{{
+        _clonedRecipy.source
+      }}</a>
+    </div>
+    <div class="photo-container" *ngIf="_clonedRecipy.photo">
+      <app-image [imagePath]="_clonedRecipy.photo"></app-image>
+    </div>
+    <div *ngIf="isUserAdmin" class="margin-block-medium">
+      <mat-checkbox
+        [ngModel]="recipy.isCheckedAndApproved"
+        (ngModelChange)="onisCheckedAndApprovedClicked()"
+        >Рецепт перевірений на практиці</mat-checkbox
+      >
+    </div>
+    <div *ngIf="isUserAdmin" class="margin-block-medium">
+      <button
+        mat-flat-button
+        class="action-button"
+        (click)="onAddAdminComment()"
+      >
+        Додати коментар
+      </button>
+    </div>
+  </div>
+  <button
+    mat-flat-button
+    class="action-button add-recipy-mobile-button"
+    *ngIf="mode == AppMode.EditRecipy || mode == AppMode.AddPreview"
+    (click)="mode == AppMode.AddPreview ? onAddRecipy() : saveUpdatedRecipy()"
+  >
+    Зберегти рецепт
+  </button>
+  <mat-button-toggle-group
+    appearance="legacy"
+    aria-label="Font Style"
+    (change)="onMatToggleChange($event)"
+  >
+    <mat-button-toggle *ngIf="isPreviousRoute$ | async" value="back"
+      ><mat-icon>arrow_back</mat-icon></mat-button-toggle
+    >
+    <mat-button-toggle value="ingredients" checked>
+      <mat-icon svgIcon="ingredients"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="preparation">
+      <mat-icon svgIcon="preparation"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="details"
+      ><mat-icon>info</mat-icon></mat-button-toggle
+    >
+  </mat-button-toggle-group>
+</ng-container>

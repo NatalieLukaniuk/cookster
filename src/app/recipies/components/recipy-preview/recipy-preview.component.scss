@@ -1,0 +1,328 @@
+.full-recipy-wrapper {
+  background-color: var(--background-color);
+  width: 100%;
+  height: 100%;
+  padding: 20px 60px 90px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.recipy-body {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  &.column {
+    flex-direction: column;
+  }
+}
+
+.recipy-details {
+  font-size: 16px;
+  line-height: 24px;
+  flex-grow: 1;
+  min-width: 400px;
+  margin-right: 40px;
+  .recipy-name-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    input {
+      max-width: 60%;
+    }
+  }
+}
+
+.portion-size-selection {
+  input {
+    width: 50px;
+    border: 1px solid var(--primary);
+    padding-inline: 10px;
+    text-align: right;
+  }
+}
+
+.file-upload {
+  margin-bottom: 20px;
+}
+
+.input-edit {
+  border-bottom: 1px solid;
+}
+
+.recipy-action-buttons {
+  align-items: flex-start;
+  display: flex;
+}
+
+.preparation-wrapper {
+  .input-edit {
+    max-width: 95%;
+  }
+}
+
+.steps-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  ::ng-deep .mat-list-item-content {
+    width: 100%;
+    align-items: baseline;
+  }
+
+  input {
+    max-width: 50px;
+    margin-inline: 5px;
+  }
+}
+
+.step-description {
+  flex-grow: 1;
+  .mat-form-field {
+    width: 100%;
+  }
+}
+.time-cell {
+  min-width: 50px;
+}
+
+.ingredients-wrapper,
+.preparation-wrapper {
+  margin-top: 34px;
+}
+
+.ingredients-table {
+  margin-top: 23px;
+  font-size: 16px;
+  line-height: 20px;
+  width: 100%;
+  & > div {
+    width: 100%;
+  }
+}
+
+.steps-table {
+  ::ng-deep .mat-list-item {
+    height: auto;
+    border: 1px solid var(--tint2);
+    border-radius: 2px;
+    margin-block: 10px;
+    padding: 10px;
+    background: var(--tint-very-light);
+  }
+}
+
+.action-buttons-wrapper {
+  display: flex;
+  position: fixed;
+  top: 0;
+  width: 95%;
+  padding: 18px 33px 0;
+  box-sizing: border-box;
+  justify-content: flex-end;
+  z-index: 1000;
+  button {
+    margin-left: 12px;
+  }
+}
+
+.back-button {
+  mat-icon {
+    width: 14px;
+    margin-right: 5px;
+    margin-bottom: 3px;
+  }
+}
+
+.recipy-info {
+  font-size: 14px;
+  min-width: 300px;
+  max-width: 35vw;
+  .bold {
+    font-weight: 700;
+  }
+  p {
+    margin: 0;
+  }
+}
+.recipy-photo {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+
+.recipy-complexity {
+  margin-top: 20px;
+}
+
+.recipy-time,
+.recipy-tags, .recipy-source {
+  display: flex;
+  margin-top: 30px;
+  & > div:first-child {
+    margin-right: 5px;
+    font-weight: 600;
+  }
+}
+
+.recipy-tags {
+  align-items: center;
+  & > div:first-child {
+    align-self: flex-start;
+  }
+}
+
+.add-tag {
+  mat-icon {
+    width: 13px;
+  }
+}
+
+.mobile-header {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.mat-button-toggle-group {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--background-color);
+  z-index: 10;
+}
+
+.mat-button-toggle {
+  height: 98%;
+  display: flex;
+  font-family: "Montserrat", sans-serif;
+  flex-grow: 1;
+  &.mat-button-toggle-checked {
+    background-color: var(--primary);
+    border-radius: 2px;
+    color: var(--background-color) !important;
+    font-weight: 500 !important;
+  }
+}
+
+.edit-button {
+  height: 23px;
+  line-height: 23px;
+  width: 24px;
+  font-size: 5px;
+  margin-left: 5px;
+  .mat-icon {
+    height: 13px;
+  }
+}
+
+.portions-selector {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px 15px;
+}
+
+.mobile-details-wrapper {
+  padding: 10px;
+  & > div:last-of-type {
+    margin-bottom: 30px;
+  }
+}
+
+.add-ingredient-button {
+  margin-top: 20px;
+}
+
+.add-recipy-mobile-button {
+  position: fixed;
+  bottom: 60px;
+  height: 50px;
+  width: 100vw;
+  border-radius: 0;
+  border: none !important;
+}
+
+@media (max-width: 600px) {
+  .full-recipy-wrapper {
+    padding-inline: 10px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  .recipy-body {
+    flex-direction: column;
+  }
+  .recipy-details,
+  .recipy-info {
+    width: 100%;
+  }
+
+  .steps-table {
+    padding-inline: 10px;
+    td:first-child {
+      width: 85%;
+    }
+    td:last-child {
+      width: 15%;
+      text-align: end;
+    }
+    p {
+      margin-block: 10px;
+      line-height: 150%;
+    }
+  }
+  .recipy-time {
+    margin-top: 20px;
+  }
+
+  .recipy-complexity {
+    margin-top: 40px;
+  }
+  h4 {
+    padding-inline: 10px;
+  }
+  .tab-content {
+    padding-bottom: 5vh;
+  }
+  .date-picker {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: min-content;
+  }
+  .photo-container {
+    margin-right: 0;
+  }
+  .portion-size-selection {
+    padding: 5px 10px 15px;
+  }
+  .top-part{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+.current-step {
+  background-color: var(--tint1);
+  padding-inline: 10px;
+}
+
+@media (max-width: 870px) {
+  .recipy-body {
+    flex-direction: column-reverse;
+  }
+  .recipy-info {
+    max-width: 90vw;
+    margin-bottom: 30px;
+    display: flex;
+    .photo-container {
+      margin-right: 30px;
+    }
+  }
+  .top-part{
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,80 @@
+<div>
+  <div class="buttons">
+    <div class="picker-wrapper">
+      <mat-form-field style="width: 0">
+        <input
+          matInput
+          class="date-selection"
+          [matDatepicker]="picker"
+          [(ngModel)]="prepDate"
+          (ngModelChange)="createPrepList($event)"
+        />
+        <mat-datepicker class="picker" #picker></mat-datepicker>
+      </mat-form-field>
+
+      <button mat-flat-button class="action-button" (click)="picker.open()">
+        Add date
+      </button>
+    </div>
+  </div>
+  <div *ngIf="lists.length">
+    <button mat-flat-button (click)="addIngreds = !addIngreds">
+      {{addIngreds? 'cancel add ingreds' : 'add ingreds'}}
+    </button>
+    <ng-container
+      *ngTemplateOutlet="addIngreds ? notdroppable : droppable"
+    ></ng-container>
+    <ng-template #droppable>
+      <mat-expansion-panel
+        class="suggestions-list"
+        *ngFor="let list of lists; let i = index"
+        cdkDropList
+        [cdkDropListData]="list.suggestions"
+        (cdkDropListDropped)="drop($event)"
+        [(expanded)]="list.isExpanded"
+        [id]="list.date"
+      >
+        <mat-expansion-panel-header class="list-item-title">
+          <span>{{ list.day | date: "fullDate" }} </span>
+          <mat-icon class="delete-btn" (click)="deleteList(list)"
+            >delete</mat-icon
+          >
+        </mat-expansion-panel-header>
+        <div cdkDrag *ngFor="let suggestion of list.suggestions">
+          <app-suggestion
+            [showDelete]="true"
+            [suggestion]="suggestion"
+            [enableTimePicker]="true"
+            (removeItem)="onRemoveItem($event, list)"
+            (itemChanged)="onTimeChanged($event, i)"
+          ></app-suggestion>
+        </div>
+      </mat-expansion-panel>
+    </ng-template>
+    <ng-template #notdroppable>
+      <mat-expansion-panel
+        class="suggestions-list"
+        *ngFor="let list of lists; let i = index"
+        [(expanded)]="list.isExpanded"
+        [id]="list.date"
+      >
+        <mat-expansion-panel-header class="list-item-title">
+          <span>{{ list.day | date: "fullDate" }} </span>
+          <mat-icon class="delete-btn" (click)="deleteList(list)"
+            >delete</mat-icon
+          >
+        </mat-expansion-panel-header>
+        <div *ngFor="let suggestion of list.suggestions">
+          <app-suggestion
+            [showDelete]="true"
+            [suggestion]="suggestion"
+            [enableTimePicker]="true"
+            [isAddMode]="true"
+            (removeItem)="onRemoveItem($event, list)"
+            (itemChanged)="onTimeChanged($event, i)"
+          ></app-suggestion>
+        </div>
+      </mat-expansion-panel>
+    </ng-template>
+  </div>
+</div>

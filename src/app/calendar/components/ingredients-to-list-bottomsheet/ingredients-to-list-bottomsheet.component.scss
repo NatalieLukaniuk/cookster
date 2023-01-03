@@ -1,0 +1,38 @@
+.list-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+  padding-right: 27px;
+}
+
+.action-buttons {
+  width: 100vw;
+  margin-inline: -10px;
+  button {
+    width: 100%;
+  }
+}
+
+.bottomsheet-wrapper {
+  max-height: 80vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.ingredients-list {
+  overflow-y: auto;
+  max-height: 64vh;
+  margin-inline: -10px;
+  padding-block: 15px;
+  max-width: 94vw;
+  .mat-list-option {
+    width: 96%;
+  }
+}
+
+@media (min-width: 600px) {
+  .ingredients-list {
+    max-width: 100%;
+    padding-left: 40px;
+  }
+}

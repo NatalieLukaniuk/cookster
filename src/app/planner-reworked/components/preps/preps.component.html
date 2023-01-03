@@ -1,0 +1,34 @@
+<div class="preps-tab-container">
+  <div class="buttons-wrapper">
+    <button
+      mat-flat-button
+      class="secondary-button"
+      (click)="showCalendar = !showCalendar"
+    >
+      {{ showCalendar ? "Сховати календар" : "Показати календар" }}
+    </button>
+    
+    <app-calendar-by-month
+      *ngIf="currentPlanner && showCalendar"
+      [direction]="Direction.Horizontal"
+      [displayRange]="{
+        startDate: currentPlanner.startDate,
+        endDate: currentPlanner.endDate
+      }"
+      [mode]="CalendarMode.Scenario"
+    ></app-calendar-by-month>
+  </div>
+  <div class="lists-wrapper" cdkDropListGroup>
+    <div cdkDropList
+    [cdkDropListData]="allPrepsInDateRange" class="all-preps-suggestions-list" *ngIf="allPrepsInDateRange.length">
+      <div class="suggestion" cdkDrag *ngFor="let suggestion of allPrepsInDateRange" [class.greyedOut]="isSaved(suggestion)">
+        <app-suggestion [suggestion]="suggestion"></app-suggestion>
+      </div>
+    </div>
+    <div class="saved-preps-list">
+      <div class="fixed-container">
+        <app-saved-preps *ngIf="allProducts && (currentUser$ | async)" [allProducts]="allProducts" [currentUser]="currentUser$ | async"></app-saved-preps>
+      </div>
+    </div>
+  </div>
+</div>

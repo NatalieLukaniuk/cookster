@@ -1,0 +1,18 @@
+<mat-form-field *ngFor="let field of data" appearance="outline" class="amount-per-portion-input">
+  <mat-label>{{field.title}}</mat-label>
+  <input matInput [(ngModel)]="field.key" type="text" />
+</mat-form-field>
+
+<div mat-dialog-actions class="action-buttons">
+  <button mat-button class="secondary-button" (click)="onNoClick()">
+    Скасувати
+  </button>
+  <button
+    mat-button
+    class="action-button"
+    [mat-dialog-close]="data"
+    cdkFocusInitial
+  >
+    Підтверджую
+  </button>
+</div>

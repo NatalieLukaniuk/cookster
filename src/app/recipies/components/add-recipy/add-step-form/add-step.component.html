@@ -1,0 +1,28 @@
+<form [formGroup]="stepsForm" (ngSubmit)="addStep()">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Приготування, крок {{idValue}}</mat-label>
+    <input matInput formControlName="description" type="text" placeholder="Напр.: Почистити картоплю, порізати на кубики. Залити водою, посолити">
+    <mat-icon matSuffix svgIcon="done" *ngIf="stepsForm.controls.description.valid"></mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Активний час приготування</mat-label>
+    <input matInput formControlName="timeActive" type="number" placeholder="Напр.: 20"><span class="measurement">хв.</span>
+    <mat-icon matSuffix svgIcon="done" *ngIf="stepsForm.controls.timeActive.valid"></mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Пасивний час приготування</mat-label>
+    <input matInput formControlName="timePassive" type="number" placeholder="Напр.: 10"> <span class="measurement">хв.</span>
+    <mat-icon matSuffix svgIcon="done" *ngIf="stepsForm.controls.timePassive.valid"></mat-icon>
+  </mat-form-field>
+
+  <h5 *ngIf="isSplitToGroups">Група</h5>
+  <mat-radio-group *ngIf="isSplitToGroups" class="cookster-radio-group" formControlName="group">
+    <mat-radio-button *ngFor="let unit of stepGroupOptions" [value]="unit">
+      {{GetUkrIngredientsGroup(unit)}}
+    </mat-radio-button>
+  </mat-radio-group>
+  <button mat-flat-button [disabled]="stepsForm.invalid" class="action-button" type="submit">Add</button>
+</form>

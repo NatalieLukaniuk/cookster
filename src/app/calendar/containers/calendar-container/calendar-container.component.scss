@@ -1,0 +1,31 @@
+@media (max-width: 600px) {
+  .calendar-container {
+    padding-top: 13vh;
+    background-color: var(--gray);
+  }
+}
+
+.calendar-container {
+  position: relative;
+}
+
+.add-shopping-cart-wrapper {
+  position: absolute;
+  top: 0;
+}
+
+.date-selection {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: baseline;
+  .action-button {
+    margin-inline: 10px;
+  }
+}
+.switch-view-icon{
+  position: absolute;
+  right: 0;
+  top: 5px;
+  z-index: 100;
+}

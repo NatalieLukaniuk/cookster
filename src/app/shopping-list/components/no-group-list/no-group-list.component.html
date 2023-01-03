@@ -1,0 +1,10 @@
+<div *ngIf="!!listToDisplay.length && !!allProducts.length; else noContent">
+    <ng-container *ngFor="let item of listToDisplay">
+        <app-shopping-list-item [item]="item" [allProducts]="allProducts" [allRecipies]="allRecipies" (removeIngredient)="onRemoveIngredient($event)" (amountChanged)="onAmountChanged($event)" (measuringUnitChanged)="onMeasuringUnitChanged($event)"></app-shopping-list-item>
+        
+    </ng-container>
+</div>
+
+<ng-template #noContent>
+  <app-no-lists-placeholder></app-no-lists-placeholder>
+</ng-template>

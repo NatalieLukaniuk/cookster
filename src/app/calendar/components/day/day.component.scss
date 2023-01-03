@@ -1,0 +1,24 @@
+.day-wrapper {
+  text-align: left;
+}
+
+.prep-plan{
+  margin-top: 10px;
+  .mat-expansion-panel-header-title{
+    font-weight: 600;
+    justify-content: flex-start;
+    align-items: flex-start;
+    .mat-icon{
+      font-size: 18px;
+    }
+  }
+}
+.prep-plan-item{
+  padding-inline: 15px;
+}
+
+@media (min-width: 600px) {
+  .day-wrapper:not(.side-panel) {
+    margin-top: 20px;
+  }
+}

@@ -1,6 +1,47 @@
-<app-header></app-header>
-<section>
-    <router-outlet></router-outlet>
-</section>
+<mat-drawer-container class="example-container" [hasBackdrop]="true">
+  <mat-drawer #drawer [mode]="'over'" position="end">
+    <app-filters></app-filters>
+  </mat-drawer>
+  <mat-drawer-content>
+    <ng-container *ngIf="(isAuthCheckPerformed$ | async) && isRecipiesAndProductsLoaded; else splash">
+      <app-header></app-header>
+      <section>
+        <router-outlet></router-outlet>
+      </section>
 
+      <mat-button-toggle-group
+        *ngIf="(isMobile$ | async) && isDisplayNavTabs()"
+        appearance="legacy"
+        aria-label="Font Style"
+        [value]="currentRoute"
+        (change)="onMatToggleChange($event)"
+      >
+        <mat-button-toggle [value]="MainTabs.Home"
+          >
+          <mat-icon>home</mat-icon
+            >
+          </mat-button-toggle
+        >
+        <mat-button-toggle [value]="MainTabs.AddRecipy">
+          <mat-icon>add_circle_outline</mat-icon
+            >
+        </mat-button-toggle>
+        <mat-button-toggle [value]="MainTabs.CalendarByDay">
+          <mat-icon>calendar_today</mat-icon
+            >
+        </mat-button-toggle>
+        <mat-button-toggle [value]="MainTabs.ShoppingList"
+          >
+          <mat-icon>shopping_cart</mat-icon
+            >
+          </mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </ng-container>
+  </mat-drawer-content>
+</mat-drawer-container>
+<app-loading-indicator *ngIf="isLoading$ | async"></app-loading-indicator>
 
+<ng-template #splash>
+  <app-splash></app-splash>
+</ng-template>

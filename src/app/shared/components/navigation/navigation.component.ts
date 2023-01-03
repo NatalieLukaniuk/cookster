@@ -1,10 +1,11 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
-import { AddEditRecipyComponent } from 'src/app/recipies/components/add-edit-recipy/add-edit-recipy.component';
-import { RecipiesService } from 'src/app/recipies/services/recipies.service';
+import { takeUntil } from 'rxjs/operators';
 
+import * as UiActions from '../../../store/actions/ui.actions';
 import { LayoutService } from '../../services/layout.service';
 
 
@@ -14,12 +15,13 @@ import { LayoutService } from '../../services/layout.service';
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnDestroy {
+  @Input() isNarrowVersion: boolean = false;
+  @Input() displayExpandButton: boolean = false;
   navigation = [
     // { path: 'extended-search', name: 'Розширений пошук' },
     { path: 'recipies/user-recipies', name: 'Мої рецепти' },
     // { path: 'friends-feed', name: 'Стрічка друзів' },
     // { path: 'shopping-list', name: 'Список покупок' },
-    // { path: 'user-menus', name: 'Мої меню' },
   ];
 
   mobileNavigation = [
@@ -31,8 +33,10 @@ export class NavigationComponent implements OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private recipiesService: RecipiesService,
     private layoutService: LayoutService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: Store
   ) {
     this.layoutService.isMobile$
       .pipe(takeUntil(this.destroy$))
@@ -42,26 +46,39 @@ export class NavigationComponent implements OnDestroy {
     this.destroy$.next()
   }
 
-  addRecipy() {
-    const dialogRef = this.dialog.open(AddEditRecipyComponent, {
-      width: '90%',
-      maxWidth: '100%',
-      height: '80%',
-      hasBackdrop: false,
-      panelClass: 'add-recipy-dialog',
-      autoFocus: false,
-      data: {
-        mode: 'create'
-      }
-    });
+  onAddRecipy(){
+    if(!this.isMobile){
+      this.router.navigate(['recipies', 'edit-recipy'], { relativeTo: this.route })
+    } else {this.router.navigate(['cookster','recipies', 'edit-recipy'], { relativeTo: this.route })}
+   }
 
-    dialogRef
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe((result: any) => {
-        if(result){
-          this.recipiesService.addRecipy(result.recipy);
-        }        
-      });
-  }
+   onOpenFilters(){
+     this.store.dispatch(new UiActions.SetIsSidebarOpenAction(true))
+   }
+
+   toggleIsExpanded(){
+     this.isNarrowVersion = !this.isNarrowVersion;
+   }
+
+   goHome(){
+    this.router.navigate(['/'], { relativeTo: this.route })
+   }
+   goCalendar(){
+    let route: string;
+    if(this.isMobile){
+      route = 'calendar';
+    } else {
+      route = 'planner-reworked';
+    }
+     this.router.navigate([route])
+   }
+
+   goShoppingLists(){
+    this.router.navigate(['shopping-list'])
+   }
+
+   goPrepLists(){
+    this.router.navigate(['prep-lists'])
+   }
+   
 }

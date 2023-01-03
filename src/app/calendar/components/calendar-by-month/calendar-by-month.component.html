@@ -1,0 +1,28 @@
+<div class="calendar-by-month-wrapper" [class.horizontal]="direction == Direction.Horizontal">
+  <ng-container *ngFor="let day of calendar">
+    <div
+      [id]="day.details.day"
+      class="calendar-day"
+      *ngIf="isDisplay(day)"
+      [class.disabled]="day.disabled"
+      [class.selected]="day.selected"
+      [class.active]="day.active"
+      [class.horizontal]="direction == Direction.Horizontal"
+    >
+      <div class="day-header">
+        <span>{{ day.value | moment: "dddd, Do MMMM" }}</span>
+      </div>
+      <app-day
+        [day]="day"
+        [isMobile]="isMobile"
+        [isPlanner]="true"
+        [mode]="mode"
+        (updateDay)="onUpdateDay($event)"
+        (saveToShoppingList)="onSaveToShoppingList($event)"
+        (addRecipy)="onAddRecipy($event)"
+        (daySelected)="onDaySelected($event)"
+        (recipyWasMoved)="onRecipyWasMoved()"
+      ></app-day>
+    </div>
+  </ng-container>
+</div>

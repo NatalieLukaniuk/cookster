@@ -9,7 +9,23 @@ export enum MeasuringUnit {
   coffeeSpoon,
   pinch,
   bunch,
-  item
+  item,
+  cup,
+  none
+}
+
+export const degradable = [MeasuringUnit.coffeeSpoon, MeasuringUnit.dessertSpoon, MeasuringUnit.item, MeasuringUnit.tableSpoon, MeasuringUnit.teaSpoon]
+
+export const isDegradable = (unit: MeasuringUnit) => degradable.includes(unit)
+
+export const degradeToSmallerUnit = (unit: MeasuringUnit) => {
+  switch(unit){
+    case MeasuringUnit.coffeeSpoon: return MeasuringUnit.pinch;
+    case MeasuringUnit.dessertSpoon: return MeasuringUnit.teaSpoon;
+    case MeasuringUnit.tableSpoon: return MeasuringUnit.teaSpoon;
+    case MeasuringUnit.teaSpoon: return MeasuringUnit.pinch;
+    default: return MeasuringUnit.gr
+  }
 }
 
 export enum MeasuringUnitText {
@@ -23,7 +39,9 @@ export enum MeasuringUnitText {
   'коф.л.',
   'дрібка',
   'пучок',
-  'шт.'
+  'шт.',
+  'склянка',
+  'за смаком'
 }
 
 export const MeasuringUnitOptions = [
@@ -37,7 +55,9 @@ export const MeasuringUnitOptions = [
   MeasuringUnit.coffeeSpoon,
   MeasuringUnit.pinch,
   MeasuringUnit.bunch,
-  MeasuringUnit.item
+  MeasuringUnit.item,
+  MeasuringUnit.cup,
+  MeasuringUnit.none
 ];
 
 export const MeasuringUnitOptionsFluid = [
@@ -48,6 +68,7 @@ export const MeasuringUnitOptionsFluid = [
     MeasuringUnit.dessertSpoon,
     MeasuringUnit.teaSpoon,
     MeasuringUnit.coffeeSpoon,
+    MeasuringUnit.cup
   ];
 
   export const MeasuringUnitOptionsSpice = [
@@ -56,13 +77,15 @@ export const MeasuringUnitOptionsFluid = [
     MeasuringUnit.tableSpoon,
     MeasuringUnit.coffeeSpoon,
     MeasuringUnit.pinch,
+    MeasuringUnit.cup
   ];
 
   export const MeasuringUnitOptionsHerbs = [
     MeasuringUnit.gr,
     MeasuringUnit.teaSpoon,
     MeasuringUnit.pinch,
-    MeasuringUnit.bunch
+    MeasuringUnit.bunch,
+    MeasuringUnit.cup
   ];
 
   export const MeasuringUnitOptionsHardItems = [
@@ -71,3 +94,15 @@ export const MeasuringUnitOptionsFluid = [
     MeasuringUnit.item
   ];
 
+  export const MeasuringUnitOptionsGranular = [
+    MeasuringUnit.gr,
+    MeasuringUnit.kg,
+    MeasuringUnit.dessertSpoon,
+    MeasuringUnit.tableSpoon,
+    MeasuringUnit.cup
+  ]
+
+  export const MeasuringUnitOptionsHardHomogeneous = [
+    MeasuringUnit.gr,
+    MeasuringUnit.kg
+  ]

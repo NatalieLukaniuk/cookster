@@ -1,0 +1,17 @@
+<mat-form-field appearance="outline" class="amount-per-portion-input">
+  <mat-label>Назва списку</mat-label>
+  <input matInput [(ngModel)]="name" type="text" />
+</mat-form-field>
+<div mat-dialog-actions class="action-buttons">
+  <button mat-button class="secondary-button" (click)="onNoClick()">
+    Discard
+  </button>
+  <button
+    mat-button
+    class="action-button"
+    [mat-dialog-close]="name"
+    cdkFocusInitial
+  >
+    Add list
+  </button>
+</div>

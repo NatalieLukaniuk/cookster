@@ -1,0 +1,37 @@
+.planner-container {
+  padding-top: 10px;
+}
+
+.planner-container .mat-list-item {
+  background-color: var(--background-color);
+  margin-bottom: 5px;
+  cursor: pointer;
+  ::ng-deep .mat-list-item-content {
+    justify-content: space-between;
+  }
+  .delete-btn {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .planner-container {
+    padding-top: 10vh;
+  }
+}
+
+@media (min-width: 600px) {
+  .planner-container {
+    width: 30%;
+    .mat-list-item {
+      .delete-btn {
+        display: none;
+      }
+      &:hover {
+        .delete-btn {
+          display: block;
+        }
+      }
+    }
+  }
+}

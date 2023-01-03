@@ -1,80 +1,167 @@
-.recipy-wrapper{
-    background-color: var(--background-color);
+$aspect-ratio: 5/4;
+
+// ----- Containers ---- //
+
+.container {
+  aspect-ratio: $aspect-ratio;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px 5px #ecedec;
+}
+
+.base,
+.short-info,
+.detailed-info,
+.collections {
+  aspect-ratio: $aspect-ratio;
+  padding: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.collections.overlay.visible {
+  display: flex;
+  background: var(--background-color);
+  opacity: 0.9;
+  button {
+    font-weight: 600;
+    padding-inline: 30px;
+    height: auto;
+    padding-block: 6px;
+    &:last-of-type{
+      opacity: 0.6;
+      color: var(--primary);
+      font-size: 14px;
+    }
+}
+}
+
+.base {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  .icons {
+    position: absolute;
+    top: 8px;
+    color: var(--primary);
+    background: var(--background-color-gradient);
+    padding: 2px 8px;
     display: flex;
-    aspect-ratio: 2/1;
-    position: relative;
-    cursor: pointer;
-    border: 1px solid var(--tint4);
-    padding: 4px;
+    align-items: center;
+    border-radius: 20px;
+    .mat-icon {
+      height: 18px;
+      width: auto;
+      font-size: 18px;
+    }
+  }
 }
-.recipy-photo{
-    width: 50%;
-    height: 100%;
-    object-fit: cover;
+
+.overlay {
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  padding: 10px;
+  &.visible {
+    visibility: visible;
+    background: var(--background-color-semi-transparent);
+    z-index: 20;
+  }
 }
-.recipy-info{
-    color: var(--text-color);
-    padding: 7px 9px;
+
+.base.plain-background {
+  background-color: var(--background-color);
+  justify-content: center;
+
+  &.hovered {
+    justify-content: flex-end;
+  }
+}
+
+.base:not(.plain-background) {
+  justify-content: flex-end;
+}
+
+.image-background {
+  position: absolute;
+  aspect-ratio: $aspect-ratio;
+  overflow: hidden;
+  width: 100%;
+}
+
+.short-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+// ----- Contents ---- //
+
+.recipy-title {
+  text-align: center;
+  padding: 3px 25px;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+.base:not(.plain-background) .recipy-title {
+  background: var(--background-color-gradient);
+}
+
+.time-details {
+  display: flex;
+  align-items: center;
+  mat-icon {
+    margin-right: 5px;
+  }
+}
+
+.collection-tags{
+  align-items: center;
+  margin-top: 5px;
+}
+
+.side-menu-panel {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  button {
+    z-index: 10;
+  }
+}
+
+.short-info-details-panel {
+  font-size: 12px;
+  font-weight: 600;
+  & > div {
+    margin-bottom: 7px;
+    display: flex;
+    .mat-icon {
+      font-size: 18px;
+      margin-right: 5px;
+      height: 17px;
+      width: auto;
+      &.color-primary {
+        color: var(--primary);
+      }
+    }
+  }
+}
+
+.ingredients-wrapper {
+  h6 {
+    margin-block: 5px;
+  }
+  div {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    p{
-        font-size: 12px;
-        margin: 0;   
-        font-weight: 700;     
-    }
+    font-size: 12px;
+    font-weight: 600;
+  }
 }
 
-.recipy-upper-part{
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    p{
-        margin-right: 13px;
-    }
-}
-
-.recipy-bottom-part{
-    display: flex;
-    justify-content: space-between;
-    &>div{
-        display: flex;
-        align-items: center;
-    }
-    .likes-wrapper mat-icon{
-        width: 13px;
-        margin-right: 5px;
-    }
-    .author-wrapper p{
-        text-align: end;
-    }
-}
-
-.recipy-menu{
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-.menu-button{
-    width: 35px;
-    height: 30px;
-    line-height: 30px;
-    color: var(--text-color);
-}
-
-.title-part{
-    p{
-        font-size: 16px;
-        text-transform: uppercase;
-        font-weight: 700;
-        text-align: center;
-    }
-}
-
-.author-photo{
-    width: 28px;
-    border-radius: 50%;
-    margin-left: 5px;
+@media (max-width: 600px) {
+  .side-menu-panel {
+    justify-content: space-evenly;
+  }
 }

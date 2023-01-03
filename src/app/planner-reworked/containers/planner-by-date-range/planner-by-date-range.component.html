@@ -1,0 +1,28 @@
+<nav class="planner-nav" mat-tab-nav-bar>
+  <a
+    mat-tab-link
+    *ngFor="let tab of tabs; let i = index"
+    (click)="activeLink = tab.link"
+    [active]="activeLink == tab.link"
+    [routerLink]="tab.link"
+    [disabled]="(!isRecipiesPlanned && i !== 0) || i==3"
+  >
+    {{ tab.name }}
+  </a>
+</nav>
+<mat-tab-nav-panel #tabPanel><router-outlet></router-outlet></mat-tab-nav-panel>
+
+<div class="title" *ngIf="currentPlanner">
+  <div>
+    <div>
+      {{ getFormattedName(currentPlanner.startDate) | date: "MMMM, dd" }} -
+      {{ getFormattedName(currentPlanner.endDate) | date: "MMMM, dd" }}
+    </div>
+    <div class="subtitle" *ngIf="currentPlanner.isShoppingListActive">
+      Список покупок для цього планера є активним
+    </div>
+  </div>
+  <button mat-icon-button (click)="goAllPlanners()">
+    <mat-icon>list</mat-icon>
+  </button>
+</div>

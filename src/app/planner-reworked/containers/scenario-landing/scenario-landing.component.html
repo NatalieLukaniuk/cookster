@@ -1,0 +1,24 @@
+<div class="scenario-tab-container">
+  <div class="buttons-wrapper">
+    <button
+      mat-flat-button
+      class="secondary-button"
+      (click)="showCalendar = !showCalendar"
+    >
+      {{ showCalendar ? "Сховати календар" : "Показати календар" }}
+    </button>
+    
+    <app-calendar-by-month
+      *ngIf="currentPlanner && showCalendar"
+      [direction]="Direction.Horizontal"
+      [displayRange]="{
+        startDate: currentPlanner.startDate,
+        endDate: currentPlanner.endDate
+      }"
+      [mode]="CalendarMode.Scenario"
+    ></app-calendar-by-month>
+  </div>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

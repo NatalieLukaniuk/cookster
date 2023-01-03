@@ -15,7 +15,8 @@ export interface Product {
     spice,
     herb,
     hardItem,
-    hardHomogenious
+    hardHomogenious,
+    granular
   }
   
   export enum ProductTypeText {
@@ -23,7 +24,8 @@ export interface Product {
     'подрібнена спеція',
     'трава',
     'твердий продукт',
-    'твердий однорідний'
+    'твердий однорідний',
+    'сипучий продукт (крупа, борошно)'
   }
   
   export const ProductTypeOptions = [
@@ -31,7 +33,8 @@ export interface Product {
     ProductType.spice,
     ProductType.herb,
     ProductType.hardItem,
-    ProductType.hardHomogenious
+    ProductType.hardHomogenious,
+    ProductType.granular
   ];
 
 

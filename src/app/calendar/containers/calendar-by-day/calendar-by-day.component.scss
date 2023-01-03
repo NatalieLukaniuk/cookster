@@ -1,0 +1,23 @@
+.current-day-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.switch-view-icon {
+  position: absolute;
+  right: 8px;
+  top: 5px;
+  z-index: 100;
+}
+
+.timed-out {
+  font-size: 16px;
+  color: red;
+  height: auto;
+}
+
+.tab-label {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,99 @@
+.my-lists {
+  .mat-icon {
+    font-size: 20px;
+  }
+
+  .item-title {
+    min-width: max-content;
+    margin-right: 5px;
+  }
+  .edit-field {
+    display: flex;
+    align-items: center;
+    max-width: 30%;
+    input {
+      max-width: 73%;
+      text-align: right;
+    }
+  }
+}
+
+h3 {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.item-comment {
+  opacity: 0.6;
+}
+
+@media (min-width: 601px) {
+  .my-lists {
+    ::ng-deep .mat-list-base .mat-list-item {
+      background-color: var(--tint2);
+      padding-block: 7px;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--background-color);
+      }
+    }
+    ::ng-deep .mat-expansion-panel-body {
+      max-height: 30vh;
+      overflow-y: auto;
+    }
+    .delete-btn {
+      visibility: hidden;
+      height: 20px;
+      line-height: 20px;
+    }
+    .mat-expansion-panel-header:hover,
+    .mat-list-item:hover {
+      .delete-btn {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .my-lists {
+    .wrapper {
+      position: relative;
+    }
+    .mat-expansion-panel-header-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .mat-expansion-panel-header {
+      height: auto;
+      padding-block: 3px;
+      background: var(--tint1);
+    }
+    ::ng-deep .mat-list-base .mat-list-item {
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--tint1);
+      }
+      .mat-list-item-content {
+        justify-content: center;
+        flex-direction: column;
+        font-size: 13px;
+        padding-block: 3px;
+        align-items: baseline;
+      }
+    }
+    .item-main-part{
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .item-comment{
+      font-size: 10px;
+    }
+    .list-wrapper-mobile{
+      max-height: 68vh;
+      overflow-y: auto;
+    }
+  }
+}

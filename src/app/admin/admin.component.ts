@@ -1,10 +1,17 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, OnInit } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  MatTreeFlatDataSource,
+  MatTreeFlattener,
+} from '@angular/material/tree';
+import { select, Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { Product } from '../recipies/models/products.interface';
 import { Recipy } from '../recipies/models/recipy.interface';
 import { RecipiesService } from '../recipies/services/recipies.service';
+import { getAllRecipies } from '../store/selectors/recipies.selectors';
 
 interface NavigationNode {
   name: string;
@@ -33,7 +40,7 @@ function nodeTransformer(node: NavigationNode, level: number) {
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
   treeControl = new FlatTreeControl<ExampleFlatNode>(
     (node) => node.level,
     (node) => node.expandable
@@ -51,21 +58,28 @@ export class AdminComponent implements OnInit {
   recipies: Recipy[] = [];
   products: Product[] = [];
 
-  constructor(private recipiesService: RecipiesService) {
+  destroyed$ = new Subject();
+
+  constructor(private recipiesService: RecipiesService, private store: Store) {
     const TREE_DATA: NavigationNode[] = [
       { name: 'Recipies', path: `recipies` },
       { name: 'Products', path: 'products' },
+      { name: 'Update Products', path: 'update-products' },
+      { name: 'Comments to Recipies', path: 'recipies-comments' },
     ];
 
     this.dataSource.data = TREE_DATA;
   }
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
+  }
 
   ngOnInit() {
-    this.recipiesService.allRecipies$.subscribe((recipies: Recipy[]) => {
-      this.recipies = recipies;
-    })
+    this.store
+      .pipe(select(getAllRecipies), takeUntil(this.destroyed$))
+      .subscribe((res) => (this.recipies = res));
     this.recipiesService.products$.subscribe((products: Product[]) => {
       this.products = products;
-    })
+    });
   }
 }

@@ -1,0 +1,50 @@
+<header>
+  <h1 mat-button (click)="goHome()">Cookster</h1>
+
+  <button
+    *ngIf="!isMobile && (isLoggedIn$ | async)"
+    mat-icon-button
+    class="user-avatar"
+    [mat-menu-trigger-for]="userMenu"
+    alt="user avatar"
+  >
+    <img
+      *ngIf="(currentUser$ | async)?.img"
+      src="../../../../assets/images/user.jpg"
+    />
+    <div *ngIf="!(currentUser$ | async)?.img">U</div>
+  </button>
+  <app-search-filter
+    *ngIf="
+      isMobile &&
+      (isLoggedIn$ | async) &&
+      (currentRoute$ | async) === 'all-recipies'
+    "
+    class="search"
+    (enteredValue)="onSearch($event)"
+  ></app-search-filter>
+  <button
+    *ngIf="
+      isMobile &&
+      (isLoggedIn$ | async) &&
+      (currentRoute$ | async) === 'all-recipies'
+    "
+    mat-icon-button
+    (click)="onOpenFilters()"
+  >
+    <mat-icon>filter_list</mat-icon>
+  </button>
+
+  <mat-menu #userMenu="matMenu">
+    <button
+      *ngIf="(currentUser$ | async)?.role == Role.Admin"
+      mat-menu-item
+      (click)="goAdmin()"
+    >
+      <span>Admin panel</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+</header>

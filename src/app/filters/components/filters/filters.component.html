@@ -1,0 +1,67 @@
+<div class="filters-header-wrapper">
+    <h3>Фільтри</h3>
+    <h5>Знайдено {{recipiesService.filteredRecipies}} рецептів</h5>
+</div>
+<mat-accordion class="filters-wrapper">
+    <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Пошук за інгридієнтами
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+          This is a summary of the content
+        </mat-panel-description> -->
+        </mat-expansion-panel-header>
+        <mat-selection-list #ingrediendsFilter *ngIf="!!products" class="filters-list" color="primary"
+            (selectionChange)="onIngredientsToIncludeChange($event)">
+            <mat-list-option *ngFor="let product of products" [value]="product.id">{{product.name}}</mat-list-option>
+        </mat-selection-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Не показувати страви з інгридієнтами...
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+            This is a summary of the content
+          </mat-panel-description> -->
+        </mat-expansion-panel-header>
+        <mat-selection-list #ingrediendsFilter2 *ngIf="!!products" class="filters-list" color="primary"
+            (selectionChange)="onIngredientsToExcludeChange($event)">
+            <mat-list-option *ngFor="let product of products" [value]="product.id">{{product.name}}</mat-list-option>
+        </mat-selection-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Типи страв
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+            This is a summary of the content
+          </mat-panel-description> -->
+        </mat-expansion-panel-header>
+        <mat-selection-list #tagsFilter class="filters-list" color="primary" (selectionChange)="onTagsChange($event)">
+            <mat-list-option *ngFor="let tag of tags" [value]="tag">{{getTagsText(tag)}}</mat-list-option>
+        </mat-selection-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Максимальний час приготування
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+            This is a summary of the content
+          </mat-panel-description> -->
+        </mat-expansion-panel-header>
+        <mat-slider #prepTimeSlider thumbLabel [displayWith]="formatPrepTimeSliderLabel" min="0" max="600" aria-label="units"
+            (change)="onPrepTimeChange($event)"></mat-slider>
+    </mat-expansion-panel>
+</mat-accordion>
+<div class="action-buttons">
+    <button mat-flat-button class="action-button" (click)="clearFilters()">
+        Скинути
+    </button>
+    <button mat-flat-button class="action-button" (click)="closeSidebar()">
+        Застосувати
+    </button>
+</div>

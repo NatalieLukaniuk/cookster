@@ -1,0 +1,31 @@
+<div class="bottomsheet-wrapper">
+  <div *ngIf="!!listToDisplay" class="list-header">
+    <mat-checkbox
+      [checked]="
+        ingredients.selectedOptions.selected.length == listToDisplay.length
+      "
+      [indeterminate]="
+        ingredients.selectedOptions.selected.length > 0 &&
+        ingredients.selectedOptions.selected.length < listToDisplay.length
+      "
+      (change)="toggleAllSelected($event.checked)"
+    >
+    </mat-checkbox>
+  </div>
+  <mat-selection-list #ingredients class="ingredients-list" color="primary">
+    <mat-list-option
+      *ngFor="let ingredient of listToDisplay"
+      [value]="ingredient.product"
+    >
+      <app-bottomsheet-ingredient
+        [ingredient]="ingredient"
+        [isMobile]="data.isMobile"
+      ></app-bottomsheet-ingredient>
+    </mat-list-option>
+  </mat-selection-list>
+  <div class="action-buttons">
+    <button mat-flat-button class="action-button" (click)="add()">
+      Додати вибрані в список покупок
+    </button>
+  </div>
+</div>

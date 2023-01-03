@@ -1,0 +1,65 @@
+<div
+  *ngIf="!!day.details"
+  class="day-wrapper"
+  [class.side-panel]="isPlanner"
+  [id]="day.details.day"
+>
+  <div class="prep-plan" *ngIf="!!day.preps">
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>alarm</mat-icon> Приготувати заздалегіть
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div
+        class="prep-plan-item"
+        *ngFor="let suggestion of day.preps.suggestions"
+      >
+        <app-suggestion [suggestion]="suggestion"></app-suggestion>
+      </div>
+    </mat-expansion-panel>
+  </div>
+  <app-celandar-meal
+    [day]="day"
+    [isMobile]="isMobile"
+    [mealtime]="MealTime.Breakfast"
+    [mode]="mode"
+    (addRecipy)="passAddRecipy($event)"
+    (mealTimeUpdated)="onUpdateDay($event)"
+    (updateRecipy)="updateRecipy($event.recipy, $event.mealtime)"
+    (removeRecipy)="removeRecipy($event.recipy, $event.mealtime)"
+    (saveToShoppingList)="onSaveToShoppingList($event.item, $event.mealtime)"
+  >
+  </app-celandar-meal>
+  <app-celandar-meal
+    [day]="day"
+    [isMobile]="isMobile"
+    [mealtime]="MealTime.Lunch"
+    [mode]="mode"
+    (addRecipy)="passAddRecipy($event)"
+    (mealTimeUpdated)="onUpdateDay($event)"
+    (updateRecipy)="updateRecipy($event.recipy, $event.mealtime)"
+    (removeRecipy)="removeRecipy($event.recipy, $event.mealtime)"
+    (saveToShoppingList)="onSaveToShoppingList($event.item, $event.mealtime)"
+  >
+  </app-celandar-meal>
+  <app-celandar-meal
+    [day]="day"
+    [isMobile]="isMobile"
+    [mealtime]="MealTime.Dinner"
+    [mode]="mode"
+    (addRecipy)="passAddRecipy($event)"
+    (mealTimeUpdated)="onUpdateDay($event)"
+    (updateRecipy)="updateRecipy($event.recipy, $event.mealtime)"
+    (removeRecipy)="removeRecipy($event.recipy, $event.mealtime)"
+    (saveToShoppingList)="onSaveToShoppingList($event.item, $event.mealtime)"
+  >
+  </app-celandar-meal>
+
+
+<mat-menu #addToDay="matMenu">
+  <button mat-menu-item (click)="onAddRecipy()">Додати рецепт</button>
+  <button mat-menu-item>Додати салат</button>
+  <button mat-menu-item>Додати овочі</button>
+  <button mat-menu-item>Додати напій</button>
+</mat-menu>

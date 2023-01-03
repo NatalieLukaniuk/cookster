@@ -1,0 +1,45 @@
+<div class="calendar-wrapper" [class.narrow]="isMobile || isPlanner" [class.side-pane]="isPlanner">
+  <div class="calendar-week" *ngIf="!isMobile && !isPlanner">
+    <div class="calendar-day">Неділя</div>
+    <div class="calendar-day">Понеділок</div>
+    <div class="calendar-day">Вівторок</div>
+    <div class="calendar-day">Середа</div>
+    <div class="calendar-day">Четвер</div>
+    <div class="calendar-day">П'ятниця</div>
+    <div class="calendar-day">Субота</div>
+  </div>
+  <div class="calendar-week" *ngFor="let week of calendar">
+    <ng-container *ngFor="let day of week.days">
+      <div
+        [id]="day.details.day"
+        class="calendar-day"
+        *ngIf="!isMobile || !day.disabled || !isPlanner"
+        [class.disabled]="day.disabled"
+        [class.selected]="day.selected"
+        [class.active]="day.active"
+      >
+        <span *ngIf="!isMobile && !isPlanner">{{ day.value | moment: "D" }}</span>
+        <div *ngIf="isMobile || isPlanner" class="day-header">
+          <span>{{ day.value | moment: "dddd, Do MMMM" }}</span>
+          <div *ngIf="false">
+            <button mat-icon-button (click)="addRecipy(day)" *ngIf="!isPlanner">
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+            <!-- <button mat-icon-button (click)="addAllToShoppingList(day)">
+              <mat-icon>add_shopping_cart</mat-icon>
+            </button> -->
+          </div>
+        </div>
+        <app-day
+          [day]="day"
+          [isMobile]="isMobile"
+          [isPlanner]="isPlanner"
+          [isRecipySelected]="isRecipySelected"
+          (updateDay)="onUpdateDay($event)"
+          (saveToShoppingList)="onSaveToShoppingList($event)"
+          (daySelected)="onDaySelected($event)"
+        ></app-day>
+      </div>
+    </ng-container>
+  </div>
+</div>

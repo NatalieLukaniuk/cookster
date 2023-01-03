@@ -1,0 +1,36 @@
+.buttons {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-evenly;
+    & > div {
+      width: 45%;
+      & > button {
+        width: 100%;
+      }
+    }
+  }
+
+  .suggestions-list {
+    min-width: 350px;
+    ::ng-deep .mat-expansion-panel-content {
+      max-height: 300px;
+      overflow-y: auto;
+  }
+  }
+
+  .list-item-title {
+    background: var(--tint-very-light);
+    .mat-icon {
+      font-size: 17px;
+      margin-left: 15px;
+    }
+  }
+
+  .delete-btn{
+    display: none;
+  }
+  .list-item-title:hover{
+    .delete-btn{
+        display: block;
+    }
+  }

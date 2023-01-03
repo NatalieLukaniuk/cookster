@@ -1,0 +1,78 @@
+<div class="shopping-tab-container">
+  <div class="buttons-wrapper">
+    <button
+      mat-flat-button
+      class="secondary-button"
+      (click)="showCalendar = !showCalendar"
+    >
+      {{ showCalendar ? "Сховати календар" : "Показати календар" }}
+    </button>
+    <button
+      *ngIf="!isShoppingListActive"
+      mat-flat-button
+      class="action-button"
+      (click)="makeListActive()"
+    >
+      Зробити список активним
+    </button>
+    <app-calendar-by-month
+      *ngIf="currentPlanner && showCalendar"
+      [direction]="Direction.Horizontal"
+      [displayRange]="{
+        startDate: currentPlanner.startDate,
+        endDate: currentPlanner.endDate
+      }"
+    ></app-calendar-by-month>
+  </div>
+  <div class="shopping-lists" cdkDropListGroup>
+    <div *ngIf="itemsTree">
+      <h3>Всі інгридієнти для запланованих рецептів</h3>
+      <mat-accordion
+        cdkDropList
+        class="example-headers-align"
+        *ngFor="let item of itemsTree; let i = index"
+      >
+        <mat-expansion-panel
+          cdkDrag
+          [id]="item.id + '/' + item.total + '/' + item.unit"
+          [expanded]="openedItem === i"
+          (opened)="openedItem = i"
+          hideToggle
+        >
+          <mat-expansion-panel-header [class.greyedOut]="getHasBeenAdded(item)">
+            <mat-panel-title>
+              {{ item.name }}
+            </mat-panel-title>
+            <app-amount-in-selected-unit
+              [ingrId]="item.id"
+              [amountInGr]="item.total"
+              [unit]="item.unit"
+            ></app-amount-in-selected-unit>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <mat-list-item *ngFor="let childItem of item.items">
+              <div *ngFor="let id of childItem.recipyId">
+                {{ getrecipyName(id) }}
+              </div>
+              <div>
+                <app-amount-in-selected-unit
+                  [ingrId]="childItem.product"
+                  [amountInGr]="childItem.amount"
+                  [unit]="childItem.defaultUnit"
+                ></app-amount-in-selected-unit>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div>
+      <div class="fixed-container">
+        <app-my-shopping-list
+          *ngIf="currentPlanner"
+          [planner]="currentPlanner"
+        ></app-my-shopping-list>
+      </div>
+    </div>
+  </div>
+</div>

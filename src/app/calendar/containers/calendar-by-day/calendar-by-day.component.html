@@ -1,0 +1,44 @@
+<div class="calendar-by-day page-container" *ngIf="currentDay">
+  <div class="current-day-selector">
+    <button mat-icon-button (click)="goPreviousDay()">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    {{ currentDay.toString() | date: "EEEE, d MMMM" }}
+    <button mat-icon-button (click)="goNextDay()">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label> Меню </ng-template>
+      <div *ngIf="!!_day">
+        <app-day
+          [day]="_day"
+          [isMobile]="isMobile"
+          [isPlanner]="false"
+          [isRecipySelected]="false"
+          (updateDay)="onUpdateDay($event)"
+        ></app-day>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="tab-label">
+          <span>Попереднє приготування</span>
+          <mat-icon class="timed-out" *ngIf="hasTimedOutPreps"
+            >report_problem</mat-icon
+          >
+        </div>
+      </ng-template>
+      <app-prep-lists
+        *ngIf="!!_day"
+        [day]="_day"
+        (hasTimedOutPreps)="onhasTimedOutPreps($event)"
+      ></app-prep-lists>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<button class="switch-view-icon" mat-icon-button (click)="goByMonth()">
+  <mat-icon>view_list</mat-icon>
+</button>

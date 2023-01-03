@@ -1,11 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  CreateRecipyCollection,
+  UpdateUserAction,
+} from './../../../store/actions/user.actions';
+import { Store } from '@ngrx/store';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { User } from 'src/app/auth/models/user.interface';
+import { Ingredient } from 'src/app/recipies/models/ingredient.interface';
+import { InputDialogComponent } from 'src/app/shared/components/input-dialog/input-dialog.component';
 
 import { ComplexityDescription } from '../../models/complexity.enum';
+import { DishType } from '../../models/dishType.enum';
 import { Recipy } from '../../models/recipy.interface';
 import { RecipiesService } from '../../services/recipies.service';
-import { UserService } from './../../../auth/services/user.service';
+import { AppMode } from './../../containers/edit-recipy/edit-recipy.component';
+import { IAppState } from 'src/app/store/reducers';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-recipy-short-view',
@@ -15,28 +25,52 @@ import { UserService } from './../../../auth/services/user.service';
 export class RecipyShortViewComponent implements OnInit {
   @Input()
   recipy!: Recipy;
+  @Input()
+  currentUser!: User;
+  @Input()
+  isMobile!: boolean;
+  @Input() isPlanner = false;
+  @Input() mode: AppMode = AppMode.Planner;
+  AppMode = AppMode;
   currentPath: string;
-  isUserLoaded: boolean = false;
+  showNeedsAdvancePreparation: boolean = false;
+  @Output() addToCalendar = new EventEmitter<Recipy>();
+  @Output() recipyClicked = new EventEmitter<Recipy>();
+
+  isRecipyClicked: boolean = false;
+  isHovered: boolean = false;
+  isDetailedInfo: boolean = false;
+  showCollections: boolean = false;
+
+  Math = Math;
+
+  hasPrepSuggestions: boolean = false;
+
+  ingredientsToSkip = [
+    '-Mu5TNCG6N8Q_nwkPmNb',
+    '-Mu5UmO24kMVyKveKjah',
+    '-MuzaMFzts_yzcBtPRyt',
+    '-Muzb3OfJhqdsrleyz2a',
+  ];
   constructor(
     public dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute,
     private recipiesService: RecipiesService,
-    private userService: UserService
+    private store: Store<IAppState>
   ) {
     const path = window.location.pathname.split('/');
     this.currentPath = path[path.length - 1];
   }
 
   ngOnInit() {
-    if(this.userService.currentUser){
-      this.isUserLoaded = true;
-    }
+    this.showNeedsAdvancePreparation = this.recipy.type?.includes(
+      DishType['потребує попередньої підготовки']
+    );
+    this.hasPrepSuggestions = !!this.recipy.ingrediends.find(
+      (ingr) => !!ingr.prep
+    );
   }
-  goFullRecipy(id: string | undefined) {
-    this.router.navigate(['full-recipy/', id], {
-      relativeTo: this.route.parent,
-    });
+  goFullRecipy() {
+    this.recipyClicked.emit(this.recipy);
   }
 
   get complexity() {
@@ -46,28 +80,112 @@ export class RecipyShortViewComponent implements OnInit {
   get preparationTime() {
     let time = 0;
     for (let step of this.recipy.steps) {
-      time = time + step.timeActive + step.timePassive;
+      time = time + +step.timeActive + +step.timePassive;
     }
     return time;
   }
 
-  get isUserRecipy(){
-    return this.recipiesService.getIsUserRecipy(this.recipy)    
+  get isUserRecipy() {
+    return this.recipy.author == this.currentUser.email;
   }
 
-  addToUserRecipies(){
-    this.recipiesService.addRecipyToUserRecipies(this.recipy.id)
+  get author() {
+    return this.recipiesService.getRecipyBelongsTo(this.recipy);
   }
 
-  removeFromUserRecipies(){
-    this.recipiesService.removeRecipyFromUserRecipies(this.recipy.id)
+  get createdOn() {
+    return this.recipiesService.getRecipyCreatedOn(this.recipy);
   }
 
-  get author(){
-    return this.recipiesService.getRecipyBelongsTo(this.recipy)
+  get recipyCollections() {
+    if (this.currentUser.collections) {
+      return this.currentUser.collections.map((collection) => collection.name);
+    } else return [];
   }
 
-  get createdOn(){
-    return this.recipiesService.getRecipyCreatedOn(this.recipy)
+  get includedInCollections(): string[]{
+    if (this.currentUser.collections) {
+      return this.currentUser.collections.filter((collection) => collection.recipies?.includes(this.recipy.id)).map(coll => coll.name);
+    } else return [];
+  }
+
+  getIsInCollection(collection: string) {
+    if (this.currentUser.collections) {
+      return this.currentUser.collections
+        .find((coll) => coll.name == collection)
+        ?.recipies?.find((recipy) => recipy == this.recipy.id);
+    } else return false;
+  }
+
+  onCollectionSelected(collection: string) {
+    this.showCollections = false;
+    let updated = _.cloneDeep(this.currentUser);
+    updated.collections = updated.collections!.map((coll) => {
+      if (coll.name === collection) {
+        if (coll.recipies && coll.recipies.includes(this.recipy.id)) {
+          coll.recipies = coll.recipies.filter((id) => id !== this.recipy.id);
+        } else if (coll.recipies && !coll.recipies.includes(this.recipy.id)) {
+          coll.recipies.push(this.recipy.id);
+        } else {
+          coll.recipies = [this.recipy.id];
+        }
+        return coll;
+      } else return coll;
+    });
+    this.store.dispatch(new UpdateUserAction(updated));
+  }
+
+  addCollection() {
+    const dialogRef = this.dialog.open(InputDialogComponent, {
+      data: [{ title: 'Назва колекції', key: '' }],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.store.dispatch(new CreateRecipyCollection(result[0].key));
+    });
+  }
+
+  onAddToCalendar() {
+    this.addToCalendar.emit(this.recipy);
+  }
+
+  getIngredientText(ingredient: Ingredient): string {
+    return this.recipiesService.getIngredientText(ingredient);
+  }
+
+  get tags() {
+    let tags: string[] = [];
+    if (this.recipy) {
+      this.recipy.type.forEach((tag: DishType) => {
+        tags.push(DishType[tag]);
+      });
+    }
+    return tags;
+  }
+
+  onRecipyClicked() {
+    if (!this.isMobile) {
+      this.isRecipyClicked = !this.isRecipyClicked;
+    } else if (this.isMobile && !this.isRecipyClicked && !this.isDetailedInfo) {
+      this.isRecipyClicked = true;
+    } else if (this.isMobile && this.isRecipyClicked && !this.isDetailedInfo) {
+      this.isRecipyClicked = false;
+      this.isDetailedInfo = true;
+    } else if (this.isMobile && this.isDetailedInfo) {
+      this.isDetailedInfo = false;
+    }
+  }
+
+  get topIngredients() {
+    let sorted = this.recipy.ingrediends
+      .map((ingr) => ingr)
+      .sort((a, b) => b.amount - a.amount);
+    sorted = sorted.filter(
+      (ingr) => !this.ingredientsToSkip.includes(ingr.product)
+    );
+    if (sorted.length >= 6) {
+      sorted.splice(5);
+    }
+    return sorted;
   }
 }

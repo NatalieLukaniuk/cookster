@@ -1,0 +1,47 @@
+<div class="suggestions-list-item">
+  <div class="content-wrapper">
+    <div *ngIf="enableTimePicker" class="time-section">
+      <mat-icon class="timepicker-icon" (click)="changeTime()"
+        >access_time</mat-icon
+      >
+      <span (click)="changeTime()" *ngIf="!showTimePicker">{{
+        suggestion.time ? suggestion.time : "час не вказано"
+      }}</span>
+      <div class="ngx-timepicker-field-example" *ngIf="showTimePicker">
+        <input
+          aria-label="24hr format"
+          [ngModel]="suggestion.time ? suggestion.time : '11:25'"
+          [ngxTimepicker]="fullTime"
+          [format]="24"
+          readonly
+        />
+        <ngx-material-timepicker
+          #fullTime
+          (closed)="showTimePicker = false"
+          (timeSet)="onTimeChanged($event)"
+        ></ngx-material-timepicker>
+      </div>
+    </div>
+
+    <div class="suggestions-list-item-ingredient" [class.addMode]="isAddMode" cdkDropList (cdkDropListDropped)="drop($event)">
+      <div class="ingredient" cdkDrag *ngFor="let ingred of suggestion.ingredients">        
+        <span>{{ ingred.productName }}</span>
+        <span
+          >{{ NormalizeDisplayedAmount(ingred.amount, ingred.unit) }}
+          {{ getUnitText(ingred.unit) }}</span
+        >
+      </div>
+      <div class="placeholder" *cdkDragPlaceholder></div>
+    </div>
+    <div class="suggestions-list-item-prep">
+      <span>{{ suggestion.prepDescription }}</span>
+    </div>
+    <div class="suggestions-list-item-details">
+      <span>{{ suggestion.recipyTitle }}</span>
+      <span>{{ suggestion.day.toString()| date }}</span>
+    </div>
+  </div>
+  <mat-icon class="delete-btn" *ngIf="showDelete" (click)="delete()"
+    >delete</mat-icon
+  >
+</div>

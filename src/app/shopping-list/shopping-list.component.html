@@ -1,0 +1,10 @@
+<div class="shopping-list-container">
+
+    <mat-tab-group class="list-view-selection">
+    <mat-tab [label]="ShoppingListMode.All"> <app-no-group-list [lists]="shoppingLists" [allProducts]="allProducts" [allRecipies]="allRecipies$ | async" (listsUpdated)="onListsUpdated($event)"></app-no-group-list> </mat-tab>
+    <!-- <mat-tab [label]="ShoppingListMode.ListNameView"> Content 2 </mat-tab>
+    <mat-tab [label]="ShoppingListMode.DayView"> Content 3 </mat-tab> -->
+  </mat-tab-group>
+
+  <button mat-icon-button class="clean-list-button" (click)="cleanShoppingList()"> <mat-icon>remove_shopping_cart</mat-icon></button>
+</div>

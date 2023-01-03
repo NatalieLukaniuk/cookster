@@ -1,0 +1,19 @@
+<h1 mat-dialog-title *ngIf="data.title.length">{{ data.title }}</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <input matInput [(ngModel)]="inputText" type="text" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="action-buttons">
+  <button mat-button class="secondary-button" (click)="onNoClick()">
+    Discard
+  </button>
+  <button
+    mat-button
+    class="action-button"
+    [mat-dialog-close]="inputText"
+    cdkFocusInitial
+  >
+    Ok
+  </button>
+</div>

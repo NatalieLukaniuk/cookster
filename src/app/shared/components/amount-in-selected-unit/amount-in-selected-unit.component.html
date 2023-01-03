@@ -1,0 +1,20 @@
+<div>
+  <span *ngIf="amountToDisplay > 0">
+    {{ NormalizeDisplayedAmount(amountToDisplay, selectedUnit) }}
+  </span>
+  <ng-container>
+    <select
+      *ngIf="amountToDisplay > 0"
+      (change)="onValueChange($event)"
+      class="inline-select"
+    >
+      <option
+        *ngFor="let unit of measurementUnits"
+        [value]="unit"
+        [selected]="unit === selectedUnit"
+      >
+        {{ getUnitText(unit) }}
+      </option>
+    </select>
+  </ng-container>
+</div>

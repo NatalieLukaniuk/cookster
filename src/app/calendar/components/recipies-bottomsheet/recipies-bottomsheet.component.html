@@ -1,0 +1,25 @@
+<ng-container *ngIf="!!allRecipies">
+  <div>
+    <button
+      mat-flat-button
+      class="menu-button"
+      (click)="isShowFilers = !isShowFilers"
+    >
+      <mat-icon>filter_list</mat-icon>
+    </button>
+  </div>
+  <div class="recipies" *ngIf="!isShowFilers">
+    <mat-action-list>
+      <button
+        *ngFor="let recipy of allRecipies"
+        mat-list-item
+        (click)="addRecipyToCalendar(recipy.id)"
+      >
+        {{ recipy.name }}
+      </button>
+    </mat-action-list>
+  </div>
+  <div class="filters"  *ngIf="isShowFilers">
+<!-- <app-filters></app-filters> -->
+  </div>
+</ng-container>

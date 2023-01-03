@@ -1,0 +1,143 @@
+<div class="recipy-name">
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="title-wrapper">
+          <span>{{ recipy.name }}</span>
+        </div>
+        <div>
+          <span class="portions">{{ recipy.portions }} порцій</span>
+          <div class="icons">
+            <mat-icon *ngIf="showNeedsAdvancePreparation">av_timer</mat-icon>
+            <mat-icon *ngIf="hasPrepSuggestions">whatshot</mat-icon>
+            <mat-icon
+              *ngIf="recipy.isCheckedAndApproved"
+              class="color-primary"
+              matSuffix
+              svgIcon="approved"
+            ></mat-icon>
+          </div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <!-- Todo: no expanding for planner -->
+    <mat-action-list>
+      <div *ngIf="recipy.calorificValue">Калорійність порції: {{Math.round(recipy.calorificValue * recipy.amountPerPortion / 100)}} ккал</div>
+      <div mat-list-item class="recipy-details-item">
+        <button
+          mat-icon-button
+          (click)="
+            recipy.amountPerPortion = recipy.amountPerPortion - 50;
+            onAmountPerPortionChanged()
+          "
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+        <mat-form-field appearance="outline" class="amount-per-portion-input">
+          <mat-label>Amount per portion (in gramms)</mat-label>
+          <input
+            matInput
+            [(ngModel)]="recipy.amountPerPortion"
+            type="number"
+            (ngModelChange)="onAmountPerPortionChanged()"
+          />
+        </mat-form-field>
+        <button
+          mat-icon-button
+          (click)="
+            recipy.amountPerPortion = recipy.amountPerPortion + 50;
+            onAmountPerPortionChanged()
+          "
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <button
+        mat-list-item
+        class="recipy-details-item button"
+        (click)="viewRecipy()"
+      >
+        <mat-icon>zoom_in</mat-icon>Перейти до рецепту
+      </button>
+      <!-- <button
+        mat-list-item
+        class="recipy-details-item button"
+        (click)="showDetails(Details.Ingredients)"
+      >
+        інгридієнти
+      </button>
+      <div *ngIf="isShowIngredients" class="additional-info">
+        <app-ingredient
+          *ngFor="let ingredient of recipy.ingrediends"
+          [isMobile]="isMobile"
+          [ingredient]="ingredient"
+          [coeficientOfAmount]="coef"
+        ></app-ingredient>
+      </div>
+      <button
+        mat-list-item
+        class="recipy-details-item button"
+        (click)="showDetails(Details.Steps)"
+      >
+        Приготування
+      </button>
+      <div *ngIf="isShowSteps" class="additional-info">
+        <ng-container *ngFor="let step of recipy.steps">
+          <div>{{ step.description }}</div>
+        </ng-container>
+      </div>
+      <button
+        mat-list-item
+        class="recipy-details-item button"
+        (click)="showDetails(Details.Info)"
+      >
+        Додаткова інформація
+      </button>
+      <div *ngIf="isShowDetails" class="additional-info">
+        <div class="recipy-complexity">
+          <span class="bold">Складність:</span> {{ complexity }}
+        </div>
+        <div class="recipy-time">
+          <div>
+            <span class="bold">Час приготування: </span>
+            {{ activeTime + passiveTime | normalizeTime }}
+          </div>
+          <div>Активний: {{ activeTime | normalizeTime }}</div>
+          <div>Пасивний: {{ passiveTime | normalizeTime }}</div>
+        </div>
+      </div>
+      <button
+        mat-list-item
+        class="recipy-details-item button"
+        (click)="showDetails(Details.Prep)"
+      >
+        Попереднє приготування
+      </button>
+      <div *ngIf="isShowPrepSuggestions" class="additional-info">
+        <ng-container *ngFor="let suggestion of suggestions">
+          <div>{{ suggestion.ingr }} {{ suggestion.text }}</div>
+        </ng-container>
+      </div> -->
+      <!-- <button mat-list-item (click)="addToShoppingList()">
+        <mat-icon>add_shopping_cart</mat-icon>Додати інгридієнти в список
+        покупок
+      </button> -->
+      <button
+        mat-list-item
+        class="recipy-details-item button"
+        (click)="onRemoveRecipy()"
+      >
+        <mat-icon>delete_outline</mat-icon>Видалити
+      </button>
+    </mat-action-list>
+  </mat-expansion-panel>
+  <span></span>
+</div>
+
+<mat-menu #recipyMenu="matMenu">
+  <button mat-menu-item (click)="viewRecipy()">Переглянути рецепт</button>
+  <!-- <button mat-menu-item (click)="addToShoppingList()">
+    Додати інгридієнти в список покупок
+  </button> -->
+  <button mat-menu-item (click)="onRemoveRecipy()">Видалити</button>
+</mat-menu>

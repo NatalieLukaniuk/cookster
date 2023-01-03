@@ -1,18 +1,29 @@
+import { NormalizeDisplayedAmountPipe } from './pipes/normalize-displayed-amount.pipe';
+import { FiltersModule } from './../filters/filters.module';
+import { UiModule } from './../ui/ui.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
+import { StoreModule } from '@ngrx/store';
 
 import { SharedModule } from '../shared/shared.module';
-import { AddEditIngredientComponent } from './components/add-edit-recipy/add-edit-ingredient/add-edit-ingredient.component';
-import { AddEditRecipyComponent } from './components/add-edit-recipy/add-edit-recipy.component';
-import { AddStepsComponent } from './components/add-edit-recipy/add-steps/add-steps.component';
+import { RecipiesReducers } from '../store/reducers/recipies.reducer';
 import { AddProductComponent } from './components/add-product/add-product.component';
+import { AddIngredientComponent } from './components/add-recipy/add-ingredient/add-ingredient.component';
+import { AddRecipyComponent } from './components/add-recipy/add-recipy.component';
+import { AddStepComponent } from './components/add-recipy/add-step-form/add-step.component';
+import { AddTagsComponent } from './components/add-recipy/add-tags/add-tags.component';
 import { IngredientComponent } from './components/ingredient/ingredient.component';
-import { RecipyFullViewComponent } from './components/recipy-full-view/recipy-full-view.component';
+import { RecipyPreviewComponent } from './components/recipy-preview/recipy-preview.component';
 import { RecipyShortViewComponent } from './components/recipy-short-view/recipy-short-view.component';
 import { AllRecipiesComponent } from './containers/all-recipies/all-recipies.component';
+import { EditRecipyComponent } from './containers/edit-recipy/edit-recipy.component';
+import { RecipyFullViewComponent } from './containers/recipy-full-view/recipy-full-view.component';
 import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.component';
+import { ConvertToSelectedUnitPipe } from './pipes/convert-to-selected-unit.pipe';
 
 @NgModule({
   imports: [
@@ -21,18 +32,32 @@ import { UserRecipiesComponent } from './containers/user-recipies/user-recipies.
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    DragDropModule,
+    UiModule,
+    MatTooltipModule,
+    FiltersModule,
+    StoreModule.forFeature('recipies', RecipiesReducers),
   ],
   declarations: [
     UserRecipiesComponent,
     RecipyShortViewComponent,
     RecipyFullViewComponent,
     IngredientComponent,
-    AddStepsComponent,
     AddProductComponent,
     AllRecipiesComponent,
-    AddEditRecipyComponent,
-    AddEditIngredientComponent
+    AddRecipyComponent,
+    AddIngredientComponent,
+    AddStepComponent,
+    AddTagsComponent,
+    RecipyPreviewComponent,
+    EditRecipyComponent,
+    ConvertToSelectedUnitPipe, NormalizeDisplayedAmountPipe
   ],
-  exports: [],
+  exports: [
+    IngredientComponent,
+    RecipyShortViewComponent,
+    RecipyPreviewComponent,
+  ],
+  providers: [NormalizeDisplayedAmountPipe]
 })
 export class RecipiesModule {}

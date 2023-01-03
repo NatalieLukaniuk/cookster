@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 
+import * as UserActions from '../../store/actions/user.actions';
 import { AuthApiService } from './auth-api.service';
 
 @Injectable({
@@ -11,7 +13,7 @@ export class UserService {
   allUsers: any;
   userAtFirebaseAuth: any;
 
-  constructor(private authApiService: AuthApiService) {}
+  constructor(private authApiService: AuthApiService, private store: Store) {}
 
   getAllUsers() {
     this.authApiService
@@ -49,7 +51,12 @@ export class UserService {
   getCurrentUser(userAtFirebaseAuth: any) {
     for (let user of this.allUsers) {
       if (userAtFirebaseAuth.email === user.email) {
+        console.log(user)
         this.currentUser = user;
+        if(!('details' in this.currentUser)){
+          this.currentUser.details = []
+        }
+        this.store.dispatch(new UserActions.UserLoadedAction(user))
       }
     }
   }

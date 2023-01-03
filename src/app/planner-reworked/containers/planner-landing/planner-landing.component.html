@@ -1,0 +1,24 @@
+<div class="planner-container" *ngIf="isListView$ | async">
+  <div>
+    <button mat-flat-button class="action-button" (click)="onAddNewPlanner()">
+      Додати
+    </button>
+    <app-date-picker-range
+      *ngIf="showDatePicker"
+      (dateSelected)="onDateSelected($event)"
+    ></app-date-picker-range>
+    <mat-list>
+      <mat-list-item *ngFor="let planner of plannersList">
+        <span (click)="onPlannerClicked(planner.id)"
+          >{{ getFormattedName(planner.startDate) | date: 'MMMM, dd' }} - {{ getFormattedName(planner.endDate) | date: 'MMMM, dd' }}</span
+        >
+        <mat-icon class="delete-btn" (click)="deletePlanner(planner)"
+          >delete_outline</mat-icon
+        >
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <!-- todo: for desktop the panel takes only part of the screen, add some info about each planner in the right side -->
+  <div *ngIf="!(isMobile$ | async)"></div>
+</div>
+<router-outlet></router-outlet>

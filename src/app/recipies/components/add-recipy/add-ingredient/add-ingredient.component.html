@@ -1,0 +1,41 @@
+<form [formGroup]="ingredientsForm" (ngSubmit)="addIngredient()">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Інгридієнт</mat-label>
+    <input matInput formControlName="ingredient" placeholder="Напр.: картопля" type="text" [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option}}
+      </mat-option>
+      <mat-option *ngIf="noFilteredOptions && ingredientsForm.controls.ingredient.value.length" [value]="ingredientsForm.controls.ingredient.value">+ {{ingredientsForm.controls.ingredient.value}}</mat-option>
+    </mat-autocomplete>
+    <mat-icon matSuffix svgIcon="done" *ngIf="ingredientsForm.controls.ingredient.valid && !noFilteredOptions">
+    </mat-icon>
+    <mat-hint *ngIf="noFilteredOptions">Рецепти з новими інгридієнтами, яких немає в базі даних, публікуються тільки після схвалення модератора</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Кількість</mat-label>
+    <input matInput formControlName="amount" placeholder="Напр.: 600" type="number">
+    <mat-icon matSuffix svgIcon="done" *ngIf="ingredientsForm.controls.amount.valid"></mat-icon>
+    <!-- <mat-hint>Hint</mat-hint> -->
+  </mat-form-field>
+
+  <h5>Одиниця виміру</h5>
+  <mat-radio-group class="cookster-radio-group units-radio-group" formControlName="defaultUnit">
+    <mat-radio-button *ngFor="let unit of measuringUnitsOptions" [value]="unit">
+      {{getMeasuringUnitText(unit)}}
+    </mat-radio-button>
+  </mat-radio-group>
+
+  <h5 *ngIf="isIngredientsSplitToGroups">Група</h5>
+  <mat-radio-group *ngIf="isIngredientsSplitToGroups" class="cookster-radio-group" formControlName="group" #group>
+    <mat-radio-button [ngClass]="ingredientsForm.controls.group.value == unit? 'selected' : 'not-selected'"
+      class="example-radio-button" *ngFor="let unit of ingredientGroupOptions" [value]="unit">
+      {{GetUkrIngredientsGroup(unit)}}
+    </mat-radio-button>
+  </mat-radio-group>
+
+  <button class="action-button" mat-flat-button [disabled]="ingredientsForm.invalid && !(ingredientsForm.controls.ingredient.valid && ingredientsForm.controls.defaultUnit.value == MeasuringUnit.none)" class="action-button"
+    type="submit">Add</button>
+</form>

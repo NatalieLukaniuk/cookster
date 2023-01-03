@@ -1,0 +1,57 @@
+.ingreds-to-exclude .mat-chip.mat-standard-chip{
+    background-color: rgb(231, 66, 66);    
+    color: white;
+}
+
+.ingreds-to-include .mat-chip.mat-standard-chip{
+    background-color: var(--tint5); 
+    color: white;   
+}
+
+.max-prep-time .mat-chip.mat-standard-chip{
+    background-color: var(--tint-very-light);
+}
+
+.mat-icon{
+    font-size: 14px;
+    height: 14px;
+    position: relative;
+    right: -15px;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.title{
+    font-size: 14px;
+    margin-right: 10px;
+    h4, h5 {
+        margin-block: 0;
+        width: max-content;
+    }
+}
+
+.filters{
+    & > div {
+        margin: 5px;
+        display: inline-flex;
+    }
+}
+
+@media (max-width: 600px){
+    .wrapper{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .title{
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100%;
+        margin-bottom: 10px;
+        margin-left: 5px;display: flex;
+        font-size: 12px;
+    }
+}

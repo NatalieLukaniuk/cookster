@@ -1,0 +1,21 @@
+<div class="ingredient-wrapper">
+  <div class="ingredient-name">{{ getIngredientText() }}</div>
+  <div *ngIf="amountToDisplay > 0" class="ingredient-amount">{{
+    NormalizeDisplayedAmount(amountToDisplay, measuringUnit)
+  }}</div>
+  <div><select
+    *ngIf="amountToDisplay > 0"
+    (change)="onValueChange($event)"
+    class="inline-select"
+  >
+    <option
+      *ngFor="let unit of measurementUnits"
+      [value]="unit"
+      [selected]="unit === measuringUnit"
+    >
+      {{ getUnitText(unit) }}
+    </option>
+  </select>
+  <div *ngIf="amountToDisplay == 0">за смаком</div>
+</div>
+</div>
